@@ -369,6 +369,65 @@ InstallSignalHandlers(void)
  * use a global. */
 static CARD32 HasVTValue = 1;
 
+static void
+xf86InitAtoms(void)
+{
+    int i;
+
+    if (xf86Info.vtno >= 0) {
+#define VT_ATOM_NAME         "XFree86_VT"
+        Atom VTAtom = -1, HasVTAtom = -1;
+        CARD32 *VT = NULL, *HasVT = &HasVTValue;
+        int ret;
+
+        /* This memory needs to stay available until the screen has been
+           initialized, and we can create the property for real.
+         */
+        if ((VT = malloc(sizeof(CARD32))) == NULL) {
+            FatalError
+                ("Unable to make VT property - out of memory. Exiting...\n");
+        }
+        *VT = xf86Info.vtno;
+
+        VTAtom = MakeAtom(VT_ATOM_NAME, sizeof(VT_ATOM_NAME) - 1, TRUE);
+        HasVTAtom = MakeAtom(HAS_VT_ATOM_NAME, sizeof(HAS_VT_ATOM_NAME) - 1,
+                             TRUE);
+
+        for (i = 0, ret = Success; i < xf86NumScreens && ret == Success; i++) {
+            ret = xf86RegisterRootWindowProperty(xf86Screens[i]->scrnIndex,
+                                                 VTAtom, XA_INTEGER, 32, 1,
+                                                 VT);
+            if (ret == Success)
+                ret = xf86RegisterRootWindowProperty(xf86Screens[i]->scrnIndex,
+                                                     HasVTAtom, XA_INTEGER,
+                                                     32, 1, HasVT);
+            if (ret != Success)
+                xf86DrvMsg(xf86Screens[i]->scrnIndex, X_WARNING,
+                           "Failed to register VT property\n");
+        }
+    }
+
+    if (SeatId) {
+        Atom SeatAtom;
+
+        SeatAtom =
+            MakeAtom(SEAT_ATOM_NAME, sizeof(SEAT_ATOM_NAME) - 1, TRUE);
+
+        for (i = 0; i < xf86NumScreens; i++) {
+            int ret;
+
+            ret = xf86RegisterRootWindowProperty(xf86Screens[i]->scrnIndex,
+                                                 SeatAtom, XA_STRING, 8,
+                                                 strlen(SeatId) + 1,
+                                                 SeatId);
+            if (ret != Success) {
+                xf86DrvMsg(xf86Screens[i]->scrnIndex, X_WARNING,
+                           "Failed to register seat property\n");
+            }
+        }
+    }
+}
+
 /*
  * InitOutput --
  *	Initialize screenInfo for all actually accessible framebuffers.
@@ -710,64 +769,6 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
         }
         formatsDone = TRUE;
 
-        if (xf86Info.vtno >= 0) {
-#define VT_ATOM_NAME         "XFree86_VT"
-            Atom VTAtom = -1;
-            Atom HasVTAtom = -1;
-            CARD32 *VT = NULL;
-            CARD32 *HasVT = &HasVTValue;
-            int ret;
-
-            /* This memory needs to stay available until the screen has been
-               initialized, and we can create the property for real.
-             */
-            if ((VT = malloc(sizeof(CARD32))) == NULL) {
-                FatalError
-                    ("Unable to make VT property - out of memory. Exiting...\n");
-            }
-            *VT = xf86Info.vtno;
-
-            VTAtom = MakeAtom(VT_ATOM_NAME, sizeof(VT_ATOM_NAME) - 1, TRUE);
-            HasVTAtom = MakeAtom(HAS_VT_ATOM_NAME,
-                                 sizeof(HAS_VT_ATOM_NAME) - 1, TRUE);
-
-            for (i = 0, ret = Success; i < xf86NumScreens && ret == Success;
-                 i++) {
-                ret =
-                    xf86RegisterRootWindowProperty(xf86Screens[i]->scrnIndex,
-                                                   VTAtom, XA_INTEGER, 32, 1,
-                                                   VT);
-                if (ret == Success)
-                    ret = xf86RegisterRootWindowProperty(xf86Screens[i]
-                                                             ->scrnIndex,
-                                                         HasVTAtom, XA_INTEGER,
-                                                         32, 1, HasVT);
-                if (ret != Success)
-                    xf86DrvMsg(xf86Screens[i]->scrnIndex, X_WARNING,
-                               "Failed to register VT properties\n");
-            }
-        }
-
-        if (SeatId) {
-            Atom SeatAtom;
-
-            SeatAtom =
-                MakeAtom(SEAT_ATOM_NAME, sizeof(SEAT_ATOM_NAME) - 1, TRUE);
-
-            for (i = 0; i < xf86NumScreens; i++) {
-                int ret;
-
-                ret = xf86RegisterRootWindowProperty(xf86Screens[i]->scrnIndex,
-                                                     SeatAtom, XA_STRING, 8,
-                                                     strlen(SeatId) + 1,
-                                                     SeatId);
-                if (ret != Success) {
-                    xf86DrvMsg(xf86Screens[i]->scrnIndex, X_WARNING,
-                               "Failed to register seat property\n");
-                }
-            }
-        }
-
         /* If a screen uses depth 24, show what the pixmap format is */
         for (i = 0; i < xf86NumScreens; i++) {
             if (xf86Screens[i]->depth == 24) {
@@ -776,6 +777,9 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
                 break;
             }
         }
+
+        xf86InitAtoms();
+
     }
     else {
         /*
