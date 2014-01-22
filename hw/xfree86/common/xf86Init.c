@@ -383,9 +383,6 @@ xf86InitFormats(void)
      */
     screenpix24 = Pix24DontCare;
     for (i = 0; i < xf86NumScreens; i++) {
-        if (xf86Screens[i]->bitmapBitOrder != xf86Screens[0]->bitmapBitOrder)
-            FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
-
         /* Determine the depth 24 pixmap format the screens would like */
         if (xf86Screens[i]->pixmap24 != Pix24DontCare) {
             if (screenpix24 == Pix24DontCare)
@@ -805,7 +802,7 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
     pScreenInfo->imageByteOrder = IMAGE_BYTE_ORDER;
     pScreenInfo->bitmapScanlinePad = BITMAP_SCANLINE_PAD;
     pScreenInfo->bitmapScanlineUnit = BITMAP_SCANLINE_UNIT;
-    pScreenInfo->bitmapBitOrder = xf86Screens[0]->bitmapBitOrder;
+    pScreenInfo->bitmapBitOrder = BITMAP_BIT_ORDER;
     pScreenInfo->numPixmapFormats = numFormats;
     for (i = 0; i < numFormats; i++)
         pScreenInfo->formats[i] = formats[i];
