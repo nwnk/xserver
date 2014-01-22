@@ -370,6 +370,97 @@ InstallSignalHandlers(void)
 static CARD32 HasVTValue = 1;
 
 static void
+xf86InitFormats(void)
+{
+    int i, j, k;
+    Pix24Flags screenpix24, pix24;
+    MessageType pix24From = X_DEFAULT;
+    Bool pix24Fail = FALSE;
+
+    /*
+     * Collect all pixmap formats and check for conflicts at the display
+     * level.  Should we die here?  Or just delete the offending screens?
+     */
+    screenpix24 = Pix24DontCare;
+    for (i = 0; i < xf86NumScreens; i++) {
+        if (xf86Screens[i]->imageByteOrder != xf86Screens[0]->imageByteOrder)
+            FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
+        if (xf86Screens[i]->bitmapScanlinePad !=
+            xf86Screens[0]->bitmapScanlinePad)
+            FatalError("Inconsistent display bitmapScanlinePad.  Exiting\n");
+        if (xf86Screens[i]->bitmapScanlineUnit !=
+            xf86Screens[0]->bitmapScanlineUnit)
+            FatalError("Inconsistent display bitmapScanlineUnit.  Exiting\n");
+        if (xf86Screens[i]->bitmapBitOrder != xf86Screens[0]->bitmapBitOrder)
+            FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
+
+        /* Determine the depth 24 pixmap format the screens would like */
+        if (xf86Screens[i]->pixmap24 != Pix24DontCare) {
+            if (screenpix24 == Pix24DontCare)
+                screenpix24 = xf86Screens[i]->pixmap24;
+            else if (screenpix24 != xf86Screens[i]->pixmap24)
+                FatalError
+                    ("Inconsistent depth 24 pixmap format.  Exiting\n");
+        }
+    }
+    /* check if screenpix24 is consistent with the config/cmdline */
+    if (xf86Info.pixmap24 != Pix24DontCare) {
+        pix24 = xf86Info.pixmap24;
+        pix24From = xf86Info.pix24From;
+        if (screenpix24 != Pix24DontCare && screenpix24 != xf86Info.pixmap24)
+            pix24Fail = TRUE;
+    }
+    else if (screenpix24 != Pix24DontCare) {
+        pix24 = screenpix24;
+        pix24From = X_PROBED;
+    }
+    else
+        pix24 = Pix24Use32;
+
+    if (pix24Fail)
+        FatalError("Screen(s) can't use the required depth 24 pixmap format"
+                   " (%d).  Exiting\n", PIX24TOBPP(pix24));
+
+    /* Initialise the depth 24 format */
+    for (j = 0; j < numFormats && formats[j].depth != 24; j++);
+    formats[j].bitsPerPixel = PIX24TOBPP(pix24);
+
+    /* Collect additional formats */
+    for (i = 0; i < xf86NumScreens; i++) {
+        for (j = 0; j < xf86Screens[i]->numFormats; j++) {
+            for (k = 0;; k++) {
+                if (k >= numFormats) {
+                    if (k >= MAXFORMATS)
+                        FatalError("Too many pixmap formats!  Exiting\n");
+                    formats[k] = xf86Screens[i]->formats[j];
+                    numFormats++;
+                    break;
+                }
+                if (formats[k].depth == xf86Screens[i]->formats[j].depth) {
+                    if ((formats[k].bitsPerPixel ==
+                         xf86Screens[i]->formats[j].bitsPerPixel) &&
+                        (formats[k].scanlinePad ==
+                         xf86Screens[i]->formats[j].scanlinePad))
+                        break;
+                    FatalError("Inconsistent pixmap format for depth %d."
+                               "  Exiting\n", formats[k].depth);
+                }
+            }
+        }
+    }
+    formatsDone = TRUE;
+
+    /* If a screen uses depth 24, show what the pixmap format is */
+    for (i = 0; i < xf86NumScreens; i++) {
+        if (xf86Screens[i]->depth == 24) {
+            xf86Msg(pix24From, "Depth 24 pixmap format is %d bpp\n",
+                    PIX24TOBPP(pix24));
+            break;
+        }
+    }
+}
+
+static void
 xf86InitAtoms(void)
 {
     int i;
@@ -437,12 +528,9 @@ xf86InitAtoms(void)
 void
 InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
 {
-    int i, j, k, scr_index;
+    int i, j, scr_index;
     const char **modulelist;
     void **optionlist;
-    Pix24Flags screenpix24, pix24;
-    MessageType pix24From = X_DEFAULT;
-    Bool pix24Fail = FALSE;
     Bool autoconfig = FALSE;
     Bool sigio_blocked = FALSE;
     Bool want_hw_access = FALSE;
@@ -691,95 +779,8 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
         for (i = 0; i < xf86NumScreens; i++)
             xf86InitViewport(xf86Screens[i]);
 
-        /*
-         * Collect all pixmap formats and check for conflicts at the display
-         * level.  Should we die here?  Or just delete the offending screens?
-         */
-        screenpix24 = Pix24DontCare;
-        for (i = 0; i < xf86NumScreens; i++) {
-            if (xf86Screens[i]->imageByteOrder !=
-                xf86Screens[0]->imageByteOrder)
-                FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
-            if (xf86Screens[i]->bitmapScanlinePad !=
-                xf86Screens[0]->bitmapScanlinePad)
-                FatalError
-                    ("Inconsistent display bitmapScanlinePad.  Exiting\n");
-            if (xf86Screens[i]->bitmapScanlineUnit !=
-                xf86Screens[0]->bitmapScanlineUnit)
-                FatalError
-                    ("Inconsistent display bitmapScanlineUnit.  Exiting\n");
-            if (xf86Screens[i]->bitmapBitOrder !=
-                xf86Screens[0]->bitmapBitOrder)
-                FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
-
-            /* Determine the depth 24 pixmap format the screens would like */
-            if (xf86Screens[i]->pixmap24 != Pix24DontCare) {
-                if (screenpix24 == Pix24DontCare)
-                    screenpix24 = xf86Screens[i]->pixmap24;
-                else if (screenpix24 != xf86Screens[i]->pixmap24)
-                    FatalError
-                        ("Inconsistent depth 24 pixmap format.  Exiting\n");
-            }
-        }
-        /* check if screenpix24 is consistent with the config/cmdline */
-        if (xf86Info.pixmap24 != Pix24DontCare) {
-            pix24 = xf86Info.pixmap24;
-            pix24From = xf86Info.pix24From;
-            if (screenpix24 != Pix24DontCare &&
-                screenpix24 != xf86Info.pixmap24)
-                pix24Fail = TRUE;
-        }
-        else if (screenpix24 != Pix24DontCare) {
-            pix24 = screenpix24;
-            pix24From = X_PROBED;
-        }
-        else
-            pix24 = Pix24Use32;
-
-        if (pix24Fail)
-            FatalError("Screen(s) can't use the required depth 24 pixmap format"
-                       " (%d).  Exiting\n", PIX24TOBPP(pix24));
-
-        /* Initialise the depth 24 format */
-        for (j = 0; j < numFormats && formats[j].depth != 24; j++);
-        formats[j].bitsPerPixel = PIX24TOBPP(pix24);
-
-        /* Collect additional formats */
-        for (i = 0; i < xf86NumScreens; i++) {
-            for (j = 0; j < xf86Screens[i]->numFormats; j++) {
-                for (k = 0;; k++) {
-                    if (k >= numFormats) {
-                        if (k >= MAXFORMATS)
-                            FatalError("Too many pixmap formats!  Exiting\n");
-                        formats[k] = xf86Screens[i]->formats[j];
-                        numFormats++;
-                        break;
-                    }
-                    if (formats[k].depth == xf86Screens[i]->formats[j].depth) {
-                        if ((formats[k].bitsPerPixel ==
-                             xf86Screens[i]->formats[j].bitsPerPixel) &&
-                            (formats[k].scanlinePad ==
-                             xf86Screens[i]->formats[j].scanlinePad))
-                            break;
-                        FatalError("Inconsistent pixmap format for depth %d."
-                                   "  Exiting\n", formats[k].depth);
-                    }
-                }
-            }
-        }
-        formatsDone = TRUE;
-
-        /* If a screen uses depth 24, show what the pixmap format is */
-        for (i = 0; i < xf86NumScreens; i++) {
-            if (xf86Screens[i]->depth == 24) {
-                xf86Msg(pix24From, "Depth 24 pixmap format is %d bpp\n",
-                        PIX24TOBPP(pix24));
-                break;
-            }
-        }
-
+        xf86InitFormats();
         xf86InitAtoms();
-
     }
     else {
         /*
