@@ -75,7 +75,7 @@ xf86_dga_get_modes(ScreenPtr pScreen)
             mode->flags |= DGA_DOUBLESCAN;
         if (display_mode->Flags & V_INTERLACE)
             mode->flags |= DGA_INTERLACED;
-        mode->byteOrder = scrn->imageByteOrder;
+        mode->byteOrder = IMAGE_BYTE_ORDER;
         mode->depth = scrn->depth;
         mode->bitsPerPixel = scrn->bitsPerPixel;
         mode->red_mask = scrn->mask.red;

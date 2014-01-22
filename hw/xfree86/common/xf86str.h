@@ -689,7 +689,6 @@ typedef struct _ScrnInfoRec {
                                  * available screens */
 
     /* Display-wide screenInfo values needed by this screen */
-    int imageByteOrder;
     int bitmapScanlineUnit;
     int bitmapScanlinePad;
     int bitmapBitOrder;

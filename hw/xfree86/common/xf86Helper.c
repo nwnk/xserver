@@ -352,7 +352,7 @@ xf86AddPixFormat(ScrnInfoPtr pScrn, int depth, int bpp, int pad)
  * Also find a Display subsection matching the depth/bpp found.
  *
  * Sets the following ScrnInfoRec fields:
- *     bitsPerPixel, pixmap24, depth, display, imageByteOrder,
+ *     bitsPerPixel, pixmap24, depth, display,
  *     bitmapScanlinePad, bitmapScanlineUnit, bitmapBitOrder, numFormats,
  *     formats, fbFormat.
  */
@@ -664,7 +664,6 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
      * need.  These defaults should eventually be set globally, and not
      * dependent on the screens.
      */
-    scrp->imageByteOrder = IMAGE_BYTE_ORDER;
     scrp->bitmapScanlinePad = BITMAP_SCANLINE_PAD;
     if (scrp->depth < 8) {
         /* Planar modes need these settings */
