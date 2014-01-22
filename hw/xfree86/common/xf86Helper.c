@@ -353,7 +353,7 @@ xf86AddPixFormat(ScrnInfoPtr pScrn, int depth, int bpp, int pad)
  *
  * Sets the following ScrnInfoRec fields:
  *     bitsPerPixel, pixmap24, depth, display,
- *     bitmapScanlinePad, bitmapScanlineUnit, bitmapBitOrder, numFormats,
+ *     bitmapScanlinePad, bitmapBitOrder, numFormats,
  *     formats, fbFormat.
  */
 
@@ -667,11 +667,9 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
     scrp->bitmapScanlinePad = BITMAP_SCANLINE_PAD;
     if (scrp->depth < 8) {
         /* Planar modes need these settings */
-        scrp->bitmapScanlineUnit = 8;
         scrp->bitmapBitOrder = MSBFirst;
     }
     else {
-        scrp->bitmapScanlineUnit = BITMAP_SCANLINE_UNIT;
         scrp->bitmapBitOrder = BITMAP_BIT_ORDER;
     }
 

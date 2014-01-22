@@ -386,9 +386,6 @@ xf86InitFormats(void)
         if (xf86Screens[i]->bitmapScanlinePad !=
             xf86Screens[0]->bitmapScanlinePad)
             FatalError("Inconsistent display bitmapScanlinePad.  Exiting\n");
-        if (xf86Screens[i]->bitmapScanlineUnit !=
-            xf86Screens[0]->bitmapScanlineUnit)
-            FatalError("Inconsistent display bitmapScanlineUnit.  Exiting\n");
         if (xf86Screens[i]->bitmapBitOrder != xf86Screens[0]->bitmapBitOrder)
             FatalError("Inconsistent display bitmapBitOrder.  Exiting\n");
 
@@ -810,7 +807,7 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
 
     pScreenInfo->imageByteOrder = IMAGE_BYTE_ORDER;
     pScreenInfo->bitmapScanlinePad = xf86Screens[0]->bitmapScanlinePad;
-    pScreenInfo->bitmapScanlineUnit = xf86Screens[0]->bitmapScanlineUnit;
+    pScreenInfo->bitmapScanlineUnit = BITMAP_SCANLINE_UNIT;
     pScreenInfo->bitmapBitOrder = xf86Screens[0]->bitmapBitOrder;
     pScreenInfo->numPixmapFormats = numFormats;
     for (i = 0; i < numFormats; i++)
