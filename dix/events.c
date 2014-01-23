@@ -203,11 +203,6 @@ xi2_get_type(const xEvent *event)
 CallbackListPtr EventCallback;
 CallbackListPtr DeviceEventCallback;
 
-#define DNPMCOUNT 8
-
-Mask DontPropagateMasks[DNPMCOUNT];
-static int DontPropagateRefCnts[DNPMCOUNT];
-
 static void CheckVirtualMotion(DeviceIntPtr pDev, QdEventPtr qe,
                                WindowPtr pWin);
 static void CheckPhysLimits(DeviceIntPtr pDev, CursorPtr cursor,
@@ -4467,32 +4462,11 @@ int
 EventSuppressForWindow(WindowPtr pWin, ClientPtr client,
                        Mask mask, Bool *checkOptional)
 {
-    int i, freed;
-
     if (mask & ~PropagateMask) {
         client->errorValue = mask;
         return BadValue;
     }
-    if (pWin->dontPropagate)
-        DontPropagateRefCnts[pWin->dontPropagate]--;
-    if (!mask)
-        i = 0;
-    else {
-        for (i = DNPMCOUNT, freed = 0; --i > 0;) {
-            if (!DontPropagateRefCnts[i])
-                freed = i;
-            else if (mask == DontPropagateMasks[i])
-                break;
-        }
-        if (!i && freed) {
-            i = freed;
-            DontPropagateMasks[i] = mask;
-        }
-    }
-    if (i || !mask) {
-        pWin->dontPropagate = i;
-        if (i)
-            DontPropagateRefCnts[i]++;
+    if (!mask) {
         if (pWin->optional) {
             pWin->optional->dontPropagateMask = mask;
             *checkOptional = TRUE;
@@ -4500,11 +4474,8 @@ EventSuppressForWindow(WindowPtr pWin, ClientPtr client,
     }
     else {
         if (!pWin->optional && !MakeWindowOptional(pWin)) {
-            if (pWin->dontPropagate)
-                DontPropagateRefCnts[pWin->dontPropagate]++;
             return BadAlloc;
         }
-        pWin->dontPropagate = 0;
         pWin->optional->dontPropagateMask = mask;
     }
     RecalculateDeliverableEvents(pWin);
@@ -5298,10 +5269,6 @@ InitEvents(void)
     syncEvents.time.milliseconds = 0;   /* hardly matters */
     currentTime.months = 0;
     currentTime.milliseconds = GetTimeInMillis();
-    for (i = 0; i < DNPMCOUNT; i++) {
-        DontPropagateMasks[i] = 0;
-        DontPropagateRefCnts[i] = 0;
-    }
 
     InputEventList = InitEventList(GetMaximumEventsNum());
     if (!InputEventList)
@@ -5765,8 +5732,6 @@ DeleteWindowFromAnyEvents(WindowPtr pWin, Bool freeResources)
     }
 
     if (freeResources) {
-        if (pWin->dontPropagate)
-            DontPropagateRefCnts[pWin->dontPropagate]--;
         while ((oc = wOtherClients(pWin)))
             FreeResource(oc->resource, RT_NONE);
         while ((passive = wPassiveGrabs(pWin)))

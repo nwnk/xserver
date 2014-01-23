@@ -81,7 +81,7 @@ typedef struct _WindowOpt {
     CursorPtr cursor;           /* default: window.cursorNone */
     VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
-    Mask dontPropagateMask;     /* default: window.dontPropagate */
+    Mask dontPropagateMask;     /* default: 0 */
     Mask otherEventMasks;       /* default: 0 */
     struct _OtherClients *otherClients; /* default: NULL */
     struct _GrabRec *passiveGrabs;      /* default: NULL */
@@ -158,7 +158,6 @@ typedef struct _Window {
     unsigned mapped:1;
     unsigned realized:1;        /* ancestors are all mapped */
     unsigned viewable:1;        /* realized && InputOutput */
-    unsigned dontPropagate:3;   /* index into DontPropagateMasks */
     unsigned forcedBS:1;        /* system-supplied backingStore */
     unsigned redirectDraw:2;    /* COMPOSITE rendering redirect */
     unsigned forcedBG:1;        /* must have an opaque background */
@@ -176,8 +175,6 @@ typedef struct _Window {
  * fields (or filling the appropriate default value)
  */
 
-extern _X_EXPORT Mask DontPropagateMasks[];
-
 #define wTrackParent(w,field)	((w)->optional ? \
 				    (w)->optional->field \
  				 : FindWindowWithOptional(w)->optional->field)
@@ -188,7 +185,7 @@ extern _X_EXPORT Mask DontPropagateMasks[];
 #define wVisual(w)		wTrackParent(w, visual)
 #define wCursor(w)		((w)->cursorIsNone ? None : wTrackParent(w, cursor))
 #define wColormap(w)		((w)->drawable.class == InputOnly ? None : wTrackParent(w, colormap))
-#define wDontPropagateMask(w)	wUseDefault(w, dontPropagateMask, DontPropagateMasks[(w)->dontPropagate])
+#define wDontPropagateMask(w)	wUseDefault(w, dontPropagateMask, 0)
 #define wOtherEventMasks(w)	wUseDefault(w, otherEventMasks, 0)
 #define wOtherClients(w)	wUseDefault(w, otherClients, NULL)
 #define wOtherInputMasks(w)	wUseDefault(w, inputMasks, NULL)

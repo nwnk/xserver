@@ -376,7 +376,6 @@ SetWindowToDefaults(WindowPtr pWin)
 
     pWin->eventMask = 0;
     pWin->deliverableEvents = 0;
-    pWin->dontPropagate = 0;
     pWin->forcedBS = FALSE;
     pWin->redirectDraw = RedirectDrawNone;
     pWin->forcedBG = FALSE;
@@ -3233,8 +3232,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     if (!w->parent || !w->optional)
         return;
     optional = w->optional;
-    if (optional->dontPropagateMask != DontPropagateMasks[w->dontPropagate])
-        return;
     if (optional->otherEventMasks != 0)
         return;
     if (optional->otherClients != NULL)
@@ -3294,7 +3291,7 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->dontPropagateMask = DontPropagateMasks[pWin->dontPropagate];
+    optional->dontPropagateMask = 0;
     optional->otherEventMasks = 0;
     optional->otherClients = NULL;
     optional->passiveGrabs = NULL;
