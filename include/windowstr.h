@@ -86,7 +86,6 @@ typedef struct _WindowOpt {
     struct _OtherClients *otherClients; /* default: NULL */
     struct _GrabRec *passiveGrabs;      /* default: NULL */
     PropertyPtr userProps;      /* default: NULL */
-    CARD32 backingBitPlanes;    /* default: ~0L */
     CARD32 backingPixel;        /* default: 0 */
     RegionPtr boundingShape;    /* default: NULL */
     RegionPtr clipShape;        /* default: NULL */
@@ -191,7 +190,6 @@ typedef struct _Window {
 #define wOtherInputMasks(w)	wUseDefault(w, inputMasks, NULL)
 #define wPassiveGrabs(w)	wUseDefault(w, passiveGrabs, NULL)
 #define wUserProps(w)		wUseDefault(w, userProps, NULL)
-#define wBackingBitPlanes(w)	wUseDefault(w, backingBitPlanes, ~0L)
 #define wBackingPixel(w)	wUseDefault(w, backingPixel, 0)
 #define wBoundingShape(w)	wUseDefault(w, boundingShape, NULL)
 #define wClipShape(w)		wUseDefault(w, clipShape, NULL)

@@ -478,7 +478,6 @@ CreateRootWindow(ScreenPtr pScreen)
     pWin->optional->otherClients = NULL;
     pWin->optional->passiveGrabs = NULL;
     pWin->optional->userProps = NULL;
-    pWin->optional->backingBitPlanes = ~0L;
     pWin->optional->backingPixel = 0;
     pWin->optional->boundingShape = NULL;
     pWin->optional->clipShape = NULL;
@@ -1221,15 +1220,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
             pWin->forcedBS = FALSE;
             break;
         case CWBackingPlanes:
-            if (pWin->optional || ((CARD32) *pVlist != (CARD32) ~0L)) {
-                if (!pWin->optional && !MakeWindowOptional(pWin)) {
-                    error = BadAlloc;
-                    goto PatchUp;
-                }
-                pWin->optional->backingBitPlanes = (CARD32) *pVlist;
-                if ((CARD32) *pVlist == (CARD32) ~0L)
-                    checkOptional = TRUE;
-            }
+            /* la la la I can't hear you */
             pVlist++;
             break;
         case CWBackingPixel:
@@ -1494,7 +1485,7 @@ GetWindowAttributes(WindowPtr pWin, ClientPtr client,
     wa->length = bytes_to_int32(sizeof(xGetWindowAttributesReply) -
                                 sizeof(xGenericReply));
     wa->sequenceNumber = client->sequence;
-    wa->backingBitPlanes = wBackingBitPlanes(pWin);
+    wa->backingBitPlanes = ~0;
     wa->backingPixel = wBackingPixel(pWin);
     wa->saveUnder = (BOOL) pWin->saveUnder;
     wa->override = pWin->overrideRedirect;
@@ -3240,8 +3231,6 @@ CheckWindowOptionalNeed(WindowPtr w)
         return;
     if (optional->userProps != NULL)
         return;
-    if (optional->backingBitPlanes != (CARD32)~0L)
-        return;
     if (optional->backingPixel != 0)
         return;
     if (optional->boundingShape != NULL)
@@ -3296,7 +3285,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional->otherClients = NULL;
     optional->passiveGrabs = NULL;
     optional->userProps = NULL;
-    optional->backingBitPlanes = ~0L;
     optional->backingPixel = 0;
     optional->boundingShape = NULL;
     optional->clipShape = NULL;
