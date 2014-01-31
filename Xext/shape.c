@@ -201,6 +201,26 @@ CreateClipShape(WindowPtr pWin)
     return RegionCreate(&extents, 1);
 }
 
+static RegionPtr *
+regionForWindow(WindowPtr pWin, int kind)
+{
+    if (!pWin->optional)
+        MakeWindowOptional(pWin);
+    switch (kind) {
+    case ShapeBounding:
+        return &pWin->optional->boundingShape;
+        break;
+    case ShapeClip:
+        return &pWin->optional->clipShape;
+        break;
+    case ShapeInput:
+        return &pWin->optional->inputShape;
+        break;
+    default:
+        return NULL;
+    }
+}
+
 static int
 ProcShapeQueryVersion(ClientPtr client)
 {
@@ -275,21 +295,9 @@ ProcShapeRectangles(ClientPtr client)
         return BadMatch;
     srcRgn = RegionFromRects(nrects, prects, ctype);
 
-    if (!pWin->optional)
-        MakeWindowOptional(pWin);
-    switch (stuff->destKind) {
-    case ShapeBounding:
-        destRgn = &pWin->optional->boundingShape;
-        break;
-    case ShapeClip:
-        destRgn = &pWin->optional->clipShape;
-        break;
-    case ShapeInput:
-        destRgn = &pWin->optional->inputShape;
-        break;
-    default:
+    destRgn = regionForWindow(pWin, stuff->destKind);
+    if (!destRgn)
         return BadValue;
-    }
 
     return RegionOperate(client, pWin, (int) stuff->destKind,
                          destRgn, srcRgn, (int) stuff->op,
@@ -373,21 +381,9 @@ ProcShapeMask(ClientPtr client)
             return BadAlloc;
     }
 
-    if (!pWin->optional)
-        MakeWindowOptional(pWin);
-    switch (stuff->destKind) {
-    case ShapeBounding:
-        destRgn = &pWin->optional->boundingShape;
-        break;
-    case ShapeClip:
-        destRgn = &pWin->optional->clipShape;
-        break;
-    case ShapeInput:
-        destRgn = &pWin->optional->inputShape;
-        break;
-    default:
+    destRgn = regionForWindow(pWin, stuff->destKind);
+    if (!destRgn)
         return BadValue;
-    }
 
     return RegionOperate(client, pWin, (int) stuff->destKind,
                          destRgn, srcRgn, (int) stuff->op,
@@ -501,21 +497,9 @@ ProcShapeCombine(ClientPtr client)
     else
         srcRgn = (*createSrc) (pSrcWin);
 
-    if (!pDestWin->optional)
-        MakeWindowOptional(pDestWin);
-    switch (stuff->destKind) {
-    case ShapeBounding:
-        destRgn = &pDestWin->optional->boundingShape;
-        break;
-    case ShapeClip:
-        destRgn = &pDestWin->optional->clipShape;
-        break;
-    case ShapeInput:
-        destRgn = &pDestWin->optional->inputShape;
-        break;
-    default:
+    destRgn = regionForWindow(pDestWin, stuff->destKind);
+    if (!destRgn)
         return BadValue;
-    }
 
     return RegionOperate(client, pDestWin, (int) stuff->destKind,
                          destRgn, srcRgn, (int) stuff->op,
