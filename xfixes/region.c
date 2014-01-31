@@ -649,7 +649,7 @@ regionForWindow(WindowPtr pWin, int kind)
         return &pWin->clipShape;
         break;
     case ShapeInput:
-        return &pWin->optional->inputShape;
+        return &pWin->inputShape;
         break;
     }
     return NULL;
@@ -693,11 +693,7 @@ ProcXFixesSetWindowShapeRegion(ClientPtr client)
             RegionTranslate(pRegion, stuff->xOff, stuff->yOff);
     }
     else {
-        if (pWin->optional) {
-            pDestRegion = regionForWindow(pWin, stuff->destKind);
-        }
-        else
-            pDestRegion = &pRegion;     /* a NULL region pointer */
+        pDestRegion = regionForWindow(pWin, stuff->destKind);
     }
     if (*pDestRegion)
         RegionDestroy(*pDestRegion);
