@@ -4371,10 +4371,8 @@ OtherClientGone(void *value, XID id)
         if (other->resource == id) {
             if (prev)
                 prev->next = other->next;
-            else {
-                if (!(pWin->optional->otherClients = other->next))
-                    CheckWindowOptionalNeed(pWin);
-            }
+            else
+                pWin->otherClients = other->next;
             free(other);
             RecalculateDeliverableEvents(pWin);
             return Success;
@@ -4433,15 +4431,13 @@ EventSelectForWindow(WindowPtr pWin, ClientPtr client, Mask mask)
             }
         }
         check = 0;
-        if (!pWin->optional && !MakeWindowOptional(pWin))
-            return BadAlloc;
         others = malloc(sizeof(OtherClients));
         if (!others)
             return BadAlloc;
         others->mask = mask;
         others->resource = FakeClientID(client->index);
-        others->next = pWin->optional->otherClients;
-        pWin->optional->otherClients = others;
+        others->next = pWin->otherClients;
+        pWin->otherClients = others;
         if (!AddResource(others->resource, RT_OTHERCLIENT, (void *) pWin))
             return BadAlloc;
     }
