@@ -4459,25 +4459,13 @@ EventSelectForWindow(WindowPtr pWin, ClientPtr client, Mask mask)
 }
 
 int
-EventSuppressForWindow(WindowPtr pWin, ClientPtr client,
-                       Mask mask, Bool *checkOptional)
+EventSuppressForWindow(WindowPtr pWin, ClientPtr client, Mask mask)
 {
     if (mask & ~PropagateMask) {
         client->errorValue = mask;
         return BadValue;
     }
-    if (!mask) {
-        if (pWin->optional) {
-            pWin->optional->dontPropagateMask = mask;
-            *checkOptional = TRUE;
-        }
-    }
-    else {
-        if (!pWin->optional && !MakeWindowOptional(pWin)) {
-            return BadAlloc;
-        }
-        pWin->optional->dontPropagateMask = mask;
-    }
+    pWin->dontPropagateMask = mask;
     RecalculateDeliverableEvents(pWin);
     return Success;
 }

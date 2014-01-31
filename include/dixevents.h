@@ -46,8 +46,7 @@ extern _X_EXPORT int EventSelectForWindow(WindowPtr /* pWin */ ,
 
 extern _X_EXPORT int EventSuppressForWindow(WindowPtr /* pWin */ ,
                                             ClientPtr /* client */ ,
-                                            Mask /* mask */ ,
-                                            Bool * /* checkOptional */ );
+                                            Mask /* mask */ );
 
 extern _X_EXPORT int ProcSetInputFocus(ClientPtr /* client */ );
 

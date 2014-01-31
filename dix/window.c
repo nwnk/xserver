@@ -473,7 +473,6 @@ CreateRootWindow(ScreenPtr pScreen)
     if (!pWin->optional)
         return FALSE;
 
-    pWin->optional->dontPropagateMask = 0;
     pWin->optional->otherEventMasks = 0;
     pWin->optional->otherClients = NULL;
     pWin->optional->passiveGrabs = NULL;
@@ -1242,8 +1241,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
             pVlist++;
             break;
         case CWDontPropagate:
-            rc = EventSuppressForWindow(pWin, client, (Mask) *pVlist,
-                                        &checkOptional);
+            rc = EventSuppressForWindow(pWin, client, (Mask) *pVlist);
             if (rc) {
                 error = rc;
                 goto PatchUp;
@@ -3266,7 +3264,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->dontPropagateMask = 0;
     optional->otherEventMasks = 0;
     optional->otherClients = NULL;
     optional->passiveGrabs = NULL;
