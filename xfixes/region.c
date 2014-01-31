@@ -639,8 +639,6 @@ SProcXFixesSetGCClipRegion(ClientPtr client)
 static RegionPtr *
 regionForWindow(WindowPtr pWin, int kind)
 {
-    if (!pWin->optional)
-        MakeWindowOptional(pWin);
     switch (kind) {
     case ShapeBounding:
         return &pWin->boundingShape;

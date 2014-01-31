@@ -204,8 +204,6 @@ CreateClipShape(WindowPtr pWin)
 static RegionPtr *
 regionForWindow(WindowPtr pWin, int kind)
 {
-    if (!pWin->optional)
-        MakeWindowOptional(pWin);
     switch (kind) {
     case ShapeBounding:
         return &pWin->boundingShape;
@@ -448,8 +446,6 @@ ProcShapeCombine(ClientPtr client)
     rc = dixLookupWindow(&pDestWin, stuff->dest, client, DixSetAttrAccess);
     if (rc != Success)
         return rc;
-    if (!pDestWin->optional)
-        MakeWindowOptional(pDestWin);
     switch (stuff->destKind) {
     case ShapeBounding:
         createDefault = CreateBoundingShape;
