@@ -473,7 +473,6 @@ CreateRootWindow(ScreenPtr pScreen)
     if (!pWin->optional)
         return FALSE;
 
-    pWin->optional->inputMasks = NULL;
     pWin->optional->deviceCursors = NULL;
     pWin->optional->colormap = pScreen->defColormap;
     pWin->optional->visual = pScreen->rootVisual;
@@ -3202,8 +3201,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     if (!w->parent || !w->optional)
         return;
     optional = w->optional;
-    if (optional->inputMasks != NULL)
-        return;
     if (optional->deviceCursors != NULL) {
         DevCursNodePtr pNode = optional->deviceCursors;
 
@@ -3243,7 +3240,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->inputMasks = NULL;
     optional->deviceCursors = NULL;
 
     parentOptional = FindWindowWithOptional(pWin)->optional;

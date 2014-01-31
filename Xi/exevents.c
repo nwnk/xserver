@@ -2455,20 +2455,18 @@ AddExtensionClient(WindowPtr pWin, ClientPtr client, Mask mask, int mskidx)
 {
     InputClientsPtr others;
 
-    if (!pWin->optional && !MakeWindowOptional(pWin))
-        return BadAlloc;
     others = AllocInputClient();
     if (!others)
         return BadAlloc;
-    if (!pWin->optional->inputMasks && !MakeInputMasks(pWin))
+    if (!pWin->inputMasks && !MakeInputMasks(pWin))
         goto bail;
     others->xi2mask = xi2mask_new();
     if (!others->xi2mask)
         goto bail;
     others->mask[mskidx] = mask;
     others->resource = FakeClientID(client->index);
-    others->next = pWin->optional->inputMasks->inputClients;
-    pWin->optional->inputMasks->inputClients = others;
+    others->next = pWin->inputMasks->inputClients;
+    pWin->inputMasks->inputClients = others;
     if (!AddResource(others->resource, RT_INPUTCLIENT, (void *) pWin))
         goto bail;
     return Success;
@@ -2491,7 +2489,7 @@ MakeInputMasks(WindowPtr pWin)
         free(imasks);
         return FALSE;
     }
-    pWin->optional->inputMasks = imasks;
+    pWin->inputMasks = imasks;
     return TRUE;
 }
 
@@ -2564,8 +2562,7 @@ InputClientGone(WindowPtr pWin, XID id)
 
                     mask->inputClients = other->next;
                     FreeInputMask(&mask);
-                    pWin->optional->inputMasks = (OtherInputMasks *) NULL;
-                    CheckWindowOptionalNeed(pWin);
+                    pWin->inputMasks = NULL;
                     FreeInputClient(&other);
                 }
                 else {
