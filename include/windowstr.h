@@ -81,7 +81,6 @@ typedef struct _WindowOpt {
     CursorPtr cursor;           /* default: window.cursorNone */
     VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
-    RegionPtr clipShape;        /* default: NULL */
     RegionPtr inputShape;       /* default: NULL */
     struct _OtherInputMasks *inputMasks;        /* default: NULL */
     DevCursorList deviceCursors;        /* default: NULL */
@@ -143,6 +142,7 @@ typedef struct _Window {
     struct _GrabRec *passiveGrabs;      /* default: NULL */
     PropertyPtr userProps;      /* default: NULL */
     RegionPtr boundingShape;    /* default: NULL */
+    RegionPtr clipShape;        /* default: NULL */
     unsigned backgroundState:2; /* None, Relative, Pixel, Pixmap */
     unsigned borderIsPixel:1;
     unsigned cursorIsNone:1;    /* else real cursor (might inherit) */
@@ -190,7 +190,7 @@ typedef struct _Window {
 #define wPassiveGrabs(w)	((w)->passiveGrabs)
 #define wUserProps(w)		((w)->userProps)
 #define wBoundingShape(w)	((w)->boundingShape)
-#define wClipShape(w)		wUseDefault(w, clipShape, NULL)
+#define wClipShape(w)		((w)->clipShape)
 #define wInputShape(w)          wUseDefault(w, inputShape, NULL)
 #define wClient(w)		(clients[CLIENT_ID((w)->drawable.id)])
 #define wBorderWidth(w)		((int) (w)->borderWidth)

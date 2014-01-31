@@ -646,7 +646,7 @@ regionForWindow(WindowPtr pWin, int kind)
         return &pWin->boundingShape;
         break;
     case ShapeClip:
-        return &pWin->optional->clipShape;
+        return &pWin->clipShape;
         break;
     case ShapeInput:
         return &pWin->optional->inputShape;

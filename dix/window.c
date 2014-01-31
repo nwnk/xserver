@@ -473,7 +473,6 @@ CreateRootWindow(ScreenPtr pScreen)
     if (!pWin->optional)
         return FALSE;
 
-    pWin->optional->clipShape = NULL;
     pWin->optional->inputShape = NULL;
     pWin->optional->inputMasks = NULL;
     pWin->optional->deviceCursors = NULL;
@@ -3204,8 +3203,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     if (!w->parent || !w->optional)
         return;
     optional = w->optional;
-    if (optional->clipShape != NULL)
-        return;
     if (optional->inputShape != NULL)
         return;
     if (optional->inputMasks != NULL)
@@ -3249,7 +3246,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->clipShape = NULL;
     optional->inputShape = NULL;
     optional->inputMasks = NULL;
     optional->deviceCursors = NULL;
