@@ -478,7 +478,6 @@ CreateRootWindow(ScreenPtr pScreen)
     pWin->optional->otherClients = NULL;
     pWin->optional->passiveGrabs = NULL;
     pWin->optional->userProps = NULL;
-    pWin->optional->backingPixel = 0;
     pWin->optional->boundingShape = NULL;
     pWin->optional->clipShape = NULL;
     pWin->optional->inputShape = NULL;
@@ -1220,19 +1219,8 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
             pWin->forcedBS = FALSE;
             break;
         case CWBackingPlanes:
-            /* la la la I can't hear you */
-            pVlist++;
-            break;
         case CWBackingPixel:
-            if (pWin->optional || (CARD32) *pVlist) {
-                if (!pWin->optional && !MakeWindowOptional(pWin)) {
-                    error = BadAlloc;
-                    goto PatchUp;
-                }
-                pWin->optional->backingPixel = (CARD32) *pVlist;
-                if (!*pVlist)
-                    checkOptional = TRUE;
-            }
+            /* la la la I can't hear you */
             pVlist++;
             break;
         case CWSaveUnder:
@@ -1486,7 +1474,7 @@ GetWindowAttributes(WindowPtr pWin, ClientPtr client,
                                 sizeof(xGenericReply));
     wa->sequenceNumber = client->sequence;
     wa->backingBitPlanes = ~0;
-    wa->backingPixel = wBackingPixel(pWin);
+    wa->backingPixel = 0;
     wa->saveUnder = (BOOL) pWin->saveUnder;
     wa->override = pWin->overrideRedirect;
     if (!pWin->mapped)
@@ -3231,8 +3219,6 @@ CheckWindowOptionalNeed(WindowPtr w)
         return;
     if (optional->userProps != NULL)
         return;
-    if (optional->backingPixel != 0)
-        return;
     if (optional->boundingShape != NULL)
         return;
     if (optional->clipShape != NULL)
@@ -3285,7 +3271,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional->otherClients = NULL;
     optional->passiveGrabs = NULL;
     optional->userProps = NULL;
-    optional->backingPixel = 0;
     optional->boundingShape = NULL;
     optional->clipShape = NULL;
     optional->inputShape = NULL;
