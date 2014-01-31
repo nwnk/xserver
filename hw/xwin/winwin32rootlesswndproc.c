@@ -294,10 +294,7 @@ IsRaiseOnClick(WindowPtr pWin)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     while (prop) {
         if (prop->propertyName == AtmWindowsWmRaiseOnClick()
@@ -343,10 +340,7 @@ IsMouseActive(WindowPtr pWin)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     while (prop) {
         if (prop->propertyName == AtmWindowsWMMouseActivate()

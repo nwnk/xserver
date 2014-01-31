@@ -58,10 +58,7 @@ winMultiWindowGetClassHint(WindowPtr pWin, char **res_name, char **res_class)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     *res_name = *res_class = NULL;
 
@@ -126,10 +123,7 @@ winMultiWindowGetWMHints(WindowPtr pWin, WinXWMHints * hints)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     memset(hints, 0, sizeof(WinXWMHints));
 
@@ -157,10 +151,7 @@ winMultiWindowGetWindowRole(WindowPtr pWin, char **res_role)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     *res_role = NULL;
     while (prop) {
@@ -200,10 +191,7 @@ winMultiWindowGetWMNormalHints(WindowPtr pWin, WinXSizeHints * hints)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     memset(hints, 0, sizeof(WinXSizeHints));
 
@@ -232,10 +220,7 @@ winMultiWindowGetTransientFor(WindowPtr pWin, Window *pDaddyId)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     if (pDaddyId)
         *pDaddyId = 0;
@@ -268,10 +253,7 @@ winMultiWindowGetWMName(WindowPtr pWin, char **wmName)
 
     pwin = (struct _Window *) pWin;
 
-    if (pwin->optional)
-        prop = (struct _Property *) pwin->optional->userProps;
-    else
-        prop = NULL;
+    prop = wUserProps(pWin);
 
     *wmName = NULL;
 
