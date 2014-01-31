@@ -636,6 +636,25 @@ SProcXFixesSetGCClipRegion(ClientPtr client)
     return (*ProcXFixesVector[stuff->xfixesReqType]) (client);
 }
 
+static RegionPtr *
+regionForWindow(WindowPtr pWin, int kind)
+{
+    if (!pWin->optional)
+        MakeWindowOptional(pWin);
+    switch (kind) {
+    case ShapeBounding:
+        return &pWin->optional->boundingShape;
+        break;
+    case ShapeClip:
+        return &pWin->optional->clipShape;
+        break;
+    case ShapeInput:
+        return &pWin->optional->inputShape;
+        break;
+    }
+    return NULL;
+}
+
 typedef RegionPtr (*CreateDftPtr) (WindowPtr pWin);
 
 int
@@ -669,37 +688,13 @@ ProcXFixesSetWindowShapeRegion(ClientPtr client)
         pRegion = XFixesRegionCopy(pRegion);
         if (!pRegion)
             return BadAlloc;
-        if (!pWin->optional)
-            MakeWindowOptional(pWin);
-        switch (stuff->destKind) {
-        default:
-        case ShapeBounding:
-            pDestRegion = &pWin->optional->boundingShape;
-            break;
-        case ShapeClip:
-            pDestRegion = &pWin->optional->clipShape;
-            break;
-        case ShapeInput:
-            pDestRegion = &pWin->optional->inputShape;
-            break;
-        }
+        pDestRegion = regionForWindow(pWin, stuff->destKind);
         if (stuff->xOff || stuff->yOff)
             RegionTranslate(pRegion, stuff->xOff, stuff->yOff);
     }
     else {
         if (pWin->optional) {
-            switch (stuff->destKind) {
-            default:
-            case ShapeBounding:
-                pDestRegion = &pWin->optional->boundingShape;
-                break;
-            case ShapeClip:
-                pDestRegion = &pWin->optional->clipShape;
-                break;
-            case ShapeInput:
-                pDestRegion = &pWin->optional->inputShape;
-                break;
-            }
+            pDestRegion = regionForWindow(pWin, stuff->destKind);
         }
         else
             pDestRegion = &pRegion;     /* a NULL region pointer */
