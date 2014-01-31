@@ -81,7 +81,6 @@ typedef struct _WindowOpt {
     CursorPtr cursor;           /* default: window.cursorNone */
     VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
-    Mask otherEventMasks;       /* default: 0 */
     struct _OtherClients *otherClients; /* default: NULL */
     struct _GrabRec *passiveGrabs;      /* default: NULL */
     PropertyPtr userProps;      /* default: NULL */
@@ -143,6 +142,7 @@ typedef struct _Window {
     PixUnion border;
     WindowOptPtr optional;
     Mask dontPropagateMask;     /* default: 0 */
+    Mask otherEventMasks;       /* default: 0 */
     unsigned backgroundState:2; /* None, Relative, Pixel, Pixmap */
     unsigned borderIsPixel:1;
     unsigned cursorIsNone:1;    /* else real cursor (might inherit) */
@@ -184,7 +184,7 @@ typedef struct _Window {
 #define wCursor(w)		((w)->cursorIsNone ? None : wTrackParent(w, cursor))
 #define wColormap(w)		((w)->drawable.class == InputOnly ? None : wTrackParent(w, colormap))
 #define wDontPropagateMask(w)	((w)->dontPropagateMask)
-#define wOtherEventMasks(w)	wUseDefault(w, otherEventMasks, 0)
+#define wOtherEventMasks(w)	((w)->otherEventMasks)
 #define wOtherClients(w)	wUseDefault(w, otherClients, NULL)
 #define wOtherInputMasks(w)	wUseDefault(w, inputMasks, NULL)
 #define wPassiveGrabs(w)	wUseDefault(w, passiveGrabs, NULL)

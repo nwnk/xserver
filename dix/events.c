@@ -4319,7 +4319,7 @@ FixKeyState(DeviceEvent *event, DeviceIntPtr keybd)
  * Recalculated mask is used for quicker determination which events may be
  * delivered to a window.
  *
- * The otherEventMasks on a WindowOptional is the combination of all event
+ * The otherEventMasks on a Window is the combination of all event
  * masks set by all clients on the window.
  * deliverableEventMask is the combination of the eventMask and the
  * otherEventMask plus the events that may be propagated to the parent.
@@ -4334,11 +4334,9 @@ RecalculateDeliverableEvents(WindowPtr pWin)
 
     pChild = pWin;
     while (1) {
-        if (pChild->optional) {
-            pChild->optional->otherEventMasks = 0;
-            for (others = wOtherClients(pChild); others; others = others->next) {
-                pChild->optional->otherEventMasks |= others->mask;
-            }
+        pChild->otherEventMasks = 0;
+        for (others = wOtherClients(pChild); others; others = others->next) {
+            pChild->otherEventMasks |= others->mask;
         }
         pChild->deliverableEvents = pChild->eventMask |
             wOtherEventMasks(pChild);
