@@ -81,7 +81,6 @@ typedef struct _WindowOpt {
     CursorPtr cursor;           /* default: window.cursorNone */
     VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
-    struct _GrabRec *passiveGrabs;      /* default: NULL */
     PropertyPtr userProps;      /* default: NULL */
     RegionPtr boundingShape;    /* default: NULL */
     RegionPtr clipShape;        /* default: NULL */
@@ -143,6 +142,7 @@ typedef struct _Window {
     Mask dontPropagateMask;     /* default: 0 */
     Mask otherEventMasks;       /* default: 0 */
     struct _OtherClients *otherClients; /* default: NULL */
+    struct _GrabRec *passiveGrabs;      /* default: NULL */
     unsigned backgroundState:2; /* None, Relative, Pixel, Pixmap */
     unsigned borderIsPixel:1;
     unsigned cursorIsNone:1;    /* else real cursor (might inherit) */
@@ -187,7 +187,7 @@ typedef struct _Window {
 #define wOtherEventMasks(w)	((w)->otherEventMasks)
 #define wOtherClients(w)	((w)->otherClients)
 #define wOtherInputMasks(w)	wUseDefault(w, inputMasks, NULL)
-#define wPassiveGrabs(w)	wUseDefault(w, passiveGrabs, NULL)
+#define wPassiveGrabs(w)	((w)->passiveGrabs)
 #define wUserProps(w)		wUseDefault(w, userProps, NULL)
 #define wBoundingShape(w)	wUseDefault(w, boundingShape, NULL)
 #define wClipShape(w)		wUseDefault(w, clipShape, NULL)

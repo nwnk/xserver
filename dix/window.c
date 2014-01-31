@@ -473,7 +473,6 @@ CreateRootWindow(ScreenPtr pScreen)
     if (!pWin->optional)
         return FALSE;
 
-    pWin->optional->passiveGrabs = NULL;
     pWin->optional->userProps = NULL;
     pWin->optional->boundingShape = NULL;
     pWin->optional->clipShape = NULL;
@@ -3207,8 +3206,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     if (!w->parent || !w->optional)
         return;
     optional = w->optional;
-    if (optional->passiveGrabs != NULL)
-        return;
     if (optional->userProps != NULL)
         return;
     if (optional->boundingShape != NULL)
@@ -3258,7 +3255,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->passiveGrabs = NULL;
     optional->userProps = NULL;
     optional->boundingShape = NULL;
     optional->clipShape = NULL;

@@ -327,8 +327,8 @@ DeletePassiveGrab(void *value, XID id)
         if (pGrab == g) {
             if (prev)
                 prev->next = g->next;
-            else if (!(pGrab->window->optional->passiveGrabs = g->next))
-                CheckWindowOptionalNeed(pGrab->window);
+            else
+                pGrab->window->passiveGrabs = g->next;
             break;
         }
         prev = g;
@@ -556,13 +556,8 @@ AddPassiveGrabToList(ClientPtr client, GrabPtr pGrab)
         }
     }
 
-    if (!pGrab->window->optional && !MakeWindowOptional(pGrab->window)) {
-        FreeGrab(pGrab);
-        return BadAlloc;
-    }
-
-    pGrab->next = pGrab->window->optional->passiveGrabs;
-    pGrab->window->optional->passiveGrabs = pGrab;
+    pGrab->next = pGrab->window->passiveGrabs;
+    pGrab->window->passiveGrabs = pGrab;
     if (AddResource(pGrab->resource, RT_PASSIVEGRAB, (void *) pGrab))
         return Success;
     return BadAlloc;
@@ -654,9 +649,7 @@ DeletePassiveGrabFromList(GrabPtr pMinuendGrab)
             else if (!(pNewGrab->modifiersDetail.pMask =
                        DeleteDetailFromMask(grab->modifiersDetail.pMask,
                                             pMinuendGrab->modifiersDetail.
-                                            exact))
-                     || (!pNewGrab->window->optional &&
-                         !MakeWindowOptional(pNewGrab->window))) {
+                                            exact))) {
                 FreeGrab(pNewGrab);
                 ok = FALSE;
             }
@@ -686,8 +679,8 @@ DeletePassiveGrabFromList(GrabPtr pMinuendGrab)
             FreeResource(deletes[i]->resource, RT_NONE);
         for (i = 0; i < nadds; i++) {
             grab = adds[i];
-            grab->next = grab->window->optional->passiveGrabs;
-            grab->window->optional->passiveGrabs = grab;
+            grab->next = grab->window->passiveGrabs;
+            grab->window->passiveGrabs = grab;
         }
         for (i = 0; i < nups; i++) {
             free(*updates[i]);
