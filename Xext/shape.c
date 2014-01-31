@@ -208,7 +208,7 @@ regionForWindow(WindowPtr pWin, int kind)
         MakeWindowOptional(pWin);
     switch (kind) {
     case ShapeBounding:
-        return &pWin->optional->boundingShape;
+        return &pWin->boundingShape;
         break;
     case ShapeClip:
         return &pWin->optional->clipShape;
