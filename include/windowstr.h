@@ -81,7 +81,6 @@ typedef struct _WindowOpt {
     CursorPtr cursor;           /* default: window.cursorNone */
     VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
-    DevCursorList deviceCursors;        /* default: NULL */
 } WindowOptRec, *WindowOptPtr;
 
 #define BackgroundPixel	    2L
@@ -143,6 +142,7 @@ typedef struct _Window {
     RegionPtr clipShape;        /* default: NULL */
     RegionPtr inputShape;       /* default: NULL */
     struct _OtherInputMasks *inputMasks;        /* default: NULL */
+    DevCursorList deviceCursors;        /* default: NULL */
     unsigned backgroundState:2; /* None, Relative, Pixel, Pixmap */
     unsigned borderIsPixel:1;
     unsigned cursorIsNone:1;    /* else real cursor (might inherit) */

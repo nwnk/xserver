@@ -473,7 +473,6 @@ CreateRootWindow(ScreenPtr pScreen)
     if (!pWin->optional)
         return FALSE;
 
-    pWin->optional->deviceCursors = NULL;
     pWin->optional->colormap = pScreen->defColormap;
     pWin->optional->visual = pScreen->rootVisual;
 
@@ -850,21 +849,6 @@ DisposeWindowOptional(WindowPtr pWin)
     else
         pWin->cursorIsNone = TRUE;
 
-    if (pWin->optional->deviceCursors) {
-        DevCursorList pList;
-        DevCursorList pPrev;
-
-        pList = pWin->optional->deviceCursors;
-        while (pList) {
-            if (pList->cursor)
-                FreeCursor(pList->cursor, (XID) 0);
-            pPrev = pList;
-            pList = pList->next;
-            free(pPrev);
-        }
-        pWin->optional->deviceCursors = NULL;
-    }
-
     free(pWin->optional);
     pWin->optional = NULL;
 }
@@ -895,6 +879,21 @@ FreeWindowResources(WindowPtr pWin)
     DeleteAllWindowProperties(pWin);
     /* We SHOULD check for an error value here XXX */
     (*pScreen->DestroyWindow) (pWin);
+    if (pWin->deviceCursors) {
+        DevCursorList pList;
+        DevCursorList pPrev;
+
+        pList = pWin->deviceCursors;
+        while (pList) {
+            if (pList->cursor)
+                FreeCursor(pList->cursor, (XID) 0);
+            pPrev = pList;
+            pList = pList->next;
+            free(pPrev);
+        }
+        pWin->deviceCursors = NULL;
+    }
+
     DisposeWindowOptional(pWin);
 }
 
@@ -3201,15 +3200,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     if (!w->parent || !w->optional)
         return;
     optional = w->optional;
-    if (optional->deviceCursors != NULL) {
-        DevCursNodePtr pNode = optional->deviceCursors;
-
-        while (pNode) {
-            if (pNode->cursor != None)
-                return;
-            pNode = pNode->next;
-        }
-    }
 
     parentOptional = FindWindowWithOptional(w)->optional;
     if (optional->visual != parentOptional->visual)
@@ -3240,7 +3230,6 @@ MakeWindowOptional(WindowPtr pWin)
     optional = malloc(sizeof(WindowOptRec));
     if (!optional)
         return FALSE;
-    optional->deviceCursors = NULL;
 
     parentOptional = FindWindowWithOptional(pWin)->optional;
     optional->visual = parentOptional->visual;
@@ -3277,9 +3266,6 @@ ChangeWindowDeviceCursor(WindowPtr pWin, DeviceIntPtr pDev, CursorPtr pCursor)
     ScreenPtr pScreen;
     WindowPtr pChild;
 
-    if (!pWin->optional && !MakeWindowOptional(pWin))
-        return BadAlloc;
-
     /* 1) Check if window has device cursor set
      *  Yes: 1.1) swap cursor with given cursor if parent does not have same
      *            cursor, free old cursor
@@ -3308,7 +3294,7 @@ ChangeWindowDeviceCursor(WindowPtr pWin, DeviceIntPtr pDev, CursorPtr pCursor)
                 pPrev->next = pNode->next;
             else
                 /* first item in list */
-                pWin->optional->deviceCursors = pNode->next;
+                pWin->deviceCursors = pNode->next;
 
             free(pNode);
             goto out;
@@ -3324,8 +3310,8 @@ ChangeWindowDeviceCursor(WindowPtr pWin, DeviceIntPtr pDev, CursorPtr pCursor)
 
         pNewNode = malloc(sizeof(DevCursNodeRec));
         pNewNode->dev = pDev;
-        pNewNode->next = pWin->optional->deviceCursors;
-        pWin->optional->deviceCursors = pNewNode;
+        pNewNode->next = pWin->deviceCursors;
+        pWin->deviceCursors = pNewNode;
         pNode = pNewNode;
 
     }
@@ -3372,19 +3358,13 @@ WindowGetDeviceCursor(WindowPtr pWin, DeviceIntPtr pDev)
 {
     DevCursorList pList;
 
-    if (!pWin->optional || !pWin->optional->deviceCursors)
-        return NULL;
-
-    pList = pWin->optional->deviceCursors;
-
-    while (pList) {
+    for (pList = pWin->deviceCursors; pList; pList = pList->next) {
         if (pList->dev == pDev) {
             if (pList->cursor == None)  /* inherited from parent */
                 return WindowGetDeviceCursor(pWin->parent, pDev);
             else
                 return pList->cursor;
         }
-        pList = pList->next;
     }
     return NULL;
 }
@@ -3399,12 +3379,7 @@ WindowSeekDeviceCursor(WindowPtr pWin,
                        DeviceIntPtr pDev,
                        DevCursNodePtr * pNode, DevCursNodePtr * pPrev)
 {
-    DevCursorList pList;
-
-    if (!pWin->optional)
-        return FALSE;
-
-    pList = pWin->optional->deviceCursors;
+    DevCursorList pList = pWin->deviceCursors;
 
     if (pList && pList->dev == pDev) {
         *pNode = pList;
