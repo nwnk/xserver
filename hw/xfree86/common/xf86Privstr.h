@@ -82,8 +82,6 @@ typedef struct {
     Bool miscModInDevAllowNonLocal;
     Bool useSIGIO;              /* Use SIGIO for handling
                                    input device events */
-    Pix24Flags pixmap24;
-    MessageType pix24From;
     Bool pmFlag;
     Bool disableRandR;
     MessageType randRFrom;

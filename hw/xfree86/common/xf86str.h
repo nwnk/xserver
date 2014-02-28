@@ -521,13 +521,6 @@ typedef struct _confdrirec {
 
 typedef void *(*funcPointer) (void);
 
-/* flags for depth 24 pixmap options */
-typedef enum {
-    Pix24DontCare = 0,
-    Pix24Use24,
-    Pix24Use32
-} Pix24Flags;
-
 /* Power management events: so far we only support APM */
 
 typedef enum {
@@ -694,7 +687,6 @@ typedef struct _ScrnInfoRec {
     PixmapFormatRec fbFormat;
 
     int bitsPerPixel;           /* fb bpp */
-    Pix24Flags pixmap24;        /* pixmap pref for depth 24 */
     int depth;                  /* depth of default visual */
     MessageType depthFrom;      /* set from config? */
     MessageType bitsPerPixelFrom;       /* set from config? */

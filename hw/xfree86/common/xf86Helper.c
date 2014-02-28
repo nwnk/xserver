@@ -388,12 +388,10 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
 {
     int i;
     DispPtr disp;
-    Pix24Flags pix24 = xf86Info.pixmap24;
     Bool nomatch = FALSE;
 
     scrp->bitsPerPixel = -1;
     scrp->depth = -1;
-    scrp->pixmap24 = Pix24DontCare;
     scrp->bitsPerPixelFrom = X_DEFAULT;
     scrp->depthFrom = X_DEFAULT;
 
@@ -477,48 +475,15 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
             else if (scrp->depth <= 16)
                 scrp->bitsPerPixel = 16;
             else if (scrp->depth <= 24) {
-                /*
-                 * Figure out if a choice is possible based on the depth24
-                 * and pix24 flags.
-                 */
-                /* Check pix24 first */
-                if (pix24 != Pix24DontCare) {
-                    if (pix24 == Pix24Use32) {
-                        if (DO_PIX32(depth24flags)) {
-                            if (CHOOSE24FOR32(depth24flags))
-                                scrp->bitsPerPixel = 24;
-                            else
-                                scrp->bitsPerPixel = 32;
-                        }
-                        else {
-                            nomatch = TRUE;
-                        }
-                    }
-                    else if (pix24 == Pix24Use24) {
-                        if (DO_PIX24(depth24flags)) {
-                            if (CHOOSE32FOR24(depth24flags))
-                                scrp->bitsPerPixel = 32;
-                            else
-                                scrp->bitsPerPixel = 24;
-                        }
-                        else {
-                            nomatch = TRUE;
-                        }
-                    }
+                /* Verify that the screen can do 32bpp */
+                if (DO_PIX32(depth24flags)) {
+                    if (CHOOSE24FOR32(depth24flags))
+                        scrp->bitsPerPixel = 24;
+                    else
+                        scrp->bitsPerPixel = 32;
                 }
                 else {
-                    if (DO_PIX32(depth24flags)) {
-                        if (CHOOSE24FOR32(depth24flags))
-                            scrp->bitsPerPixel = 24;
-                        else
-                            scrp->bitsPerPixel = 32;
-                    }
-                    else if (DO_PIX24(depth24flags)) {
-                        if (CHOOSE32FOR24(depth24flags))
-                            scrp->bitsPerPixel = 32;
-                        else
-                            scrp->bitsPerPixel = 24;
-                    }
+                    nomatch = TRUE;
                 }
             }
             else if (scrp->depth <= 32)
@@ -539,8 +504,7 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
         if (scrp->bitsPerPixel < 0) {
             if (nomatch)
                 xf86DrvMsg(scrp->scrnIndex, X_ERROR,
-                           "Driver can't support depth 24 pixmap format (%d)\n",
-                           PIX24TOBPP(pix24));
+                           "Driver can't support 32bpp pixmap format\n");
             else if ((depth24flags & (Support24bppFb | Support32bppFb)) ==
                      NoDepth24Support)
                 xf86DrvMsg(scrp->scrnIndex, X_ERROR,
@@ -593,14 +557,6 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
                    "Specified depth (%d) is greater than the fbbpp (%d)\n",
                    scrp->depth, scrp->bitsPerPixel);
         return FALSE;
-    }
-
-    /* set scrp->pixmap24 if the driver isn't flexible */
-    if (scrp->bitsPerPixel == 24 && !DO_PIX32FOR24(depth24flags)) {
-        scrp->pixmap24 = Pix24Use24;
-    }
-    if (scrp->bitsPerPixel == 32 && !DO_PIX24FOR32(depth24flags)) {
-        scrp->pixmap24 = Pix24Use32;
     }
 
     /*
@@ -1447,12 +1403,6 @@ int
 xf86GetVerbosity(void)
 {
     return max(xf86Verbose, xf86LogVerbose);
-}
-
-Pix24Flags
-xf86GetPix24(void)
-{
-    return xf86Info.pixmap24;
 }
 
 int
