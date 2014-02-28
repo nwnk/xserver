@@ -70,7 +70,7 @@ typedef struct _Visual {
     short nplanes;              /* = log2 (ColormapEntries). This does not
                                  * imply that the screen has this many planes.
                                  * it may have more or fewer */
-    unsigned long redMask, greenMask, blueMask;
+    unsigned redMask, greenMask, blueMask;
     int offsetRed, offsetGreen, offsetBlue;
 } VisualRec;
 
