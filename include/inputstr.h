@@ -188,13 +188,13 @@ union _GrabMask {
  */
 typedef struct _GrabRec {
     GrabPtr next;               /* for chain of passive grabs */
-    XID resource;
     DeviceIntPtr device;
     WindowPtr window;
-    unsigned ownerEvents:1;
-    unsigned keyboardMode:1;
-    unsigned pointerMode:1;
-    enum InputLevel grabtype;
+    XID resource;
+    unsigned char ownerEvents:1;
+    unsigned char keyboardMode:1;
+    unsigned char pointerMode:1;
+    unsigned char grabtype:3;
     CARD8 type;                 /* event type for passive grabs, 0 for active grabs */
     DetailRec modifiersDetail;
     DeviceIntPtr modifierDevice;
