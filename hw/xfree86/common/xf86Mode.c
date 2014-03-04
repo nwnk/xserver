@@ -1509,8 +1509,6 @@ xf86ValidateModes(ScrnInfoPtr scrp, DisplayModePtr availModes,
         }
     }
 
-    /* Initial check of virtual size against other constraints */
-    scrp->virtualFrom = X_PROBED;
     /*
      * Initialise virtX and virtY if the values are fixed.
      */
@@ -1562,7 +1560,6 @@ xf86ValidateModes(ScrnInfoPtr scrp, DisplayModePtr availModes,
 
         virtX = virtualX;
         virtY = virtualY;
-        scrp->virtualFrom = X_CONFIG;
     }
     else if (!modeNames || !*modeNames) {
         /* No virtual size given in the config, try to infer */
@@ -2068,9 +2065,8 @@ xf86PrintModes(ScrnInfoPtr scrp)
     if (scrp == NULL)
         return;
 
-    xf86DrvMsg(scrp->scrnIndex, scrp->virtualFrom, "Virtual size is %dx%d "
-               "(pitch %d)\n", scrp->virtualX, scrp->virtualY,
-               scrp->displayWidth);
+    xf86DrvMsg(scrp->scrnIndex, X_INFO, "Virtual size is %dx%d (pitch %d)\n",
+               scrp->virtualX, scrp->virtualY, scrp->displayWidth);
 
     p = scrp->modes;
     if (p == NULL)
