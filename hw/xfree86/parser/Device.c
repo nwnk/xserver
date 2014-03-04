@@ -74,7 +74,6 @@ xf86ConfigSymTabRec DeviceTab[] = {
     {MATCHSEAT, "matchseat"},
     {OPTION, "option"},
     {VIDEORAM, "videoram"},
-    {BIOSBASE, "biosbase"},
     {MEMBASE, "membase"},
     {IOBASE, "iobase"},
     {CLOCKCHIP, "clockchip"},
@@ -169,11 +168,6 @@ xf86parseDeviceSection(void)
             if (xf86getSubToken(&(ptr->dev_comment)) != NUMBER)
                 Error(NUMBER_MSG, "VideoRam");
             ptr->dev_videoram = xf86_lex_val.num;
-            break;
-        case BIOSBASE:
-            if (xf86getSubToken(&(ptr->dev_comment)) != NUMBER)
-                Error(NUMBER_MSG, "BIOSBase");
-            ptr->dev_bios_base = xf86_lex_val.num;
             break;
         case MEMBASE:
             if (xf86getSubToken(&(ptr->dev_comment)) != NUMBER)
@@ -286,8 +280,6 @@ xf86printDeviceSection(FILE * cf, XF86ConfDevicePtr ptr)
         }
         if (ptr->dev_videoram)
             fprintf(cf, "\tVideoRam    %d\n", ptr->dev_videoram);
-        if (ptr->dev_bios_base)
-            fprintf(cf, "\tBiosBase    0x%lx\n", ptr->dev_bios_base);
         if (ptr->dev_mem_base)
             fprintf(cf, "\tMemBase     0x%lx\n", ptr->dev_mem_base);
         if (ptr->dev_io_base)

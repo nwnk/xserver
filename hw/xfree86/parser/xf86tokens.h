@@ -181,7 +181,6 @@ typedef enum {
     IOBASE,
     RAMDAC,
     DACSPEED,
-    BIOSBASE,
     MEMBASE,
     CLOCKCHIP,
     CHIPID,
