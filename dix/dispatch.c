@@ -3722,22 +3722,6 @@ static int indexForBitsPerPixel[33] = {
 };
 
 /*
- * This array gives the bytesperPixel value for cases where the number
- * of bits per pixel is a multiple of 8 but not a power of 2.
- */
-static int answerBytesPerPixel[33] = {
-    ~0, 0, ~0, ~0,              /* 1 bit per pixel */
-    0, ~0, ~0, ~0,              /* 4 bits per pixel */
-    0, ~0, ~0, ~0,              /* 8 bits per pixel */
-    ~0, ~0, ~0, ~0,
-    0, ~0, ~0, ~0,              /* 16 bits per pixel */
-    ~0, ~0, ~0, ~0,
-    3, ~0, ~0, ~0,              /* 24 bits per pixel */
-    ~0, ~0, ~0, ~0,
-    0                           /* 32 bits per pixel */
-};
-
-/*
  * This array gives the answer to the question "what is the second index for
  * the answer array above given the number of bits per scanline pad unit?"
  * Note that ~0 is an invalid entry (mostly for the benefit of the reader).
@@ -3814,14 +3798,6 @@ static int init_screen(ScreenPtr pScreen, int i, Bool gpu)
         j = indexForBitsPerPixel[8];    /* bits per byte */
         PixmapWidthPaddingInfo[depth].padBytesLog2 = answer[j][k];
         PixmapWidthPaddingInfo[depth].bitsPerPixel = bitsPerPixel;
-        if (answerBytesPerPixel[bitsPerPixel]) {
-            PixmapWidthPaddingInfo[depth].notPower2 = 1;
-            PixmapWidthPaddingInfo[depth].bytesPerPixel =
-                answerBytesPerPixel[bitsPerPixel];
-        }
-        else {
-            PixmapWidthPaddingInfo[depth].notPower2 = 0;
-        }
     }
     return 0;
 }

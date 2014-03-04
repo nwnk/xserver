@@ -99,8 +99,6 @@ typedef struct _PaddingInfo {
     int padRoundUp;             /* pixels per pad unit - 1 */
     int padPixelsLog2;          /* log 2 (pixels per pad unit) */
     int padBytesLog2;           /* log 2 (bytes per pad unit) */
-    int notPower2;              /* bitsPerPixel not a power of 2 */
-    int bytesPerPixel;          /* only set when notPower2 is TRUE */
     int bitsPerPixel;           /* bits per pixel */
 } PaddingInfo;
 extern _X_EXPORT PaddingInfo PixmapWidthPaddingInfo[];
@@ -109,12 +107,8 @@ extern _X_EXPORT PaddingInfo PixmapWidthPaddingInfo[];
 #define BitsPerPixel(d) (PixmapWidthPaddingInfo[d].bitsPerPixel)
 
 #define PixmapWidthInPadUnits(w, d) \
-    (PixmapWidthPaddingInfo[d].notPower2 ? \
-    (((int)(w) * PixmapWidthPaddingInfo[d].bytesPerPixel +  \
-	         PixmapWidthPaddingInfo[d].bytesPerPixel) >> \
-	PixmapWidthPaddingInfo[d].padBytesLog2) : \
     ((int)((w) + PixmapWidthPaddingInfo[d].padRoundUp) >> \
-	PixmapWidthPaddingInfo[d].padPixelsLog2))
+	PixmapWidthPaddingInfo[d].padPixelsLog2)
 
 /*
  *	Return the number of bytes to which a scanline of the given
