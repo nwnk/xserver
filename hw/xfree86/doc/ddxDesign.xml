@@ -1204,7 +1204,6 @@ Here is what <function>InitOutput()</function> does:
           clock[]               (if not programmable)
           videoRam
           memBase
-          memClk
           driverPrivate
           chipID
           chipRev
