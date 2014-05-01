@@ -106,13 +106,13 @@ const char *winGetBaseDir(void);
  */
 
 static PixmapFormatRec g_PixmapFormats[] = {
-    {1, 1, BITMAP_SCANLINE_PAD},
-    {4, 8, BITMAP_SCANLINE_PAD},
-    {8, 8, BITMAP_SCANLINE_PAD},
-    {15, 16, BITMAP_SCANLINE_PAD},
-    {16, 16, BITMAP_SCANLINE_PAD},
-    {24, 32, BITMAP_SCANLINE_PAD},
-    {32, 32, BITMAP_SCANLINE_PAD}
+    {1, 1, },
+    {4, 8, },
+    {8, 8, },
+    {15, 16, },
+    {16, 16, },
+    {24, 32, },
+    {32, 32, }
 };
 
 const int NUMFORMATS = sizeof(g_PixmapFormats) / sizeof(g_PixmapFormats[0]);

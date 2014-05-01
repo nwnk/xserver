@@ -487,7 +487,7 @@ dmxSetPixmapFormats(ScreenInfo * pScreenInfo, DMXScreenInfo * dmxScreen)
 
                 format->depth = bePixmapFormat->depth;
                 format->bitsPerPixel = bePixmapFormat->bits_per_pixel;
-                format->scanlinePad = bePixmapFormat->scanline_pad;
+                /* XXX what to do if BE scanline pad != 32? */
 
                 pScreenInfo->numPixmapFormats++;
                 break;

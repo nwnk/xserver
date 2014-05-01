@@ -503,7 +503,7 @@ CreateConnectionBlock(void)
     setup.imageByteOrder = screenInfo.imageByteOrder;
 
     setup.bitmapScanlineUnit = screenInfo.bitmapScanlineUnit;
-    setup.bitmapScanlinePad = screenInfo.bitmapScanlinePad;
+    setup.bitmapScanlinePad = BITMAP_SCANLINE_PAD;
 
     setup.bitmapBitOrder = screenInfo.bitmapBitOrder;
     setup.motionBufferSize = NumMotionEvents();
@@ -537,7 +537,7 @@ CreateConnectionBlock(void)
     for (i = 0; i < screenInfo.numPixmapFormats; i++) {
         format.depth = screenInfo.formats[i].depth;
         format.bitsPerPixel = screenInfo.formats[i].bitsPerPixel;
-        format.scanLinePad = screenInfo.formats[i].scanlinePad;
+        format.scanLinePad = BITMAP_SCANLINE_PAD;
         memmove(pBuf, (char *) &format, sizeof(xPixmapFormat));
         pBuf += sizeof(xPixmapFormat);
         sizesofar += sizeof(xPixmapFormat);
@@ -3789,7 +3789,7 @@ static int init_screen(ScreenPtr pScreen, int i, Bool gpu)
     for (format = 0; format < screenInfo.numPixmapFormats; format++) {
         depth = screenInfo.formats[format].depth;
         bitsPerPixel = screenInfo.formats[format].bitsPerPixel;
-        scanlinepad = screenInfo.formats[format].scanlinePad;
+        scanlinepad = BITMAP_SCANLINE_PAD;
         j = indexForBitsPerPixel[bitsPerPixel];
         k = indexForScanlinePad[scanlinepad];
         PixmapWidthPaddingInfo[depth].padPixelsLog2 = answer[j][k];

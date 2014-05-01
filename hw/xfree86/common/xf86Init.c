@@ -98,13 +98,13 @@ static Bool xorgHWOpenConsole = FALSE;
 /* Common pixmap formats */
 
 static PixmapFormatRec formats[MAXFORMATS] = {
-    {1, 1, BITMAP_SCANLINE_PAD},
-    {4, 8, BITMAP_SCANLINE_PAD},
-    {8, 8, BITMAP_SCANLINE_PAD},
-    {15, 16, BITMAP_SCANLINE_PAD},
-    {16, 16, BITMAP_SCANLINE_PAD},
-    {24, 32, BITMAP_SCANLINE_PAD},
-    {32, 32, BITMAP_SCANLINE_PAD},
+    {1, 1},
+    {4, 8},
+    {8, 8},
+    {15, 16},
+    {16, 16},
+    {24, 32},
+    {32, 32},
 };
 
 static int numFormats = 7;
@@ -391,9 +391,7 @@ xf86InitFormats(void)
                 }
                 if (formats[k].depth == xf86Screens[i]->formats[j].depth) {
                     if ((formats[k].bitsPerPixel ==
-                         xf86Screens[i]->formats[j].bitsPerPixel) &&
-                        (formats[k].scanlinePad ==
-                         xf86Screens[i]->formats[j].scanlinePad))
+                         xf86Screens[i]->formats[j].bitsPerPixel))
                         break;
                     FatalError("Inconsistent pixmap format for depth %d."
                                "  Exiting\n", formats[k].depth);
@@ -1526,7 +1524,6 @@ xf86GetPixFormat(ScrnInfoPtr pScrn, int depth)
     if (!formatsDone) {
         if (depth == 24) {
             format.depth = 24;
-            format.scanlinePad = BITMAP_SCANLINE_PAD;
             format.bitsPerPixel = 32;
             return &format;
         }

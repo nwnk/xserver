@@ -59,7 +59,6 @@ SOFTWARE.
 typedef struct _PixmapFormat {
     unsigned char depth;
     unsigned char bitsPerPixel;
-    unsigned char scanlinePad;
 } PixmapFormatRec;
 
 typedef struct _Visual {

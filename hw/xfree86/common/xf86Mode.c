@@ -783,7 +783,7 @@ xf86CheckModeForMonitor(DisplayModePtr mode, MonPtr monitor)
 static Bool
 xf86CheckModeSize(ScrnInfoPtr scrp, int w, int x, int y)
 {
-    int bpp = scrp->fbFormat.bitsPerPixel, pad = scrp->fbFormat.scanlinePad;
+    int bpp = scrp->fbFormat.bitsPerPixel, pad = BITMAP_SCANLINE_PAD;
     int lineWidth, lastWidth;
 
     if (scrp->depth == 4)
@@ -1207,12 +1207,12 @@ scanLineWidth(unsigned int xsize,       /* pixels */
         return -1;
 
     nBitsPerBank = BankSize * 8;
-    if (nBitsPerBank % pBankFormat->scanlinePad)
+    if (nBitsPerBank % BITMAP_SCANLINE_PAD)
         return -1;
 
     if (xsize > width)
         width = xsize;
-    nBitsPerScanlinePadUnit = LCM(pBankFormat->scanlinePad, nWidthUnit);
+    nBitsPerScanlinePadUnit = LCM(BITMAP_SCANLINE_PAD, nWidthUnit);
     nBitsPerScanline =
         (((width * pBankFormat->bitsPerPixel) + nBitsPerScanlinePadUnit - 1) /
          nBitsPerScanlinePadUnit) * nBitsPerScanlinePadUnit;

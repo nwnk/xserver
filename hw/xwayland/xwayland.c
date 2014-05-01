@@ -682,7 +682,6 @@ InitOutput(ScreenInfo * screen_info, int argc, char **argv)
     for (i = 0; i < ARRAY_SIZE(depths); i++) {
         screen_info->formats[i].depth = depths[i];
         screen_info->formats[i].bitsPerPixel = bpp[i];
-        screen_info->formats[i].scanlinePad = BITMAP_SCANLINE_PAD;
     }
 
     screen_info->imageByteOrder = IMAGE_BYTE_ORDER;

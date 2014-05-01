@@ -66,8 +66,7 @@ InitOutput(ScreenInfo * screen_info, int argc, char *argv[])
                     xnestPixmapFormats[i].depth;
                 screen_info->formats[screen_info->numPixmapFormats].bitsPerPixel =
                     xnestPixmapFormats[i].bits_per_pixel;
-                screen_info->formats[screen_info->numPixmapFormats].scanlinePad =
-                    xnestPixmapFormats[i].scanline_pad;
+                /* XXX what to do if scanline pad doesn't match */
                 screen_info->numPixmapFormats++;
                 break;
             }

@@ -885,7 +885,6 @@ InitOutput(ScreenInfo * screen_info, int argc, char **argv)
                 FatalError("MAXFORMATS is too small for this server\n");
             screen_info->formats[NumFormats].depth = i;
             screen_info->formats[NumFormats].bitsPerPixel = vfbBitsPerPixel(i);
-            screen_info->formats[NumFormats].scanlinePad = BITMAP_SCANLINE_PAD;
             NumFormats++;
         }
     }

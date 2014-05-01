@@ -1025,7 +1025,6 @@ KdSetPixmapFormats(ScreenInfo * pScreenInfo)
             format = &pScreenInfo->formats[pScreenInfo->numPixmapFormats++];
             format->depth = i;
             format->bitsPerPixel = depthToBpp[i];
-            format->scanlinePad = BITMAP_SCANLINE_PAD;
         }
     }
 

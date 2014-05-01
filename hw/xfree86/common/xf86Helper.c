@@ -332,13 +332,10 @@ xf86AddPixFormat(ScrnInfoPtr pScrn, int depth, int bpp, int pad)
         else
             return FALSE;
     }
-    if (pad <= 0)
-        pad = BITMAP_SCANLINE_PAD;
 
     i = pScrn->numFormats++;
     pScrn->formats[i].depth = depth;
     pScrn->formats[i].bitsPerPixel = bpp;
-    pScrn->formats[i].scanlinePad = pad;
     return TRUE;
 }
 
@@ -638,7 +635,6 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
     /* Initialise the framebuffer format for this screen */
     scrp->fbFormat.depth = scrp->depth;
     scrp->fbFormat.bitsPerPixel = scrp->bitsPerPixel;
-    scrp->fbFormat.scanlinePad = BITMAP_SCANLINE_PAD;
 
     return TRUE;
 }
