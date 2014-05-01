@@ -3692,16 +3692,13 @@ MarkClientException(ClientPtr client)
  * of the number of pixels that fit in a scanline pad unit?"
  * Note that ~0 is an invalid entry (mostly for the benefit of the reader).
  */
-static int answer[6][4] = {
-    /* pad   pad   pad     pad */
-    /*  8     16    32    64 */
-
-    {3, 4, 5, 6},               /* 1 bit per pixel */
-    {1, 2, 3, 4},               /* 4 bits per pixel */
-    {0, 1, 2, 3},               /* 8 bits per pixel */
-    {~0, 0, 1, 2},              /* 16 bits per pixel */
-    {~0, ~0, 0, 1},             /* 24 bits per pixel */
-    {~0, ~0, 0, 1}              /* 32 bits per pixel */
+static int answer[6] = {
+    5,  /* 1 bit per pixel */
+    3,  /* 4 bits per pixel */
+    2,  /* 8 bits per pixel */
+    1,  /* 16 bits per pixel */
+    0,  /* 24 bits per pixel */
+    0,  /* 32 bits per pixel */
 };
 
 /*
@@ -3722,31 +3719,6 @@ static int indexForBitsPerPixel[33] = {
 };
 
 /*
- * This array gives the answer to the question "what is the second index for
- * the answer array above given the number of bits per scanline pad unit?"
- * Note that ~0 is an invalid entry (mostly for the benefit of the reader).
- */
-static int indexForScanlinePad[65] = {
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    0, ~0, ~0, ~0,              /* 8 bits per scanline pad unit */
-    ~0, ~0, ~0, ~0,
-    1, ~0, ~0, ~0,              /* 16 bits per scanline pad unit */
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    2, ~0, ~0, ~0,              /* 32 bits per scanline pad unit */
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    ~0, ~0, ~0, ~0,
-    3                           /* 64 bits per scanline pad unit */
-};
-
-/*
 	grow the array of screenRecs if necessary.
 	call the device-supplied initialization procedure
 with its screen number, a pointer to its ScreenRec, argc, and argv.
@@ -3756,7 +3728,7 @@ with its screen number, a pointer to its ScreenRec, argc, and argv.
 
 static int init_screen(ScreenPtr pScreen, int i, Bool gpu)
 {
-    int scanlinepad, format, depth, bitsPerPixel, j, k;
+    int format, depth, bitsPerPixel, j;
 
     dixInitScreenSpecificPrivates(pScreen);
 
@@ -3789,14 +3761,12 @@ static int init_screen(ScreenPtr pScreen, int i, Bool gpu)
     for (format = 0; format < screenInfo.numPixmapFormats; format++) {
         depth = screenInfo.formats[format].depth;
         bitsPerPixel = screenInfo.formats[format].bitsPerPixel;
-        scanlinepad = BITMAP_SCANLINE_PAD;
         j = indexForBitsPerPixel[bitsPerPixel];
-        k = indexForScanlinePad[scanlinepad];
-        PixmapWidthPaddingInfo[depth].padPixelsLog2 = answer[j][k];
+        PixmapWidthPaddingInfo[depth].padPixelsLog2 = answer[j];
         PixmapWidthPaddingInfo[depth].padRoundUp =
-            (scanlinepad / bitsPerPixel) - 1;
+            (BITMAP_SCANLINE_PAD / bitsPerPixel) - 1;
         j = indexForBitsPerPixel[8];    /* bits per byte */
-        PixmapWidthPaddingInfo[depth].padBytesLog2 = answer[j][k];
+        PixmapWidthPaddingInfo[depth].padBytesLog2 = answer[j];
         PixmapWidthPaddingInfo[depth].bitsPerPixel = bitsPerPixel;
     }
     return 0;
