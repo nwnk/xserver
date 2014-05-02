@@ -20,7 +20,7 @@ AM_CPPFLAGS = $(XORG_INCS) -I$(top_srcdir)/miext/cw
 if XORG
 AM_CPPFLAGS += -I$(top_srcdir)/hw/xfree86/parser \
 	-I$(top_srcdir)/hw/xfree86/ddc \
-	-I$(top_srcdir)/hw/xfree86/i2c -I$(top_srcdir)/hw/xfree86/modes \
+	-I$(top_srcdir)/hw/xfree86/modes \
 	-I$(top_srcdir)/hw/xfree86/ramdac -I$(top_srcdir)/hw/xfree86/dri \
 	-I$(top_srcdir)/hw/xfree86/dri2 -I$(top_srcdir)/dri3
 endif
