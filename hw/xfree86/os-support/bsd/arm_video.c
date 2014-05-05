@@ -72,61 +72,9 @@
 #define MAP_FLAGS (MAP_FILE | MAP_SHARED)
 #endif
 
-#define BUS_BASE	0L
-#define BUS_BASE_BWX	0L
-
-/***************************************************************************/
-/* Video Memory Mapping section                                            */
-/***************************************************************************/
-
-static int devMemFd = -1;
-
-/*
- * Check if /dev/mem can be mmap'd.  If it can't print a warning when
- * "warn" is TRUE.
- */
-static void
-checkDevMem(Bool warn)
-{
-    static Bool devMemChecked = FALSE;
-    int fd;
-    void *base;
-
-    if (devMemChecked)
-        return;
-    devMemChecked = TRUE;
-
-    if ((fd = open(DEV_MEM, O_RDWR)) >= 0) {
-        /* Try to map a page at the VGA address */
-        base = mmap((caddr_t) 0, 4096, PROT_READ | PROT_WRITE,
-                    MAP_FLAGS, fd, (off_t) 0xA0000 + BUS_BASE);
-
-        if (base != MAP_FAILED) {
-            munmap((caddr_t) base, 4096);
-            devMemFd = fd;
-            return;
-        }
-        else {
-            /* This should not happen */
-            if (warn) {
-                xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
-                        DEV_MEM, strerror(errno));
-            }
-            return;
-        }
-    }
-    if (warn) {
-        xf86Msg(X_WARNING, "checkDevMem: failed to open %s (%s)\n",
-                DEV_MEM, strerror(errno));
-    }
-    return;
-}
-
 void
 xf86OSInitVidMem(VidMemInfoPtr pVidMem)
 {
-    checkDevMem(TRUE);
-
     pVidMem->initialised = TRUE;
 }
 

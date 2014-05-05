@@ -47,115 +47,11 @@
 #define SYSCTL_MSG "\tCheck that you have set 'machdep.allowaperture=1'\n"\
 		   "\tin /etc/sysctl.conf and reboot your machine\n" \
 		   "\trefer to xf86(4) for details"
-#define SYSCTL_MSG2 \
-		"Check that you have set 'machdep.allowaperture=2'\n" \
-		"\tin /etc/sysctl.conf and reboot your machine\n" \
-		"\trefer to xf86(4) for details"
 #endif
-
-/***************************************************************************/
-/* Video Memory Mapping section                                            */
-/***************************************************************************/
-
-static Bool useDevMem = FALSE;
-static int devMemFd = -1;
-
-#ifdef HAS_APERTURE_DRV
-#define DEV_APERTURE "/dev/xf86"
-#endif
-
-/*
- * Check if /dev/mem can be mmap'd.  If it can't print a warning when
- * "warn" is TRUE.
- */
-static void
-checkDevMem(Bool warn)
-{
-    static Bool devMemChecked = FALSE;
-    int fd;
-    void *base;
-
-    if (devMemChecked)
-        return;
-    devMemChecked = TRUE;
-
-    if ((fd = open(DEV_MEM, O_RDWR)) >= 0) {
-        /* Try to map a page at the VGA address */
-        base = mmap((caddr_t) 0, 4096, PROT_READ | PROT_WRITE,
-                    MAP_FLAGS, fd, (off_t) 0xA0000);
-
-        if (base != MAP_FAILED) {
-            munmap((caddr_t) base, 4096);
-            devMemFd = fd;
-            useDevMem = TRUE;
-            return;
-        }
-        else {
-            /* This should not happen */
-            if (warn) {
-                xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
-                        DEV_MEM, strerror(errno));
-            }
-            useDevMem = FALSE;
-            return;
-        }
-    }
-#ifndef HAS_APERTURE_DRV
-    if (warn) {
-        xf86Msg(X_WARNING, "checkDevMem: failed to open %s (%s)\n",
-                DEV_MEM, strerror(errno));
-    }
-    useDevMem = FALSE;
-    return;
-#else
-    /* Failed to open /dev/mem, try the aperture driver */
-    if ((fd = open(DEV_APERTURE, O_RDWR)) >= 0) {
-        /* Try to map a page at the VGA address */
-        base = mmap((caddr_t) 0, 4096, PROT_READ | PROT_WRITE,
-                    MAP_FLAGS, fd, (off_t) 0xA0000);
-
-        if (base != MAP_FAILED) {
-            munmap((caddr_t) base, 4096);
-            devMemFd = fd;
-            useDevMem = TRUE;
-            xf86Msg(X_INFO, "checkDevMem: using aperture driver %s\n",
-                    DEV_APERTURE);
-            return;
-        }
-        else {
-
-            if (warn) {
-                xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
-                        DEV_APERTURE, strerror(errno));
-            }
-        }
-    }
-    else {
-        if (warn) {
-#ifndef __OpenBSD__
-            xf86Msg(X_WARNING, "checkDevMem: failed to open %s and %s\n"
-                    "\t(%s)\n", DEV_MEM, DEV_APERTURE, strerror(errno));
-#else                           /* __OpenBSD__ */
-            xf86Msg(X_WARNING, "checkDevMem: failed to open %s and %s\n"
-                    "\t(%s)\n%s", DEV_MEM, DEV_APERTURE, strerror(errno),
-                    SYSCTL_MSG);
-#endif                          /* __OpenBSD__ */
-        }
-    }
-
-    useDevMem = FALSE;
-    return;
-
-#endif
-}
 
 void
 xf86OSInitVidMem(VidMemInfoPtr pVidMem)
 {
-    checkDevMem(TRUE);
-
-    pci_system_init_dev_mem(devMemFd);
-
     pVidMem->initialised = TRUE;
 }
 
