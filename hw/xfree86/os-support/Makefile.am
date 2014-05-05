@@ -3,7 +3,7 @@ DIST_SUBDIRS = bsd bus misc linux solaris stub hurd
 
 sdk_HEADERS = xf86_OSproc.h xf86_OSlib.h
 
-EXTRA_DIST = int10Defines.h xf86OSpriv.h
+EXTRA_DIST = int10Defines.h
 
 # to get the grouping semantics right, you have to glom these three together
 # as one library, otherwise libtool will actively defeat your attempts to

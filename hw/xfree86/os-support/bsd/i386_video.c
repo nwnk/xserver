@@ -35,7 +35,6 @@
 #include <sys/mman.h>
 
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 
 #if defined(__NetBSD__) && !defined(MAP_FILE)
 #define MAP_FLAGS MAP_SHARED
@@ -48,12 +47,6 @@
 		   "\tin /etc/sysctl.conf and reboot your machine\n" \
 		   "\trefer to xf86(4) for details"
 #endif
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 #ifdef USE_I386_IOPL
 /***************************************************************************/

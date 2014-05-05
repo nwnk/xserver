@@ -37,19 +37,12 @@
 #endif
 
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 
 #if defined(__NetBSD__) && !defined(MAP_FILE)
 #define MAP_FLAGS MAP_SHARED
 #else
 #define MAP_FLAGS (MAP_FILE | MAP_SHARED)
 #endif
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__OpenBSD__)
 

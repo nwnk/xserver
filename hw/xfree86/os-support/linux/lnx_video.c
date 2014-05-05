@@ -37,7 +37,6 @@
 #include "xf86.h"
 #include "xf86Priv.h"
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 
 static Bool ExtendedEnabled = FALSE;
 
@@ -64,16 +63,6 @@ extern int ioperm(unsigned long __from, unsigned long __num, int __turn_on);
 extern int iopl(int __level);
 
 #endif
-
-/***************************************************************************/
-/* Video Memory Mapping section                                            */
-/***************************************************************************/
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 /***************************************************************************/
 /* I/O Permissions section                                                 */

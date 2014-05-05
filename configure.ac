@@ -328,7 +328,7 @@ case $host_cpu in
 	;;
   sparc*)
 	SPARC64_VIDEO=yes
-	BSD_ARCH_SOURCES="sparc64_video.c ioperm_noop.c"
+	BSD_ARCH_SOURCES="ioperm_noop.c"
 	GLX_ARCH_DEFINES="-D__GLX_ALIGN64"
 	;;
   x86_64*|amd64*)
@@ -1867,7 +1867,6 @@ if test "x$XORG" = xyes; then
 	dnl ===================================================================
 	dnl ================= beginning of PCI configuration ==================
 	dnl ===================================================================
-	xorg_bus_bsdpci=no
 	xorg_bus_sparc=no
 
 	AC_MSG_CHECKING([whether to build Xorg PCI functions])
@@ -1879,11 +1878,6 @@ if test "x$XORG" = xyes; then
 
 		AC_DEFINE(XSERVER_LIBPCIACCESS, 1, [Use libpciaccess for all pci manipulation])
 		AC_DEFINE_DIR(PCI_TXT_IDS_PATH, PCI_TXT_IDS_DIR, [Default PCI text file ID path])
-		case $host_os in
-		  gnu* | freebsd* | kfreebsd*-gnu | netbsd* | openbsd* | solaris* | dragonfly*)
-			xorg_bus_bsdpci="yes"
-			;;
-		esac
 		case $host_cpu in
 		  sparc*)
 			xorg_bus_sparc="yes"
@@ -2084,7 +2078,6 @@ if test "x$XORG" = xyes; then
 fi
 AM_CONDITIONAL([XORG], [test "x$XORG" = xyes])
 AM_CONDITIONAL([XORG_BUS_PCI], [test "x$PCI" = xyes])
-AM_CONDITIONAL([XORG_BUS_BSDPCI], [test "x$xorg_bus_bsdpci" = xyes])
 AM_CONDITIONAL([XORG_BUS_SPARC], [test "x$xorg_bus_sparc" = xyes])
 AM_CONDITIONAL([LINUX_ALPHA], [test "x$linux_alpha" = xyes])
 AM_CONDITIONAL([LNXACPI], [test "x$linux_acpi" = xyes])

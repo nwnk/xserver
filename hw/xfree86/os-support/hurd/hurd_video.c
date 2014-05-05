@@ -37,7 +37,6 @@
 #include "xf86.h"
 #include "xf86Priv.h"
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 
 /**************************************************************************
  * I/O Permissions section
@@ -75,10 +74,4 @@ xf86DisableIO()
 {
     ioperm(0, 0x10000, 0);
     return;
-}
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
 }

@@ -64,19 +64,12 @@
 #include "xf86.h"
 #include "xf86Priv.h"
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 
 #if defined(__NetBSD__) && !defined(MAP_FILE)
 #define MAP_FLAGS MAP_SHARED
 #else
 #define MAP_FLAGS (MAP_FILE | MAP_SHARED)
 #endif
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 #ifdef USE_DEV_IO
 static int IoFd = -1;

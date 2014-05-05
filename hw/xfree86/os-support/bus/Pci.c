@@ -129,12 +129,5 @@
 Bool
 xf86scanpci(void)
 {
-    Bool success = FALSE;
-
-    success = (pci_system_init() == 0);
-
-    /* choose correct platform/OS specific PCI init routine */
-    osPciInit();
-
-    return success;
+    return pci_system_init() == 0;
 }

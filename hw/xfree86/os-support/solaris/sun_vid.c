@@ -56,18 +56,7 @@
 #include "xf86.h"
 #include "xf86Priv.h"
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
 #include <sys/mman.h>
-
-/***************************************************************************/
-/* Video Memory Mapping section 					   */
-/***************************************************************************/
-
-_X_HIDDEN void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 /***************************************************************************/
 /* I/O Permissions section						   */

@@ -186,9 +186,6 @@ extern _X_EXPORT void xf86VTRequest(int sig);
 extern _X_EXPORT int xf86ProcessArgument(int, char **, int);
 extern _X_EXPORT void xf86UseMsg(void);
 extern _X_EXPORT PMClose xf86OSPMOpen(void);
-
-extern _X_EXPORT void xf86InitVidMem(void);
-
 #endif                          /* XF86_OS_PRIVS */
 
 #ifdef XSERVER_PLATFORM_BUS

@@ -32,8 +32,6 @@
 #include "xf86Priv.h"
 
 #include "xf86_OSlib.h"
-#include "xf86OSpriv.h"
-
 #include "bus/Pci.h"
 
 /***************************************************************************/
@@ -46,12 +44,6 @@
 
 Bool xf86EnableIO(void);
 void xf86DisableIO(void);
-
-void
-xf86OSInitVidMem(VidMemInfoPtr pVidMem)
-{
-    pVidMem->initialised = TRUE;
-}
 
 volatile unsigned char *ioBase = MAP_FAILED;
 

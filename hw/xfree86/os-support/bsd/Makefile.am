@@ -45,7 +45,6 @@ endif
 if SPARC64_VIDEO
 # Cheat here and piggyback other sparc64 bits on SPARC64_VIDEO.
 ARCH_SOURCES = \
-	sparc64_video.c \
 	$(srcdir)/../shared/ioperm_noop.c
 endif
 
@@ -57,7 +56,6 @@ AM_CPPFLAGS = $(XORG_INCS)
 libbsd_la_SOURCES = \
 	$(srcdir)/../shared/posix_tty.c \
 	$(srcdir)/../shared/sigio.c \
-	$(srcdir)/../shared/vidmem.c \
 	bsd_VTsw.c \
 	bsd_init.c \
 	bsd_bell.c \
