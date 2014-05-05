@@ -51,7 +51,6 @@ void
 xf86OSInitVidMem(VidMemInfoPtr pVidMem)
 {
     pVidMem->initialised = TRUE;
-    xf86EnableIO();
 }
 
 volatile unsigned char *ioBase = MAP_FAILED;
