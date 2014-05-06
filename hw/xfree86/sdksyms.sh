@@ -157,12 +157,6 @@ cat > sdksyms.c << EOF
  */
 
 
-/* hw/xfree86/os-support/solaris/Makefile.am */
-#if defined(sun386)
-# include "agpgart.h"
-#endif
-
-
 /* hw/xfree86/os-support/Makefile.am */
 #include "xf86_OSproc.h"
 #include "xf86_OSlib.h"

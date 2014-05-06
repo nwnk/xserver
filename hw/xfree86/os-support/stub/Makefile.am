@@ -6,7 +6,6 @@ AM_CPPFLAGS = $(XORG_INCS)
 
 libstub_la_SOURCES = \
 	$(srcdir)/../shared/VTsw_noop.c \
-	$(srcdir)/../shared/agp_noop.c \
 	$(srcdir)/../shared/ioperm_noop.c \
 	$(srcdir)/../shared/kmod_noop.c \
 	$(srcdir)/../shared/pm_noop.c \

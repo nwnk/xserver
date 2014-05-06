@@ -4,12 +4,6 @@ else
 VTSW_SRC = $(srcdir)/../shared/VTsw_noop.c
 endif
 
-if AGP
-AGP_SRC = sun_agp.c
-else
-AGP_SRC = $(srcdir)/../shared/agp_noop.c
-endif
-
 SOLARIS_INOUT_SRC = solaris-@SOLARIS_INOUT_ARCH@.S
 DISTCLEANFILES = solaris-@SOLARIS_INOUT_ARCH@.il
 
@@ -18,7 +12,7 @@ solaris-@SOLARIS_INOUT_ARCH@.il: solaris-@SOLARIS_INOUT_ARCH@.S
 
 noinst_LTLIBRARIES = libsolaris.la
 libsolaris_la_SOURCES = sun_init.c \
-	sun_vid.c sun_bell.c $(AGP_SRC) sun_apm.c \
+	sun_vid.c sun_bell.c sun_apm.c \
 	$(srcdir)/../shared/kmod_noop.c \
 	$(srcdir)/../shared/posix_tty.c \
 	$(srcdir)/../shared/sigio.c \

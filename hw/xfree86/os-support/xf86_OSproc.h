@@ -137,31 +137,6 @@ extern _X_EXPORT int xf86SerialModemSetBits(int fd, int bits);
 extern _X_EXPORT int xf86SerialModemClearBits(int fd, int bits);
 extern _X_EXPORT int xf86LoadKernelModule(const char *pathname);
 
-/* AGP GART interface */
-
-typedef struct _AgpInfo {
-    CARD32 bridgeId;
-    CARD32 agpMode;
-    unsigned long base;
-    unsigned long size;
-    unsigned long totalPages;
-    unsigned long systemPages;
-    unsigned long usedPages;
-} AgpInfo, *AgpInfoPtr;
-
-extern _X_EXPORT Bool xf86AgpGARTSupported(void);
-extern _X_EXPORT AgpInfoPtr xf86GetAGPInfo(int screenNum);
-extern _X_EXPORT Bool xf86AcquireGART(int screenNum);
-extern _X_EXPORT Bool xf86ReleaseGART(int screenNum);
-extern _X_EXPORT int xf86AllocateGARTMemory(int screenNum, unsigned long size,
-                                            int type, unsigned long *physical);
-extern _X_EXPORT Bool xf86DeallocateGARTMemory(int screenNum, int key);
-extern _X_EXPORT Bool xf86BindGARTMemory(int screenNum, int key,
-                                         unsigned long offset);
-extern _X_EXPORT Bool xf86UnbindGARTMemory(int screenNum, int key);
-extern _X_EXPORT Bool xf86EnableAGP(int screenNum, CARD32 mode);
-extern _X_EXPORT Bool xf86GARTCloseScreen(int screenNum);
-
 /* These routines are in shared/sigio.c and are not loaded as part of the
    module.  These routines are small, and the code if very POSIX-signal (or
    OS-signal) specific, so it seemed better to provide more complex

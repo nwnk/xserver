@@ -229,10 +229,6 @@ AC_CHECK_FUNCS([cbrt])
 
 AC_CHECK_HEADERS([ndbm.h dbm.h rpcsvc/dbm.h])
 
-dnl AGPGART headers
-AC_CHECK_HEADERS([linux/agpgart.h sys/agpio.h sys/agpgart.h], AGP=yes)
-AM_CONDITIONAL(AGP, [test "x$AGP" = xyes])
-
 dnl fbdev header
 AC_CHECK_HEADERS([linux/fb.h], FBDEV=yes)
 AM_CONDITIONAL(FBDEVHW, [test "x$FBDEV" = xyes])

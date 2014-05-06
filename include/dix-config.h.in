@@ -131,9 +131,6 @@
 /* Define to 1 if you have the libdispatch (GCD) available */
 #undef HAVE_LIBDISPATCH
 
-/* Define to 1 if you have the <linux/agpgart.h> header file. */
-#undef HAVE_LINUX_AGPGART_H
-
 /* Define to 1 if you have the <linux/apm_bios.h> header file. */
 #undef HAVE_LINUX_APM_BIOS_H
 
@@ -211,9 +208,6 @@
 
 /* Define to 1 if SYSV IPC is available */
 #undef HAVE_SYSV_IPC
-
-/* Define to 1 if you have the <sys/agpio.h> header file. */
-#undef HAVE_SYS_AGPIO_H
 
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */

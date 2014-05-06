@@ -17,12 +17,6 @@ else
 KMOD_SOURCES = $(srcdir)/../shared/kmod_noop.c
 endif
 
-if AGP
-AGP_SOURCES = $(srcdir)/../linux/lnx_agp.c
-else
-AGP_SOURCES = $(srcdir)/../shared/agp_noop.c
-endif
-
 if ALPHA_VIDEO
 # Cheat here and piggyback other alpha bits on ALPHA_VIDEO.
 ARCH_SOURCES = \
@@ -60,7 +54,6 @@ libbsd_la_SOURCES = \
 	bsd_init.c \
 	bsd_bell.c \
 	$(ARCH_SOURCES) \
-	$(AGP_SOURCES) \
 	$(APM_SOURCES) \
 	$(AXP_SOURCES) \
 	$(DRI_SOURCES) \
