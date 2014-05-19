@@ -216,7 +216,6 @@ extern _X_EXPORT void vgaHWDisable(vgaHWPtr hwp);
 extern _X_EXPORT void vgaHWDPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode,
                                    int flags);
 extern _X_EXPORT Bool vgaHWHandleColormaps(ScreenPtr pScreen);
-extern _X_EXPORT void vgaHWddc1SetSpeed(ScrnInfoPtr pScrn, xf86ddcSpeed speed);
 extern _X_EXPORT CARD32 vgaHWHBlankKGA(DisplayModePtr mode, vgaRegPtr regp,
                                        int nBits, unsigned int Flags);
 extern _X_EXPORT CARD32 vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp,

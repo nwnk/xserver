@@ -16,20 +16,6 @@
 #include "xf86i2c.h"
 #include "xf86str.h"
 
-/* speed up / slow down */
-typedef enum {
-    DDC_SLOW,
-    DDC_FAST
-} xf86ddcSpeed;
-
-typedef void (*DDC1SetSpeedProc) (ScrnInfoPtr, xf86ddcSpeed);
-
-extern _X_EXPORT xf86MonPtr xf86DoEDID_DDC1(ScrnInfoPtr pScrn,
-                                            DDC1SetSpeedProc DDC1SetSpeed,
-                                            unsigned
-                                            int (*DDC1Read) (ScrnInfoPtr)
-    );
-
 extern _X_EXPORT xf86MonPtr xf86DoEDID_DDC2(ScrnInfoPtr pScrn, I2CBusPtr pBus);
 
 extern _X_EXPORT xf86MonPtr xf86DoEEDID(ScrnInfoPtr pScrn, I2CBusPtr pBus, Bool);

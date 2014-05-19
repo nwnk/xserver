@@ -3325,7 +3325,6 @@ xf86OutputGetEDIDModes(xf86OutputPtr output)
     return xf86DDCGetModes(scrn->scrnIndex, edid_mon);
 }
 
-/* maybe we should care about DDC1?  meh. */
 xf86MonPtr
 xf86OutputGetEDID(xf86OutputPtr output, I2CBusPtr pDDCBus)
 {
