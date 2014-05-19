@@ -604,12 +604,6 @@ vgaHWProtect(ScrnInfoPtr pScrn, Bool on)
     }
 }
 
-vgaHWProtectProc *
-vgaHWProtectWeak(void)
-{
-    return vgaHWProtect;
-}
-
 /*
  * vgaHWBlankScreen -- blank the screen.
  */
@@ -632,12 +626,6 @@ vgaHWBlankScreen(ScrnInfoPtr pScrn, Bool on)
     vgaHWSeqReset(hwp, TRUE);
     hwp->writeSeq(hwp, 0x01, scrn);     /* change mode */
     vgaHWSeqReset(hwp, FALSE);
-}
-
-vgaHWBlankScreenProc *
-vgaHWBlankScreenWeak(void)
-{
-    return vgaHWBlankScreen;
 }
 
 /*
@@ -1971,18 +1959,6 @@ vgaHWddc1SetSpeed(ScrnInfoPtr pScrn, xf86ddcSpeed speed)
     default:
         break;
     }
-}
-
-DDC1SetSpeedProc
-vgaHWddc1SetSpeedWeak(void)
-{
-    return vgaHWddc1SetSpeed;
-}
-
-SaveScreenProcPtr
-vgaHWSaveScreenWeak(void)
-{
-    return vgaHWSaveScreen;
 }
 
 /*

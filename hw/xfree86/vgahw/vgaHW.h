@@ -184,10 +184,8 @@ typedef void vgaHWBlankScreenProc(ScrnInfoPtr, Bool);
 extern _X_EXPORT void vgaHWSetStdFuncs(vgaHWPtr hwp);
 extern _X_EXPORT void vgaHWSetMmioFuncs(vgaHWPtr hwp, CARD8 *base, int offset);
 extern _X_EXPORT void vgaHWProtect(ScrnInfoPtr pScrn, Bool on);
-extern _X_EXPORT vgaHWProtectProc *vgaHWProtectWeak(void);
 extern _X_EXPORT Bool vgaHWSaveScreen(ScreenPtr pScreen, int mode);
 extern _X_EXPORT void vgaHWBlankScreen(ScrnInfoPtr pScrn, Bool on);
-extern _X_EXPORT vgaHWBlankScreenProc *vgaHWBlankScreenWeak(void);
 extern _X_EXPORT void vgaHWSeqReset(vgaHWPtr hwp, Bool start);
 extern _X_EXPORT void vgaHWRestoreFonts(ScrnInfoPtr scrninfp,
                                         vgaRegPtr restore);
@@ -225,8 +223,6 @@ extern _X_EXPORT CARD32 vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp,
                                        int nBits, unsigned int Flags);
 extern _X_EXPORT Bool vgaHWAllocDefaultRegs(vgaRegPtr regp);
 
-extern _X_EXPORT DDC1SetSpeedProc vgaHWddc1SetSpeedWeak(void);
-extern _X_EXPORT SaveScreenProcPtr vgaHWSaveScreenWeak(void);
 extern _X_EXPORT void xf86GetClocks(ScrnInfoPtr pScrn, int num,
                                     Bool (*ClockFunc) (ScrnInfoPtr, int),
                                     void (*ProtectRegs) (ScrnInfoPtr, Bool),
