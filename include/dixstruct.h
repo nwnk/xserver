@@ -176,13 +176,13 @@ typedef struct _CallbackList {
 
 /* proc vectors */
 
-extern _X_EXPORT int (*InitialVector[3]) (ClientPtr /*client */ );
+extern int (*InitialVector[3]) (ClientPtr /*client */ );
 
-extern _X_EXPORT int (*ProcVector[256]) (ClientPtr /*client */ );
+extern int (*ProcVector[256]) (ClientPtr /*client */ );
 
-extern _X_EXPORT int (*SwappedProcVector[256]) (ClientPtr /*client */ );
+extern int (*SwappedProcVector[256]) (ClientPtr /*client */ );
 
-extern _X_EXPORT ReplySwapPtr ReplySwapVector[256];
+extern ReplySwapPtr ReplySwapVector[256];
 
 extern _X_EXPORT int
 ProcBadRequest(ClientPtr /*client */ );
