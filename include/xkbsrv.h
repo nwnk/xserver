@@ -275,7 +275,7 @@ typedef struct {
 	device->public.realInputProc = oldprocs->realInputProc; \
 	device->unwrapProc = oldprocs->unwrapProc;
 
-extern _X_EXPORT DevPrivateKeyRec xkbDevicePrivateKeyRec;
+extern DevPrivateKeyRec xkbDevicePrivateKeyRec;
 
 #define xkbDevicePrivateKey (&xkbDevicePrivateKeyRec)
 
@@ -293,13 +293,13 @@ extern void xkbUnwrapProc(DeviceIntPtr, DeviceHandleProc, void *);
 
 /***====================================================================***/
 
-extern _X_EXPORT int XkbReqCode;
-extern _X_EXPORT int XkbEventBase;
-extern _X_EXPORT int XkbKeyboardErrorCode;
-extern _X_EXPORT const char *XkbBaseDirectory;
-extern _X_EXPORT const char *XkbBinDirectory;
+extern int XkbReqCode;
+extern int XkbEventBase;
+extern int XkbKeyboardErrorCode;
+extern const char *XkbBaseDirectory;
+extern const char *XkbBinDirectory;
 
-extern _X_EXPORT CARD32 xkbDebugFlags;
+extern CARD32 xkbDebugFlags;
 
 #define	_XkbLibError(c,l,d)     /* Epoch fail */
 
@@ -649,23 +649,23 @@ extern _X_EXPORT Bool XkbEnableDisableControls(XkbSrvInfoPtr /* xkbi */ ,
                                                XkbEventCausePtr /* cause */
     );
 
-extern _X_EXPORT void AccessXInit(DeviceIntPtr  /* dev */
+extern void AccessXInit(DeviceIntPtr  /* dev */
     );
 
-extern _X_EXPORT Bool AccessXFilterPressEvent(DeviceEvent * /* event */ ,
-                                              DeviceIntPtr      /* keybd */
+extern Bool AccessXFilterPressEvent(DeviceEvent * /* event */ ,
+                                    DeviceIntPtr      /* keybd */
     );
 
-extern _X_EXPORT Bool AccessXFilterReleaseEvent(DeviceEvent * /* event */ ,
-                                                DeviceIntPtr    /* keybd */
+extern Bool AccessXFilterReleaseEvent(DeviceEvent * /* event */ ,
+                                      DeviceIntPtr    /* keybd */
     );
 
-extern _X_EXPORT void AccessXCancelRepeatKey(XkbSrvInfoPtr /* xkbi */ ,
-                                             KeyCode    /* key */
+extern void AccessXCancelRepeatKey(XkbSrvInfoPtr /* xkbi */ ,
+                                   KeyCode    /* key */
     );
 
-extern _X_EXPORT void AccessXComputeCurveFactor(XkbSrvInfoPtr /* xkbi */ ,
-                                                XkbControlsPtr  /* ctrls */
+extern void AccessXComputeCurveFactor(XkbSrvInfoPtr /* xkbi */ ,
+                                      XkbControlsPtr  /* ctrls */
     );
 
 extern _X_EXPORT XkbInterestPtr XkbFindClientResource(DevicePtr /* inDev */ ,
@@ -766,7 +766,7 @@ extern _X_EXPORT void XkbDeleteRulesDflts(void
 extern _X_EXPORT void XkbDeleteRulesUsed(void
     );
 
-extern _X_EXPORT int SProcXkbDispatch(ClientPtr /* client */
+extern int SProcXkbDispatch(ClientPtr /* client */
     );
 
 extern _X_EXPORT XkbGeometryPtr XkbLookupNamedGeometry(DeviceIntPtr /* dev */ ,
