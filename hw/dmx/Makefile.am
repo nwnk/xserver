@@ -78,7 +78,6 @@ XDMX_LIBS = \
         input/libdmxinput.a \
         config/libdmxconfig.a
 
-Xdmx_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
 Xdmx_DEPENDENCIES= $(XDMX_LIBS)
 Xdmx_LDADD = $(XDMX_LIBS) $(XDMX_SYS_LIBS) $(XSERVER_SYS_LIBS)
 

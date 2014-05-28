@@ -23,8 +23,6 @@ Xfbdev_DEPENDENCIES =	\
 	libfbdev.la					\
 	$(KDRIVE_PURE_LIBS)
 
-Xfbdev_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
-
 relink:
 	$(AM_V_at)rm -f $(bin_PROGRAMS) && $(MAKE) $(bin_PROGRAMS)
 endif

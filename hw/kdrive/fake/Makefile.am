@@ -21,8 +21,6 @@ Xfake_LDADD = 						\
 	@KDRIVE_MAIN_LIB@				\
 	@KDRIVE_LIBS@
 
-Xfake_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
-
 Xfake_DEPENDENCIES =	\
 	libfake.la					\
 	@KDRIVE_LOCAL_LIBS@

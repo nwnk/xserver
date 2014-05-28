@@ -92,7 +92,5 @@ Xephyr_LDADD = 						\
 
 Xephyr_DEPENDENCIES = @KDRIVE_LOCAL_LIBS@ $(XEPHYR_GLAMOR_LIB)
 
-Xephyr_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
-
 relink:
 	$(AM_V_at)rm -f $(bin_PROGRAMS) && $(MAKE) $(bin_PROGRAMS)
