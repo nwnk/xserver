@@ -76,8 +76,6 @@ static KdPointerMatrix kdPointerMatrix = {
      {0, 1, 0}}
 };
 
-void KdResetInputMachine(void);
-
 #define KD_MAX_INPUT_FDS    8
 
 typedef struct _kdInputFd {
@@ -131,7 +129,7 @@ static int kdnFds;
 #define NOBLOCK FNDELAY
 #endif
 
-void
+static void
 KdResetInputMachine(void)
 {
     KdPointerInfo *pi;
@@ -226,12 +224,6 @@ KdUnregisterFd(void *closure, int fd, Bool do_close)
             break;
         }
     }
-}
-
-void
-KdUnregisterFds(void *closure, Bool do_close)
-{
-    KdUnregisterFd(closure, -1, do_close);
 }
 
 void
@@ -359,6 +351,24 @@ KdFindPointerDriver(const char *name)
     }
 
     return NULL;
+}
+
+static void
+KdRemovePointer(KdPointerInfo * pi)
+{
+    KdPointerInfo **prev;
+
+    if (!pi)
+        return;
+
+    for (prev = &kdPointers; *prev; prev = &(*prev)->next) {
+        if (*prev == pi) {
+            *prev = pi->next;
+            break;
+        }
+    }
+
+    KdFreePointer(pi);
 }
 
 static int
@@ -533,6 +543,16 @@ LegalModifier(unsigned int key, DeviceIntPtr pDev)
 }
 
 static void
+KdRingBell(KdKeyboardInfo * ki, int volume, int pitch, int duration)
+{
+    if (!ki || !ki->driver || !ki->driver->Bell)
+        return;
+
+    if (kdInputEnabled)
+        (*ki->driver->Bell) (ki, volume, pitch, duration);
+}
+
+static void
 KdBell(int volume, DeviceIntPtr pDev, void *arg, int something)
 {
     KeybdCtrl *ctrl = arg;
@@ -565,16 +585,6 @@ DDXRingBell(int volume, int pitch, int duration)
     }
 }
 
-void
-KdRingBell(KdKeyboardInfo * ki, int volume, int pitch, int duration)
-{
-    if (!ki || !ki->driver || !ki->driver->Bell)
-        return;
-
-    if (kdInputEnabled)
-        (*ki->driver->Bell) (ki, volume, pitch, duration);
-}
-
 static void
 KdSetLeds(KdKeyboardInfo * ki, int leds)
 {
@@ -587,7 +597,7 @@ KdSetLeds(KdKeyboardInfo * ki, int leds)
     }
 }
 
-void
+static void
 KdSetLed(KdKeyboardInfo * ki, int led, Bool on)
 {
     if (!ki || !ki->dixdev || !ki->dixdev->kbdfeed)
@@ -651,20 +661,6 @@ KdComputePointerMatrix(KdPointerMatrix * m, Rotation randr, int width,
     }
 }
 
-void
-KdScreenToPointerCoords(int *x, int *y)
-{
-    int (*m)[3] = kdPointerMatrix.matrix;
-    int div = m[0][1] * m[1][0] - m[1][1] * m[0][0];
-    int sx = *x;
-    int sy = *y;
-
-    *x = (m[0][1] * sy - m[0][1] * m[1][2] + m[1][1] * m[0][2] -
-          m[1][1] * sx) / div;
-    *y = (m[1][0] * sx + m[0][0] * m[1][2] - m[1][0] * m[0][2] -
-          m[0][0] * sy) / div;
-}
-
 static void
 KdKbdCtrl(DeviceIntPtr pDevice, KeybdCtrl * ctrl)
 {
@@ -681,6 +677,24 @@ KdKbdCtrl(DeviceIntPtr pDevice, KeybdCtrl * ctrl)
     KdSetLeds(ki, ctrl->leds);
     ki->bellPitch = ctrl->bell_pitch;
     ki->bellDuration = ctrl->bell_duration;
+}
+
+static void
+KdRemoveKeyboard(KdKeyboardInfo * ki)
+{
+    KdKeyboardInfo **prev;
+
+    if (!ki)
+        return;
+
+    for (prev = &kdKeyboards; *prev; prev = &(*prev)->next) {
+        if (*prev == ki) {
+            *prev = ki->next;
+            break;
+        }
+    }
+
+    KdFreeKeyboard(ki);
 }
 
 static int
@@ -822,23 +836,6 @@ KdAddPointerDriver(KdPointerDriver * driver)
 }
 
 void
-KdRemovePointerDriver(KdPointerDriver * driver)
-{
-    KdPointerDriver *tmp;
-
-    if (!driver)
-        return;
-
-    /* FIXME remove all pointers using this driver */
-    for (tmp = kdPointerDrivers; tmp; tmp = tmp->next) {
-        if (tmp->next == driver)
-            tmp->next = driver->next;
-    }
-    if (tmp == driver)
-        tmp = NULL;
-}
-
-void
 KdAddKeyboardDriver(KdKeyboardDriver * driver)
 {
     KdKeyboardDriver **prev;
@@ -851,23 +848,6 @@ KdAddKeyboardDriver(KdKeyboardDriver * driver)
             return;
     }
     *prev = driver;
-}
-
-void
-KdRemoveKeyboardDriver(KdKeyboardDriver * driver)
-{
-    KdKeyboardDriver *tmp;
-
-    if (!driver)
-        return;
-
-    /* FIXME remove all keyboards using this driver */
-    for (tmp = kdKeyboardDrivers; tmp; tmp = tmp->next) {
-        if (tmp->next == driver)
-            tmp->next = driver->next;
-    }
-    if (tmp == driver)
-        tmp = NULL;
 }
 
 KdKeyboardInfo *
@@ -940,24 +920,6 @@ KdAddKeyboard(KdKeyboardInfo * ki)
     return Success;
 }
 
-void
-KdRemoveKeyboard(KdKeyboardInfo * ki)
-{
-    KdKeyboardInfo **prev;
-
-    if (!ki)
-        return;
-
-    for (prev = &kdKeyboards; *prev; prev = &(*prev)->next) {
-        if (*prev == ki) {
-            *prev = ki->next;
-            break;
-        }
-    }
-
-    KdFreeKeyboard(ki);
-}
-
 int
 KdAddConfigPointer(char *pointer)
 {
@@ -1001,24 +963,6 @@ KdAddPointer(KdPointerInfo * pi)
     *prev = pi;
 
     return Success;
-}
-
-void
-KdRemovePointer(KdPointerInfo * pi)
-{
-    KdPointerInfo **prev;
-
-    if (!pi)
-        return;
-
-    for (prev = &kdPointers; *prev; prev = &(*prev)->next) {
-        if (*prev == pi) {
-            *prev = pi->next;
-            break;
-        }
-    }
-
-    KdFreePointer(pi);
 }
 
 /*
@@ -1086,7 +1030,7 @@ KdParseKbdOptions(KdKeyboardInfo * ki)
     }
 }
 
-KdKeyboardInfo *
+static KdKeyboardInfo *
 KdParseKeyboard(const char *arg)
 {
     char save[1024];
@@ -1178,7 +1122,7 @@ KdParsePointerOptions(KdPointerInfo * pi)
     }
 }
 
-KdPointerInfo *
+static KdPointerInfo *
 KdParsePointer(const char *arg)
 {
     char save[1024];
@@ -1676,6 +1620,26 @@ char *kdActionNames[] = {
 };
 #endif                          /* DEBUG */
 
+static int
+KdHandlePointerEvent(KdPointerInfo * pi, int type, int x, int y, int z, int b,
+                     int absrel);
+
+static void
+_KdEnqueuePointerEvent(KdPointerInfo * pi, int type, int x, int y, int z,
+                       int b, int absrel, Bool force)
+{
+    int valuators[3] = { x, y, z };
+    ValuatorMask mask;
+
+    /* TRUE from KdHandlePointerEvent, means 'we swallowed the event'. */
+    if (!force && KdHandlePointerEvent(pi, type, x, y, z, b, absrel))
+        return;
+
+    valuator_mask_set_range(&mask, 0, 3, valuators);
+
+    QueuePointerEvents(pi->dixdev, type, b, absrel, &mask);
+}
+
 /* We return true if we're stealing the event. */
 static Bool
 KdRunMouseMachine(KdPointerInfo * pi, KdInputClass c, int type, int x, int y,
@@ -1921,22 +1885,6 @@ KdEnqueuePointerEvent(KdPointerInfo * pi, unsigned long flags, int rx, int ry,
     }
 
     pi->buttonState = buttons;
-}
-
-void
-_KdEnqueuePointerEvent(KdPointerInfo * pi, int type, int x, int y, int z,
-                       int b, int absrel, Bool force)
-{
-    int valuators[3] = { x, y, z };
-    ValuatorMask mask;
-
-    /* TRUE from KdHandlePointerEvent, means 'we swallowed the event'. */
-    if (!force && KdHandlePointerEvent(pi, type, x, y, z, b, absrel))
-        return;
-
-    valuator_mask_set_range(&mask, 0, 3, valuators);
-
-    QueuePointerEvents(pi->dixdev, type, b, absrel, &mask);
 }
 
 void

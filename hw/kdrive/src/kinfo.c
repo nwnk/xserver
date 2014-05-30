@@ -56,19 +56,6 @@ KdCardInfoLast(void)
     return ci;
 }
 
-void
-KdCardInfoDispose(KdCardInfo * ci)
-{
-    KdCardInfo **prev;
-
-    for (prev = &kdCardInfo; *prev; prev = &(*prev)->next)
-        if (*prev == ci) {
-            *prev = ci->next;
-            free(ci);
-            break;
-        }
-}
-
 KdScreenInfo *
 KdScreenInfoAdd(KdCardInfo * ci)
 {
@@ -84,23 +71,6 @@ KdScreenInfoAdd(KdCardInfo * ci)
     si->card = ci;
     si->mynum = n;
     return si;
-}
-
-void
-KdScreenInfoDispose(KdScreenInfo * si)
-{
-    KdCardInfo *ci = si->card;
-    KdScreenInfo **prev;
-
-    for (prev = &ci->screenList; *prev; prev = &(*prev)->next) {
-        if (*prev == si) {
-            *prev = si->next;
-            free(si);
-            if (!ci->screenList)
-                KdCardInfoDispose(ci);
-            break;
-        }
-    }
 }
 
 KdPointerInfo *

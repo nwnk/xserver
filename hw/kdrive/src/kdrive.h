@@ -225,12 +225,10 @@ struct _KdPointerInfo {
 extern int KdCurScreen;
 
 void KdAddPointerDriver(KdPointerDriver * driver);
-void KdRemovePointerDriver(KdPointerDriver * driver);
 KdPointerInfo *KdNewPointer(void);
 void KdFreePointer(KdPointerInfo *);
 int KdAddPointer(KdPointerInfo * ki);
 int KdAddConfigPointer(char *pointer);
-void KdRemovePointer(KdPointerInfo * ki);
 
 #define KD_KEY_COUNT 248
 #define KD_MIN_KEYCODE  8
@@ -283,12 +281,10 @@ struct _KdKeyboardInfo {
 };
 
 void KdAddKeyboardDriver(KdKeyboardDriver * driver);
-void KdRemoveKeyboardDriver(KdKeyboardDriver * driver);
 KdKeyboardInfo *KdNewKeyboard(void);
 void KdFreeKeyboard(KdKeyboardInfo * ki);
 int KdAddConfigKeyboard(char *pointer);
 int KdAddKeyboard(KdKeyboardInfo * ki);
-void KdRemoveKeyboard(KdKeyboardInfo * ki);
 
 typedef struct _KdOsFuncs {
     int (*Init) (void);
@@ -334,14 +330,10 @@ extern DevPrivateKeyRec kdScreenPrivateKeyRec;
 
 #define kdScreenPrivateKey (&kdScreenPrivateKeyRec)
 
-extern unsigned long kdGeneration;
-extern Bool kdEnabled;
 extern Bool kdSwitchPending;
 extern Bool kdEmulateMiddleButton;
 extern Bool kdDisableZaphod;
-extern Bool kdAllowZap;
 extern int kdVirtualTerminal;
-extern char *kdSwitchCmd;
 extern KdOsFuncs *kdOsFuncs;
 
 #define KdGetScreenPriv(pScreen) ((KdPrivScreenPtr) \
@@ -351,8 +343,6 @@ extern KdOsFuncs *kdOsFuncs;
 #define KdScreenPriv(pScreen) KdPrivScreenPtr pScreenPriv = KdGetScreenPriv(pScreen)
 
 /* kcmap.c */
-void
- KdSetColormap(ScreenPtr pScreen);
 
 void
  KdEnableColormap(ScreenPtr pScreen);
@@ -378,14 +368,8 @@ extern miPointerScreenFuncRec kdPointerScreenFuncs;
 void
  KdDisableScreen(ScreenPtr pScreen);
 
-void
- KdDisableScreens(void);
-
 Bool
  KdEnableScreen(ScreenPtr pScreen);
-
-void
- KdEnableScreens(void);
 
 void
  KdSuspend(void);
@@ -403,15 +387,8 @@ Rotation KdSubRotation(Rotation a, Rotation b);
 void
  KdParseScreen(KdScreenInfo * screen, const char *arg);
 
-KdPointerInfo *KdParsePointer(const char *arg);
-
-KdKeyboardInfo *KdParseKeyboard(const char *arg);
-
 const char *
 KdParseFindNext(const char *cur, const char *delim, char *save, char *last);
-
-void
- KdParseRgba(char *rgba);
 
 void
  KdUseMsg(void);
@@ -424,26 +401,6 @@ void
 
 void
  KdOsAddInputDrivers(void);
-
-Bool
- KdAllocatePrivates(ScreenPtr pScreen);
-
-Bool
- KdCreateScreenResources(ScreenPtr pScreen);
-
-Bool
- KdCloseScreen(ScreenPtr pScreen);
-
-Bool
- KdSaveScreen(ScreenPtr pScreen, int on);
-
-Bool
- KdScreenInit(ScreenPtr pScreen, int argc, char **argv);
-
-void
-
-KdInitScreen(ScreenInfo * pScreenInfo,
-             KdScreenInfo * screen, int argc, char **argv);
 
 void
  KdInitCard(ScreenInfo * pScreenInfo, KdCardInfo * card, int argc, char **argv);
@@ -462,13 +419,7 @@ KdCardInfo *KdCardInfoAdd(KdCardFuncs * funcs, void *closure);
 
 KdCardInfo *KdCardInfoLast(void);
 
-void
- KdCardInfoDispose(KdCardInfo * ci);
-
 KdScreenInfo *KdScreenInfoAdd(KdCardInfo * ci);
-
-void
- KdScreenInfoDispose(KdScreenInfo * si);
 
 /* kinput.c */
 void
@@ -478,9 +429,6 @@ void
 
 Bool
  KdRegisterFd(int fd, void (*read) (int fd, void *closure), void *closure);
-
-void
- KdUnregisterFds(void *closure, Bool do_close);
 
 void
  KdUnregisterFd(void *closure, int fd, Bool do_close);
@@ -505,15 +453,7 @@ KdEnqueuePointerEvent(KdPointerInfo * pi, unsigned long flags, int rx, int ry,
                       int rz);
 
 void
-
-_KdEnqueuePointerEvent(KdPointerInfo * pi, int type, int x, int y, int z,
-                       int b, int absrel, Bool force);
-
-void
  KdReleaseAllKeys(void);
-
-void
- KdSetLed(KdKeyboardInfo * ki, int led, Bool on);
 
 void
  KdSetPointerMatrix(KdPointerMatrix *pointer);
@@ -524,14 +464,9 @@ KdComputePointerMatrix(KdPointerMatrix *pointer, Rotation randr, int width,
                        int height);
 
 void
- KdScreenToPointerCoords(int *x, int *y);
-
-void
-
 KdBlockHandler(ScreenPtr pScreen, void *timeout, void *readmask);
 
 void
-
 KdWakeupHandler(ScreenPtr pScreen, unsigned long result, void *readmask);
 
 void
@@ -540,33 +475,10 @@ void
 void
  KdEnableInput(void);
 
-void
- KdRingBell(KdKeyboardInfo * ki, int volume, int pitch, int duration);
-
 /* kmode.c */
 const KdMonitorTiming *KdFindMode(KdScreenInfo * screen,
                                   Bool (*supported) (KdScreenInfo *,
                                                      const KdMonitorTiming *));
-
-Bool
-
-KdTuneMode(KdScreenInfo * screen,
-           Bool (*usable) (KdScreenInfo *),
-           Bool (*supported) (KdScreenInfo *, const KdMonitorTiming *));
-
-#ifdef RANDR
-Bool
-
-KdRandRGetInfo(ScreenPtr pScreen,
-               int randr,
-               Bool (*supported) (ScreenPtr pScreen, const KdMonitorTiming *));
-
-const KdMonitorTiming *KdRandRGetTiming(ScreenPtr pScreen,
-                                        Bool (*supported) (ScreenPtr pScreen,
-                                                           const KdMonitorTiming
-                                                           *), int rate,
-                                        RRScreenSizePtr pSize);
-#endif
 
 /* kshadow.c */
 Bool

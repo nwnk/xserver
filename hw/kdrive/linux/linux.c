@@ -51,7 +51,7 @@ extern KdKeyboardDriver LinuxKeyboardDriver;
 
 static int vtno;
 int LinuxConsoleFd;
-int LinuxApmFd = -1;
+static int LinuxApmFd = -1;
 static int activeVT;
 static Bool enabled;
 
