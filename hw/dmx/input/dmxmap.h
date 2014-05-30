@@ -35,8 +35,5 @@
 
 #ifndef _DMXMAP_H_
 #define _DMXMAP_H_
-extern void dmxMapInsert(DMXLocalInputInfoPtr dmxLocal,
-                         int remoteEvent, int serverEvent);
-extern void dmxMapClear(DMXLocalInputInfoPtr dmxLocal);
 extern int dmxMapLookup(DMXLocalInputInfoPtr dmxLocal, int remoteEvent);
 #endif

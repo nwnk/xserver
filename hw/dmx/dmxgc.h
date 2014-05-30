@@ -50,14 +50,6 @@ typedef struct _dmxGCPriv {
 extern Bool dmxInitGC(ScreenPtr pScreen);
 
 extern Bool dmxCreateGC(GCPtr pGC);
-extern void dmxValidateGC(GCPtr pGC, unsigned long changes,
-                          DrawablePtr pDrawable);
-extern void dmxChangeGC(GCPtr pGC, unsigned long mask);
-extern void dmxCopyGC(GCPtr pGCSrc, unsigned long changes, GCPtr pGCDst);
-extern void dmxDestroyGC(GCPtr pGC);
-extern void dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
-extern void dmxDestroyClip(GCPtr pGC);
-extern void dmxCopyClip(GCPtr pGCDst, GCPtr pGCSrc);
 
 extern void dmxBECreateGC(ScreenPtr pScreen, GCPtr pGC);
 extern Bool dmxBEFreeGC(GCPtr pGC);

@@ -39,8 +39,6 @@ DMXSRCS = dmxinputinit.c \
           dmxevents.c \
           dmxevents.h \
 	  dmxxinput.c \
-          dmxmotion.c \
-          dmxmotion.h \
           dmxmap.c \
           dmxmap.h
 
@@ -63,5 +61,3 @@ AM_CFLAGS = $(DIX_CFLAGS) \
             -DHAVE_DMX_CONFIG_H \
             $(GLX_DEFS) \
             @DMXMODULES_CFLAGS@
-
-EXTRA_DIST = dmxdetach.c

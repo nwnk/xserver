@@ -49,8 +49,6 @@ typedef struct _CanvasClassRec {
     CanvasClassPart canvas_class;
 } CanvasClassRec;
 
-extern CanvasClassRec canvasClassRec;
-
 typedef struct {
     XtCallbackList input_callback;
     XtCallbackList expose_callback;

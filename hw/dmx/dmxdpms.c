@@ -185,19 +185,6 @@ dmxDPMSTerm(DMXScreenInfo * dmxScreen)
     dmxSync(dmxScreen, FALSE);
 }
 
-/** Called when activity is detected so that DPMS power-saving mode can
- * be deactivated. */
-void
-dmxDPMSWakeup(void)
-{
-    if (screenIsSaved == SCREEN_SAVER_ON)
-        dixSaveScreens(serverClient, SCREEN_SAVER_OFF, ScreenSaverReset);
-#ifdef DPMSExtension
-    if (DPMSPowerLevel)
-        DPMSSet(serverClient, 0);
-#endif
-}
-
 #ifdef DPMSExtension
 /** This is called on each server generation.  It should determine if
  * DPMS is supported on all of the backends and, if so, return TRUE. */

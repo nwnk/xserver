@@ -50,7 +50,6 @@
 #include "dmxconsole.h"
 #include "dmxcommon.h"
 #include "dmxevents.h"
-#include "dmxmotion.h"
 #include "dmxprop.h"
 #include "config/dmxconfig.h"
 #include "dmxcursor.h"
@@ -78,7 +77,8 @@
 #include "exevents.h"
 #include "extinit.h"
 
-DMXLocalInputInfoPtr dmxLocalCorePointer, dmxLocalCoreKeyboard;
+static DMXLocalInputInfoPtr dmxLocalCorePointer;
+DMXLocalInputInfoPtr dmxLocalCoreKeyboard;
 
 static DMXLocalInputInfoRec DMXDummyMou = {
     "dummy-mou", DMX_LOCAL_MOUSE, DMX_LOCAL_TYPE_LOCAL, 1,
@@ -257,7 +257,7 @@ _dmxChangePointerControl(DMXLocalInputInfoPtr dmxLocal, PtrCtrl * ctrl)
 /** Change the pointer control information for the \a pDevice.  If the
  * device sends core events, then also change the control information
  * for all of the pointer devices that send core events. */
-void
+static void
 dmxChangePointerControl(DeviceIntPtr pDevice, PtrCtrl * ctrl)
 {
     GETDMXLOCALFROMPDEVICE;
@@ -299,7 +299,7 @@ _dmxKeyboardKbdCtrlProc(DMXLocalInputInfoPtr dmxLocal, KeybdCtrl * ctrl)
 /** Change the keyboard control information for the \a pDevice.  If the
  * device sends core events, then also change the control information
  * for all of the keyboard devices that send core events. */
-void
+static void
 dmxKeyboardKbdCtrlProc(DeviceIntPtr pDevice, KeybdCtrl * ctrl)
 {
     GETDMXLOCALFROMPDEVICE;
@@ -334,7 +334,7 @@ _dmxKeyboardBellProc(DMXLocalInputInfoPtr dmxLocal, int percent)
 
 /** Sound the bell on the device.  If the device send core events, then
  * sound the bell on all of the devices that send core events. */
-void
+static void
 dmxKeyboardBellProc(int percent, DeviceIntPtr pDevice,
                     void *ctrl, int unknown)
 {
@@ -483,8 +483,7 @@ dmxDeviceOnOff(DeviceIntPtr pDevice, int what)
             }
             else if (info.numRelAxes) {
                 InitValuatorClassDeviceStruct(pDevice, info.numRelAxes,
-                                              axis_labels,
-                                              dmxPointerGetMotionBufferSize(),
+                                              axis_labels, DMX_MOTION_SIZE,
                                               Relative);
                 for (i = 0; i < info.numRelAxes; i++)
                     InitValuatorAxisStruct(pDevice, i, axis_labels[i],
@@ -495,8 +494,7 @@ dmxDeviceOnOff(DeviceIntPtr pDevice, int what)
             }
             else if (info.numAbsAxes) {
                 InitValuatorClassDeviceStruct(pDevice, info.numAbsAxes,
-                                              axis_labels,
-                                              dmxPointerGetMotionBufferSize(),
+                                              axis_labels, DMX_MOTION_SIZE,
                                               Absolute);
                 for (i = 0; i < info.numAbsAxes; i++)
                     InitValuatorAxisStruct(pDevice, i,
@@ -799,7 +797,7 @@ dmxLookupLocal(const char *name)
 
 /** Copy the local input information from \a s into a new \a devs slot
  * in \a dmxInput. */
-DMXLocalInputInfoPtr
+static DMXLocalInputInfoPtr
 dmxInputCopyLocal(DMXInputInfo * dmxInput, DMXLocalInputInfoPtr s)
 {
     DMXLocalInputInfoPtr dmxLocal = malloc(sizeof(*dmxLocal));
@@ -862,7 +860,7 @@ dmxPopulateLocal(DMXInputInfo * dmxInput, dmxArg a)
     }
 }
 
-int
+static int
 dmxInputExtensionErrorHandler(Display * dsp, _Xconst char *name,
                               _Xconst char *reason)
 {
@@ -1225,7 +1223,7 @@ dmxInputLogDevices(void)
 }
 
 /** Detach an input */
-int
+static int
 dmxInputDetach(DMXInputInfo * dmxInput)
 {
     int i;
@@ -1263,19 +1261,7 @@ dmxInputDetachAll(DMXScreenInfo * dmxScreen)
     }
 }
 
-/** Search for input associated with \a deviceId, and detach. */
-int
-dmxInputDetachId(int id)
-{
-    DMXInputInfo *dmxInput = dmxInputLocateId(id);
-
-    if (!dmxInput)
-        return BadValue;
-
-    return dmxInputDetach(dmxInput);
-}
-
-DMXInputInfo *
+static DMXInputInfo *
 dmxInputLocateId(int id)
 {
     int i, j;
@@ -1291,6 +1277,18 @@ dmxInputLocateId(int id)
         }
     }
     return NULL;
+}
+
+/** Search for input associated with \a deviceId, and detach. */
+int
+dmxInputDetachId(int id)
+{
+    DMXInputInfo *dmxInput = dmxInputLocateId(id);
+
+    if (!dmxInput)
+        return BadValue;
+
+    return dmxInputDetach(dmxInput);
 }
 
 static int

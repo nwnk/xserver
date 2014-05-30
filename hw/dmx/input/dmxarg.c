@@ -57,7 +57,7 @@ struct _dmxArg {
 };
 
 /** Create an (externally opaque) \a dmxArg object. */
-dmxArg
+static dmxArg
 dmxArgCreate(void)
 {
     dmxArg a = malloc(sizeof(*a));
@@ -82,7 +82,7 @@ dmxArgFree(dmxArg a)
 }
 
 /** Add the \a string as the next argument in the \a dmxArg object. */
-void
+static void
 dmxArgAdd(dmxArg a, const char *string)
 {
     if (a->argm <= a->argc + 2)

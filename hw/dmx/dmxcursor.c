@@ -842,7 +842,7 @@ dmxFindCursor(DMXScreenInfo * start)
  * back-end screens and see if they contain the global coord.  If so, call
  * _dmxMoveCursor() (XWarpPointer) to position the pointer on that screen.
  */
-void
+static void
 dmxMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
 {
     DMXScreenInfo *start = &dmxScreens[pScreen->myNum];

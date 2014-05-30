@@ -68,10 +68,6 @@ Xdmx_SOURCES = dmx.c \
                $(GLX_SRCS) 
 
 
-#if COMPOSITE
-#Xdmx_SOURCES += fakecw.c
-#endif
-
 XDMX_LIBS = \
 	$(GLX_LIBS) \
 	@XDMX_LIBS@ \

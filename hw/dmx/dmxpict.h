@@ -62,41 +62,6 @@ extern Bool dmxPictureInit(ScreenPtr pScreen,
 extern void dmxCreatePictureList(WindowPtr pWindow);
 extern Bool dmxDestroyPictureList(WindowPtr pWindow);
 
-extern int dmxCreatePicture(PicturePtr pPicture);
-extern void dmxDestroyPicture(PicturePtr pPicture);
-extern int dmxChangePictureClip(PicturePtr pPicture, int clipType,
-                                void *value, int n);
-extern void dmxDestroyPictureClip(PicturePtr pPicture);
-extern void dmxChangePicture(PicturePtr pPicture, Mask mask);
-extern void dmxValidatePicture(PicturePtr pPicture, Mask mask);
-extern void dmxComposite(CARD8 op,
-                         PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
-                         INT16 xSrc, INT16 ySrc,
-                         INT16 xMask, INT16 yMask,
-                         INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
-extern void dmxGlyphs(CARD8 op,
-                      PicturePtr pSrc, PicturePtr pDst,
-                      PictFormatPtr maskFormat,
-                      INT16 xSrc, INT16 ySrc,
-                      int nlists, GlyphListPtr lists, GlyphPtr * glyphs);
-extern void dmxCompositeRects(CARD8 op,
-                              PicturePtr pDst,
-                              xRenderColor * color,
-                              int nRect, xRectangle *rects);
-extern Bool dmxInitIndexed(ScreenPtr pScreen, PictFormatPtr pFormat);
-extern void dmxCloseIndexed(ScreenPtr pScreen, PictFormatPtr pFormat);
-extern void dmxUpdateIndexed(ScreenPtr pScreen, PictFormatPtr pFormat,
-                             int ndef, xColorItem * pdef);
-extern void dmxTrapezoids(CARD8 op,
-                          PicturePtr pSrc, PicturePtr pDst,
-                          PictFormatPtr maskFormat,
-                          INT16 xSrc, INT16 ySrc,
-                          int ntrap, xTrapezoid * traps);
-extern void dmxTriangles(CARD8 op,
-                         PicturePtr pSrc, PicturePtr pDst,
-                         PictFormatPtr maskFormat,
-                         INT16 xSrc, INT16 ySrc, int ntri, xTriangle * tris);
-
 extern int dmxBECreateGlyphSet(int idx, GlyphSetPtr glyphSet);
 extern Bool dmxBEFreeGlyphSet(ScreenPtr pScreen, GlyphSetPtr glyphSet);
 extern int dmxBECreatePicture(PicturePtr pPicture);

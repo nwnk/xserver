@@ -56,7 +56,6 @@ DMXConfigEntryPtr dmxConfigEntry = NULL;
 %union {
     DMXConfigTokenPtr      token;
     DMXConfigStringPtr     string;
-    DMXConfigNumberPtr     number;
     DMXConfigPairPtr       pair;
     DMXConfigFullDimPtr    fdim;
     DMXConfigPartDimPtr    pdim;

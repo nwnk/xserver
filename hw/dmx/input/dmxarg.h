@@ -39,9 +39,7 @@
 
 typedef struct _dmxArg *dmxArg;
 
-extern dmxArg dmxArgCreate(void);
 extern void dmxArgFree(dmxArg a);
-extern void dmxArgAdd(dmxArg a, const char *string);
 extern const char *dmxArgV(dmxArg a, int item);
 extern int dmxArgC(dmxArg a);
 extern dmxArg dmxArgParse(const char *string);

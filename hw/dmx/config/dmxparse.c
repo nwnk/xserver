@@ -76,7 +76,7 @@ dmxConfigAlloc(unsigned long bytes)
     return area;
 }
 
-void *
+static void *
 dmxConfigRealloc(void *orig, unsigned long orig_bytes, unsigned long bytes)
 {
     unsigned char *area = realloc(orig, bytes);
@@ -120,7 +120,7 @@ dmxConfigCreateToken(int token, int line, const char *comment)
     return pToken;
 }
 
-void
+static void
 dmxConfigFreeToken(DMXConfigTokenPtr p)
 {
     if (!p)
@@ -142,7 +142,7 @@ dmxConfigCreateString(int token, int line,
     return pString;
 }
 
-void
+static void
 dmxConfigFreeString(DMXConfigStringPtr p)
 {
     DMXConfigStringPtr next;
@@ -155,27 +155,6 @@ dmxConfigFreeString(DMXConfigStringPtr p)
         dmxConfigFree((void *) p->string);
         dmxConfigFree(p);
     } while ((p = next));
-}
-
-DMXConfigNumberPtr
-dmxConfigCreateNumber(int token, int line, const char *comment, int number)
-{
-    DMXConfigNumberPtr pNumber = dmxConfigAlloc(sizeof(*pNumber));
-
-    pNumber->token = token;
-    pNumber->line = line;
-    pNumber->comment = comment;
-    pNumber->number = number;
-    return pNumber;
-}
-
-void
-dmxConfigFreeNumber(DMXConfigNumberPtr p)
-{
-    if (!p)
-        return;
-    dmxConfigFree((void *) p->comment);
-    dmxConfigFree(p);
 }
 
 DMXConfigPairPtr
@@ -194,7 +173,7 @@ dmxConfigCreatePair(int token, int line,
     return pPair;
 }
 
-void
+static void
 dmxConfigFreePair(DMXConfigPairPtr p)
 {
     if (!p)
@@ -214,7 +193,7 @@ dmxConfigCreateComment(int token, int line, const char *comment)
     return pComment;
 }
 
-void
+static void
 dmxConfigFreeComment(DMXConfigCommentPtr p)
 {
     if (!p)
@@ -233,7 +212,7 @@ dmxConfigCreatePartDim(DMXConfigPairPtr pDim, DMXConfigPairPtr pOffset)
     return pPart;
 }
 
-void
+static void
 dmxConfigFreePartDim(DMXConfigPartDimPtr p)
 {
     if (!p)
@@ -253,7 +232,7 @@ dmxConfigCreateFullDim(DMXConfigPartDimPtr pScrn, DMXConfigPartDimPtr pRoot)
     return pFull;
 }
 
-void
+static void
 dmxConfigFreeFullDim(DMXConfigFullDimPtr p)
 {
     if (!p)
@@ -349,7 +328,7 @@ dmxConfigCreateWall(DMXConfigTokenPtr pStart,
     return pWall;
 }
 
-void
+static void
 dmxConfigFreeWall(DMXConfigWallPtr p)
 {
     if (!p)
@@ -397,7 +376,7 @@ dmxConfigCreateOption(DMXConfigTokenPtr pStart,
     return option;
 }
 
-void
+static void
 dmxConfigFreeOption(DMXConfigOptionPtr p)
 {
     if (!p)
@@ -455,7 +434,7 @@ dmxConfigCreateParam(DMXConfigTokenPtr pStart,
     return param;
 }
 
-void
+static void
 dmxConfigFreeParam(DMXConfigParamPtr p)
 {
     DMXConfigParamPtr next;
@@ -474,7 +453,7 @@ dmxConfigFreeParam(DMXConfigParamPtr p)
     } while ((p = next));
 }
 
-DMXConfigSubPtr
+static DMXConfigSubPtr
 dmxConfigCreateSub(DMXConfigType type,
                    DMXConfigCommentPtr comment,
                    DMXConfigDisplayPtr display,
@@ -507,7 +486,7 @@ dmxConfigCreateSub(DMXConfigType type,
     return pSub;
 }
 
-void
+static void
 dmxConfigFreeSub(DMXConfigSubPtr sub)
 {
     DMXConfigSubPtr pt;
@@ -616,7 +595,7 @@ dmxConfigFreeVirtual(DMXConfigVirtualPtr virtual)
     dmxConfigFree(virtual);
 }
 
-DMXConfigEntryPtr
+static DMXConfigEntryPtr
 dmxConfigCreateEntry(DMXConfigType type,
                      DMXConfigCommentPtr comment, DMXConfigVirtualPtr virtual)
 {

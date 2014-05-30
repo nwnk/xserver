@@ -58,7 +58,7 @@
 #include "mipointer.h"
 #include "micmap.h"
 
-extern Bool dmxCloseScreen(ScreenPtr pScreen);
+static Bool dmxCloseScreen(ScreenPtr pScreen);
 static Bool dmxSaveScreen(ScreenPtr pScreen, int what);
 
 static unsigned long dmxGeneration;
@@ -374,7 +374,7 @@ dmxBECloseScreen(ScreenPtr pScreen)
 }
 
 /** Close screen number \a idx. */
-Bool
+static Bool
 dmxCloseScreen(ScreenPtr pScreen)
 {
     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];

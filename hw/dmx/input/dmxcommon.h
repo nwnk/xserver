@@ -111,11 +111,6 @@ extern void dmxCommonMouGetMap(DevicePtr pDev,
 extern void dmxCommonMouCtrl(DevicePtr pDev, PtrCtrl * ctrl);
 extern int dmxCommonMouOn(DevicePtr pDev);
 extern void dmxCommonMouOff(DevicePtr pDev);
-extern int dmxFindPointerScreen(int x, int y);
-
-extern int dmxCommonOthOn(DevicePtr pDev);
-extern void dmxCommonOthOff(DevicePtr pDev);
-extern void dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info);
 
                                 /* helper functions */
 extern void *dmxCommonCopyPrivate(DeviceIntPtr pDevice);

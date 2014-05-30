@@ -260,24 +260,12 @@ typedef struct _DMXLocalInputInfo {
                                            * side, if any */
 } DMXLocalInputInfoRec;
 
-extern DMXLocalInputInfoPtr dmxLocalCorePointer, dmxLocalCoreKeyboard;
+extern DMXLocalInputInfoPtr dmxLocalCoreKeyboard;
 
 extern void dmxLocalInitInput(DMXInputInfo * dmxInput);
-extern DMXLocalInputInfoPtr dmxInputCopyLocal(DMXInputInfo * dmxInput,
-                                              DMXLocalInputInfoPtr s);
 
-extern void dmxChangePointerControl(DeviceIntPtr pDevice, PtrCtrl * ctrl);
-extern void dmxKeyboardKbdCtrlProc(DeviceIntPtr pDevice, KeybdCtrl * ctrl);
-extern void dmxKeyboardBellProc(int percent, DeviceIntPtr pDevice,
-                                void *ctrl, int unknown);
-
-extern int dmxInputExtensionErrorHandler(Display * dsp, _Xconst char *name,
-                                         _Xconst char *reason);
-
-extern int dmxInputDetach(DMXInputInfo * dmxInput);
 extern void dmxInputDetachAll(DMXScreenInfo * dmxScreen);
 extern int dmxInputDetachId(int id);
-extern DMXInputInfo *dmxInputLocateId(int id);
 extern int dmxInputAttachConsole(const char *name, int isCore, int *id);
 extern int dmxInputAttachBackend(int physicalScreen, int isCore, int *id);
 

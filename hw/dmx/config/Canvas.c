@@ -119,7 +119,7 @@ static char translations[] = "<Key>:    canvas()\n\
 ";
 
 #define Superclass	(&widgetClassRec)
-CanvasClassRec canvasClassRec = {
+static CanvasClassRec canvasClassRec = {
     /* core */
     {
      (WidgetClass) Superclass,  /* superclass */

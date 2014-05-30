@@ -60,13 +60,6 @@ dmxSetLogLevel(dmxLogLevel newLevel)
     return oldLevel;
 }
 
-/** Returns the log level set by #dmxLogLevel. */
-dmxLogLevel
-dmxGetLogLevel(void)
-{
-    return dmxCurrentLogLevel;
-}
-
 #ifdef DMX_LOG_STANDALONE
 /* When using this file as part of a stand-alone (i.e., non-X-Server
  * program, then the ultimate output routines have to be defined.  */
@@ -269,17 +262,6 @@ dmxLogInputCont(DMXInputInfo * dmxInput, const char *format, ...)
     va_end(args);
 }
 
-/** Print \a argc messages, each describing an element in \a argv.  This
- * is maingly for debugging purposes. */
-void
-dmxLogArgs(dmxLogLevel logLevel, int argc, char **argv)
-{
-    int i;
-
-    for (i = 0; i < argc; i++)
-        dmxLog(logLevel, "   Arg[%d] = \"%s\"\n", i, argv[i]);
-}
-
 /** Print messages at level #dmxInfo describing the visuals in \a vi. */
 void
 dmxLogVisual(DMXScreenInfo * dmxScreen, XVisualInfo * vi, int defaultVisual)
@@ -323,47 +305,6 @@ dmxLogVisual(DMXScreenInfo * dmxScreen, XVisualInfo * vi, int defaultVisual)
                vi->colormap_size,
                vi->red_mask, vi->green_mask, vi->blue_mask,
                defaultVisual ? " *" : "");
-    }
-}
-
-/** Translate a (normalized) XInput event \a type into a human-readable
- * string. */
-const char *
-dmxXInputEventName(int type)
-{
-    switch (type) {
-    case XI_DeviceValuator:
-        return "XI_DeviceValuator";
-    case XI_DeviceKeyPress:
-        return "XI_DeviceKeyPress";
-    case XI_DeviceKeyRelease:
-        return "XI_DeviceKeyRelease";
-    case XI_DeviceButtonPress:
-        return "XI_DeviceButtonPress";
-    case XI_DeviceButtonRelease:
-        return "XI_DeviceButtonRelease";
-    case XI_DeviceMotionNotify:
-        return "XI_DeviceMotionNotify";
-    case XI_DeviceFocusIn:
-        return "XI_DeviceFocusIn";
-    case XI_DeviceFocusOut:
-        return "XI_DeviceFocusOut";
-    case XI_ProximityIn:
-        return "XI_ProximityIn";
-    case XI_ProximityOut:
-        return "XI_ProximityOut";
-    case XI_DeviceStateNotify:
-        return "XI_DeviceStateNotify";
-    case XI_DeviceMappingNotify:
-        return "XI_DeviceMappingNotify";
-    case XI_ChangeDeviceNotify:
-        return "XI_ChangeDeviceNotify";
-    case XI_DeviceKeystateNotify:
-        return "XI_DeviceKeystateNotify";
-    case XI_DeviceButtonstateNotify:
-        return "XI_DeviceButtonstateNotify";
-    default:
-        return "unknown";
     }
 }
 

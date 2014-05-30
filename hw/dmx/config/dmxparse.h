@@ -56,14 +56,6 @@ typedef struct _DMXConfigString {
     struct _DMXConfigString *next;
 } DMXConfigString, *DMXConfigStringPtr;
 
-/** Stores parsed numbers. */
-typedef struct _DMXConfigNumber {
-    int token;
-    int line;
-    const char *comment;
-    int number;
-} DMXConfigNumber, *DMXConfigNumberPtr;
-
 /** Stores parsed pairs (e.g., x y) */
 typedef struct _DMXConfigPair {
     int token;
@@ -206,34 +198,22 @@ extern void yyerror(const char *message);
 
 extern void dmxConfigLog(const char *format, ...) _X_ATTRIBUTE_PRINTF(1,0);
 extern void *dmxConfigAlloc(unsigned long bytes);
-extern void *dmxConfigRealloc(void *orig,
-                              unsigned long orig_bytes, unsigned long bytes);
 extern const char *dmxConfigCopyString(const char *string, int length);
 extern void dmxConfigFree(void *area);
 extern DMXConfigTokenPtr dmxConfigCreateToken(int token, int line,
                                               const char *comment);
-extern void dmxConfigFreeToken(DMXConfigTokenPtr p);
 extern DMXConfigStringPtr dmxConfigCreateString(int token, int line,
                                                 const char *comment,
                                                 const char *string);
-extern void dmxConfigFreeString(DMXConfigStringPtr p);
-extern DMXConfigNumberPtr dmxConfigCreateNumber(int token, int line,
-                                                const char *comment,
-                                                int number);
-extern void dmxConfigFreeNumber(DMXConfigNumberPtr p);
 extern DMXConfigPairPtr dmxConfigCreatePair(int token, int line,
                                             const char *comment,
                                             int x, int y, int xsign, int ysign);
-extern void dmxConfigFreePair(DMXConfigPairPtr p);
 extern DMXConfigCommentPtr dmxConfigCreateComment(int token, int line,
                                                   const char *comment);
-extern void dmxConfigFreeComment(DMXConfigCommentPtr p);
 extern DMXConfigPartDimPtr dmxConfigCreatePartDim(DMXConfigPairPtr pDim,
                                                   DMXConfigPairPtr pOffset);
-extern void dmxConfigFreePartDim(DMXConfigPartDimPtr p);
 extern DMXConfigFullDimPtr dmxConfigCreateFullDim(DMXConfigPartDimPtr pScrn,
                                                   DMXConfigPartDimPtr pRoot);
-extern void dmxConfigFreeFullDim(DMXConfigFullDimPtr p);
 extern DMXConfigDisplayPtr dmxConfigCreateDisplay(DMXConfigTokenPtr pStart,
                                                   DMXConfigStringPtr pName,
                                                   DMXConfigFullDimPtr pDim,
@@ -245,26 +225,16 @@ extern DMXConfigWallPtr dmxConfigCreateWall(DMXConfigTokenPtr pStart,
                                             DMXConfigPairPtr pDisplayDim,
                                             DMXConfigStringPtr pNameList,
                                             DMXConfigTokenPtr pEnd);
-extern void dmxConfigFreeWall(DMXConfigWallPtr p);
 extern DMXConfigOptionPtr dmxConfigCreateOption(DMXConfigTokenPtr pStart,
                                                 DMXConfigStringPtr pOption,
                                                 DMXConfigTokenPtr pEnd);
-extern void dmxConfigFreeOption(DMXConfigOptionPtr p);
 extern DMXConfigParamPtr dmxConfigCreateParam(DMXConfigTokenPtr pStart,
                                               DMXConfigTokenPtr pOpen,
                                               DMXConfigStringPtr pParam,
                                               DMXConfigTokenPtr pClose,
                                               DMXConfigTokenPtr pEnd);
-extern void dmxConfigFreeParam(DMXConfigParamPtr p);
 extern const char **dmxConfigLookupParam(DMXConfigParamPtr p,
                                          const char *key, int *argc);
-extern DMXConfigSubPtr dmxConfigCreateSub(DMXConfigType type,
-                                          DMXConfigCommentPtr comment,
-                                          DMXConfigDisplayPtr display,
-                                          DMXConfigWallPtr wall,
-                                          DMXConfigOptionPtr option,
-                                          DMXConfigParamPtr param);
-extern void dmxConfigFreeSub(DMXConfigSubPtr sub);
 extern DMXConfigSubPtr dmxConfigSubComment(DMXConfigCommentPtr comment);
 extern DMXConfigSubPtr dmxConfigSubDisplay(DMXConfigDisplayPtr display);
 extern DMXConfigSubPtr dmxConfigSubWall(DMXConfigWallPtr wall);
@@ -279,9 +249,6 @@ extern DMXConfigVirtualPtr dmxConfigCreateVirtual(DMXConfigTokenPtr pStart,
                                                   DMXConfigSubPtr pSubentry,
                                                   DMXConfigTokenPtr pClose);
 extern void dmxConfigFreeVirtual(DMXConfigVirtualPtr virtual);
-extern DMXConfigEntryPtr dmxConfigCreateEntry(DMXConfigType type,
-                                              DMXConfigCommentPtr comment,
-                                              DMXConfigVirtualPtr virtual);
 extern void dmxConfigFreeEntry(DMXConfigEntryPtr entry);
 extern DMXConfigEntryPtr dmxConfigAddEntry(DMXConfigEntryPtr head,
                                            DMXConfigType type,

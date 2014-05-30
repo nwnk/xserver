@@ -49,38 +49,8 @@
 #include "pixmapstr.h"
 #include "migc.h"
 
-static const GCFuncs dmxGCFuncs = {
-    dmxValidateGC,
-    dmxChangeGC,
-    dmxCopyGC,
-    dmxDestroyGC,
-    dmxChangeClip,
-    dmxDestroyClip,
-    dmxCopyClip,
-};
-
-static const GCOps dmxGCOps = {
-    dmxFillSpans,
-    dmxSetSpans,
-    dmxPutImage,
-    dmxCopyArea,
-    dmxCopyPlane,
-    dmxPolyPoint,
-    dmxPolylines,
-    dmxPolySegment,
-    dmxPolyRectangle,
-    dmxPolyArc,
-    dmxFillPolygon,
-    dmxPolyFillRect,
-    dmxPolyFillArc,
-    dmxPolyText8,
-    dmxPolyText16,
-    dmxImageText8,
-    dmxImageText16,
-    dmxImageGlyphBlt,
-    dmxPolyGlyphBlt,
-    dmxPushPixels
-};
+static const GCFuncs dmxGCFuncs;
+static const GCOps dmxGCOps;
 
 /** Initialize the GC on \a pScreen */
 Bool
@@ -155,7 +125,7 @@ dmxCreateGC(GCPtr pGC)
 
 /** Validate a graphics context, \a pGC, locally in the DMX server and
  *  recompute the composite clip, if necessary. */
-void
+static void
 dmxValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 {
     dmxGCPrivPtr pGCPriv = DMX_GET_GC_PRIV(pGC);
@@ -194,7 +164,7 @@ dmxValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 
 /** Set the values in the graphics context on the back-end server
  *  associated with \a pGC's screen. */
-void
+static void
 dmxChangeGC(GCPtr pGC, unsigned long mask)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -323,7 +293,7 @@ dmxChangeGC(GCPtr pGC, unsigned long mask)
 
 /** Copy \a pGCSrc to \a pGCDst on the back-end server associated with
  *  \a pGCSrc's screen. */
-void
+static void
 dmxCopyGC(GCPtr pGCSrc, unsigned long changes, GCPtr pGCDst)
 {
     ScreenPtr pScreen = pGCSrc->pScreen;
@@ -360,7 +330,7 @@ dmxBEFreeGC(GCPtr pGC)
 
 /** Destroy the graphics context, \a pGC and free the corresponding GC
  *  on the back-end server. */
-void
+static void
 dmxDestroyGC(GCPtr pGC)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -377,7 +347,7 @@ dmxDestroyGC(GCPtr pGC)
 }
 
 /** Change the clip rects for a GC. */
-void
+static void
 dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -419,7 +389,7 @@ dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
 }
 
 /** Destroy a GC's clip rects. */
-void
+static void
 dmxDestroyClip(GCPtr pGC)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -437,10 +407,43 @@ dmxDestroyClip(GCPtr pGC)
 }
 
 /** Copy a GC's clip rects. */
-void
+static void
 dmxCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
 {
     DMX_GC_FUNC_PROLOGUE(pGCDst);
     pGCDst->funcs->CopyClip(pGCDst, pGCSrc);
     DMX_GC_FUNC_EPILOGUE(pGCDst);
 }
+
+static const GCFuncs dmxGCFuncs = {
+    dmxValidateGC,
+    dmxChangeGC,
+    dmxCopyGC,
+    dmxDestroyGC,
+    dmxChangeClip,
+    dmxDestroyClip,
+    dmxCopyClip,
+};
+
+static const GCOps dmxGCOps = {
+    dmxFillSpans,
+    dmxSetSpans,
+    dmxPutImage,
+    dmxCopyArea,
+    dmxCopyPlane,
+    dmxPolyPoint,
+    dmxPolylines,
+    dmxPolySegment,
+    dmxPolyRectangle,
+    dmxPolyArc,
+    dmxFillPolygon,
+    dmxPolyFillRect,
+    dmxPolyFillArc,
+    dmxPolyText8,
+    dmxPolyText16,
+    dmxImageText8,
+    dmxImageText16,
+    dmxImageGlyphBlt,
+    dmxPolyGlyphBlt,
+    dmxPushPixels
+};

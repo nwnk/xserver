@@ -69,6 +69,8 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client);
 static int dmxProcRenderSetPictureTransform(ClientPtr client);
 static int dmxProcRenderSetPictureFilter(ClientPtr client);
 
+static void dmxValidatePicture(PicturePtr pPicture, Mask mask);
+
 #if 0
 /* FIXME: Not (yet) supported */
 static int dmxProcRenderCreateCursor(ClientPtr client);
@@ -129,43 +131,6 @@ dmxResetRender(void)
 
     for (i = 0; i < RenderNumberRequests; i++)
         ProcRenderVector[i] = dmxSaveRenderVector[i];
-}
-
-/** Initialize the RENDER extension, allocate the picture privates and
- *  wrap mi function hooks.  If the shadow frame buffer is used, then
- *  call the appropriate fb initialization function. */
-Bool
-dmxPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
-{
-    DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
-    PictureScreenPtr ps;
-
-    if (!miPictureInit(pScreen, formats, nformats))
-        return FALSE;
-
-    if (!dixRegisterPrivateKey
-        (&dmxPictPrivateKeyRec, PRIVATE_PICTURE, sizeof(dmxPictPrivRec)))
-        return FALSE;
-
-    ps = GetPictureScreen(pScreen);
-
-    DMX_WRAP(CreatePicture, dmxCreatePicture, dmxScreen, ps);
-    DMX_WRAP(DestroyPicture, dmxDestroyPicture, dmxScreen, ps);
-
-    DMX_WRAP(ChangePictureClip, dmxChangePictureClip, dmxScreen, ps);
-    DMX_WRAP(DestroyPictureClip, dmxDestroyPictureClip, dmxScreen, ps);
-
-    DMX_WRAP(ChangePicture, dmxChangePicture, dmxScreen, ps);
-    DMX_WRAP(ValidatePicture, dmxValidatePicture, dmxScreen, ps);
-
-    DMX_WRAP(Composite, dmxComposite, dmxScreen, ps);
-    DMX_WRAP(Glyphs, dmxGlyphs, dmxScreen, ps);
-    DMX_WRAP(CompositeRects, dmxCompositeRects, dmxScreen, ps);
-
-    DMX_WRAP(Trapezoids, dmxTrapezoids, dmxScreen, ps);
-    DMX_WRAP(Triangles, dmxTriangles, dmxScreen, ps);
-
-    return TRUE;
 }
 
 /** Find the appropriate format on the requested screen given the
@@ -810,7 +775,7 @@ dmxBECreatePicture(PicturePtr pPicture)
 /** Create a picture.  This function handles the CreatePicture
  *  unwrapping/wrapping and calls dmxDoCreatePicture to actually create
  *  the picture on the appropriate screen.  */
-int
+static int
 dmxCreatePicture(PicturePtr pPicture)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -871,7 +836,7 @@ dmxDestroyPictureList(WindowPtr pWindow)
 /** Destroy a picture.  This function calls the wrapped function that
  *  frees the resources in the DMX server associated with this
  *  picture. */
-void
+static void
 dmxDestroyPicture(PicturePtr pPicture)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -892,7 +857,7 @@ dmxDestroyPicture(PicturePtr pPicture)
 }
 
 /** Change the picture's list of clip rectangles. */
-int
+static int
 dmxChangePictureClip(PicturePtr pPicture, int clipType, void *value, int n)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -957,7 +922,7 @@ dmxChangePictureClip(PicturePtr pPicture, int clipType, void *value, int n)
 }
 
 /** Destroy the picture's list of clip rectangles. */
-void
+static void
 dmxDestroyPictureClip(PicturePtr pPicture)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -988,7 +953,7 @@ dmxDestroyPictureClip(PicturePtr pPicture)
  *  been created due to lazy window creation, save the mask so that it
  *  can be used to appropriately initialize the picture's attributes
  *  when it is created later. */
-void
+static void
 dmxChangePicture(PicturePtr pPicture, Mask mask)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -1011,7 +976,7 @@ dmxChangePicture(PicturePtr pPicture, Mask mask)
 /** Validate the picture's attributes before rendering to it.  Update
  *  any picture attributes that have been changed by one of the higher
  *  layers. */
-void
+static void
 dmxValidatePicture(PicturePtr pPicture, Mask mask)
 {
     ScreenPtr pScreen = pPicture->pDrawable->pScreen;
@@ -1087,7 +1052,7 @@ dmxValidatePicture(PicturePtr pPicture, Mask mask)
  *  the specified rectangle of the dst using op as the compositing
  *  operator.  For a complete description see the protocol document of
  *  the RENDER library. */
-void
+static void
 dmxComposite(CARD8 op,
              PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
              INT16 xSrc, INT16 ySrc,
@@ -1129,7 +1094,7 @@ dmxComposite(CARD8 op,
 /** Null function to catch when/if RENDER calls lower level mi hooks.
  *  Compositing glyphs is handled by dmxProcRenderCompositeGlyphs().
  *  This function should never be called. */
-void
+static void
 dmxGlyphs(CARD8 op,
           PicturePtr pSrc, PicturePtr pDst,
           PictFormatPtr maskFormat,
@@ -1143,7 +1108,7 @@ dmxGlyphs(CARD8 op,
  *  with the dest picture in the area specified by the list of
  *  rectangles.  For a complete description see the protocol document of
  *  the RENDER library. */
-void
+static void
 dmxCompositeRects(CARD8 op,
                   PicturePtr pDst,
                   xRenderColor * color, int nRect, xRectangle *rects)
@@ -1172,30 +1137,10 @@ dmxCompositeRects(CARD8 op,
     DMX_WRAP(CompositeRects, dmxCompositeRects, dmxScreen, ps);
 }
 
-/** Indexed color visuals are not yet supported. */
-Bool
-dmxInitIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
-{
-    return TRUE;
-}
-
-/** Indexed color visuals are not yet supported. */
-void
-dmxCloseIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
-{
-}
-
-/** Indexed color visuals are not yet supported. */
-void
-dmxUpdateIndexed(ScreenPtr pScreen, PictFormatPtr pFormat,
-                 int ndef, xColorItem * pdef)
-{
-}
-
 /** Composite a list of trapezoids on the appropriate screen.  For a
  *  complete description see the protocol document of the RENDER
  *  library. */
-void
+static void
 dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
               PictFormatPtr maskFormat,
               INT16 xSrc, INT16 ySrc, int ntrap, xTrapezoid * traps)
@@ -1236,7 +1181,7 @@ dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
 /** Composite a list of triangles on the appropriate screen.  For a
  *  complete description see the protocol document of the RENDER
  *  library. */
-void
+static void
 dmxTriangles(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
              PictFormatPtr maskFormat,
              INT16 xSrc, INT16 ySrc, int ntri, xTriangle * tris)
@@ -1272,4 +1217,41 @@ dmxTriangles(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
     }
 
     DMX_WRAP(Triangles, dmxTriangles, dmxScreen, ps);
+}
+
+/** Initialize the RENDER extension, allocate the picture privates and
+ *  wrap mi function hooks.  If the shadow frame buffer is used, then
+ *  call the appropriate fb initialization function. */
+Bool
+dmxPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+{
+    DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+    PictureScreenPtr ps;
+
+    if (!miPictureInit(pScreen, formats, nformats))
+        return FALSE;
+
+    if (!dixRegisterPrivateKey
+        (&dmxPictPrivateKeyRec, PRIVATE_PICTURE, sizeof(dmxPictPrivRec)))
+        return FALSE;
+
+    ps = GetPictureScreen(pScreen);
+
+    DMX_WRAP(CreatePicture, dmxCreatePicture, dmxScreen, ps);
+    DMX_WRAP(DestroyPicture, dmxDestroyPicture, dmxScreen, ps);
+
+    DMX_WRAP(ChangePictureClip, dmxChangePictureClip, dmxScreen, ps);
+    DMX_WRAP(DestroyPictureClip, dmxDestroyPictureClip, dmxScreen, ps);
+
+    DMX_WRAP(ChangePicture, dmxChangePicture, dmxScreen, ps);
+    DMX_WRAP(ValidatePicture, dmxValidatePicture, dmxScreen, ps);
+
+    DMX_WRAP(Composite, dmxComposite, dmxScreen, ps);
+    DMX_WRAP(Glyphs, dmxGlyphs, dmxScreen, ps);
+    DMX_WRAP(CompositeRects, dmxCompositeRects, dmxScreen, ps);
+
+    DMX_WRAP(Trapezoids, dmxTrapezoids, dmxScreen, ps);
+    DMX_WRAP(Triangles, dmxTriangles, dmxScreen, ps);
+
+    return TRUE;
 }
