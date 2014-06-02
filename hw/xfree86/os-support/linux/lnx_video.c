@@ -40,29 +40,7 @@
 
 static Bool ExtendedEnabled = FALSE;
 
-#ifdef __ia64__
-
 #include "compiler.h"
-#include <sys/io.h>
-
-#elif !defined(__powerpc__) && \
-      !defined(__mc68000__) && \
-      !defined(__sparc__) && \
-      !defined(__mips__) && \
-      !defined(__nds32__) && \
-      !defined(__arm__) && \
-      !defined(__aarch64__) && \
-      !defined(__arc__) && \
-      !defined(__xtensa__)
-
-/*
- * Due to conflicts with "compiler.h", don't rely on <sys/io.h> to declare
- * these.
- */
-extern int ioperm(unsigned long __from, unsigned long __num, int __turn_on);
-extern int iopl(int __level);
-
-#endif
 
 /***************************************************************************/
 /* I/O Permissions section                                                 */
