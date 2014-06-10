@@ -604,7 +604,7 @@ PictureParseCmapPolicy(const char *name)
 
 /** @see GetDefaultBytes */
 static void
-GetPictureBytes(void *value, XID id, ResourceSizePtr size)
+GetPictureBytes(void *value, ResourceSizePtr size)
 {
     PicturePtr picture = value;
 
@@ -620,7 +620,7 @@ GetPictureBytes(void *value, XID id, ResourceSizePtr size)
         SizeType pixmapSizeFunc = GetResourceTypeSizeFunc(RT_PIXMAP);
         ResourceSizeRec pixmapSize = { 0, 0, 0 };
         PixmapPtr pixmap = (PixmapPtr)picture->pDrawable;
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
 }

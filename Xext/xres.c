@@ -365,13 +365,13 @@ ResGetApproxPixmapBytes(PixmapPtr pix)
 }
 
 static void
-ResFindResourcePixmaps(void *value, XID id, RESTYPE type, void *cdata)
+ResFindResourcePixmaps(void *value, RESTYPE type, void *cdata)
 {
     SizeType sizeFunc = GetResourceTypeSizeFunc(type);
     ResourceSizeRec size = { 0, 0, 0 };
     unsigned long *bytes = cdata;
 
-    sizeFunc(value, id, &size);
+    sizeFunc(value, &size);
     *bytes += size.pixmapRefSize;
 }
 
@@ -414,7 +414,7 @@ static void
 ResFindPicturePixmaps(void *value, XID id, void *cdata)
 {
 #ifdef RENDER
-    ResFindResourcePixmaps(value, id, PictureType, cdata);
+    ResFindResourcePixmaps(value, PictureType, cdata);
 #endif
 }
 
@@ -422,7 +422,7 @@ static void
 ResFindCompositeClientWindowPixmaps (void *value, XID id, void *cdata)
 {
 #ifdef COMPOSITE
-    ResFindResourcePixmaps(value, id, CompositeClientWindowType, cdata);
+    ResFindResourcePixmaps(value, CompositeClientWindowType, cdata);
 #endif
 }
 
@@ -782,7 +782,7 @@ AddSubResourceSizeSpec(void *value,
             } else {
                 SizeType sizeFunc = GetResourceTypeSizeFunc(type);
                 ResourceSizeRec size = { 0, 0, 0 };
-                sizeFunc(value, id, &size);
+                sizeFunc(value, &size);
 
                 crossRef->spec.resource = id;
                 crossRef->spec.type = type;
@@ -855,7 +855,7 @@ AddResourceSizeValue(void *ptr, XID id, RESTYPE type, void *cdata)
             SizeType sizeFunc = GetResourceTypeSizeFunc(type);
             ResourceSizeRec size = { 0, 0, 0 };
 
-            sizeFunc(ptr, id, &size);
+            sizeFunc(ptr, &size);
 
             value->size.spec.resource = id;
             value->size.spec.type = type;

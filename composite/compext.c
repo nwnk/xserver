@@ -511,7 +511,7 @@ SProcCompositeDispatch(ClientPtr client)
 
 /** @see GetDefaultBytes */
 static void
-GetCompositeClientWindowBytes(void *value, XID id, ResourceSizePtr size)
+GetCompositeClientWindowBytes(void *value, ResourceSizePtr size)
 {
     WindowPtr window = value;
 
@@ -526,7 +526,7 @@ GetCompositeClientWindowBytes(void *value, XID id, ResourceSizePtr size)
         ResourceSizeRec pixmapSize = { 0, 0 };
         ScreenPtr screen = window->drawable.pScreen;
         PixmapPtr pixmap = screen->GetWindowPixmap(window);
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
 }

@@ -167,7 +167,6 @@ typedef struct {
 } ResourceSizeRec, *ResourceSizePtr;
 
 typedef void (*SizeType)(void *value,
-                         XID id,
                          ResourceSizePtr size);
 
 extern _X_EXPORT RESTYPE CreateNewResourceType(DeleteType deleteFunc,

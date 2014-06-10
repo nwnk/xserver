@@ -194,13 +194,11 @@ struct ResourceType {
  *
  * @param[in] value Pointer to resource object.
  *
- * @param[in] id Resource ID for the object.
- *
  * @param[out] size Fill all fields to zero to indicate that size of
  *                  resource can't be determined.
  */
 static void
-GetDefaultBytes(void *value, XID id, ResourceSizePtr size)
+GetDefaultBytes(void *value, ResourceSizePtr size)
 {
     size->resourceSize = 0;
     size->pixmapRefSize = 0;
@@ -258,14 +256,11 @@ GetDrawableBytes(DrawablePtr drawable)
  *
  * @param[in] value Pointer to a pixmap.
  *
- * @param[in] id Resource ID of pixmap. If the pixmap hasn't been
- *               added as resource, just pass value->drawable.id.
- *
  * @param[out] size Estimate of memory usage attributed to a single
  *                  pixmap reference.
  */
 static void
-GetPixmapBytes(void *value, XID id, ResourceSizePtr size)
+GetPixmapBytes(void *value, ResourceSizePtr size)
 {
     PixmapPtr pixmap = value;
 
@@ -288,13 +283,11 @@ GetPixmapBytes(void *value, XID id, ResourceSizePtr size)
  *
  * @param[in] value Pointer to a window.
  *
- * @param[in] id Resource ID of window.
- *
  * @param[out] size Estimate of memory usage attributed to a all
  *                  pixmap references of a window.
  */
 static void
-GetWindowBytes(void *value, XID id, ResourceSizePtr size)
+GetWindowBytes(void *value, ResourceSizePtr size)
 {
     SizeType pixmapSizeFunc = GetResourceTypeSizeFunc(RT_PIXMAP);
     ResourceSizeRec pixmapSize = { 0, 0, 0 };
@@ -311,13 +304,13 @@ GetWindowBytes(void *value, XID id, ResourceSizePtr size)
     if (window->backgroundState == BackgroundPixmap)
     {
         PixmapPtr pixmap = window->background.pixmap;
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
     if (window->border.pixmap && !window->borderIsPixel)
     {
         PixmapPtr pixmap = window->border.pixmap;
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
 }
@@ -361,13 +354,11 @@ FindWindowSubRes(void *value, FindAllRes func, void *cdata)
  *
  * @param[in] value Pointer to a graphics context.
  *
- * @param[in] id    Resource ID of graphics context.
- *
  * @param[out] size Estimate of memory usage attributed to a all
  *                  pixmap references of a graphics context.
  */
 static void
-GetGcBytes(void *value, XID id, ResourceSizePtr size)
+GetGcBytes(void *value, ResourceSizePtr size)
 {
     SizeType pixmapSizeFunc = GetResourceTypeSizeFunc(RT_PIXMAP);
     ResourceSizeRec pixmapSize = { 0, 0, 0 };
@@ -383,13 +374,13 @@ GetGcBytes(void *value, XID id, ResourceSizePtr size)
     if (gc->stipple)
     {
         PixmapPtr pixmap = gc->stipple;
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
     if (gc->tile.pixmap && !gc->tileIsPixel)
     {
         PixmapPtr pixmap = gc->tile.pixmap;
-        pixmapSizeFunc(pixmap, pixmap->drawable.id, &pixmapSize);
+        pixmapSizeFunc(pixmap, &pixmapSize);
         size->pixmapRefSize += pixmapSize.pixmapRefSize;
     }
 }
