@@ -1021,44 +1021,6 @@ FakeFreeColor(ColormapPtr pmap, Pixel pixel)
     }
 }
 
-typedef unsigned short BigNumUpper;
-typedef unsigned long BigNumLower;
-
-#define BIGNUMLOWERBITS	24
-#define BIGNUMUPPERBITS	16
-#define BIGNUMLOWER (1 << BIGNUMLOWERBITS)
-#define BIGNUMUPPER (1 << BIGNUMUPPERBITS)
-#define UPPERPART(i)	((i) >> BIGNUMLOWERBITS)
-#define LOWERPART(i)	((i) & (BIGNUMLOWER - 1))
-
-typedef struct _bignum {
-    BigNumUpper upper;
-    BigNumLower lower;
-} BigNumRec, *BigNumPtr;
-
-#define BigNumGreater(x,y) (((x)->upper > (y)->upper) ||\
-			    ((x)->upper == (y)->upper && (x)->lower > (y)->lower))
-
-#define UnsignedToBigNum(u,r)	(((r)->upper = UPPERPART(u)), \
-				 ((r)->lower = LOWERPART(u)))
-
-#define MaxBigNum(r)		(((r)->upper = BIGNUMUPPER-1), \
-				 ((r)->lower = BIGNUMLOWER-1))
-
-static void
-BigNumAdd(BigNumPtr x, BigNumPtr y, BigNumPtr r)
-{
-    BigNumLower lower, carry = 0;
-
-    lower = x->lower + y->lower;
-    if (lower >= BIGNUMLOWER) {
-        lower -= BIGNUMLOWER;
-        carry = 1;
-    }
-    r->lower = lower;
-    r->upper = x->upper + y->upper + carry;
-}
-
 static Pixel
 FindBestPixel(EntryPtr pentFirst, int size, xrgb * prgb, int channel)
 {
@@ -1066,10 +1028,10 @@ FindBestPixel(EntryPtr pentFirst, int size, xrgb * prgb, int channel)
     Pixel pixel, final;
     long dr, dg, db;
     unsigned long sq;
-    BigNumRec minval, sum, temp;
+    uint64_t minval, sum, temp;
 
     final = 0;
-    MaxBigNum(&minval);
+    minval = UINT64_MAX;
     /* look for the minimal difference */
     for (pent = pentFirst, pixel = 0; pixel < size; pent++, pixel++) {
         dr = dg = db = 0;
@@ -1088,14 +1050,14 @@ FindBestPixel(EntryPtr pentFirst, int size, xrgb * prgb, int channel)
             break;
         }
         sq = dr * dr;
-        UnsignedToBigNum(sq, &sum);
+        sum = sq;
         sq = dg * dg;
-        UnsignedToBigNum(sq, &temp);
-        BigNumAdd(&sum, &temp, &sum);
+        temp = sq;
+        sum += temp;
         sq = db * db;
-        UnsignedToBigNum(sq, &temp);
-        BigNumAdd(&sum, &temp, &sum);
-        if (BigNumGreater(&minval, &sum)) {
+        temp = sq;
+        sum += temp;
+        if (minval > sum) {
             final = pixel;
             minval = sum;
         }
