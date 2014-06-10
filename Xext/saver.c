@@ -176,8 +176,8 @@ SendScreenSaverNotify(ScreenPtr pScreen,
 typedef struct _ScreenSaverScreenPrivate {
     ScreenSaverEventPtr events;
     ScreenSaverAttrPtr attr;
+    ColormapPtr installedMap;
     Bool hasWindow;
-    Colormap installedMap;
 } ScreenSaverScreenPrivateRec, *ScreenSaverScreenPrivatePtr;
 
 static ScreenSaverScreenPrivatePtr MakeScreenPrivate(ScreenPtr pScreen);
@@ -202,7 +202,7 @@ CheckScreenPrivate(ScreenPtr pScreen)
     if (!pPriv)
         return;
     if (!pPriv->attr && !pPriv->events &&
-        !pPriv->hasWindow && pPriv->installedMap == None) {
+        !pPriv->hasWindow && !pPriv->installedMap) {
         free(pPriv);
         SetScreenPrivate(pScreen, NULL);
         pScreen->screensaver.ExternalScreenSaver = NULL;
@@ -222,7 +222,7 @@ MakeScreenPrivate(ScreenPtr pScreen)
     pPriv->events = 0;
     pPriv->attr = 0;
     pPriv->hasWindow = FALSE;
-    pPriv->installedMap = None;
+    pPriv->installedMap = NULL;
     SetScreenPrivate(pScreen, pPriv);
     pScreen->screensaver.ExternalScreenSaver = ScreenSaverHandle;
     return pPriv;
@@ -444,16 +444,10 @@ static void
 UninstallSaverColormap(ScreenPtr pScreen)
 {
     SetupScreen(pScreen);
-    ColormapPtr pCmap;
-    int rc;
 
-    if (pPriv && pPriv->installedMap != None) {
-        rc = dixLookupResourceByType((void **) &pCmap, pPriv->installedMap,
-                                     RT_COLORMAP, serverClient,
-                                     DixUninstallAccess);
-        if (rc == Success)
-            (*pCmap->pScreen->UninstallColormap) (pCmap);
-        pPriv->installedMap = None;
+    if (pPriv && pPriv->installedMap) {
+        pScreen->UninstallColormap(pPriv->installedMap);
+        pPriv->installedMap = NULL;
         CheckScreenPrivate(pScreen);
     }
 }
@@ -484,7 +478,7 @@ CreateSaverWindow(ScreenPtr pScreen)
     if (!pPriv || !(pAttr = pPriv->attr))
         return FALSE;
 
-    pPriv->installedMap = None;
+    pPriv->installedMap = NULL;
 
     if (GrabInProgress && GrabInProgress != pAttr->client->index)
         return FALSE;
@@ -542,7 +536,7 @@ CreateSaverWindow(ScreenPtr pScreen)
     if (result != Success)
         return TRUE;
 
-    pPriv->installedMap = wantMap;
+    pPriv->installedMap = pCmap;
 
     (*pCmap->pScreen->InstallColormap) (pCmap);
 
