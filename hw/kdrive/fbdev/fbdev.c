@@ -24,6 +24,7 @@
 #include <kdrive-config.h>
 #endif
 #include "fbdev.h"
+#include "micmap.h"
 #include <sys/ioctl.h>
 
 #include <errno.h>
@@ -691,7 +692,7 @@ fbdevCreateColormap(ColormapPtr pmap)
         free(pdefs);
         return TRUE;
     default:
-        return fbInitializeColormap(pmap);
+        return miInitializeColormap(pmap);
     }
 }
 

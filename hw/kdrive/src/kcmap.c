@@ -24,6 +24,7 @@
 #include <kdrive-config.h>
 #endif
 #include "kdrive.h"
+#include "micmap.h"
 
 /*
  * Put the entire colormap into the DAC
@@ -228,9 +229,9 @@ KdStoreColors(ColormapPtr pCmap, int ndef, xColorItem * pdefs)
     if ((pVisual->class | DynamicClass) == DirectColor) {
         /*
          * Expand DirectColor or TrueColor color values into a PseudoColor
-         * format.  Defer to the Color Framebuffer (CFB) code to do that.
+         * format.
          */
-        ndef = fbExpandDirectColors(pCmap, ndef, pdefs, expanddefs);
+        ndef = miExpandDirectColors(pCmap, ndef, pdefs, expanddefs);
         pdefs = expanddefs;
     }
 

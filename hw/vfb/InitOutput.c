@@ -41,6 +41,7 @@ from The Open Group.
 #include "servermd.h"
 #define PSZ 8
 #include "fb.h"
+#include "micmap.h"
 #include "colormapst.h"
 #include "gcstruct.h"
 #include "input.h"
@@ -823,7 +824,7 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     pScreen->blackPixel = pvfb->blackPixel;
     pScreen->whitePixel = pvfb->whitePixel;
 
-    ret = fbCreateDefColormap(pScreen);
+    ret = miCreateDefColormap(pScreen);
 
     miSetZeroLineBias(pScreen, pvfb->lineBias);
 

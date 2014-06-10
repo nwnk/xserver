@@ -734,31 +734,6 @@ fbBltPlane(FbBits * src,
 /*
  * fbcmap_mi.c
  */
-extern _X_EXPORT int
- fbListInstalledColormaps(ScreenPtr pScreen, Colormap * pmaps);
-
-extern _X_EXPORT void
- fbInstallColormap(ColormapPtr pmap);
-
-extern _X_EXPORT void
- fbUninstallColormap(ColormapPtr pmap);
-
-extern _X_EXPORT void
-
-fbResolveColor(unsigned short *pred,
-               unsigned short *pgreen,
-               unsigned short *pblue, VisualPtr pVisual);
-
-extern _X_EXPORT Bool
- fbInitializeColormap(ColormapPtr pmap);
-
-extern _X_EXPORT int
-
-fbExpandDirectColors(ColormapPtr pmap,
-                     int ndef, xColorItem * indefs, xColorItem * outdefs);
-
-extern _X_EXPORT Bool
- fbCreateDefColormap(ScreenPtr pScreen);
 
 extern _X_EXPORT void
  fbClearVisualTypes(void);

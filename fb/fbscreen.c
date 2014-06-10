@@ -25,6 +25,7 @@
 #endif
 
 #include "fb.h"
+#include "micmap.h"
 
 Bool
 fbCloseScreen(ScreenPtr pScreen)
@@ -118,13 +119,13 @@ fbSetupScreen(ScreenPtr pScreen, void *pbits, /* pointer to screen bitmap */
     pScreen->RealizeFont = fbRealizeFont;
     pScreen->UnrealizeFont = fbUnrealizeFont;
     pScreen->CreateGC = fbCreateGC;
-    pScreen->CreateColormap = fbInitializeColormap;
+    pScreen->CreateColormap = miInitializeColormap;
     pScreen->DestroyColormap = (void (*)(ColormapPtr)) NoopDDA;
-    pScreen->InstallColormap = fbInstallColormap;
-    pScreen->UninstallColormap = fbUninstallColormap;
-    pScreen->ListInstalledColormaps = fbListInstalledColormaps;
+    pScreen->InstallColormap = miInstallColormap;
+    pScreen->UninstallColormap = miUninstallColormap;
+    pScreen->ListInstalledColormaps = miListInstalledColormaps;
     pScreen->StoreColors = (void (*)(ColormapPtr, int, xColorItem *)) NoopDDA;
-    pScreen->ResolveColor = fbResolveColor;
+    pScreen->ResolveColor = miResolveColor;
     pScreen->BitmapToRegion = fbPixmapToRegion;
 
     pScreen->GetWindowPixmap = _fbGetWindowPixmap;

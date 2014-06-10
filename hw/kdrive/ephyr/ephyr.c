@@ -31,6 +31,7 @@
 #include <X11/keysym.h>
 
 #include "ephyr.h"
+#include "micmap.h"
 
 #include "inputstr.h"
 #include "scrnintstr.h"
@@ -637,12 +638,6 @@ ephyrResizeScreen (ScreenPtr           pScreen,
 #endif
 
 Bool
-ephyrCreateColormap(ColormapPtr pmap)
-{
-    return fbInitializeColormap(pmap);
-}
-
-Bool
 ephyrInitScreen(ScreenPtr pScreen)
 {
     KdScreenPriv(pScreen);
@@ -655,7 +650,7 @@ ephyrInitScreen(ScreenPtr pScreen)
     } else {
         hostx_set_win_title(screen, "(ctrl+shift grabs mouse and keyboard)");
     }
-    pScreen->CreateColormap = ephyrCreateColormap;
+    pScreen->CreateColormap = miInitializeColormap;
 
 #ifdef XV
     if (!ephyrNoXV) {

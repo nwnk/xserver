@@ -625,7 +625,7 @@ xwl_screen_init(ScreenPtr pScreen, int argc, char **argv)
     pScreen->blackPixel = 0;
     pScreen->whitePixel = 1;
 
-    ret = fbCreateDefColormap(pScreen);
+    ret = miCreateDefColormap(pScreen);
 
     if (!xwl_screen_init_cursor(xwl_screen))
         return FALSE;

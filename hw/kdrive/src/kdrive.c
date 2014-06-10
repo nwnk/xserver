@@ -30,6 +30,7 @@
 #ifdef RANDR
 #include <randrstr.h>
 #endif
+#include "micmap.h"
 
 #ifdef XV
 #include "kxv.h"
@@ -917,7 +918,7 @@ KdScreenInit(ScreenPtr pScreen, int argc, char **argv)
         miDCInitialize(pScreen, &kdPointerScreenFuncs);
     }
 
-    if (!fbCreateDefColormap(pScreen)) {
+    if (!miCreateDefColormap(pScreen)) {
         return FALSE;
     }
 

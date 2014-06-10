@@ -21,12 +21,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * This version of fbcmap.c is implemented in terms of mi functions.
- * These functions used to be in fbcmap.c and depended upon the symbol
- * XFree86Server being defined.
- */
-
 #ifdef HAVE_DIX_CONFIG_H
 #include <dix-config.h>
 #endif
@@ -34,56 +28,6 @@
 #include <X11/X.h>
 #include "fb.h"
 #include "micmap.h"
-
-int
-fbListInstalledColormaps(ScreenPtr pScreen, Colormap * pmaps)
-{
-    return miListInstalledColormaps(pScreen, pmaps);
-}
-
-void
-fbInstallColormap(ColormapPtr pmap)
-{
-    miInstallColormap(pmap);
-}
-
-void
-fbUninstallColormap(ColormapPtr pmap)
-{
-    miUninstallColormap(pmap);
-}
-
-void
-fbResolveColor(unsigned short *pred,
-               unsigned short *pgreen, unsigned short *pblue, VisualPtr pVisual)
-{
-    miResolveColor(pred, pgreen, pblue, pVisual);
-}
-
-Bool
-fbInitializeColormap(ColormapPtr pmap)
-{
-    return miInitializeColormap(pmap);
-}
-
-int
-fbExpandDirectColors(ColormapPtr pmap,
-                     int ndef, xColorItem * indefs, xColorItem * outdefs)
-{
-    return miExpandDirectColors(pmap, ndef, indefs, outdefs);
-}
-
-Bool
-fbCreateDefColormap(ScreenPtr pScreen)
-{
-    return miCreateDefColormap(pScreen);
-}
-
-void
-fbClearVisualTypes(void)
-{
-    miClearVisualTypes();
-}
 
 Bool
 fbSetVisualTypes(int depth, int visuals, int bitsPerRGB)

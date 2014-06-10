@@ -44,7 +44,6 @@
 #define fbCopyRegion wfbCopyRegion
 #define fbCopyWindow wfbCopyWindow
 #define fbCopyWindowProc wfbCopyWindowProc
-#define fbCreateDefColormap wfbCreateDefColormap
 #define fbCreateGC wfbCreateGC
 #define fbCreatePixmap wfbCreatePixmap
 #define fbCreatePixmapBpp wfbCreatePixmapBpp
@@ -58,7 +57,6 @@
 #define fbDots24 wfbDots24
 #define fbDots32 wfbDots32
 #define fbDots8 wfbDots8
-#define fbExpandDirectColors wfbExpandDirectColors
 #define fbFill wfbFill
 #define fbFillRegionSolid wfbFillRegionSolid
 #define fbFillSpans wfbFillSpans
@@ -78,7 +76,6 @@
 #define fbHasVisualTypes wfbHasVisualTypes
 #define fbImageGlyphBlt wfbImageGlyphBlt
 #define fbIn wfbIn
-#define fbInitializeColormap wfbInitializeColormap
 #define fbInitVisuals wfbInitVisuals
 #define fbListInstalledColormaps wfbListInstalledColormaps
 #define FbMergeRopBits wFbMergeRopBits
@@ -125,7 +122,6 @@
 #define fbRasterizeTrapezoid wfbRasterizeTrapezoid
 #define fbRealizeFont wfbRealizeFont
 #define fbReplicatePixel wfbReplicatePixel
-#define fbResolveColor wfbResolveColor
 #define fbScreenPrivateKeyRec wfbScreenPrivateKeyRec
 #define fbSegment wfbSegment
 #define fbSelectBres wfbSelectBres
@@ -139,7 +135,6 @@
 #define fbSolidBoxClipped wfbSolidBoxClipped
 #define fbTrapezoids wfbTrapezoids
 #define fbTriangles wfbTriangles
-#define fbUninstallColormap wfbUninstallColormap
 #define fbUnrealizeWindow wfbUnrealizeWindow
 #define fbUnrealizeFont wfbUnrealizeFont
 #define fbValidateGC wfbValidateGC
