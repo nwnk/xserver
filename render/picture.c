@@ -71,9 +71,7 @@ PictureDestroyWindow(WindowPtr pWindow)
 
     while ((pPicture = GetPictureWindow(pWindow))) {
         SetPictureWindow(pWindow, pPicture->pNext);
-        if (pPicture->id)
-            FreeResource(pPicture->id, PictureType);
-        FreePicture((void *) pPicture, pPicture->id);
+        FreePicture((void *) pPicture, None);
     }
     pScreen->DestroyWindow = ps->DestroyWindow;
     ret = (*pScreen->DestroyWindow) (pWindow);
@@ -772,7 +770,6 @@ CreatePicture(Picture pid,
         return 0;
     }
 
-    pPicture->id = pid;
     pPicture->pDrawable = pDrawable;
     pPicture->pFormat = pFormat;
     pPicture->format = pFormat->format | (pDrawable->bitsPerPixel << 24);
@@ -877,7 +874,6 @@ CreateSolidPicture(Picture pid, xRenderColor * color, int *error)
         return 0;
     }
 
-    pPicture->id = pid;
     pPicture->pSourcePict = (SourcePictPtr) malloc(sizeof(PictSolidFill));
     if (!pPicture->pSourcePict) {
         *error = BadAlloc;
@@ -907,7 +903,6 @@ CreateLinearGradientPicture(Picture pid, xPointFixed * p1, xPointFixed * p2,
         return 0;
     }
 
-    pPicture->id = pid;
     pPicture->pSourcePict = (SourcePictPtr) malloc(sizeof(PictLinearGradient));
     if (!pPicture->pSourcePict) {
         *error = BadAlloc;
@@ -947,7 +942,6 @@ CreateRadialGradientPicture(Picture pid, xPointFixed * inner,
         return 0;
     }
 
-    pPicture->id = pid;
     pPicture->pSourcePict = (SourcePictPtr) malloc(sizeof(PictRadialGradient));
     if (!pPicture->pSourcePict) {
         *error = BadAlloc;
@@ -990,7 +984,6 @@ CreateConicalGradientPicture(Picture pid, xPointFixed * center, xFixed angle,
         return 0;
     }
 
-    pPicture->id = pid;
     pPicture->pSourcePict = (SourcePictPtr) malloc(sizeof(PictConicalGradient));
     if (!pPicture->pSourcePict) {
         *error = BadAlloc;

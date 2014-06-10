@@ -125,7 +125,6 @@ typedef struct _Picture {
     PictFormatPtr pFormat;
     PictFormatShort format;     /* PICT_FORMAT */
     int refcnt;
-    CARD32 id;
     unsigned int repeat:1;
     unsigned int graphicsExposures:1;
     unsigned int subWindowMode:1;
