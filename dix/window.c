@@ -359,7 +359,6 @@ SetWindowToDefaults(WindowPtr pWin)
 
     pWin->valdata = NULL;
     pWin->optional = NULL;
-    pWin->cursorIsNone = TRUE;
 
     pWin->backingStore = NotUseful;
     pWin->backStorage = 0;
@@ -537,8 +536,7 @@ InitRootWindow(WindowPtr pWin)
         return;                 /* XXX */
     (*pScreen->PositionWindow) (pWin, 0, 0);
 
-    pWin->cursorIsNone = FALSE;
-    pWin->optional->cursor = RefCursor(rootCursor);
+    pWin->cursor = RefCursor(rootCursor);
 
     if (party_like_its_1989) {
         MakeRootTile(pWin);
@@ -842,12 +840,6 @@ DisposeWindowOptional(WindowPtr pWin)
      * everything is peachy.  Delete the optional record
      * and clean up
      */
-    if (pWin->optional->cursor) {
-        FreeCursor(pWin->optional->cursor, (Cursor) 0);
-        pWin->cursorIsNone = FALSE;
-    }
-    else
-        pWin->cursorIsNone = TRUE;
 
     free(pWin->optional);
     pWin->optional = NULL;
@@ -875,6 +867,8 @@ FreeWindowResources(WindowPtr pWin)
         (*pScreen->DestroyPixmap) (pWin->border.pixmap);
     if (pWin->backgroundState == BackgroundPixmap)
         (*pScreen->DestroyPixmap) (pWin->background.pixmap);
+    if (pWin->cursor)
+        FreeCursor(pWin->cursor, 0);
 
     DeleteAllWindowProperties(pWin);
     /* We SHOULD check for an error value here XXX */
@@ -1353,52 +1347,9 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
                 }
             }
 
-            if (pCursor != wCursor(pWin)) {
-                /*
-                 * patch up child windows so they don't lose cursors.
-                 */
-
-                for (pChild = pWin->firstChild; pChild;
-                     pChild = pChild->nextSib) {
-                    if (!pChild->optional && !pChild->cursorIsNone &&
-                        !MakeWindowOptional(pChild)) {
-                        error = BadAlloc;
-                        goto PatchUp;
-                    }
-                }
-
-                pOldCursor = 0;
-                if (pCursor == (CursorPtr) None) {
-                    pWin->cursorIsNone = TRUE;
-                    if (pWin->optional) {
-                        pOldCursor = pWin->optional->cursor;
-                        pWin->optional->cursor = (CursorPtr) None;
-                        checkOptional = TRUE;
-                    }
-                }
-                else {
-                    if (!pWin->optional) {
-                        if (!MakeWindowOptional(pWin)) {
-                            error = BadAlloc;
-                            goto PatchUp;
-                        }
-                    }
-                    else if (pWin->parent && pCursor == wCursor(pWin->parent))
-                        checkOptional = TRUE;
-                    pOldCursor = pWin->optional->cursor;
-                    pWin->optional->cursor = RefCursor(pCursor);
-                    pWin->cursorIsNone = FALSE;
-                    /*
-                     * check on any children now matching the new cursor
-                     */
-
-                    for (pChild = pWin->firstChild; pChild;
-                         pChild = pChild->nextSib) {
-                        if (pChild->optional &&
-                            (pChild->optional->cursor == pCursor))
-                            CheckWindowOptionalNeed(pChild);
-                    }
-                }
+            if (pCursor != pWin->cursor) {
+                pOldCursor = pWin->cursor;
+                pWin->cursor = RefCursor(pCursor);
 
                 CursorVisible = TRUE;
 
@@ -3204,9 +3155,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     parentOptional = FindWindowWithOptional(w)->optional;
     if (optional->visual != parentOptional->visual)
         return;
-    if (optional->cursor != None &&
-        (optional->cursor != parentOptional->cursor || w->parent->cursorIsNone))
-        return;
     if (optional->colormap != parentOptional->colormap)
         return;
     DisposeWindowOptional(w);
@@ -3233,12 +3181,6 @@ MakeWindowOptional(WindowPtr pWin)
 
     parentOptional = FindWindowWithOptional(pWin)->optional;
     optional->visual = parentOptional->visual;
-    if (!pWin->cursorIsNone) {
-        optional->cursor = RefCursor(parentOptional->cursor);
-    }
-    else {
-        optional->cursor = None;
-    }
     optional->colormap = parentOptional->colormap;
     pWin->optional = optional;
     return TRUE;
@@ -3526,4 +3468,18 @@ WindowGetVisual(WindowPtr pWin)
         if (pScreen->visuals[i].vid == vid)
             return &pScreen->visuals[i];
     return 0;
+}
+
+CursorPtr
+WindowCursor(WindowPtr pWin)
+{
+    WindowPtr root = pWin->drawable.pScreen->root;
+
+    while (pWin->cursor == NULL) {
+        if (pWin == root)
+            return NULL; /* XXX FatalError? */
+        pWin = pWin->parent;
+    }
+
+    return pWin->cursor;
 }

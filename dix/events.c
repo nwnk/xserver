@@ -969,14 +969,12 @@ PostNewCursor(DeviceIntPtr pDev)
     else
         win = pSprite->win;
     for (; win; win = win->parent) {
-        if (win->optional) {
-            pCursor = WindowGetDeviceCursor(win, pDev);
-            if (!pCursor && win->optional->cursor != NullCursor)
-                pCursor = win->optional->cursor;
-            if (pCursor) {
-                ChangeToCursor(pDev, pCursor);
-                return;
-            }
+        pCursor = WindowGetDeviceCursor(win, pDev);
+        if (!pCursor && win->cursor)
+            pCursor = win->cursor;
+        if (pCursor) {
+            ChangeToCursor(pDev, pCursor);
+            return;
         }
     }
 }

@@ -132,6 +132,8 @@ extern _X_EXPORT struct _Cursor *WindowGetDeviceCursor(WindowPtr /*pWin */ ,
                                                        struct _DeviceIntRec *
                                                        /*pDev */ );
 
+extern _X_EXPORT struct _Cursor *WindowCursor(WindowPtr /* pWin */);
+
 /* Quartz support on Mac OS X uses the HIToolbox
    framework whose GetWindowAttributes function conflicts here. */
 #ifdef __APPLE__

@@ -595,10 +595,8 @@ ReplaceCursorLookup(void *value, XID id, void *closure)
     switch (rcl->type) {
     case RT_WINDOW:
         pWin = (WindowPtr) value;
-        if (pWin->optional) {
-            pCursorRef = &pWin->optional->cursor;
-            pCursor = *pCursorRef;
-        }
+        pCursorRef = &pWin->cursor;
+        pCursor = *pCursorRef;
         break;
     case RT_PASSIVEGRAB:
         pGrab = (GrabPtr) value;

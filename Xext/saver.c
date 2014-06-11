@@ -514,18 +514,10 @@ CreateSaverWindow(ScreenPtr pScreen)
         mask |= CWBorderPixmap;
     }
     if (pAttr->pCursor) {
-        CursorPtr cursor;
-        if (!pWin->optional)
-            if (!MakeWindowOptional(pWin)) {
-                FreeResource(pWin->drawable.id, RT_NONE);
-                return FALSE;
-            }
-        cursor = RefCursor(pAttr->pCursor);
-        if (pWin->optional->cursor)
-            FreeCursor(pWin->optional->cursor, (Cursor) 0);
-        pWin->optional->cursor = cursor;
-        pWin->cursorIsNone = FALSE;
-        CheckWindowOptionalNeed(pWin);
+        CursorPtr cursor = RefCursor(pAttr->pCursor);
+        if (pWin->cursor)
+            FreeCursor(pWin->cursor, (Cursor) 0);
+        pWin->cursor = cursor;
         mask |= CWCursor;
     }
     if (mask)
