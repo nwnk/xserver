@@ -77,8 +77,6 @@ typedef struct _DevCursorNode {
     struct _DevCursorNode *next;
 } DevCursNodeRec, *DevCursNodePtr, *DevCursorList;
 
-typedef struct _WindowOpt WindowOptRec, *WindowOptPtr;
-
 #define BackgroundPixel	    2L
 #define BackgroundPixmap    3L
 
@@ -128,7 +126,6 @@ typedef struct _Window {
     Mask eventMask;             /* mask from the creating client */
     PixUnion background;
     PixUnion border;
-    WindowOptPtr optional;
     Mask dontPropagateMask;     /* default: 0 */
     Mask otherEventMasks;       /* default: 0 */
     struct _OtherClients *otherClients; /* default: NULL */
@@ -170,13 +167,6 @@ typedef struct _Window {
  * Ok, a bunch of macros for accessing the optional record
  * fields (or filling the appropriate default value)
  */
-
-#define wTrackParent(w,field)	((w)->optional ? \
-				    (w)->optional->field \
- 				 : FindWindowWithOptional(w)->optional->field)
-#define wUseDefault(w,field,def)	((w)->optional ? \
-				    (w)->optional->field \
-				 : def)
 
 #define wCursor(w)		WindowCursor(w)
 #define wColormap(w)		((w)->drawable.class == InputOnly ? None : (w)->colormap)

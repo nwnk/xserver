@@ -125,7 +125,7 @@ typedef struct _InputClients {
  * Combined XI event masks from all devices.
  *
  * This is the XI equivalent of the deliverableEvents, eventMask and
- * dontPropagate mask of the WindowRec (or WindowOptRec).
+ * dontPropagate mask of the WindowRec.
  *
  * A window that has an XI client selecting for events has exactly one
  * OtherInputMasks struct and exactly one InputClients struct hanging off

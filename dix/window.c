@@ -358,8 +358,6 @@ SetWindowToDefaults(WindowPtr pWin)
     pWin->lastChild = NullWindow;
 
     pWin->valdata = NULL;
-    pWin->optional = NULL;
-
     pWin->backingStore = NotUseful;
     pWin->backStorage = 0;
 
@@ -816,20 +814,6 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
 }
 
 static void
-DisposeWindowOptional(WindowPtr pWin)
-{
-    if (!pWin->optional)
-        return;
-    /*
-     * everything is peachy.  Delete the optional record
-     * and clean up
-     */
-
-    free(pWin->optional);
-    pWin->optional = NULL;
-}
-
-static void
 FreeWindowResources(WindowPtr pWin)
 {
     ScreenPtr pScreen = pWin->drawable.pScreen;
@@ -871,8 +855,6 @@ FreeWindowResources(WindowPtr pWin)
         }
         pWin->deviceCursors = NULL;
     }
-
-    DisposeWindowOptional(pWin);
 }
 
 static void
@@ -1024,7 +1006,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
     ScreenPtr pScreen;
     Mask index2, tmask, vmaskCopy = 0;
     unsigned int val;
-    Bool checkOptional = FALSE, borderRelative = FALSE;
+    Bool borderRelative = FALSE;
 
     if ((pWin->drawable.class == InputOnly) &&
         (vmask & (~INPUTONLY_LEGAL_MASK)))
@@ -1320,8 +1302,6 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
         vmaskCopy |= index2;
     }
  PatchUp:
-    if (checkOptional)
-        CheckWindowOptionalNeed(pWin);
 
     /* We SHOULD check for an error value here XXX */
     (*pScreen->ChangeWindowAttributes) (pWin, vmaskCopy);
@@ -2268,8 +2248,6 @@ ReparentWindow(WindowPtr pWin, WindowPtr pParent,
     if (TraverseTree(pWin, CompareWIDs, (void *) &pParent->drawable.id) ==
         WT_STOPWALKING)
         return BadMatch;
-    if (!MakeWindowOptional(pWin))
-        return BadAlloc;
 
     if (WasMapped)
         UnmapWindow(pWin, FALSE);
@@ -2338,8 +2316,6 @@ ReparentWindow(WindowPtr pWin, WindowPtr pParent,
         (*pScreen->ReparentWindow) (pWin, pPriorParent);
     (*pScreen->PositionWindow) (pWin, pWin->drawable.x, pWin->drawable.y);
     ResizeChildrenWinSize(pWin, 0, 0, 0, 0);
-
-    CheckWindowOptionalNeed(pWin);
 
     if (WasMapped)
         MapWindow(pWin, client);
@@ -3063,49 +3039,6 @@ TileScreenSaver(ScreenPtr pScreen, int kind)
         (*pWin->drawable.pScreen->ChangeWindowAttributes) (pWin, CWBackPixmap);
     }
     MapWindow(pWin, serverClient);
-    return TRUE;
-}
-
-/*
- * FindWindowWithOptional
- *
- * search ancestors of the given window for an entry containing
- * a WindowOpt structure.  Assumptions:	 some parent will
- * contain the structure.
- */
-
-WindowPtr
-FindWindowWithOptional(WindowPtr w)
-{
-    do
-        w = w->parent;
-    while (!w->optional);
-    return w;
-}
-
-/*
- * CheckWindowOptionalNeed
- *
- * check each optional entry in the given window to see if
- * the value is satisfied by the default rules.	 If so,
- * release the optional record
- */
-
-void
-CheckWindowOptionalNeed(WindowPtr w)
-{
-}
-
-/*
- * MakeWindowOptional
- *
- * create an optional record and initialize it with the default
- * values.
- */
-
-Bool
-MakeWindowOptional(WindowPtr pWin)
-{
     return TRUE;
 }
 
