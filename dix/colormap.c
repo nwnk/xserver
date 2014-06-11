@@ -463,10 +463,7 @@ TellNoMap(WindowPtr pwin, Colormap * pmid)
         if (noPanoramiXExtension || !pwin->drawable.pScreen->myNum)
 #endif
             DeliverEvents(pwin, &xE, 1, (WindowPtr) NULL);
-        if (pwin->optional) {
-            pwin->optional->colormap = None;
-            CheckWindowOptionalNeed(pwin);
-        }
+        pwin->colormap = None;
     }
 
     return WT_WALKCHILDREN;

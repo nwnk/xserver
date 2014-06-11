@@ -217,8 +217,6 @@ init_window(WindowPtr local_window, WindowPtr parent, int id)
         local_window->drawable.height = 200;
     }
     local_window->parent = parent;
-    local_window->optional = calloc(1, sizeof(WindowOptRec));
-    assert(local_window->optional);
 }
 
 extern DevPrivateKeyRec miPointerScreenKeyRec;

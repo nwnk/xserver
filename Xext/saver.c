@@ -730,7 +730,6 @@ ScreenSaverSetAttributes(ClientPtr client)
     int idepth, ivisual;
     Bool fOK;
     DepthPtr pDepth;
-    WindowOptPtr ancwopt;
     unsigned int *pVlist;
     unsigned long *values = 0;
     unsigned long tmask, imask;
@@ -792,9 +791,6 @@ ScreenSaverSetAttributes(ClientPtr client)
 
     if ((class == InputOutput) && (depth == 0))
         depth = pParent->drawable.depth;
-    ancwopt = pParent->optional;
-    if (!ancwopt)
-        ancwopt = FindWindowWithOptional(pParent)->optional;
     if (visual == CopyFromParent)
         visual = pParent->visual;
 
@@ -823,7 +819,7 @@ ScreenSaverSetAttributes(ClientPtr client)
 
     if (((stuff->mask & CWColormap) == 0) &&
         (class != InputOnly) &&
-        ((visual != pParent->visual) || (ancwopt->colormap == None))) {
+        ((visual != pParent->visual) || (pParent->colormap == None))) {
         return BadMatch;
     }
 

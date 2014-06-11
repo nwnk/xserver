@@ -94,7 +94,7 @@ xnestCreateWindow(WindowPtr pWin)
                 visual =
                     xnestVisualFromID(pWin->drawable.pScreen, pWin->visual);
                 mask |= CWColormap;
-                if (pWin->optional->colormap) {
+                if (pWin->colormap) {
                     dixLookupResourceByType((void **) &pCmap, wColormap(pWin),
                                             RT_COLORMAP, serverClient,
                                             DixUseAccess);
@@ -156,7 +156,7 @@ xnestDestroyWindow(WindowPtr pWin)
     XDestroyWindow(xnestDisplay, xnestWindow(pWin));
     xnestWindowPriv(pWin)->window = None;
 
-    if (pWin->optional && pWin->optional->colormap && pWin->parent)
+    if (pWin->colormap && pWin->parent)
         xnestSetInstalledColormapWindows(pWin->drawable.pScreen);
 
     return True;

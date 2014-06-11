@@ -468,11 +468,7 @@ CreateRootWindow(ScreenPtr pScreen)
     pWin->parent = NullWindow;
     SetWindowToDefaults(pWin);
 
-    pWin->optional = malloc(sizeof(WindowOptRec));
-    if (!pWin->optional)
-        return FALSE;
-
-    pWin->optional->colormap = pScreen->defColormap;
+    pWin->colormap = pScreen->defColormap;
     pWin->visual = pScreen->rootVisual;
 
     pWin->nextSib = NullWindow;
@@ -632,7 +628,6 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
     Bool fOK;
     DepthPtr pDepth;
     PixmapFormatRec *format;
-    WindowOptPtr ancwopt;
 
     if (class == CopyFromParent)
         class = pParent->drawable.class;
@@ -656,9 +651,6 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
     pScreen = pParent->drawable.pScreen;
     if ((class == InputOutput) && (depth == 0))
         depth = pParent->drawable.depth;
-    ancwopt = pParent->optional;
-    if (!ancwopt)
-        ancwopt = FindWindowWithOptional(pParent)->optional;
     if (visual == CopyFromParent) {
         visual = pParent->visual;
     }
@@ -691,7 +683,7 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
 
     if (((vmask & CWColormap) == 0) &&
         (class != InputOnly) &&
-        ((visual != pParent->visual) || (ancwopt->colormap == None))) {
+        ((visual != pParent->visual) || (pParent->colormap == None))) {
         *error = BadMatch;
         return NullWindow;
     }
@@ -719,14 +711,7 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
     pWin->parent = pParent;
     SetWindowToDefaults(pWin);
 
-    if (visual != pParent->visual) {
-        if (!MakeWindowOptional(pWin)) {
-            dixFreeObjectWithPrivates(pWin, PRIVATE_WINDOW);
-            *error = BadAlloc;
-            return NullWindow;
-        }
-        pWin->optional->colormap = None;
-    }
+    pWin->colormap = None;
     pWin->visual = visual;
 
     pWin->borderWidth = bw;
@@ -1032,7 +1017,6 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
     Pixmap pixID;
     CursorPtr pCursor, pOldCursor;
     Cursor cursorID;
-    WindowPtr pChild;
     Colormap cmap;
     ColormapPtr pCmap;
     xEvent xE;
@@ -1278,39 +1262,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
                 goto PatchUp;
             }
             if (cmap != wColormap(pWin)) {
-                if (!pWin->optional) {
-                    if (!MakeWindowOptional(pWin)) {
-                        error = BadAlloc;
-                        goto PatchUp;
-                    }
-                }
-                else if (pWin->parent && cmap == wColormap(pWin->parent))
-                    checkOptional = TRUE;
-
-                /*
-                 * propagate the original colormap to any children
-                 * inheriting it
-                 */
-
-                for (pChild = pWin->firstChild; pChild;
-                     pChild = pChild->nextSib) {
-                    if (!pChild->optional && !MakeWindowOptional(pChild)) {
-                        error = BadAlloc;
-                        goto PatchUp;
-                    }
-                }
-
-                pWin->optional->colormap = cmap;
-
-                /*
-                 * check on any children now matching the new colormap
-                 */
-
-                for (pChild = pWin->firstChild; pChild;
-                     pChild = pChild->nextSib) {
-                    if (pChild->optional->colormap == cmap)
-                        CheckWindowOptionalNeed(pChild);
-                }
+                pWin->colormap = cmap;
 
                 xE = (xEvent) {
                     .u.colormap.window = pWin->drawable.id,
@@ -3142,17 +3094,6 @@ FindWindowWithOptional(WindowPtr w)
 void
 CheckWindowOptionalNeed(WindowPtr w)
 {
-    WindowOptPtr optional;
-    WindowOptPtr parentOptional;
-
-    if (!w->parent || !w->optional)
-        return;
-    optional = w->optional;
-
-    parentOptional = FindWindowWithOptional(w)->optional;
-    if (optional->colormap != parentOptional->colormap)
-        return;
-    DisposeWindowOptional(w);
 }
 
 /*
@@ -3165,18 +3106,6 @@ CheckWindowOptionalNeed(WindowPtr w)
 Bool
 MakeWindowOptional(WindowPtr pWin)
 {
-    WindowOptPtr optional;
-    WindowOptPtr parentOptional;
-
-    if (pWin->optional)
-        return TRUE;
-    optional = malloc(sizeof(WindowOptRec));
-    if (!optional)
-        return FALSE;
-
-    parentOptional = FindWindowWithOptional(pWin)->optional;
-    optional->colormap = parentOptional->colormap;
-    pWin->optional = optional;
     return TRUE;
 }
 

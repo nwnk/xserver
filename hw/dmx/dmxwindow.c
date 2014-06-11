@@ -187,7 +187,7 @@ dmxGetDefaultWindowAttributes(WindowPtr pWindow,
         *visual = dmxLookupVisualFromID(pScreen, pWindow->visual);
 
         /* Handle optional colormaps */
-        if (pWindow->optional->colormap) {
+        if (pWindow->colormap) {
             ColormapPtr pCmap;
             dmxColormapPrivPtr pCmapPriv;
 
