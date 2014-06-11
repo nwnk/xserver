@@ -2078,7 +2078,7 @@ DoGetImage(ClientPtr client, int format, Drawable drawable,
             pBoundingDraw = (DrawablePtr) pDraw->pScreen->root;
         }
 
-        xgi.visual = wVisual(pWin);
+        xgi.visual = pWin->visual;
     }
     else {
         pBoundingDraw = pDraw;

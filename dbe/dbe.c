@@ -210,7 +210,7 @@ ProcDbeAllocateBackBufferName(ClientPtr client)
     }
 
     /* See if the window's visual is on the list. */
-    visual = wVisual(pWin);
+    visual = pWin->visual;
     for (i = 0; (i < scrVisInfo.count) && !visualMatched; i++) {
         if (scrVisInfo.visinfo[i].visual == visual) {
             visualMatched = TRUE;

@@ -90,10 +90,9 @@ xnestCreateWindow(WindowPtr pWin)
         attributes.backing_store = NotUseful;
 
         if (pWin->parent) {
-            if (pWin->optional &&
-                pWin->optional->visual != wVisual(pWin->parent)) {
+            if (pWin->visual != pWin->parent->visual) {
                 visual =
-                    xnestVisualFromID(pWin->drawable.pScreen, wVisual(pWin));
+                    xnestVisualFromID(pWin->drawable.pScreen, pWin->visual);
                 mask |= CWColormap;
                 if (pWin->optional->colormap) {
                     dixLookupResourceByType((void **) &pCmap, wColormap(pWin),
@@ -107,8 +106,8 @@ xnestCreateWindow(WindowPtr pWin)
             else
                 visual = CopyFromParent;
         }
-        else {                  /* root windows have their own colormaps at creation time */
-            visual = xnestVisualFromID(pWin->drawable.pScreen, wVisual(pWin));
+        else {  /* root windows have their own colormaps at creation time */
+            visual = xnestVisualFromID(pWin->drawable.pScreen, pWin->visual);
             dixLookupResourceByType((void **) &pCmap, wColormap(pWin),
                                     RT_COLORMAP, serverClient, DixUseAccess);
             mask |= CWColormap;

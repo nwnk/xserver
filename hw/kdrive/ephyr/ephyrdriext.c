@@ -782,7 +782,7 @@ getWindowVisual(const WindowPtr a_win, VisualPtr * a_visual)
                              && a_win->drawable.pScreen
                              && a_win->drawable.pScreen->visuals, FALSE);
 
-    visual_id = wVisual(a_win);
+    visual_id = a_win->visual;
     for (i = 0; i < a_win->drawable.pScreen->numVisuals; i++) {
         if (a_win->drawable.pScreen->visuals[i].vid == visual_id) {
             *a_visual = &a_win->drawable.pScreen->visuals[i];

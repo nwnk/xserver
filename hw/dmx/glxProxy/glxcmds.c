@@ -899,7 +899,7 @@ MakeCurrent(__GLXclientState * cl,
                 VisualID vid;
 
                 pWin = (WindowPtr) pDraw;
-                vid = wVisual(pWin);
+                vid = pWin->visual;
 
                 new_reply.writeVid =
                     (glxc->pFBConfig ? glxc->pFBConfig->id : vid);
@@ -1015,7 +1015,7 @@ MakeCurrent(__GLXclientState * cl,
                 VisualID vid;
 
                 pReadWin = (WindowPtr) pDraw;
-                vid = wVisual(pReadWin);
+                vid = pReadWin->visual;
 
                 new_reply.readVid =
                     (glxc->pFBConfig ? glxc->pFBConfig->id : vid);

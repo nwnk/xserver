@@ -355,8 +355,8 @@ compImplicitRedirect(WindowPtr pWin, WindowPtr pParent)
 {
     if (pParent) {
         ScreenPtr pScreen = pWin->drawable.pScreen;
-        XID winVisual = wVisual(pWin);
-        XID parentVisual = wVisual(pParent);
+        XID winVisual = pWin->visual;
+        XID parentVisual = pParent->visual;
 
         if (compIsImplicitRedirectException(pScreen, parentVisual, winVisual))
             return FALSE;

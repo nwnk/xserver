@@ -246,7 +246,7 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
             ColormapPtr pCmap;
 
             pWin = xnestWindowPtr(icws.windows[0]);
-            visual = xnestVisualFromID(pScreen, wVisual(pWin));
+            visual = xnestVisualFromID(pScreen, pWin->visual);
 
             if (visual == xnestDefaultVisual(pScreen))
                 dixLookupResourceByType((void **) &pCmap, wColormap(pWin),

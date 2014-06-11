@@ -78,7 +78,6 @@ typedef struct _DevCursorNode {
 } DevCursNodeRec, *DevCursNodePtr, *DevCursorList;
 
 typedef struct _WindowOpt {
-    VisualID visual;            /* default: same as parent */
     Colormap colormap;          /* default: same as parent */
 } WindowOptRec, *WindowOptPtr;
 
@@ -143,6 +142,7 @@ typedef struct _Window {
     struct _OtherInputMasks *inputMasks;        /* default: NULL */
     DevCursorList deviceCursors;        /* default: NULL */
     CursorPtr cursor;
+    VisualID visual;
     unsigned backgroundState:2; /* None, Relative, Pixel, Pixmap */
     unsigned borderIsPixel:1;
     unsigned backingStore:2;
@@ -179,7 +179,6 @@ typedef struct _Window {
 				    (w)->optional->field \
 				 : def)
 
-#define wVisual(w)		wTrackParent(w, visual)
 #define wCursor(w)		WindowCursor(w)
 #define wColormap(w)		((w)->drawable.class == InputOnly ? None : wTrackParent(w, colormap))
 #define wDontPropagateMask(w)	((w)->dontPropagateMask)

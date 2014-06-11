@@ -796,10 +796,10 @@ ScreenSaverSetAttributes(ClientPtr client)
     if (!ancwopt)
         ancwopt = FindWindowWithOptional(pParent)->optional;
     if (visual == CopyFromParent)
-        visual = ancwopt->visual;
+        visual = pParent->visual;
 
     /* Find out if the depth and visual are acceptable for this Screen */
-    if ((visual != ancwopt->visual) || (depth != pParent->drawable.depth)) {
+    if ((visual != pParent->visual) || (depth != pParent->drawable.depth)) {
         fOK = FALSE;
         for (idepth = 0; idepth < pScreen->numDepths; idepth++) {
             pDepth = (DepthPtr) &pScreen->allowedDepths[idepth];
@@ -823,7 +823,7 @@ ScreenSaverSetAttributes(ClientPtr client)
 
     if (((stuff->mask & CWColormap) == 0) &&
         (class != InputOnly) &&
-        ((visual != ancwopt->visual) || (ancwopt->colormap == None))) {
+        ((visual != pParent->visual) || (ancwopt->colormap == None))) {
         return BadMatch;
     }
 

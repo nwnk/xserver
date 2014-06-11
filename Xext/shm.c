@@ -649,7 +649,7 @@ ProcShmGetImage(ClientPtr client)
                stuff->y + (int) stuff->height >
                wBorderWidth((WindowPtr) pDraw) + (int) pDraw->height)
             return BadMatch;
-        visual = wVisual(((WindowPtr) pDraw));
+        visual = ((WindowPtr) pDraw)->visual;
     }
     else {
         if (stuff->x < 0 ||
@@ -840,7 +840,7 @@ ProcPanoramiXShmGetImage(ClientPtr client)
         .type = X_Reply,
         .sequenceNumber = client->sequence,
         .length = 0,
-        .visual = wVisual(((WindowPtr) pDraw)),
+        .visual = ((WindowPtr) pDraw)->visual,
         .depth = pDraw->depth
     };
 

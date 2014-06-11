@@ -1961,7 +1961,7 @@ PanoramiXGetImage(ClientPtr client)
     xgi = (xGetImageReply) {
         .type = X_Reply,
         .sequenceNumber = client->sequence,
-        .visual = wVisual(((WindowPtr) pDraw)),
+        .visual = ((WindowPtr) pDraw)->visual,
         .depth = pDraw->depth
     };
     if (format == ZPixmap) {

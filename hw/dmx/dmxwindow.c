@@ -181,11 +181,10 @@ dmxGetDefaultWindowAttributes(WindowPtr pWindow,
     ScreenPtr pScreen = pWindow->drawable.pScreen;
 
     if (pWindow->drawable.class != InputOnly &&
-        pWindow->optional &&
-        pWindow->optional->visual != wVisual(pWindow->parent)) {
+        pWindow->visual != pWindow->parent->visual) {
 
         /* Find the matching visual */
-        *visual = dmxLookupVisualFromID(pScreen, wVisual(pWindow));
+        *visual = dmxLookupVisualFromID(pScreen, pWindow->visual);
 
         /* Handle optional colormaps */
         if (pWindow->optional->colormap) {
@@ -363,8 +362,7 @@ dmxCreateWindow(WindowPtr pWindow)
                 /* Save parent's visual for use later */
                 if (pWinPriv->visual == CopyFromParent)
                     pWinPriv->visual =
-                        dmxLookupVisualFromID(pScreen,
-                                              wVisual(pWindow->parent));
+                        dmxLookupVisualFromID(pScreen, pWindow->parent->visual);
             }
             else {
                 pWinPriv->window = dmxCreateNonRootWindow(pWindow);

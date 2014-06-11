@@ -110,7 +110,7 @@ validGlxFBConfigForWindow(ClientPtr client, __GLXconfig * config,
     XID vid;
     int i;
 
-    vid = wVisual((WindowPtr) pDraw);
+    vid = ((WindowPtr) pDraw)->visual;
     for (i = 0; i < pScreen->numVisuals; i++) {
         if (pScreen->visuals[i].vid == vid) {
             pVisual = &pScreen->visuals[i];

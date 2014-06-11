@@ -473,7 +473,7 @@ CreateRootWindow(ScreenPtr pScreen)
         return FALSE;
 
     pWin->optional->colormap = pScreen->defColormap;
-    pWin->optional->visual = pScreen->rootVisual;
+    pWin->visual = pScreen->rootVisual;
 
     pWin->nextSib = NullWindow;
 
@@ -494,7 +494,6 @@ CreateRootWindow(ScreenPtr pScreen)
     RegionInit(&pWin->borderClip, &box, 1);
 
     pWin->drawable.class = InputOutput;
-    pWin->optional->visual = pScreen->rootVisual;
 
     pWin->backgroundState = BackgroundPixel;
     pWin->background.pixel = pScreen->whitePixel;
@@ -661,11 +660,11 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
     if (!ancwopt)
         ancwopt = FindWindowWithOptional(pParent)->optional;
     if (visual == CopyFromParent) {
-        visual = ancwopt->visual;
+        visual = pParent->visual;
     }
 
     /* Find out if the depth and visual are acceptable for this Screen */
-    if ((visual != ancwopt->visual) || (depth != pParent->drawable.depth)) {
+    if ((visual != pParent->visual) || (depth != pParent->drawable.depth)) {
         fOK = FALSE;
         for (idepth = 0; idepth < pScreen->numDepths; idepth++) {
             pDepth = (DepthPtr) &pScreen->allowedDepths[idepth];
@@ -692,7 +691,7 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
 
     if (((vmask & CWColormap) == 0) &&
         (class != InputOnly) &&
-        ((visual != ancwopt->visual) || (ancwopt->colormap == None))) {
+        ((visual != pParent->visual) || (ancwopt->colormap == None))) {
         *error = BadMatch;
         return NullWindow;
     }
@@ -720,15 +719,15 @@ CreateWindow(Window wid, WindowPtr pParent, int x, int y, unsigned w,
     pWin->parent = pParent;
     SetWindowToDefaults(pWin);
 
-    if (visual != ancwopt->visual) {
+    if (visual != pParent->visual) {
         if (!MakeWindowOptional(pWin)) {
             dixFreeObjectWithPrivates(pWin, PRIVATE_WINDOW);
             *error = BadAlloc;
             return NullWindow;
         }
-        pWin->optional->visual = visual;
         pWin->optional->colormap = None;
     }
+    pWin->visual = visual;
 
     pWin->borderWidth = bw;
 
@@ -1256,9 +1255,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
             cmap = (Colormap) * pVlist;
             pVlist++;
             if (cmap == CopyFromParent) {
-                if (pWin->parent &&
-                    (!pWin->optional ||
-                     pWin->optional->visual == wVisual(pWin->parent))) {
+                if (pWin->parent && pWin->visual == pWin->parent->visual) {
                     cmap = wColormap(pWin->parent);
                 }
                 else
@@ -1275,7 +1272,7 @@ ChangeWindowAttributes(WindowPtr pWin, Mask vmask, XID *vlist, ClientPtr client)
                 client->errorValue = cmap;
                 goto PatchUp;
             }
-            if (pCmap->pVisual->vid != wVisual(pWin) ||
+            if (pCmap->pVisual->vid != pWin->visual ||
                 pCmap->pScreen != pScreen) {
                 error = BadMatch;
                 goto PatchUp;
@@ -1432,7 +1429,7 @@ GetWindowAttributes(WindowPtr pWin, ClientPtr client,
     wa->allEventMasks = pWin->eventMask | wOtherEventMasks(pWin);
     wa->doNotPropagateMask = wDontPropagateMask(pWin);
     wa->class = pWin->drawable.class;
-    wa->visualID = wVisual(pWin);
+    wa->visualID = pWin->visual;
 }
 
 WindowPtr
@@ -3097,7 +3094,7 @@ TileScreenSaver(ScreenPtr pScreen, int kind)
                      (unsigned short) pScreen->width + RANDOM_WIDTH,
                      (unsigned short) pScreen->height + RANDOM_WIDTH,
                      0, InputOutput, mask, attributes, 0, serverClient,
-                     wVisual(pScreen->root), &result);
+                     pScreen->root->visual, &result);
 
     if (cursor)
         FreeResource(cursorID, RT_NONE);
@@ -3153,8 +3150,6 @@ CheckWindowOptionalNeed(WindowPtr w)
     optional = w->optional;
 
     parentOptional = FindWindowWithOptional(w)->optional;
-    if (optional->visual != parentOptional->visual)
-        return;
     if (optional->colormap != parentOptional->colormap)
         return;
     DisposeWindowOptional(w);
@@ -3180,7 +3175,6 @@ MakeWindowOptional(WindowPtr pWin)
         return FALSE;
 
     parentOptional = FindWindowWithOptional(pWin)->optional;
-    optional->visual = parentOptional->visual;
     optional->colormap = parentOptional->colormap;
     pWin->optional = optional;
     return TRUE;
@@ -3461,7 +3455,7 @@ VisualPtr
 WindowGetVisual(WindowPtr pWin)
 {
     ScreenPtr pScreen = pWin->drawable.pScreen;
-    VisualID vid = wVisual(pWin);
+    VisualID vid = pWin->visual;
     int i;
 
     for (i = 0; i < pScreen->numVisuals; i++)
