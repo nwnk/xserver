@@ -51,18 +51,11 @@
 #endif
 
 #include "os.h"
-/* For stat() and related stuff */
-#define NO_OSLIB_PROTOTYPES
-#include "xf86_OSlib.h"
-#define LOADERDECLARATIONS
 #include "loaderProcs.h"
-#include "misc.h"
-#include "xf86.h"
-#include "xf86Priv.h"
-#include "xf86Xinput.h"
+#include "xf86Module.h"
 #include "loader.h"
-#include "xf86Optrec.h"
 
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <regex.h>
 #include <dirent.h>
@@ -317,7 +310,7 @@ InitSubdirs(const char **subdirlist)
                  */
                 if (**s == '/' || **s == '\\' || strchr(*s, ':') ||
                     strstr(*s, "..")) {
-                    xf86Msg(X_ERROR, "InitSubdirs: Bad subdir: \"%s\"\n", *s);
+                    LogMessage(X_ERROR, "InitSubdirs: Bad subdir \"%s\"\n", *s);
                     free(tmp_subdirlist);
                     return NULL;
                 }
@@ -583,22 +576,22 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
     long ver = data->xf86version;
     MessageType errtype;
 
-    xf86Msg(X_INFO, "Module %s: vendor=\"%s\"\n",
-            data->modname ? data->modname : "UNKNOWN!",
-            data->vendor ? data->vendor : "UNKNOWN!");
+    LogMessage(X_INFO, "Module %s: vendor=\"%s\"\n",
+               data->modname ? data->modname : "UNKNOWN!",
+               data->vendor ? data->vendor : "UNKNOWN!");
 
     vercode[0] = ver / 10000000;
     vercode[1] = (ver / 100000) % 100;
     vercode[2] = (ver / 1000) % 100;
     vercode[3] = ver % 1000;
-    xf86ErrorF("\tcompiled for %d.%d.%d", vercode[0], vercode[1], vercode[2]);
+    LogWrite(1, "\tcompiled for %d.%d.%d", vercode[0], vercode[1], vercode[2]);
     if (vercode[3] != 0)
-        xf86ErrorF(".%d", vercode[3]);
-    xf86ErrorF(", module version = %d.%d.%d\n", data->majorversion,
-               data->minorversion, data->patchlevel);
+        LogWrite(1, ".%d", vercode[3]);
+    LogWrite(1, ", module version = %d.%d.%d\n", data->majorversion,
+             data->minorversion, data->patchlevel);
 
     if (data->moduleclass)
-        xf86ErrorFVerb(2, "\tModule class: %s\n", data->moduleclass);
+        LogWrite(2, "\tModule class: %s\n", data->moduleclass);
 
     ver = -1;
     if (data->abiclass) {
@@ -618,8 +611,8 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
 
         abimaj = GET_ABI_MAJOR(data->abiversion);
         abimin = GET_ABI_MINOR(data->abiversion);
-        xf86ErrorFVerb(2, "\tABI class: %s, version %d.%d\n",
-                       data->abiclass, abimaj, abimin);
+        LogWrite(2, "\tABI class: %s, version %d.%d\n",
+                 data->abiclass, abimaj, abimin);
         if (ver != -1) {
             vermaj = GET_ABI_MAJOR(ver);
             vermin = GET_ABI_MINOR(ver);
@@ -628,10 +621,9 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
                     errtype = X_WARNING;
                 else
                     errtype = X_ERROR;
-                xf86MsgVerb(errtype, 0,
-                            "module ABI major version (%d) doesn't"
-                            " match the server's version (%d)\n",
-                            abimaj, vermaj);
+                LogMessageVerb(errtype, 0, "module ABI major version (%d) "
+                               "doesn't match the server's version (%d)\n",
+                               abimaj, vermaj);
                 if (!(LoaderOptions & LDR_OPT_ABI_MISMATCH_NONFATAL))
                     return FALSE;
             }
@@ -640,10 +632,9 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
                     errtype = X_WARNING;
                 else
                     errtype = X_ERROR;
-                xf86MsgVerb(errtype, 0,
-                            "module ABI minor version (%d) is "
-                            "newer than the server's version "
-                            "(%d)\n", abimin, vermin);
+                LogMessageVerb(errtype, 0, "module ABI minor version (%d) is "
+                               "newer than the server's version (%d)\n",
+                               abimin, vermin);
                 if (!(LoaderOptions & LDR_OPT_ABI_MISMATCH_NONFATAL))
                     return FALSE;
             }
@@ -654,24 +645,25 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
     if (req) {
         if (req->majorversion != MAJOR_UNSPEC) {
             if (data->majorversion != req->majorversion) {
-                xf86MsgVerb(X_WARNING, 2, "module major version (%d) "
-                            "doesn't match required major version (%d)\n",
-                            data->majorversion, req->majorversion);
+                LogMessageVerb(X_WARNING, 2, "module major version (%d) "
+                               "doesn't match required major version (%d)\n",
+                               data->majorversion, req->majorversion);
                 return FALSE;
             }
             else if (req->minorversion != MINOR_UNSPEC) {
                 if (data->minorversion < req->minorversion) {
-                    xf86MsgVerb(X_WARNING, 2, "module minor version (%d) "
-                                "is less than the required minor version (%d)\n",
-                                data->minorversion, req->minorversion);
+                    LogMessageVerb(X_WARNING, 2, "module minor version (%d) is "
+                                  "less than the required minor version (%d)\n",
+                                  data->minorversion, req->minorversion);
                     return FALSE;
                 }
                 else if (data->minorversion == req->minorversion &&
                          req->patchlevel != PATCH_UNSPEC) {
                     if (data->patchlevel < req->patchlevel) {
-                        xf86MsgVerb(X_WARNING, 2, "module patch level (%d) "
-                                    "is less than the required patch level (%d)\n",
-                                    data->patchlevel, req->patchlevel);
+                        LogMessageVerb(X_WARNING, 2, "module patch level (%d) "
+                                       "is less than the required patch level "
+                                       "(%d)\n", data->patchlevel,
+                                       req->patchlevel);
                         return FALSE;
                     }
                 }
@@ -680,19 +672,19 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
         if (req->moduleclass) {
             if (!data->moduleclass ||
                 strcmp(req->moduleclass, data->moduleclass)) {
-                xf86MsgVerb(X_WARNING, 2, "Module class (%s) doesn't match "
-                            "the required class (%s)\n",
-                            data->moduleclass ? data->moduleclass : "<NONE>",
-                            req->moduleclass);
+                LogMessageVerb(X_WARNING, 2, "Module class (%s) doesn't match "
+                               "the required class (%s)\n",
+                               data->moduleclass ? data->moduleclass : "<NONE>",
+                               req->moduleclass);
                 return FALSE;
             }
         }
         else if (req->abiclass != ABI_CLASS_NONE) {
             if (!data->abiclass || strcmp(req->abiclass, data->abiclass)) {
-                xf86MsgVerb(X_WARNING, 2, "ABI class (%s) doesn't match the "
-                            "required ABI class (%s)\n",
-                            data->abiclass ? data->abiclass : "<NONE>",
-                            req->abiclass);
+                LogMessageVerb(X_WARNING, 2, "ABI class (%s) doesn't match the "
+                               "required ABI class (%s)\n",
+                               data->abiclass ? data->abiclass : "<NONE>",
+                               req->abiclass);
                 return FALSE;
             }
         }
@@ -705,15 +697,16 @@ CheckVersion(const char *module, XF86ModuleVersionInfo * data,
             maj = GET_ABI_MAJOR(data->abiversion);
             min = GET_ABI_MINOR(data->abiversion);
             if (maj != reqmaj) {
-                xf86MsgVerb(X_WARNING, 2, "ABI major version (%d) doesn't "
-                            "match the required ABI major version (%d)\n",
-                            maj, reqmaj);
+                LogMessageVerb(X_WARNING, 2, "ABI major version (%d) doesn't "
+                               "match the required ABI major version (%d)\n",
+                               maj, reqmaj);
                 return FALSE;
             }
             /* XXX Maybe this should be the other way around? */
             if (min > reqmin) {
-                xf86MsgVerb(X_WARNING, 2, "module ABI minor version (%d) "
-                            "is newer than that available (%d)\n", min, reqmin);
+                LogMessageVerb(X_WARNING, 2, "module ABI minor version (%d) "
+                               "is newer than that available (%d)\n", min,
+                               reqmin);
                 return FALSE;
             }
         }
@@ -737,12 +730,11 @@ LoadSubModule(void *_parent, const char *module,
     ModuleDescPtr submod;
     ModuleDescPtr parent = (ModuleDescPtr) _parent;
 
-    xf86MsgVerb(X_INFO, 3, "Loading sub module \"%s\"\n", module);
+    LogMessageVerb(X_INFO, 3, "Loading sub module \"%s\"\n", module);
 
     if (PathIsAbsolute(module)) {
-        xf86Msg(X_ERROR,
-                "LoadSubModule: Absolute module path not permitted: \"%s\"\n",
-                module);
+        LogMessage(X_ERROR, "LoadSubModule: "
+                   "Absolute module path not permitted: \"%s\"\n", module);
         if (errmaj)
             *errmaj = LDR_BADUSAGE;
         if (errmin)
@@ -868,26 +860,26 @@ LoadModule(const char *module, const char *path, const char **subdirlist,
     char *m = NULL;
     const char **cim;
 
-    xf86MsgVerb(X_INFO, 3, "LoadModule: \"%s\"", module);
+    LogMessageVerb(X_INFO, 3, "LoadModule: \"%s\"", module);
 
     patterns = InitPatterns(patternlist);
     name = LoaderGetCanonicalName(module, patterns);
     noncanonical = (name && strcmp(module, name) != 0);
     if (noncanonical) {
-        xf86ErrorFVerb(3, " (%s)\n", name);
-        xf86MsgVerb(X_WARNING, 1,
-                    "LoadModule: given non-canonical module name \"%s\"\n",
-                    module);
+        LogWrite(3, " (%s)\n", name);
+        LogMessageVerb(X_WARNING, 1,
+                       "LoadModule: given non-canonical module name \"%s\"\n",
+                       module);
         m = name;
     }
     else {
-        xf86ErrorFVerb(3, "\n");
+        LogWrite(3, "\n");
         m = (char *) module;
     }
 
     for (cim = compiled_in_modules; *cim; cim++)
         if (!strcmp(m, *cim)) {
-            xf86MsgVerb(X_INFO, 3, "Module \"%s\" already built-in\n", m);
+            LogMessageVerb(X_INFO, 3, "Module \"%s\" already built-in\n", m);
             ret = (ModuleDescPtr) 1;
             goto LoadModule_exit;
         }
@@ -942,7 +934,7 @@ LoadModule(const char *module, const char *path, const char **subdirlist,
      * did we find the module?
      */
     if (!found) {
-        xf86Msg(X_WARNING, "Warning, couldn't open module %s\n", module);
+        LogMessage(X_WARNING, "Warning, couldn't open module %s\n", module);
         if (errmaj)
             *errmaj = LDR_NOENT;
         if (errmin)
@@ -991,9 +983,8 @@ LoadModule(const char *module, const char *path, const char **subdirlist,
             }
         }
         else {
-            xf86Msg(X_ERROR,
-                    "LoadModule: Module %s does not supply"
-                    " version information\n", module);
+            LogMessage(X_ERROR, "LoadModule: Module %s does not supply"
+                       " version information\n", module);
             if (errmaj)
                 *errmaj = LDR_INVALID;
             if (errmin)
@@ -1008,8 +999,8 @@ LoadModule(const char *module, const char *path, const char **subdirlist,
     }
     else {
         /* no initdata, fail the load */
-        xf86Msg(X_ERROR, "LoadModule: Module %s does not have a %s "
-                "data object.\n", module, p);
+        LogMessage(X_ERROR, "LoadModule: Module %s does not have a %s "
+                   "data object.\n", module, p);
         if (errmaj)
             *errmaj = LDR_INVALID;
         if (errmin)
@@ -1023,8 +1014,8 @@ LoadModule(const char *module, const char *path, const char **subdirlist,
         }
     }
     else if (options) {
-        xf86Msg(X_WARNING, "Module Options present, but no SetupProc "
-                "available for %s\n", module);
+        LogMessage(X_WARNING, "Module Options present, but no SetupProc "
+                   "available for %s\n", module);
     }
     goto LoadModule_exit;
 
@@ -1174,11 +1165,11 @@ LoaderErrorMsg(const char *name, const char *modname, int errmaj, int errmin)
         msg = "unknown error";
     }
     if (name)
-        xf86Msg(type, "%s: Failed to load module \"%s\" (%s, %d)\n",
-                name, modname, msg, errmin);
+        LogMessage(type, "%s: Failed to load module \"%s\" (%s, %d)\n",
+                   name, modname, msg, errmin);
     else
-        xf86Msg(type, "Failed to load module \"%s\" (%s, %d)\n",
-                modname, msg, errmin);
+        LogMessage(type, "Failed to load module \"%s\" (%s, %d)\n",
+                   modname, msg, errmin);
 }
 
 /* Given a module path or file name, return the module's canonical name */
