@@ -28,16 +28,6 @@
 
 #include "fb.h"
 
-const GCFuncs fbGCFuncs = {
-    fbValidateGC,
-    miChangeGC,
-    miCopyGC,
-    miDestroyGC,
-    miChangeClip,
-    miDestroyClip,
-    miCopyClip,
-};
-
 const GCOps fbGCOps = {
     fbFillSpans,
     fbSetSpans,
@@ -65,7 +55,6 @@ Bool
 fbCreateGC(GCPtr pGC)
 {
     pGC->ops = (GCOps *) &fbGCOps;
-    pGC->funcs = (GCFuncs *) &fbGCFuncs;
 
     /* fb wants to translate before scan conversion */
     pGC->miTranslate = 1;

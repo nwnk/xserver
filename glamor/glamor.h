@@ -291,8 +291,6 @@ extern _X_EXPORT void glamor_egl_screen_init(ScreenPtr screen,
                                              struct glamor_context *glamor_ctx);
 extern _X_EXPORT void glamor_egl_destroy_textured_pixmap(PixmapPtr pixmap);
 
-extern _X_EXPORT int glamor_create_gc(GCPtr gc);
-
 extern _X_EXPORT void glamor_validate_gc(GCPtr gc, unsigned long changes,
                                          DrawablePtr drawable);
 

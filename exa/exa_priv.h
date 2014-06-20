@@ -152,6 +152,7 @@ typedef struct {
     ScreenBlockHandlerProcPtr SavedBlockHandler;
     ScreenWakeupHandlerProcPtr SavedWakeupHandler;
     CreateGCProcPtr SavedCreateGC;
+    ValidateGCProcPtr SavedValidateGC;
     CloseScreenProcPtr SavedCloseScreen;
     GetImageProcPtr SavedGetImage;
     GetSpansProcPtr SavedGetSpans;
@@ -330,7 +331,6 @@ typedef struct {
 typedef struct {
     /* GC values from the layer below. */
     const GCOps *Savedops;
-    const GCFuncs *Savedfuncs;
 } ExaGCPrivRec, *ExaGCPrivPtr;
 
 typedef struct {
@@ -583,8 +583,6 @@ void
 
 Bool
  exaPixmapIsPinned(PixmapPtr pPix);
-
-extern const GCFuncs exaGCFuncs;
 
 /* exa_classic.c */
 PixmapPtr

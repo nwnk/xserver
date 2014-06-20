@@ -34,6 +34,7 @@ from The Open Group.
 #include "servermd.h"
 #include "misc.h"
 #include "mi.h"
+#include "migc.h"
 #include "scrnintstr.h"
 #include "pixmapstr.h"
 #include "dix.h"
@@ -255,7 +256,14 @@ miScreenInit(ScreenPtr pScreen, void *pbits,  /* pointer to screen bits */
     pScreen->RestackWindow = (RestackWindowProcPtr) 0;
     /* CreatePixmap, DestroyPixmap */
     /* RealizeFont, UnrealizeFont */
-    /* CreateGC */
+    /* CreateGC, ValidateGC */
+    pScreen->ChangeGC = miChangeGC;
+    pScreen->CopyGC = miCopyGC;
+    pScreen->DestroyGC = miDestroyGC;
+    pScreen->DestroyClip = miDestroyClip;
+    pScreen->ChangeClip = miChangeClip;
+    pScreen->CopyClip = miCopyClip;
+
     /* CreateColormap, DestroyColormap, InstallColormap, UninstallColormap */
     /* ListInstalledColormaps, StoreColors, ResolveColor */
     /* BitmapToRegion */

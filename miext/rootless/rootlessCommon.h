@@ -70,7 +70,6 @@ extern DevPrivateKeyRec rootlessWindowOldPixmapPrivateKeyRec;
 
 // RootlessGCRec: private per-gc data
 typedef struct {
-    GCFuncs *originalFuncs;
     GCOps *originalOps;
 } RootlessGCRec;
 
@@ -96,6 +95,7 @@ typedef struct _RootlessScreenRec {
     ChangeWindowAttributesProcPtr ChangeWindowAttributes;
 
     CreateGCProcPtr CreateGC;
+    ValidateGCProcPtr ValidateGC;
     CopyWindowProcPtr CopyWindow;
     GetImageProcPtr GetImage;
     SourceValidateProcPtr SourceValidate;

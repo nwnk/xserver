@@ -61,7 +61,7 @@ miColorRects(PicturePtr pDst,
 
         pClip = RegionCreate(NULL, 1);
         RegionCopy(pClip, (RegionPtr) pClipPict->clientClip);
-        (*pGC->funcs->ChangeClip) (pGC, CT_REGION, pClip, 0);
+        (*pGC->pScreen->ChangeClip) (pGC, CT_REGION, pClip, 0);
     }
 
     ChangeGC(NullClient, pGC, mask, tmpval);

@@ -89,12 +89,11 @@
 #define UNWRAP_SPRITE PointPriv->spriteFuncs = pScreenPriv->miSprite
 
 #define GC_WRAP(x) pGCPriv->wrapOps = (x)->ops;\
-    pGCPriv->wrapFuncs = (x)->funcs; (x)->ops = &VGAarbiterGCOps;\
-    (x)->funcs = &VGAarbiterGCFuncs;
+    (x)->ops = &VGAarbiterGCOps;
 
 #define GC_UNWRAP(x) VGAarbiterGCPtr  pGCPriv = \
     (VGAarbiterGCPtr)dixLookupPrivate(&(x)->devPrivates, VGAarbiterGCKey);\
-    (x)->ops = pGCPriv->wrapOps; (x)->funcs = pGCPriv->wrapFuncs;
+    (x)->ops = pGCPriv->wrapOps;
 
 static inline void
 VGAGet(ScreenPtr pScreen)
@@ -142,7 +141,6 @@ typedef struct _VGAarbiterScreen {
 
 typedef struct _VGAarbiterGC {
     const GCOps *wrapOps;
-    const GCFuncs *wrapFuncs;
 } VGAarbiterGCRec, *VGAarbiterGCPtr;
 
 /* Screen funcs */
@@ -185,17 +183,6 @@ static Bool VGAarbiterSwitchMode(ScrnInfoPtr pScrn, DisplayModePtr mode);
 static Bool VGAarbiterEnterVT(ScrnInfoPtr pScrn);
 static void VGAarbiterLeaveVT(ScrnInfoPtr pScrn);
 static void VGAarbiterFreeScreen(ScrnInfoPtr pScrn);
-
-/* GC funcs */
-static void VGAarbiterValidateGC(GCPtr pGC, unsigned long changes,
-                                 DrawablePtr pDraw);
-static void VGAarbiterChangeGC(GCPtr pGC, unsigned long mask);
-static void VGAarbiterCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
-static void VGAarbiterDestroyGC(GCPtr pGC);
-static void VGAarbiterChangeClip(GCPtr pGC, int type, void *pvalue,
-                                 int nrects);
-static void VGAarbiterDestroyClip(GCPtr pGC);
-static void VGAarbiterCopyClip(GCPtr pgcDst, GCPtr pgcSrc);
 
 /* GC ops */
 static void VGAarbiterFillSpans(DrawablePtr pDraw, GC * pGC, int nInit,

@@ -64,6 +64,7 @@ typedef struct _damageScrPriv {
     CopyWindowProcPtr CopyWindow;
     CloseScreenProcPtr CloseScreen;
     CreateGCProcPtr CreateGC;
+    ValidateGCProcPtr ValidateGC;
     DestroyPixmapProcPtr DestroyPixmap;
     SetWindowPixmapProcPtr SetWindowPixmap;
     DestroyWindowProcPtr DestroyWindow;
@@ -77,7 +78,6 @@ typedef struct _damageScrPriv {
 
 typedef struct _damageGCPriv {
     const GCOps *ops;
-    const GCFuncs *funcs;
 } DamageGCPrivRec, *DamageGCPrivPtr;
 
 /* XXX should move these into damage.c, damageScrPrivateIndex is static */

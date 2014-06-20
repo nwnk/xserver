@@ -228,6 +228,22 @@ typedef Bool (*SetCursorPositionProcPtr) (DeviceIntPtr /* pDev */ ,
                                           Bool /*generateEvent */ );
 
 typedef Bool (*CreateGCProcPtr) (GCPtr /*pGC */ );
+typedef void (*ValidateGCProcPtr) (GCPtr /*pGC */ ,
+                                   unsigned long /*stateChanges */ ,
+                                   DrawablePtr /*pDrawable */ );
+typedef void (*ChangeGCProcPtr) (GCPtr /*pGC */ ,
+                                 unsigned long /*mask */ );
+typedef void (*CopyGCProcPtr) (GCPtr /*pGCSrc */ ,
+                               unsigned long /*mask */ ,
+                               GCPtr /*pGCDst */ );
+typedef void (*DestroyGCProcPtr) (GCPtr /*pGC */ );
+typedef void (*ChangeClipProcPtr) (GCPtr /*pGC */ ,
+                                   int /*type */ ,
+                                   void * /*pvalue */ ,
+                                   int /*nrects */ );
+typedef void (*DestroyClipProcPtr) (GCPtr /*pGC */ );
+typedef void (*CopyClipProcPtr) (GCPtr /*pgcDst */ ,
+                                 GCPtr /*pgcSrc */ );
 
 typedef Bool (*CreateColormapProcPtr) (ColormapPtr /*pColormap */ );
 
@@ -519,6 +535,13 @@ typedef struct _Screen {
     /* GC procedures */
 
     CreateGCProcPtr CreateGC;
+    ValidateGCProcPtr ValidateGC;
+    ChangeGCProcPtr ChangeGC;
+    CopyGCProcPtr CopyGC;
+    DestroyGCProcPtr DestroyGC;
+    ChangeClipProcPtr ChangeClip;
+    DestroyClipProcPtr DestroyClip;
+    CopyClipProcPtr CopyClip;
 
     /* Colormap procedures */
 

@@ -930,7 +930,7 @@ dmxBECreateResources(void *value, XID id, RESTYPE type, void *n)
                 (void) dmxBELoadFont(pScreen, pGC->font);
             }
             /* Update the GC on the back-end server */
-            pGC->funcs->ChangeGC(pGC, -1L);
+            pGC->pScreen->ChangeGC(pGC, -1L);
         }
     }
     else if ((type & TypeMask) == (RT_FONT & TypeMask)) {

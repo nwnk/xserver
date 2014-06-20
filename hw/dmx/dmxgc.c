@@ -49,7 +49,6 @@
 #include "pixmapstr.h"
 #include "migc.h"
 
-static const GCFuncs dmxGCFuncs;
 static const GCOps dmxGCOps;
 
 /** Initialize the GC on \a pScreen */
@@ -100,10 +99,7 @@ dmxCreateGC(GCPtr pGC)
     DMX_UNWRAP(CreateGC, dmxScreen, pScreen);
     if ((ret = pScreen->CreateGC(pGC))) {
         /* Save the old funcs */
-        pGCPriv->funcs = pGC->funcs;
         pGCPriv->ops = NULL;
-
-        pGC->funcs = &dmxGCFuncs;
 
         if (dmxScreen->beDisplay) {
             dmxBECreateGC(pScreen, pGC);
@@ -125,15 +121,14 @@ dmxCreateGC(GCPtr pGC)
 
 /** Validate a graphics context, \a pGC, locally in the DMX server and
  *  recompute the composite clip, if necessary. */
-static void
+void
 dmxValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 {
+    ScreenPtr pScreen = pGC->pScreen;
     dmxGCPrivPtr pGCPriv = DMX_GET_GC_PRIV(pGC);
+    DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-#if 0
-    pGC->funcs->ValidateGC(pGC, changes, pDrawable);
-#endif
+    DMX_UNWRAP(ValidateGC, dmxScreen, pScreen);
 
     if (pDrawable->type == DRAWABLE_WINDOW ||
         pDrawable->type == DRAWABLE_PIXMAP) {
@@ -159,12 +154,12 @@ dmxValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
         miComputeCompositeClip(pGC, pDrawable);
     }
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    DMX_WRAP(ValidateGC, dmxValidateGC, dmxScreen, pScreen);
 }
 
 /** Set the values in the graphics context on the back-end server
  *  associated with \a pGC's screen. */
-static void
+void
 dmxChangeGC(GCPtr pGC, unsigned long mask)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -172,10 +167,7 @@ dmxChangeGC(GCPtr pGC, unsigned long mask)
     dmxGCPrivPtr pGCPriv = DMX_GET_GC_PRIV(pGC);
     XGCValues v;
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-#if 0
-    pGC->funcs->ChangeGC(pGC, mask);
-#endif
+    DMX_UNWRAP(ChangeGC, dmxScreen, pScreen);
 
     /* Handle "magic special case" from CreateGC */
     if (pGCPriv->msc) {
@@ -288,12 +280,12 @@ dmxChangeGC(GCPtr pGC, unsigned long mask)
         dmxSync(dmxScreen, FALSE);
     }
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    DMX_WRAP(ChangeGC, dmxChangeGC, dmxScreen, pScreen);
 }
 
 /** Copy \a pGCSrc to \a pGCDst on the back-end server associated with
  *  \a pGCSrc's screen. */
-static void
+void
 dmxCopyGC(GCPtr pGCSrc, unsigned long changes, GCPtr pGCDst)
 {
     ScreenPtr pScreen = pGCSrc->pScreen;
@@ -301,14 +293,14 @@ dmxCopyGC(GCPtr pGCSrc, unsigned long changes, GCPtr pGCDst)
     dmxGCPrivPtr pGCSrcPriv = DMX_GET_GC_PRIV(pGCSrc);
     dmxGCPrivPtr pGCDstPriv = DMX_GET_GC_PRIV(pGCDst);
 
-    DMX_GC_FUNC_PROLOGUE(pGCDst);
-    pGCDst->funcs->CopyGC(pGCSrc, changes, pGCDst);
+    DMX_UNWRAP(CopyGC, dmxScreen, pScreen);
+    pScreen->CopyGC(pGCSrc, changes, pGCDst);
 
     /* Copy the GC on the back-end server */
     if (dmxScreen->beDisplay)
         XCopyGC(dmxScreen->beDisplay, pGCSrcPriv->gc, changes, pGCDstPriv->gc);
 
-    DMX_GC_FUNC_EPILOGUE(pGCDst);
+    DMX_WRAP(CopyGC, dmxCopyGC, dmxScreen, pScreen);
 }
 
 /** Free the \a pGC on the back-end server. */
@@ -330,24 +322,24 @@ dmxBEFreeGC(GCPtr pGC)
 
 /** Destroy the graphics context, \a pGC and free the corresponding GC
  *  on the back-end server. */
-static void
+void
 dmxDestroyGC(GCPtr pGC)
 {
     ScreenPtr pScreen = pGC->pScreen;
     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
+    DMX_UNWRAP(DestroyGC, dmxScreen, pScreen);
 
     /* Free the GC on the back-end server */
     if (dmxScreen->beDisplay)
         dmxBEFreeGC(pGC);
 
-    pGC->funcs->DestroyGC(pGC);
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    pScreen->DestroyGC(pGC);
+    DMX_WRAP(DestroyGC, dmxDestroyGC, dmxScreen, pScreen);
 }
 
 /** Change the clip rects for a GC. */
-static void
+void
 dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
 {
     ScreenPtr pScreen = pGC->pScreen;
@@ -357,8 +349,8 @@ dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
     BoxPtr pBox;
     int i, nRects;
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-    pGC->funcs->ChangeClip(pGC, type, pvalue, nrects);
+    DMX_UNWRAP(ChangeClip, dmxScreen, pScreen);
+    pScreen->ChangeClip(pGC, type, pvalue, nrects);
 
     /* Set the client clip on the back-end server */
     if (!pGC->clientClip) {
@@ -385,45 +377,26 @@ dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
         }
     }
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    DMX_WRAP(ChangeClip, dmxChangeClip, dmxScreen, pScreen);
 }
 
 /** Destroy a GC's clip rects. */
-static void
+void
 dmxDestroyClip(GCPtr pGC)
 {
     ScreenPtr pScreen = pGC->pScreen;
     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
     dmxGCPrivPtr pGCPriv = DMX_GET_GC_PRIV(pGC);
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-    pGC->funcs->DestroyClip(pGC);
+    DMX_UNWRAP(DestroyClip, dmxScreen, pScreen);
+    pScreen->DestroyClip(pGC);
 
     /* Set the client clip on the back-end server to None */
     if (dmxScreen->beDisplay)
         XSetClipMask(dmxScreen->beDisplay, pGCPriv->gc, None);
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    DMX_WRAP(DestroyClip, dmxDestroyClip, dmxScreen, pScreen);
 }
-
-/** Copy a GC's clip rects. */
-static void
-dmxCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
-{
-    DMX_GC_FUNC_PROLOGUE(pGCDst);
-    pGCDst->funcs->CopyClip(pGCDst, pGCSrc);
-    DMX_GC_FUNC_EPILOGUE(pGCDst);
-}
-
-static const GCFuncs dmxGCFuncs = {
-    dmxValidateGC,
-    dmxChangeGC,
-    dmxCopyGC,
-    dmxDestroyGC,
-    dmxChangeClip,
-    dmxDestroyClip,
-    dmxCopyClip,
-};
 
 static const GCOps dmxGCOps = {
     dmxFillSpans,

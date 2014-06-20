@@ -401,7 +401,6 @@ extern _X_EXPORT void fbSetBits(FbStip * bits, int stride, FbStip data);
 }
 
 extern _X_EXPORT const GCOps fbGCOps;
-extern _X_EXPORT const GCFuncs fbGCFuncs;
 
 /* Framebuffer access wrapper */
 typedef FbBits(*ReadMemoryProcPtr) (const void *src, int size);

@@ -59,35 +59,6 @@ SOFTWARE.
 #define GCAllBits ((1 << (GCLastBit + 1)) - 1)
 
 /*
- * functions which modify the state of the GC
- */
-
-typedef struct _GCFuncs {
-    void (*ValidateGC) (GCPtr /*pGC */ ,
-                        unsigned long /*stateChanges */ ,
-                        DrawablePtr /*pDrawable */ );
-
-    void (*ChangeGC) (GCPtr /*pGC */ ,
-                      unsigned long /*mask */ );
-
-    void (*CopyGC) (GCPtr /*pGCSrc */ ,
-                    unsigned long /*mask */ ,
-                    GCPtr /*pGCDst */ );
-
-    void (*DestroyGC) (GCPtr /*pGC */ );
-
-    void (*ChangeClip) (GCPtr pGC,
-                        int type,
-                        void *pvalue,
-                        int nrects);
-
-    void (*DestroyClip) (GCPtr /*pGC */ );
-
-    void (*CopyClip) (GCPtr /*pgcDst */ ,
-                      GCPtr /*pgcSrc */ );
-} GCFuncs;
-
-/*
  * graphics operations invoked through a GC
  */
 
@@ -275,7 +246,6 @@ typedef struct _GC {
     RegionPtr clientClip;
     unsigned int stateChanges; /* masked with GC_<kind> */
     unsigned int serialNumber;
-    const GCFuncs *funcs;
     const GCOps *ops;
     PrivateRec *devPrivates;
     /*

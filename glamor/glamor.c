@@ -504,8 +504,11 @@ glamor_init(ScreenPtr screen, unsigned int flags)
         goto fail;
     }
 
-    glamor_priv->saved_procs.create_gc = screen->CreateGC;
-    screen->CreateGC = glamor_create_gc;
+    glamor_priv->saved_procs.validate_gc = screen->ValidateGC;
+    screen->ValidateGC = glamor_validate_gc;
+
+    glamor_priv->saved_procs.destroy_gc = screen->DestroyGC;
+    screen->DestroyGC = glamor_destroy_gc;
 
     glamor_priv->saved_procs.create_pixmap = screen->CreatePixmap;
     screen->CreatePixmap = glamor_create_pixmap;
@@ -631,7 +634,8 @@ glamor_close_screen(ScreenPtr screen)
     screen->CreateScreenResources =
         glamor_priv->saved_procs.create_screen_resources;
 
-    screen->CreateGC = glamor_priv->saved_procs.create_gc;
+    screen->ValidateGC = glamor_priv->saved_procs.validate_gc;
+    screen->DestroyGC = glamor_priv->saved_procs.destroy_gc;
     screen->CreatePixmap = glamor_priv->saved_procs.create_pixmap;
     screen->DestroyPixmap = glamor_priv->saved_procs.destroy_pixmap;
     screen->GetSpans = glamor_priv->saved_procs.get_spans;

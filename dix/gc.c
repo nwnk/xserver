@@ -72,9 +72,9 @@ static Bool CreateDefaultTile(GCPtr pGC);
 static unsigned char DefaultDash[2] = { 4, 4 };
 
 void
-ValidateGC(DrawablePtr pDraw, GC * pGC)
+ValidateGC(DrawablePtr pDraw, GC *pGC)
 {
-    (*pGC->funcs->ValidateGC) (pGC, pGC->stateChanges, pDraw);
+    pGC->pScreen->ValidateGC (pGC, pGC->stateChanges, pDraw);
     pGC->stateChanges = 0;
     pGC->serialNumber = pDraw->serialNumber;
 }
@@ -340,8 +340,8 @@ ChangeGC(ClientPtr client, GC * pGC, BITS32 mask, ChangeGCValPtr pUnion)
                 }
                 pPixmap->refcnt++;
             }
-            (*pGC->funcs->ChangeClip) (pGC, pPixmap ? CT_PIXMAP : CT_NONE,
-                                       (void *) pPixmap, 0);
+            pGC->pScreen->ChangeClip(pGC, pPixmap ? CT_PIXMAP : CT_NONE,
+                                     (void *) pPixmap, 0);
             break;
         case GCDashOffset:
             NEXTVAL(INT16, pGC->dashOffset);
@@ -409,7 +409,7 @@ ChangeGC(ClientPtr client, GC * pGC, BITS32 mask, ChangeGCValPtr pUnion)
             error = BadAlloc;
         }
     }
-    (*pGC->funcs->ChangeGC) (pGC, maskQ);
+    (*pGC->pScreen->ChangeGC) (pGC, maskQ);
     return error;
 }
 
@@ -475,7 +475,6 @@ NewGCObject(ScreenPtr pScreen, int depth)
     pGC->alu = GXcopy;          /* dst <- src */
     pGC->planemask = ~0;
     pGC->serialNumber = 0;
-    pGC->funcs = 0;
     pGC->fgPixel = 0;
     pGC->bgPixel = 1;
     pGC->lineWidth = 0;
@@ -712,7 +711,7 @@ CopyGC(GC * pgcSrc, GC * pgcDst, BITS32 mask)
             pgcDst->clipOrg.y = pgcSrc->clipOrg.y;
             break;
         case GCClipMask:
-            (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
+            (*pgcDst->pScreen->CopyClip) (pgcDst, pgcSrc);
             break;
         case GCDashOffset:
             pgcDst->dashOffset = pgcSrc->dashOffset;
@@ -755,7 +754,7 @@ CopyGC(GC * pgcSrc, GC * pgcDst, BITS32 mask)
             error = BadAlloc;
         }
     }
-    (*pgcDst->funcs->CopyGC) (pgcSrc, maskQ, pgcDst);
+    (*pgcDst->pScreen->CopyGC) (pgcSrc, maskQ, pgcDst);
     return error;
 }
 
@@ -770,14 +769,14 @@ FreeGC(void *value, XID gid)
     GCPtr pGC = (GCPtr) value;
 
     CloseFont(pGC->font, (Font) 0);
-    (*pGC->funcs->DestroyClip) (pGC);
+    (*pGC->pScreen->DestroyClip) (pGC);
 
     if (!pGC->tileIsPixel)
         (*pGC->pScreen->DestroyPixmap) (pGC->tile.pixmap);
     if (pGC->stipple)
         (*pGC->pScreen->DestroyPixmap) (pGC->stipple);
 
-    (*pGC->funcs->DestroyGC) (pGC);
+    (*pGC->pScreen->DestroyGC) (pGC);
     if (pGC->dash != DefaultDash)
         free(pGC->dash);
     dixFreeObjectWithPrivates(pGC, PRIVATE_GC);
@@ -953,8 +952,8 @@ SetDashes(GCPtr pGC, unsigned offset, unsigned ndash, unsigned char *pdash)
     pGC->stateChanges |= GCDashList;
     maskQ |= GCDashList;
 
-    if (pGC->funcs->ChangeGC)
-        (*pGC->funcs->ChangeGC) (pGC, maskQ);
+    if (pGC->pScreen->ChangeGC)
+        (*pGC->pScreen->ChangeGC) (pGC, maskQ);
     return Success;
 }
 
@@ -1024,10 +1023,10 @@ SetClipRects(GCPtr pGC, int xOrigin, int yOrigin, int nrects,
 
     if (size)
         memmove((char *) prectsNew, (char *) prects, size);
-    (*pGC->funcs->ChangeClip) (pGC, newct, (void *) prectsNew, nrects);
-    if (pGC->funcs->ChangeGC)
-        (*pGC->funcs->ChangeGC) (pGC,
-                                 GCClipXOrigin | GCClipYOrigin | GCClipMask);
+    (*pGC->pScreen->ChangeClip) (pGC, newct, (void *) prectsNew, nrects);
+    if (pGC->pScreen->ChangeGC) /* XXX */
+        (*pGC->pScreen->ChangeGC) (pGC,
+                                   GCClipXOrigin | GCClipYOrigin | GCClipMask);
     return Success;
 }
 
@@ -1067,7 +1066,7 @@ GetScratchGC(unsigned depth, ScreenPtr pScreen)
             pGC->clipOrg.x = 0;
             pGC->clipOrg.y = 0;
             if (pGC->clientClip)
-                (*pGC->funcs->ChangeClip) (pGC, CT_NONE, NULL, 0);
+                (*pGC->pScreen->ChangeClip) (pGC, CT_NONE, NULL, 0);
             pGC->stateChanges = GCAllBits;
             return pGC;
         }

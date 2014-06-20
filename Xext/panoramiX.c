@@ -109,53 +109,50 @@ int (*SavedProcVector[256]) (ClientPtr client) = {
 NULL,};
 
 static DevPrivateKeyRec PanoramiXGCKeyRec;
-
 #define PanoramiXGCKey (&PanoramiXGCKeyRec)
-static DevPrivateKeyRec PanoramiXScreenKeyRec;
 
+static DevPrivateKeyRec PanoramiXScreenKeyRec;
 #define PanoramiXScreenKey (&PanoramiXScreenKeyRec)
 
 typedef struct {
     DDXPointRec clipOrg;
     DDXPointRec patOrg;
-    const GCFuncs *wrapFuncs;
 } PanoramiXGCRec, *PanoramiXGCPtr;
 
 typedef struct {
     CreateGCProcPtr CreateGC;
+    ValidateGCProcPtr ValidateGC;
+    ChangeGCProcPtr ChangeGC;
+    CopyGCProcPtr CopyGC;
     CloseScreenProcPtr CloseScreen;
 } PanoramiXScreenRec, *PanoramiXScreenPtr;
 
-static void XineramaValidateGC(GCPtr, unsigned long, DrawablePtr);
-static void XineramaChangeGC(GCPtr, unsigned long);
-static void XineramaCopyGC(GCPtr, unsigned long, GCPtr);
-static void XineramaDestroyGC(GCPtr);
-static void XineramaChangeClip(GCPtr, int, void *, int);
-static void XineramaDestroyClip(GCPtr);
-static void XineramaCopyClip(GCPtr, GCPtr);
+static PanoramiXScreenPtr
+getPanoramiXScreenPtr(ScreenPtr pScreen)
+{
+    return dixLookupPrivate(&pScreen->devPrivates, PanoramiXScreenKey);
+}
 
-static const GCFuncs XineramaGCFuncs = {
-    XineramaValidateGC, XineramaChangeGC, XineramaCopyGC, XineramaDestroyGC,
-    XineramaChangeClip, XineramaDestroyClip, XineramaCopyClip
-};
-
-#define Xinerama_GC_FUNC_PROLOGUE(pGC)\
+#define Xinerama_GC_FUNC_PROLOGUE(pGC, slot) \
     PanoramiXGCPtr  pGCPriv = (PanoramiXGCPtr) \
 	dixLookupPrivate(&(pGC)->devPrivates, PanoramiXGCKey); \
-    (pGC)->funcs = pGCPriv->wrapFuncs;
+    PanoramiXScreenPtr pScrPriv = getPanoramiXScreenPtr(pGC->pScreen); \
+    pGC->pScreen->slot = pScrPriv->slot;
 
-#define Xinerama_GC_FUNC_EPILOGUE(pGC)\
-    pGCPriv->wrapFuncs = (pGC)->funcs;\
-    (pGC)->funcs = &XineramaGCFuncs;
+#define Xinerama_GC_FUNC_EPILOGUE(pGC, slot) \
+    pScrPriv->slot = pGC->pScreen->slot; \
+    pGC->pScreen->slot = Xinerama##slot;
 
 static Bool
 XineramaCloseScreen(ScreenPtr pScreen)
 {
-    PanoramiXScreenPtr pScreenPriv = (PanoramiXScreenPtr)
-        dixLookupPrivate(&pScreen->devPrivates, PanoramiXScreenKey);
+    PanoramiXScreenPtr pScreenPriv = getPanoramiXScreenPtr(pScreen);
 
     pScreen->CloseScreen = pScreenPriv->CloseScreen;
     pScreen->CreateGC = pScreenPriv->CreateGC;
+    pScreen->ValidateGC = pScreenPriv->ValidateGC;
+    pScreen->ChangeGC = pScreenPriv->ChangeGC;
+    pScreen->CopyGC = pScreenPriv->CopyGC;
 
     if (pScreen->myNum == 0)
         RegionUninit(&PanoramiXScreenRegion);
@@ -169,8 +166,7 @@ static Bool
 XineramaCreateGC(GCPtr pGC)
 {
     ScreenPtr pScreen = pGC->pScreen;
-    PanoramiXScreenPtr pScreenPriv = (PanoramiXScreenPtr)
-        dixLookupPrivate(&pScreen->devPrivates, PanoramiXScreenKey);
+    PanoramiXScreenPtr pScreenPriv = getPanoramiXScreenPtr(pScreen);
     Bool ret;
 
     pScreen->CreateGC = pScreenPriv->CreateGC;
@@ -178,14 +174,12 @@ XineramaCreateGC(GCPtr pGC)
         PanoramiXGCPtr pGCPriv = (PanoramiXGCPtr)
             dixLookupPrivate(&pGC->devPrivates, PanoramiXGCKey);
 
-        pGCPriv->wrapFuncs = pGC->funcs;
-        pGC->funcs = &XineramaGCFuncs;
-
         pGCPriv->clipOrg.x = pGC->clipOrg.x;
         pGCPriv->clipOrg.y = pGC->clipOrg.y;
         pGCPriv->patOrg.x = pGC->patOrg.x;
         pGCPriv->patOrg.y = pGC->patOrg.y;
     }
+    pScreenPriv->CreateGC = pScreen->CreateGC;
     pScreen->CreateGC = XineramaCreateGC;
 
     return ret;
@@ -194,7 +188,7 @@ XineramaCreateGC(GCPtr pGC)
 static void
 XineramaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
 {
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
+    Xinerama_GC_FUNC_PROLOGUE(pGC, ValidateGC);
 
     if ((pDraw->type == DRAWABLE_WINDOW) && !(((WindowPtr) pDraw)->parent)) {
         /* the root window */
@@ -242,22 +236,14 @@ XineramaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
         }
     }
 
-    (*pGC->funcs->ValidateGC) (pGC, changes, pDraw);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-XineramaDestroyGC(GCPtr pGC)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyGC) (pGC);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
+    (*pGC->pScreen->ValidateGC) (pGC, changes, pDraw);
+    Xinerama_GC_FUNC_EPILOGUE(pGC, ValidateGC);
 }
 
 static void
 XineramaChangeGC(GCPtr pGC, unsigned long mask)
 {
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
+    Xinerama_GC_FUNC_PROLOGUE(pGC, ValidateGC);
 
     if (mask & GCTileStipXOrigin)
         pGCPriv->patOrg.x = pGC->patOrg.x;
@@ -268,8 +254,8 @@ XineramaChangeGC(GCPtr pGC, unsigned long mask)
     if (mask & GCClipYOrigin)
         pGCPriv->clipOrg.y = pGC->clipOrg.y;
 
-    (*pGC->funcs->ChangeGC) (pGC, mask);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
+    (*pGC->pScreen->ChangeGC) (pGC, mask);
+    Xinerama_GC_FUNC_EPILOGUE(pGC, ValidateGC);
 }
 
 static void
@@ -278,7 +264,7 @@ XineramaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
     PanoramiXGCPtr pSrcPriv = (PanoramiXGCPtr)
         dixLookupPrivate(&pGCSrc->devPrivates, PanoramiXGCKey);
 
-    Xinerama_GC_FUNC_PROLOGUE(pGCDst);
+    Xinerama_GC_FUNC_PROLOGUE(pGCDst, CopyGC);
 
     if (mask & GCTileStipXOrigin)
         pGCPriv->patOrg.x = pSrcPriv->patOrg.x;
@@ -289,32 +275,8 @@ XineramaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
     if (mask & GCClipYOrigin)
         pGCPriv->clipOrg.y = pSrcPriv->clipOrg.y;
 
-    (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
-    Xinerama_GC_FUNC_EPILOGUE(pGCDst);
-}
-
-static void
-XineramaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-XineramaCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    Xinerama_GC_FUNC_EPILOGUE(pgcDst);
-}
-
-static void
-XineramaDestroyClip(GCPtr pGC)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
+    (*pGCDst->pScreen->CopyGC) (pGCSrc, mask, pGCDst);
+    Xinerama_GC_FUNC_EPILOGUE(pGCDst, CopyGC);
 }
 
 int
@@ -485,9 +447,15 @@ PanoramiXExtensionInit(void)
             }
 
             pScreenPriv->CreateGC = pScreen->CreateGC;
+            pScreenPriv->ValidateGC = pScreen->ValidateGC;
+            pScreenPriv->ChangeGC = pScreen->ChangeGC;
+            pScreenPriv->CopyGC = pScreen->CopyGC;
             pScreenPriv->CloseScreen = pScreen->CloseScreen;
 
             pScreen->CreateGC = XineramaCreateGC;
+            pScreen->ValidateGC = XineramaValidateGC;
+            pScreen->ChangeGC = XineramaChangeGC;
+            pScreen->CopyGC = XineramaCopyGC;
             pScreen->CloseScreen = XineramaCloseScreen;
         }
 

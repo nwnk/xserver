@@ -119,6 +119,7 @@ fbSetupScreen(ScreenPtr pScreen, void *pbits, /* pointer to screen bitmap */
     pScreen->RealizeFont = fbRealizeFont;
     pScreen->UnrealizeFont = fbUnrealizeFont;
     pScreen->CreateGC = fbCreateGC;
+    pScreen->ValidateGC = fbValidateGC;
     pScreen->CreateColormap = miInitializeColormap;
     pScreen->DestroyColormap = (void (*)(ColormapPtr)) NoopDDA;
     pScreen->InstallColormap = miInstallColormap;

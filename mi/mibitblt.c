@@ -414,7 +414,7 @@ miOpqStipDrawable(DrawablePtr pDraw, GCPtr pGC, RegionPtr prgnSrc,
     prgnSrcClip = RegionCreate(NULL, 0);
     RegionCopy(prgnSrcClip, prgnSrc);
     RegionTranslate(prgnSrcClip, srcx, 0);
-    (*pGCT->funcs->ChangeClip) (pGCT, CT_REGION, prgnSrcClip, 0);
+    (*pGCT->pScreen->ChangeClip) (pGCT, CT_REGION, prgnSrcClip, 0);
     ValidateGC((DrawablePtr) pPixmap, pGCT);
 
     /* Since we know pDraw is always a pixmap, we never need to think
@@ -497,7 +497,7 @@ miOpqStipDrawable(DrawablePtr pDraw, GCPtr pGC, RegionPtr prgnSrc,
 
     ValidateGC(pDraw, pGC);
     /* put what we hope is a smaller clip region back in the scratch gc */
-    (*pGCT->funcs->ChangeClip) (pGCT, CT_NONE, NULL, 0);
+    (*pGCT->pScreen->ChangeClip) (pGCT, CT_NONE, NULL, 0);
     FreeScratchGC(pGCT);
     (*pDraw->pScreen->DestroyPixmap) (pPixmap);
 

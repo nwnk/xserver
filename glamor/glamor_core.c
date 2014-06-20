@@ -482,35 +482,6 @@ glamor_destroy_gc(GCPtr gc)
     miDestroyGC(gc);
 }
 
-static GCFuncs glamor_gc_funcs = {
-    glamor_validate_gc,
-    miChangeGC,
-    miCopyGC,
-    glamor_destroy_gc,
-    miChangeClip,
-    miDestroyClip,
-    miCopyClip
-};
-
-/**
- * exaCreateGC makes a new GC and hooks up its funcs handler, so that
- * exaValidateGC() will get called.
- */
-int
-glamor_create_gc(GCPtr gc)
-{
-    glamor_gc_private *gc_priv = glamor_get_gc_private(gc);
-
-    gc_priv->dash = NULL;
-    gc_priv->stipple = NULL;
-    if (!fbCreateGC(gc))
-        return FALSE;
-
-    gc->funcs = &glamor_gc_funcs;
-
-    return TRUE;
-}
-
 RegionPtr
 glamor_bitmap_to_region(PixmapPtr pixmap)
 {

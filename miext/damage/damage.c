@@ -323,19 +323,6 @@ damageDamageBox(DrawablePtr pDrawable, BoxPtr pBox, int subWindowMode)
     RegionUninit(&region);
 }
 
-static void damageValidateGC(GCPtr, unsigned long, DrawablePtr);
-static void damageChangeGC(GCPtr, unsigned long);
-static void damageCopyGC(GCPtr, unsigned long, GCPtr);
-static void damageDestroyGC(GCPtr);
-static void damageChangeClip(GCPtr, int, void *, int);
-static void damageDestroyClip(GCPtr);
-static void damageCopyClip(GCPtr, GCPtr);
-
-static GCFuncs damageGCFuncs = {
-    damageValidateGC, damageChangeGC, damageCopyGC, damageDestroyGC,
-    damageChangeClip, damageDestroyClip, damageCopyClip
-};
-
 static GCOps damageGCOps;
 
 static Bool
@@ -348,91 +335,36 @@ damageCreateGC(GCPtr pGC)
     Bool ret;
 
     unwrap(pScrPriv, pScreen, CreateGC);
-    if ((ret = (*pScreen->CreateGC) (pGC))) {
-        pGCPriv->ops = NULL;
-        pGCPriv->funcs = pGC->funcs;
-        pGC->funcs = &damageGCFuncs;
-    }
+    ret = (*pScreen->CreateGC) (pGC);
+    pGCPriv->ops = pGC->ops;
+    pGC->ops = &damageGCOps;
     wrap(pScrPriv, pScreen, CreateGC, damageCreateGC);
 
     return ret;
 }
 
-#define DAMAGE_GC_OP_PROLOGUE(pGC, pDrawable) \
-    damageGCPriv(pGC);  \
-    const GCFuncs *oldFuncs = pGC->funcs; \
-    unwrap(pGCPriv, pGC, funcs);  \
-    unwrap(pGCPriv, pGC, ops); \
-
-#define DAMAGE_GC_OP_EPILOGUE(pGC, pDrawable) \
-    wrap(pGCPriv, pGC, funcs, oldFuncs); \
-    wrap(pGCPriv, pGC, ops, &damageGCOps)
-
-#define DAMAGE_GC_FUNC_PROLOGUE(pGC) \
-    damageGCPriv(pGC); \
-    unwrap(pGCPriv, pGC, funcs); \
-    if (pGCPriv->ops) unwrap(pGCPriv, pGC, ops)
-
-#define DAMAGE_GC_FUNC_EPILOGUE(pGC) \
-    wrap(pGCPriv, pGC, funcs, &damageGCFuncs);  \
-    if (pGCPriv->ops) wrap(pGCPriv, pGC, ops, &damageGCOps)
-
 static void
 damageValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 {
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ValidateGC) (pGC, changes, pDrawable);
-    pGCPriv->ops = pGC->ops; /* just so it's not NULL */
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
+    ScreenPtr pScreen = pGC->pScreen;
+    damageScrPriv(pScreen);
+    damageGCPriv(pGC);
+
+    unwrap(pScrPriv, pScreen, ValidateGC);
+    pGC->ops = pGCPriv->ops;
+    (*pScreen->ValidateGC) (pGC, changes, pDrawable);
+    pGCPriv->ops = pGC->ops;
+    pGC->ops = &damageGCOps;
+
+    wrap(pScrPriv, pScreen, ValidateGC, damageValidateGC);
 }
 
-static void
-damageDestroyGC(GCPtr pGC)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyGC) (pGC);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
-}
+#define DAMAGE_GC_OP_PROLOGUE(pGC, pDrawable) \
+    damageGCPriv(pGC);  \
+    unwrap(pGCPriv, pGC, ops); \
 
-static void
-damageChangeGC(GCPtr pGC, unsigned long mask)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ChangeGC) (pGC, mask);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-damageCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGCDst);
-    (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
-    DAMAGE_GC_FUNC_EPILOGUE(pGCDst);
-}
-
-static void
-damageChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-damageCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    DAMAGE_GC_FUNC_EPILOGUE(pgcDst);
-}
-
-static void
-damageDestroyClip(GCPtr pGC)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
-}
+#define DAMAGE_GC_OP_EPILOGUE(pGC, pDrawable) \
+    wrap(pGCPriv, pGC, ops, &damageGCOps)
 
 #define TRIM_BOX(box, pGC) if (pGC->pCompositeClip) { \
     BoxPtr extents = &pGC->pCompositeClip->extents;\
@@ -1569,6 +1501,7 @@ damageCloseScreen(ScreenPtr pScreen)
 
     unwrap(pScrPriv, pScreen, DestroyPixmap);
     unwrap(pScrPriv, pScreen, CreateGC);
+    unwrap(pScrPriv, pScreen, ValidateGC);
     unwrap(pScrPriv, pScreen, CopyWindow);
     unwrap(pScrPriv, pScreen, CloseScreen);
     free(pScrPriv);
@@ -1661,6 +1594,7 @@ DamageSetup(ScreenPtr pScreen)
 
     wrap(pScrPriv, pScreen, DestroyPixmap, damageDestroyPixmap);
     wrap(pScrPriv, pScreen, CreateGC, damageCreateGC);
+    wrap(pScrPriv, pScreen, ValidateGC, damageValidateGC);
     wrap(pScrPriv, pScreen, DestroyWindow, damageDestroyWindow);
     wrap(pScrPriv, pScreen, SetWindowPixmap, damageSetWindowPixmap);
     wrap(pScrPriv, pScreen, CopyWindow, damageCopyWindow);

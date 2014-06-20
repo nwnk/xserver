@@ -36,12 +36,6 @@
 #include "xf86Priv.h"
 #include "pciaccess.h"
 
-static GCFuncs VGAarbiterGCFuncs = {
-    VGAarbiterValidateGC, VGAarbiterChangeGC, VGAarbiterCopyGC,
-    VGAarbiterDestroyGC, VGAarbiterChangeClip, VGAarbiterDestroyClip,
-    VGAarbiterCopyClip
-};
-
 static GCOps VGAarbiterGCOps = {
     VGAarbiterFillSpans, VGAarbiterSetSpans, VGAarbiterPutImage,
     VGAarbiterCopyArea, VGAarbiterCopyPlane, VGAarbiterPolyPoint,
@@ -553,62 +547,6 @@ VGAarbiterCreateGC(GCPtr pGC)
 }
 
 /* GC funcs */
-static void
-VGAarbiterValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->ValidateGC) (pGC, changes, pDraw);
-    GC_WRAP(pGC);
-}
-
-static void
-VGAarbiterDestroyGC(GCPtr pGC)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->DestroyGC) (pGC);
-    GC_WRAP(pGC);
-}
-
-static void
-VGAarbiterChangeGC(GCPtr pGC, unsigned long mask)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->ChangeGC) (pGC, mask);
-    GC_WRAP(pGC);
-}
-
-static void
-VGAarbiterCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
-{
-    GC_UNWRAP(pGCDst);
-    (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
-    GC_WRAP(pGCDst);
-}
-
-static void
-VGAarbiterChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    GC_WRAP(pGC);
-}
-
-static void
-VGAarbiterCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    GC_UNWRAP(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    GC_WRAP(pgcDst);
-}
-
-static void
-VGAarbiterDestroyClip(GCPtr pGC)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    GC_WRAP(pGC);
-}
-
 /* GC Ops */
 static void
 VGAarbiterFillSpans(DrawablePtr pDraw,

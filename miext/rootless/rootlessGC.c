@@ -52,24 +52,8 @@
 // GC functions
 static void RootlessValidateGC(GCPtr pGC, unsigned long changes,
                                DrawablePtr pDrawable);
-static void RootlessChangeGC(GCPtr pGC, unsigned long mask);
-static void RootlessCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
-static void RootlessDestroyGC(GCPtr pGC);
-static void RootlessChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
-static void RootlessDestroyClip(GCPtr pGC);
-static void RootlessCopyClip(GCPtr pgcDst, GCPtr pgcSrc);
 
 Bool RootlessCreateGC(GCPtr pGC);
-
-GCFuncs rootlessGCFuncs = {
-    RootlessValidateGC,
-    RootlessChangeGC,
-    RootlessCopyGC,
-    RootlessDestroyGC,
-    RootlessChangeClip,
-    RootlessDestroyClip,
-    RootlessCopyClip,
-};
 
 // GC operations
 static void RootlessFillSpans(DrawablePtr dst, GCPtr pGC, int nInit,
@@ -176,7 +160,7 @@ static GCOps rootlessGCOps = {
        if (canAccelxxx(..) && otherwise-suitable)
             GC_UNSET_PM(gc, dst);
 
-       gc->funcs->OP(gc, ...);
+       gc->pScreen->OP(gc, ...);
 
        GC_RESTORE(gc, dst);
        GCOP_WRAP(gc);
@@ -222,7 +206,7 @@ static GCOps rootlessGCOps = {
 
 #define VALIDATE_GC(pGC, changes, pDrawable)				\
     do {								\
-        pGC->funcs->ValidateGC(pGC, changes, pDrawable);		\
+        pGC->pScreen->ValidateGC(pGC, changes, pDrawable);		\
         if (((WindowPtr) pDrawable)->viewable) {			\
             gcrec->originalOps = pGC->ops;				\
         }								\
@@ -282,43 +266,20 @@ RootlessCreateGC(GCPtr pGC)
     gcrec = (RootlessGCRec *)
         dixLookupPrivate(&pGC->devPrivates, rootlessGCPrivateKey);
     gcrec->originalOps = NULL;  // don't wrap ops yet
-    gcrec->originalFuncs = pGC->funcs;
-    pGC->funcs = &rootlessGCFuncs;
 
     SCREEN_WRAP(pGC->pScreen, CreateGC);
     return result;
 }
 
-/*
- * GC funcs
- *
- * These wrap lower level GC funcs.
- * ValidateGC wraps the GC ops iff dest is viewable.
- * All the others just unwrap and call.
- */
-
-// GCFUNC_UNRAP assumes funcs have been wrapped and
-// does not assume ops have been wrapped
-#define GCFUNC_UNWRAP(pGC) \
-    RootlessGCRec *gcrec = (RootlessGCRec *) \
-	dixLookupPrivate(&(pGC)->devPrivates, rootlessGCPrivateKey); \
-    (pGC)->funcs = gcrec->originalFuncs; \
-    if (gcrec->originalOps) { \
-        (pGC)->ops = gcrec->originalOps; \
-}
-
-#define GCFUNC_WRAP(pGC) \
-    gcrec->originalFuncs = (pGC)->funcs; \
-    (pGC)->funcs = &rootlessGCFuncs; \
-    if (gcrec->originalOps) { \
-        gcrec->originalOps = (pGC)->ops; \
-        (pGC)->ops = &rootlessGCOps; \
-}
-
 static void
 RootlessValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 {
-    GCFUNC_UNWRAP(pGC);
+    ScreenPtr pScreen = pGC->pScreen;
+    RootlessScreenRec *s = SCREENREC(pScreen);
+    RootlessGCRec *gcrec = (RootlessGCRec *)
+        dixLookupPrivate(&(pGC)->devPrivates, rootlessGCPrivateKey);
+
+    SCREEN_UNWRAP(pScreen, ValidateGC);
 
     gcrec->originalOps = NULL;
 
@@ -337,58 +298,10 @@ RootlessValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 #endif
     }
     else {
-        pGC->funcs->ValidateGC(pGC, changes, pDrawable);
+        pScreen->ValidateGC(pGC, changes, pDrawable);
     }
 
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessChangeGC(GCPtr pGC, unsigned long mask)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->ChangeGC(pGC, mask);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
-{
-    GCFUNC_UNWRAP(pGCDst);
-    pGCDst->funcs->CopyGC(pGCSrc, mask, pGCDst);
-    GCFUNC_WRAP(pGCDst);
-}
-
-static void
-RootlessDestroyGC(GCPtr pGC)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->DestroyGC(pGC);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->ChangeClip(pGC, type, pvalue, nrects);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessDestroyClip(GCPtr pGC)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->DestroyClip(pGC);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    GCFUNC_UNWRAP(pgcDst);
-    pgcDst->funcs->CopyClip(pgcDst, pgcSrc);
-    GCFUNC_WRAP(pgcDst);
+    SCREEN_WRAP(pScreen, ValidateGC);
 }
 
 /*
@@ -399,17 +312,13 @@ RootlessCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
  * However, much of this code is copied from shadowfb.
  */
 
-// assumes both funcs and ops are wrapped
 #define GCOP_UNWRAP(pGC) \
     RootlessGCRec *gcrec = (RootlessGCRec *) \
         dixLookupPrivate(&(pGC)->devPrivates, rootlessGCPrivateKey); \
-    GCFuncs *saveFuncs = pGC->funcs; \
-    (pGC)->funcs = gcrec->originalFuncs; \
     (pGC)->ops = gcrec->originalOps;
 
 #define GCOP_WRAP(pGC) \
     gcrec->originalOps = (pGC)->ops; \
-    (pGC)->funcs = saveFuncs; \
     (pGC)->ops = &rootlessGCOps;
 
 static void

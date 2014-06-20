@@ -37,16 +37,6 @@ is" without express or implied warranty.
 
 DevPrivateKeyRec xnestGCPrivateKeyRec;
 
-static GCFuncs xnestFuncs = {
-    xnestValidateGC,
-    xnestChangeGC,
-    xnestCopyGC,
-    xnestDestroyGC,
-    xnestChangeClip,
-    xnestDestroyClip,
-    xnestCopyClip,
-};
-
 static GCOps xnestOps = {
     xnestFillSpans,
     xnestSetSpans,
@@ -73,7 +63,6 @@ static GCOps xnestOps = {
 Bool
 xnestCreateGC(GCPtr pGC)
 {
-    pGC->funcs = &xnestFuncs;
     pGC->ops = &xnestOps;
 
     pGC->miTranslate = 1;

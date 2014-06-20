@@ -42,7 +42,6 @@
 /** GC private area. */
 typedef struct _dmxGCPriv {
     const GCOps *ops;
-    const GCFuncs *funcs;
     XlibGC gc;
     Bool msc;
 } dmxGCPrivRec, *dmxGCPrivPtr;
@@ -50,6 +49,12 @@ typedef struct _dmxGCPriv {
 extern Bool dmxInitGC(ScreenPtr pScreen);
 
 extern Bool dmxCreateGC(GCPtr pGC);
+extern void dmxValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw);
+extern void dmxChangeGC(GCPtr pGC, unsigned long mask);
+extern void dmxCopyGC(GCPtr pGCSrc, unsigned long changes, GCPtr pGCDst);
+extern void dmxDestroyGC(GCPtr pGC);
+extern void dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
+extern void dmxDestroyClip(GCPtr pGC);
 
 extern void dmxBECreateGC(ScreenPtr pScreen, GCPtr pGC);
 extern Bool dmxBEFreeGC(GCPtr pGC);
@@ -57,21 +62,5 @@ extern Bool dmxBEFreeGC(GCPtr pGC);
 /** Get private. */
 #define DMX_GET_GC_PRIV(_pGC)						\
     (dmxGCPrivPtr)dixLookupPrivate(&(_pGC)->devPrivates, dmxGCPrivateKey)
-
-#define DMX_GC_FUNC_PROLOGUE(_pGC)					\
-do {									\
-    dmxGCPrivPtr _pGCPriv = DMX_GET_GC_PRIV(_pGC);			\
-    DMX_UNWRAP(funcs, _pGCPriv, (_pGC));				\
-    if (_pGCPriv->ops)							\
-	DMX_UNWRAP(ops, _pGCPriv, (_pGC));				\
-} while (0)
-
-#define DMX_GC_FUNC_EPILOGUE(_pGC)					\
-do {									\
-    dmxGCPrivPtr _pGCPriv = DMX_GET_GC_PRIV(_pGC);			\
-    DMX_WRAP(funcs, &dmxGCFuncs, _pGCPriv, (_pGC));			\
-    if (_pGCPriv->ops)							\
-	DMX_WRAP(ops, &dmxGCOps, _pGCPriv, (_pGC));			\
-} while (0)
 
 #endif                          /* DMXGC_H */

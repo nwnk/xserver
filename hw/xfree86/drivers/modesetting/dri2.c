@@ -277,7 +277,7 @@ ms_dri2_copy_region(DrawablePtr drawable, RegionPtr pRegion,
 
     pCopyClip = REGION_CREATE(screen, NULL, 0);
     REGION_COPY(screen, pCopyClip, pRegion);
-    (*gc->funcs->ChangeClip) (gc, CT_REGION, pCopyClip, 0);
+    (*screen->ChangeClip) (gc, CT_REGION, pCopyClip, 0);
     ValidateGC(dst, gc);
 
     /* It's important that this copy gets submitted before the direct

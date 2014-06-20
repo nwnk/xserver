@@ -463,37 +463,6 @@ exaDestroyPixmap(PixmapPtr pPixmap)
  */
 
 static void
- exaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable);
-
-static void
- exaDestroyGC(GCPtr pGC);
-
-static void
- exaChangeGC(GCPtr pGC, unsigned long mask);
-
-static void
- exaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
-
-static void
- exaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
-
-static void
- exaCopyClip(GCPtr pGCDst, GCPtr pGCSrc);
-
-static void
- exaDestroyClip(GCPtr pGC);
-
-const GCFuncs exaGCFuncs = {
-    exaValidateGC,
-    exaChangeGC,
-    exaCopyGC,
-    exaDestroyGC,
-    exaChangeClip,
-    exaDestroyClip,
-    exaCopyClip
-};
-
-static void
 exaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 {
     /* fbValidateGC will do direct access to pixmaps if the tiling has changed.
@@ -503,7 +472,6 @@ exaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
     ScreenPtr pScreen = pDrawable->pScreen;
 
     ExaScreenPriv(pScreen);
-    ExaGCPriv(pGC);
     PixmapPtr pTile = NULL;
     Bool finish_current_tile = FALSE;
 
@@ -537,9 +505,9 @@ exaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
 
     /* Calls to Create/DestroyPixmap have to be identified as special. */
     pExaScr->fallback_counter++;
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->ValidateGC) (pGC, changes, pDrawable);
-    swap(pExaGC, pGC, funcs);
+    swap(pExaScr, pScreen, ValidateGC);
+    (*pScreen->ValidateGC) (pGC, changes, pDrawable);
+    swap(pExaScr, pScreen, ValidateGC);
     pExaScr->fallback_counter--;
 
     if (pTile)
@@ -548,61 +516,6 @@ exaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
         exaFinishAccess(&pGC->tile.pixmap->drawable, EXA_PREPARE_AUX_DEST);
     if (pGC->stipple)
         exaFinishAccess(&pGC->stipple->drawable, EXA_PREPARE_MASK);
-}
-
-/* Is exaPrepareAccessGC() needed? */
-static void
-exaDestroyGC(GCPtr pGC)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->DestroyGC) (pGC);
-    swap(pExaGC, pGC, funcs);
-}
-
-static void
-exaChangeGC(GCPtr pGC, unsigned long mask)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->ChangeGC) (pGC, mask);
-    swap(pExaGC, pGC, funcs);
-}
-
-static void
-exaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
-{
-    ExaGCPriv(pGCDst);
-    swap(pExaGC, pGCDst, funcs);
-    (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
-    swap(pExaGC, pGCDst, funcs);
-}
-
-static void
-exaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    swap(pExaGC, pGC, funcs);
-}
-
-static void
-exaCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
-{
-    ExaGCPriv(pGCDst);
-    swap(pExaGC, pGCDst, funcs);
-    (*pGCDst->funcs->CopyClip) (pGCDst, pGCSrc);
-    swap(pExaGC, pGCDst, funcs);
-}
-
-static void
-exaDestroyClip(GCPtr pGC)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->DestroyClip) (pGC);
-    swap(pExaGC, pGC, funcs);
 }
 
 /**
@@ -620,7 +533,6 @@ exaCreateGC(GCPtr pGC)
 
     swap(pExaScr, pScreen, CreateGC);
     if ((ret = (*pScreen->CreateGC) (pGC))) {
-        wrap(pExaGC, pGC, funcs, &exaGCFuncs);
         wrap(pExaGC, pGC, ops, &exaOps);
     }
     swap(pExaScr, pScreen, CreateGC);
@@ -769,6 +681,7 @@ exaCloseScreen(ScreenPtr pScreen)
     if (pScreen->WakeupHandler == ExaWakeupHandler)
         unwrap(pExaScr, pScreen, WakeupHandler);
     unwrap(pExaScr, pScreen, CreateGC);
+    unwrap(pExaScr, pScreen, ValidateGC);
     unwrap(pExaScr, pScreen, CloseScreen);
     unwrap(pExaScr, pScreen, GetImage);
     unwrap(pExaScr, pScreen, GetSpans);
@@ -935,6 +848,7 @@ exaDriverInit(ScreenPtr pScreen, ExaDriverPtr pScreenInfo)
         !(pExaScr->info->flags & EXA_HANDLES_PIXMAPS))
         wrap(pExaScr, pScreen, WakeupHandler, ExaWakeupHandler);
     wrap(pExaScr, pScreen, CreateGC, exaCreateGC);
+    wrap(pExaScr, pScreen, ValidateGC, exaValidateGC);
     wrap(pExaScr, pScreen, CloseScreen, exaCloseScreen);
     wrap(pExaScr, pScreen, GetImage, exaGetImage);
     wrap(pExaScr, pScreen, GetSpans, ExaCheckGetSpans);
