@@ -51,6 +51,17 @@ Equipment Corporation.
 #define INPUTONLY_LEGAL_MASK (CWWinGravity | CWEventMask | \
                               CWDontPropagate | CWOverrideRedirect | CWCursor )
 
+static int
+xinLookupDrawable(PanoramiXRes **draw, XID id, ClientPtr client, Mask mask)
+{
+    int result = dixLookupResourceByClass((void **)draw, id, XRC_DRAWABLE,
+                                          client, mask);
+    if (result != Success)
+        return (result == BadValue) ? BadDrawable : result;
+
+    return result;
+}
+
 int
 PanoramiXCreateWindow(ClientPtr client)
 {
@@ -687,10 +698,9 @@ PanoramiXCreatePixmap(ClientPtr client)
     REQUEST_SIZE_MATCH(xCreatePixmapReq);
     client->errorValue = stuff->pid;
 
-    result = dixLookupResourceByClass((void **) &refDraw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixReadAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&refDraw, stuff->drawable, client,
+                                    DixReadAccess)))
+        return result;
 
     if (!(newPix = malloc(sizeof(PanoramiXRes))))
         return BadAlloc;
@@ -766,10 +776,9 @@ PanoramiXCreateGC(ClientPtr client)
     if (Ones(stuff->mask) != len)
         return BadLength;
 
-    result = dixLookupResourceByClass((void **) &refDraw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixReadAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&refDraw, stuff->drawable, client,
+                                    DixReadAccess)))
+        return result;
 
     if ((Mask) stuff->mask & GCTile) {
         tile_offset = Ones((Mask) stuff->mask & (GCTile - 1));
@@ -1060,17 +1069,15 @@ PanoramiXCopyArea(ClientPtr client)
 
     REQUEST_SIZE_MATCH(xCopyAreaReq);
 
-    result = dixLookupResourceByClass((void **) &src, stuff->srcDrawable,
-                                      XRC_DRAWABLE, client, DixReadAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&src, stuff->srcDrawable, client,
+                                    DixReadAccess)))
+        return result;
 
     srcShared = IS_SHARED_PIXMAP(src);
 
-    result = dixLookupResourceByClass((void **) &dst, stuff->dstDrawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&dst, stuff->dstDrawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     dstShared = IS_SHARED_PIXMAP(dst);
 
@@ -1218,17 +1225,15 @@ PanoramiXCopyPlane(ClientPtr client)
 
     REQUEST_SIZE_MATCH(xCopyPlaneReq);
 
-    rc = dixLookupResourceByClass((void **) &src, stuff->srcDrawable,
-                                  XRC_DRAWABLE, client, DixReadAccess);
-    if (rc != Success)
-        return (rc == BadValue) ? BadDrawable : rc;
+    if ((rc = xinLookupDrawable(&src, stuff->srcDrawable, client,
+                                DixReadAccess)))
+        return rc;
 
     srcShared = IS_SHARED_PIXMAP(src);
 
-    rc = dixLookupResourceByClass((void **) &dst, stuff->dstDrawable,
-                                  XRC_DRAWABLE, client, DixWriteAccess);
-    if (rc != Success)
-        return (rc == BadValue) ? BadDrawable : rc;
+    if ((rc = xinLookupDrawable(&dst, stuff->dstDrawable, client,
+                                DixWriteAccess)))
+        return rc;
 
     dstShared = IS_SHARED_PIXMAP(dst);
 
@@ -1325,10 +1330,9 @@ PanoramiXPolyPoint(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyPointReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyPoint]) (client);
@@ -1390,10 +1394,9 @@ PanoramiXPolyLine(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyLineReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyLine]) (client);
@@ -1455,10 +1458,9 @@ PanoramiXPolySegment(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolySegmentReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolySegment]) (client);
@@ -1523,10 +1525,9 @@ PanoramiXPolyRectangle(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyRectangleReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyRectangle]) (client);
@@ -1590,10 +1591,9 @@ PanoramiXPolyArc(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyArcReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyArc]) (client);
@@ -1655,10 +1655,9 @@ PanoramiXFillPoly(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xFillPolyReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_FillPoly]) (client);
@@ -1721,10 +1720,9 @@ PanoramiXPolyFillRectangle(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyFillRectangleReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyFillRectangle]) (client);
@@ -1788,10 +1786,9 @@ PanoramiXPolyFillArc(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyFillArcReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyFillArc]) (client);
@@ -1853,10 +1850,9 @@ PanoramiXPutImage(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPutImageReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PutImage]) (client);
@@ -1907,10 +1903,8 @@ PanoramiXGetImage(ClientPtr client)
         return BadValue;
     }
 
-    rc = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                  XRC_DRAWABLE, client, DixReadAccess);
-    if (rc != Success)
-        return (rc == BadValue) ? BadDrawable : rc;
+    if ((rc = xinLookupDrawable(&draw, stuff->drawable, client, DixReadAccess)))
+        return rc;
 
     if (draw->type == XRT_PIXMAP)
         return (*SavedProcVector[X_GetImage]) (client);
@@ -2052,10 +2046,9 @@ PanoramiXPolyText8(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyTextReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyText8]) (client);
@@ -2095,10 +2088,9 @@ PanoramiXPolyText16(ClientPtr client)
 
     REQUEST_AT_LEAST_SIZE(xPolyTextReq);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_PolyText16]) (client);
@@ -2138,10 +2130,9 @@ PanoramiXImageText8(ClientPtr client)
 
     REQUEST_FIXED_SIZE(xImageTextReq, stuff->nChars);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_ImageText8]) (client);
@@ -2181,10 +2172,9 @@ PanoramiXImageText16(ClientPtr client)
 
     REQUEST_FIXED_SIZE(xImageTextReq, stuff->nChars << 1);
 
-    result = dixLookupResourceByClass((void **) &draw, stuff->drawable,
-                                      XRC_DRAWABLE, client, DixWriteAccess);
-    if (result != Success)
-        return (result == BadValue) ? BadDrawable : result;
+    if ((result = xinLookupDrawable(&draw, stuff->drawable, client,
+                                    DixWriteAccess)))
+        return result;
 
     if (IS_SHARED_PIXMAP(draw))
         return (*SavedProcVector[X_ImageText16]) (client);
