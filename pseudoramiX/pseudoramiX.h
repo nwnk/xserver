@@ -3,6 +3,6 @@
  */
 
 void
-PseudoramiXAddScreen(int x, int y, int w, int h);
+PseudoramiXAddScreen(int x, int y, int w, int h, void *id);
 void
 PseudoramiXResetScreens(void);

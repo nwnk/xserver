@@ -92,6 +92,7 @@ typedef struct {
     int y;
     int w;
     int h;
+    void *id;
 } PseudoramiXScreenRec;
 
 static PseudoramiXScreenRec *pseudoramiXScreens = NULL;
@@ -132,7 +133,7 @@ PseudoramiXDebug(const char *format, ...)
 // Can be called before or after extension init.
 // Screens must be re-added once per generation.
 void
-PseudoramiXAddScreen(int x, int y, int w, int h)
+PseudoramiXAddScreen(int x, int y, int w, int h, void *id)
 {
     PseudoramiXScreenRec *s;
 
@@ -152,6 +153,7 @@ PseudoramiXAddScreen(int x, int y, int w, int h)
     s->y = y;
     s->w = w;
     s->h = h;
+    s->id = id;
 }
 
 // Initialize PseudoramiX.

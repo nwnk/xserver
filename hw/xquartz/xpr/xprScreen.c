@@ -224,7 +224,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height,
         *x = *y = 0;
         *width = 800;
         *height = 600;
-        PseudoramiXAddScreen(*x, *y, *width, *height);
+        PseudoramiXAddScreen(*x, *y, *width, *height, NULL);
         QuartzCopyDisplayIDs(pScreen, 0, NULL);
         return;
     }
@@ -270,7 +270,8 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height,
                   (int)frame.origin.x, (int)frame.origin.y);
 
         PseudoramiXAddScreen(frame.origin.x, frame.origin.y,
-                             frame.size.width, frame.size.height);
+                             frame.size.width, frame.size.height,
+                             (void *)dpy);
     }
 
     free(displayList);
