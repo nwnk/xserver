@@ -2207,8 +2207,6 @@ if test "x$XQUARTZ" = xyes; then
 	fi
 fi
 
-AM_CONDITIONAL(PSEUDORAMIX, [test "x$XQUARTZ" = xyes -o "x$XWIN" = xyes ])
-
 # Support for objc in autotools is minimal and not documented.
 OBJC='$(CC)'
 OBJCLD='$(CCLD)'

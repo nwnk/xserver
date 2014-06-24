@@ -27,10 +27,6 @@ if PRESENT
 PRESENT_DIR=present
 endif
 
-if PSEUDORAMIX
-PSEUDORAMIX_DIR=pseudoramiX
-endif
-
 if GLAMOR
 GLAMOR_DIR=glamor
 endif
@@ -49,7 +45,7 @@ SUBDIRS = \
 	render  \
 	Xi \
 	xkb \
-	$(PSEUDORAMIX_DIR) \
+	pseudoramiX \
 	$(DBE_DIR) \
 	$(RECORD_DIR) \
 	xfixes \
