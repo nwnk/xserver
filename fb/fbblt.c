@@ -59,7 +59,7 @@ fbBlt(FbBits * srcLine,
 
     FbDeclareMergeRop();
 
-    if (alu == GXcopy && pm == FB_ALLONES &&
+    if (0 && alu == GXcopy && pm == FB_ALLONES &&
         !(srcX & 7) && !(dstX & 7) && !(width & 7))
     {
         CARD8           *src_byte = (CARD8 *) srcLine + (srcX >> 3);

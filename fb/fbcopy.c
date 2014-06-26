@@ -53,7 +53,7 @@ fbCopyNtoN(DrawablePtr pSrcDrawable,
 
     while (nbox--) {
 #ifndef FB_ACCESS_WRAPPER       /* pixman_blt() doesn't support accessors yet */
-        if (pm == FB_ALLONES && alu == GXcopy && !reverse && !upsidedown) {
+        if (0 && pm == FB_ALLONES && alu == GXcopy && !reverse && !upsidedown) {
             if (!pixman_blt
                 ((uint32_t *) src, (uint32_t *) dst, srcStride, dstStride,
                  srcBpp, dstBpp, (pbox->x1 + dx + srcXoff),
