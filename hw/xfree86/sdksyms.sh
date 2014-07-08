@@ -170,12 +170,6 @@ cat > sdksyms.c << EOF
 #endif
 
 
-/* hw/xfree86/dixmods/extmod/Makefile.am -- module */
-#ifdef XFreeXDGA
-#include "dgaproc.h"
-#endif
-
-
 /* hw/xfree86/parser/Makefile.am */
 #include "xf86Parser.h"
 #include "xf86Optrec.h"
