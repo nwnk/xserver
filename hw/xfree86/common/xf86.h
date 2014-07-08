@@ -103,8 +103,6 @@ extern _X_EXPORT Bool xf86ParsePciBusString(const char *busID, int *bus,
 extern _X_EXPORT Bool xf86ComparePciBusString(const char *busID, int bus,
                                               int device, int func);
 extern _X_EXPORT Bool xf86IsPrimaryPci(struct pci_device *pPci);
-extern _X_EXPORT Bool xf86CheckPciMemBase(struct pci_device *pPci,
-                                          memType base);
 extern _X_EXPORT struct pci_device *xf86GetPciInfoForEntity(int entityIndex);
 extern _X_EXPORT int xf86MatchPciInstances(const char *driverName,
                                            int vendorID, SymTabPtr chipsets,

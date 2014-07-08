@@ -2900,22 +2900,6 @@ Two functions are provided to obtain a resource range of a given type:
 	</para>
 
 	<para>
-	  <blockquote><para>
-	      <programlisting>
-    Bool xf86CheckPciMemBase(pciVideoPtr pPci, memType base);
-	      </programlisting>
-	      <blockquote><para>
-      This function checks that the memory base address specified matches
-      one of the PCI base address register values for the given PCI
-      device.  This is mostly used to check that an externally provided
-      base address (e.g., from a config file) matches an actual value
-      allocated to a device.
-		</para>
-
-	      </blockquote></para></blockquote>
-	</para>
-
-	<para>
 The driver may replace the generic access control functions for an entity.
 This is done with the <function>xf86SetAccessFuncs()</function>:
 	  <blockquote><para>

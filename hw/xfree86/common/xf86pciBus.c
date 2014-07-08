@@ -387,21 +387,6 @@ xf86GetPciInfoForEntity(int entityIndex)
 }
 
 /*
- * xf86CheckPciMemBase() checks that the memory base value matches one of the
- * PCI base address register values for the given PCI device.
- */
-Bool
-xf86CheckPciMemBase(struct pci_device *pPci, memType base)
-{
-    int i;
-
-    for (i = 0; i < 6; i++)
-        if (base == pPci->regions[i].base_addr)
-            return TRUE;
-    return FALSE;
-}
-
-/*
  * Check if the slot requested is free.  If it is already in use, return FALSE.
  */
 
