@@ -425,9 +425,6 @@ SetPictureFilter(PicturePtr pPicture, char *name, int len,
 extern _X_EXPORT Bool
  PictureFinishInit(void);
 
-extern _X_EXPORT void
- SetPictureToDefaults(PicturePtr pPicture);
-
 extern _X_EXPORT PicturePtr
 CreatePicture(Picture pid,
               DrawablePtr pDrawable,

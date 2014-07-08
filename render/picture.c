@@ -728,7 +728,7 @@ PictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
     return TRUE;
 }
 
-void
+static void
 SetPictureToDefaults(PicturePtr pPicture)
 {
     pPicture->refcnt = 1;
