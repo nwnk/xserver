@@ -435,16 +435,7 @@ xf86MarkOptionUsedByName(XF86OptionPtr options, const char *name)
         opt->opt_used = TRUE;
 }
 
-Bool
-xf86CheckIfOptionUsed(XF86OptionPtr option)
-{
-    if (option != NULL)
-        return option->opt_used;
-    else
-        return FALSE;
-}
-
-Bool
+static Bool
 xf86CheckIfOptionUsedByName(XF86OptionPtr options, const char *name)
 {
     XF86OptionPtr opt;
