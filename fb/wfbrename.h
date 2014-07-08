@@ -72,7 +72,6 @@
 #define fbGlyph24 wfbGlyph24
 #define fbGlyph32 wfbGlyph32
 #define fbGlyph8 wfbGlyph8
-#define fbGlyphs wfbGlyphs
 #define fbHasVisualTypes wfbHasVisualTypes
 #define fbImageGlyphBlt wfbImageGlyphBlt
 #define fbIn wfbIn

@@ -648,7 +648,6 @@ extern _X_EXPORT void
  fbPolySegment16(DrawablePtr pDrawable, GCPtr pGC, int nseg, xSegment * pseg);
 
 extern _X_EXPORT void
-
 fbGlyph32(FbBits * dstLine,
           FbStride dstStride,
           int dstBpp, FbStip * stipple, FbBits fg, int height, int shift);
