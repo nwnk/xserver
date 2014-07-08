@@ -112,11 +112,10 @@ printModeRejectMessage(int index, DisplayModePtr p, int status)
 }
 
 /*
- * xf86GetNearestClock --
- *	Find closest clock to given frequency (in kHz).  This assumes the
- *	number of clocks is greater than zero.
+ * Find closest clock to given frequency (in kHz).  This assumes the
+ * number of clocks is greater than zero.
  */
-int
+static int
 xf86GetNearestClock(ScrnInfoPtr scrp, int freq, Bool allowDiv2,
                     int DivFactor, int MulFactor, int *divider)
 {
@@ -451,7 +450,7 @@ xf86HandleBuiltinMode(ScrnInfoPtr scrp,
  * reason.
  */
 
-ModeStatus
+static ModeStatus
 xf86LookupMode(ScrnInfoPtr scrp, DisplayModePtr modep,
                ClockRangePtr clockRanges, LookupModeFlags strategy)
 {
@@ -843,7 +842,7 @@ xf86CheckModeSize(ScrnInfoPtr scrp, int w, int x, int y)
  *    videoRam     video memory size (in kB)
  */
 
-ModeStatus
+static ModeStatus
 xf86InitialCheckModeForDriver(ScrnInfoPtr scrp, DisplayModePtr mode,
                               ClockRangePtr clockRanges,
                               LookupModeFlags strategy,
