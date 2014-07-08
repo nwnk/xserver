@@ -456,9 +456,6 @@ extern _X_EXPORT void
 extern _X_EXPORT int
  FreePicture(void *pPicture, XID pid);
 
-extern _X_EXPORT int
- FreePictFormat(void *pPictFormat, XID pid);
-
 extern _X_EXPORT void
 CompositePicture(CARD8 op,
                  PicturePtr pSrc,

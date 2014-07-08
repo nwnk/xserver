@@ -623,6 +623,12 @@ GetPictureBytes(void *value, ResourceSizePtr size)
     }
 }
 
+static int
+FreePictFormat(void *pPictFormat, XID pid)
+{
+    return Success;
+}
+
 Bool
 PictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
 {
@@ -1420,12 +1426,6 @@ FreePicture(void *value, XID pid)
         }
         dixFreeObjectWithPrivates(pPicture, PRIVATE_PICTURE);
     }
-    return Success;
-}
-
-int
-FreePictFormat(void *pPictFormat, XID pid)
-{
     return Success;
 }
 
