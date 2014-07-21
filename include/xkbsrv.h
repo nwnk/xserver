@@ -748,9 +748,6 @@ extern void XkbDeleteRulesDflts(void
 extern void XkbDeleteRulesUsed(void
     );
 
-extern int SProcXkbDispatch(ClientPtr /* client */
-    );
-
 extern XkbGeometryPtr XkbLookupNamedGeometry(DeviceIntPtr /* dev */ ,
                                              Atom /* name */ ,
                                              Bool *   /* shouldFree */

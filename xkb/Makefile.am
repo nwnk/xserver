@@ -13,7 +13,6 @@ DIX_SRCS = \
         xkbUtils.c \
         xkbEvents.c \
         xkbAccessX.c \
-        xkbSwap.c \
         xkbLEDs.c \
         xkbInit.c \
         xkbActions.c \
@@ -35,7 +34,7 @@ X11_SRCS = \
 libxkb_la_SOURCES = $(DDX_SRCS) $(DIX_SRCS) $(XKBFILE_SRCS) $(X11_SRCS)
 libxkbstubs_la_SOURCES = ddxVT.c ddxPrivate.c ddxKillSrv.c
 
-EXTRA_DIST = xkbDflts.h xkbgeom.h xkb.h
+EXTRA_DIST = xkbDflts.h xkbgeom.h
 
 xkbcompileddir = $(XKB_COMPILED_DIR)
 dist_xkbcompiled_DATA = README.compiled

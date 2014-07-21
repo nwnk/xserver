@@ -43,7 +43,7 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define	XKBSRV_NEED_FILE_FUNCS
 #include <xkbsrv.h>
 #include <X11/extensions/XI.h>
-#include "xkb.h"
+#include "opaque.h"
 
         /*
          * If XKM_OUTPUT_DIR specifies a path without a leading slash, it is

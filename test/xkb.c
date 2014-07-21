@@ -45,7 +45,6 @@
 #include "../xkb/xkbgeom.h"
 #include <X11/extensions/XKMformat.h>
 #include "xkbfile.h"
-#include "../xkb/xkb.h"
 #include <assert.h>
 
 /**
