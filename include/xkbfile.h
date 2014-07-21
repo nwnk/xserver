@@ -143,10 +143,6 @@ extern _X_EXPORT char *XkbDoodadTypeText(unsigned /* type */ ,
                                          unsigned       /* format */
     );
 
-extern _X_EXPORT const char *XkbActionTypeText(unsigned /* type */ ,
-                                               unsigned /* format */
-    );
-
 extern _X_EXPORT char *XkbActionText(XkbDescPtr /* xkb */ ,
                                      XkbAction * /* action */ ,
                                      unsigned   /* format */
@@ -178,12 +174,6 @@ extern _X_EXPORT int XkbFindKeycodeByName(XkbDescPtr /* xkb */ ,
 
 /***====================================================================***/
 
-extern _X_EXPORT Atom XkbInternAtom(char * /* name */ ,
-                                    Bool        /* onlyIfExists */
-    );
-
-/***====================================================================***/
-
 #ifdef _XKBGEOM_H_
 
 #define	XkbDW_Unknown	0
@@ -205,10 +195,6 @@ typedef struct _XkbDrawable {
 
 extern _X_EXPORT unsigned XkbConvertGetByNameComponents(Bool /* toXkm */ ,
                                                         unsigned        /* orig */
-    );
-
-extern _X_EXPORT Bool XkbNameMatchesPattern(char * /* name */ ,
-                                            char *      /* pattern */
     );
 
 /***====================================================================***/
@@ -262,9 +248,6 @@ extern _X_EXPORT Bool XkbWriteXKBKeymapForNames(FILE * /* file */ ,
     );
 
 /***====================================================================***/
-
-extern _X_EXPORT Bool XkmProbe(FILE *   /* file */
-    );
 
 extern _X_EXPORT unsigned XkmReadFile(FILE * /* file */ ,
                                       unsigned /* need */ ,

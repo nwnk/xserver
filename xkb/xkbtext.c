@@ -689,7 +689,7 @@ static const char *actionTypeNames[XkbSA_NumActions] = {
     "DeviceBtn", "LockDeviceBtn"
 };
 
-const char *
+static const char *
 XkbActionTypeText(unsigned type, unsigned format)
 {
     static char buf[32];

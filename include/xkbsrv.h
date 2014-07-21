@@ -451,13 +451,6 @@ extern _X_EXPORT XkbAction *XkbResizeKeyActions(XkbDescPtr /* xkb */ ,
                                                 int     /* needed */
     );
 
-extern _X_EXPORT void XkbUpdateKeyTypesFromCore(DeviceIntPtr /* pXDev */ ,
-                                                KeySymsPtr /* syms */ ,
-                                                KeyCode /* first */ ,
-                                                CARD8 /* num */ ,
-                                                XkbChangesPtr   /* pChanges */
-    );
-
 extern _X_EXPORT void XkbUpdateDescActions(XkbDescPtr /* xkb */ ,
                                            KeyCode /* first */ ,
                                            CARD8 /* num */ ,
@@ -824,9 +817,6 @@ extern _X_EXPORT void XkbSendNewKeyboardNotify(DeviceIntPtr /* kbd */ ,
 extern Bool XkbCopyKeymap(XkbDescPtr /* dst */ ,
                           XkbDescPtr /* src */ );
 
-extern _X_EXPORT Bool XkbCopyDeviceKeymap(DeviceIntPtr /* dst */,
-					  DeviceIntPtr /* src */);
-
 extern _X_EXPORT Bool XkbDeviceApplyKeymap(DeviceIntPtr /* dst */ ,
                                            XkbDescPtr /* src */ );
 
@@ -867,12 +857,6 @@ extern _X_EXPORT unsigned int XkbDDXLoadKeymapByNames(DeviceIntPtr /* keybd */ ,
                                                       char *
                                                       /* keymapNameRtrn */ ,
                                                       int       /* keymapNameRtrnLen */
-    );
-
-extern _X_EXPORT Bool XkbDDXNamesFromRules(DeviceIntPtr /* keybd */ ,
-                                           const char * /* rules */ ,
-                                           XkbRF_VarDefsPtr /* defs */ ,
-                                           XkbComponentNamesPtr /* names */
     );
 
 extern _X_EXPORT XkbDescPtr XkbCompileKeymap(DeviceIntPtr /* dev */ ,

@@ -394,7 +394,7 @@ XkbDDXLoadKeymapByNames(DeviceIntPtr keybd,
     return LoadXKM(want, need, nameRtrn, xkbRtrn);
 }
 
-Bool
+static Bool
 XkbDDXNamesFromRules(DeviceIntPtr keybd,
                      const char *rules_name,
                      XkbRF_VarDefsPtr defs, XkbComponentNamesPtr names)

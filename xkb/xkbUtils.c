@@ -214,7 +214,7 @@ XkbMaskForVMask(XkbDescPtr xkb, unsigned vmask)
 
 /***====================================================================***/
 
-void
+static void
 XkbUpdateKeyTypesFromCore(DeviceIntPtr pXDev,
                           KeySymsPtr pCore,
                           KeyCode first, CARD8 num, XkbChangesPtr changes)
@@ -2027,12 +2027,6 @@ XkbDeviceApplyKeymap(DeviceIntPtr dst, XkbDescPtr desc)
         XkbSendNewKeyboardNotify(dst, &nkn);
 
     return ret;
-}
-
-Bool
-XkbCopyDeviceKeymap(DeviceIntPtr dst, DeviceIntPtr src)
-{
-    return XkbDeviceApplyKeymap(dst, src->key->xkbInfo->desc);
 }
 
 int
