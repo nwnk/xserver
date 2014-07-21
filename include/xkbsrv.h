@@ -313,333 +313,333 @@ extern CARD32 xkbDebugFlags;
 
 #define	Status		int
 
-extern _X_EXPORT void XkbUseMsg(void
+extern void XkbUseMsg(void
     );
 
-extern _X_EXPORT int XkbProcessArguments(int /* argc */ ,
-                                         char ** /* argv */ ,
-                                         int    /* i */
+extern int XkbProcessArguments(int /* argc */ ,
+                               char ** /* argv */ ,
+                               int    /* i */
     );
 
-extern _X_EXPORT Bool XkbInitPrivates(void);
+extern Bool XkbInitPrivates(void);
 
-extern _X_EXPORT void XkbSetExtension(DeviceIntPtr device,
-                                      ProcessInputProc proc);
+extern void XkbSetExtension(DeviceIntPtr device,
+                            ProcessInputProc proc);
 
-extern _X_EXPORT void XkbFreeCompatMap(XkbDescPtr /* xkb */ ,
-                                       unsigned int /* which */ ,
-                                       Bool     /* freeMap */
+extern void XkbFreeCompatMap(XkbDescPtr /* xkb */ ,
+                             unsigned int /* which */ ,
+                             Bool     /* freeMap */
     );
 
-extern _X_EXPORT void XkbFreeNames(XkbDescPtr /* xkb */ ,
-                                   unsigned int /* which */ ,
-                                   Bool /* freeMap */
+extern void XkbFreeNames(XkbDescPtr /* xkb */ ,
+                         unsigned int /* which */ ,
+                         Bool /* freeMap */
     );
 
-extern _X_EXPORT int _XkbLookupAnyDevice(DeviceIntPtr *pDev,
-                                         int id,
-                                         ClientPtr client,
-                                         Mask access_mode, int *xkb_err);
+extern int _XkbLookupAnyDevice(DeviceIntPtr *pDev,
+                               int id,
+                               ClientPtr client,
+                               Mask access_mode, int *xkb_err);
 
-extern _X_EXPORT int _XkbLookupKeyboard(DeviceIntPtr *pDev,
-                                        int id,
-                                        ClientPtr client,
-                                        Mask access_mode, int *xkb_err);
+extern int _XkbLookupKeyboard(DeviceIntPtr *pDev,
+                              int id,
+                              ClientPtr client,
+                              Mask access_mode, int *xkb_err);
 
-extern _X_EXPORT int _XkbLookupBellDevice(DeviceIntPtr *pDev,
-                                          int id,
-                                          ClientPtr client,
-                                          Mask access_mode, int *xkb_err);
+extern int _XkbLookupBellDevice(DeviceIntPtr *pDev,
+                                int id,
+                                ClientPtr client,
+                                Mask access_mode, int *xkb_err);
 
-extern _X_EXPORT int _XkbLookupLedDevice(DeviceIntPtr *pDev,
-                                         int id,
-                                         ClientPtr client,
-                                         Mask access_mode, int *xkb_err);
+extern int _XkbLookupLedDevice(DeviceIntPtr *pDev,
+                               int id,
+                               ClientPtr client,
+                               Mask access_mode, int *xkb_err);
 
-extern _X_EXPORT int _XkbLookupButtonDevice(DeviceIntPtr *pDev,
-                                            int id,
-                                            ClientPtr client,
-                                            Mask access_mode, int *xkb_err);
+extern int _XkbLookupButtonDevice(DeviceIntPtr *pDev,
+                                  int id,
+                                  ClientPtr client,
+                                  Mask access_mode, int *xkb_err);
 
-extern _X_EXPORT XkbDescPtr XkbAllocKeyboard(void
+extern XkbDescPtr XkbAllocKeyboard(void
     );
 
-extern _X_EXPORT Status XkbAllocClientMap(XkbDescPtr /* xkb */ ,
-                                          unsigned int /* which */ ,
-                                          unsigned int  /* nTypes */
+extern Status XkbAllocClientMap(XkbDescPtr /* xkb */ ,
+                                unsigned int /* which */ ,
+                                unsigned int  /* nTypes */
     );
 
-extern _X_EXPORT Status XkbAllocServerMap(XkbDescPtr /* xkb */ ,
-                                          unsigned int /* which */ ,
-                                          unsigned int  /* nNewActions */
+extern Status XkbAllocServerMap(XkbDescPtr /* xkb */ ,
+                                unsigned int /* which */ ,
+                                unsigned int  /* nNewActions */
     );
 
-extern _X_EXPORT void XkbFreeClientMap(XkbDescPtr /* xkb */ ,
-                                       unsigned int /* what */ ,
-                                       Bool     /* freeMap */
+extern void XkbFreeClientMap(XkbDescPtr /* xkb */ ,
+                             unsigned int /* what */ ,
+                             Bool     /* freeMap */
     );
 
-extern _X_EXPORT void XkbFreeServerMap(XkbDescPtr /* xkb */ ,
-                                       unsigned int /* what */ ,
-                                       Bool     /* freeMap */
+extern void XkbFreeServerMap(XkbDescPtr /* xkb */ ,
+                             unsigned int /* what */ ,
+                             Bool     /* freeMap */
     );
 
-extern _X_EXPORT Status XkbAllocIndicatorMaps(XkbDescPtr        /* xkb */
+extern Status XkbAllocIndicatorMaps(XkbDescPtr        /* xkb */
     );
 
-extern _X_EXPORT Status XkbAllocCompatMap(XkbDescPtr /* xkb */ ,
-                                          unsigned int /* which */ ,
-                                          unsigned int  /* nInterpret */
+extern Status XkbAllocCompatMap(XkbDescPtr /* xkb */ ,
+                                unsigned int /* which */ ,
+                                unsigned int  /* nInterpret */
     );
 
-extern _X_EXPORT Status XkbAllocNames(XkbDescPtr /* xkb */ ,
-                                      unsigned int /* which */ ,
-                                      int /* nTotalRG */ ,
-                                      int       /* nTotalAliases */
+extern Status XkbAllocNames(XkbDescPtr /* xkb */ ,
+                            unsigned int /* which */ ,
+                            int /* nTotalRG */ ,
+                            int       /* nTotalAliases */
     );
 
-extern _X_EXPORT Status XkbAllocControls(XkbDescPtr /* xkb */ ,
-                                         unsigned int   /* which */
+extern Status XkbAllocControls(XkbDescPtr /* xkb */ ,
+                               unsigned int   /* which */
     );
 
-extern _X_EXPORT Status XkbCopyKeyTypes(XkbKeyTypePtr /* from */ ,
-                                        XkbKeyTypePtr /* into */ ,
-                                        int     /* num_types */
+extern Status XkbCopyKeyTypes(XkbKeyTypePtr /* from */ ,
+                              XkbKeyTypePtr /* into */ ,
+                              int     /* num_types */
     );
 
-extern _X_EXPORT Status XkbResizeKeyType(XkbDescPtr /* xkb */ ,
-                                         int /* type_ndx */ ,
-                                         int /* map_count */ ,
-                                         Bool /* want_preserve */ ,
-                                         int    /* new_num_lvls */
+extern Status XkbResizeKeyType(XkbDescPtr /* xkb */ ,
+                               int /* type_ndx */ ,
+                               int /* map_count */ ,
+                               Bool /* want_preserve */ ,
+                               int    /* new_num_lvls */
     );
 
-extern _X_EXPORT void XkbFreeKeyboard(XkbDescPtr /* xkb */ ,
-                                      unsigned int /* which */ ,
-                                      Bool      /* freeDesc */
+extern void XkbFreeKeyboard(XkbDescPtr /* xkb */ ,
+                            unsigned int /* which */ ,
+                            Bool      /* freeDesc */
     );
 
-extern _X_EXPORT void XkbFreeComponentNames(XkbComponentNamesPtr /* names */ ,
-                                            Bool        /* freeNames */
+extern void XkbFreeComponentNames(XkbComponentNamesPtr /* names */ ,
+                                  Bool        /* freeNames */
     );
 
-extern _X_EXPORT void XkbSetActionKeyMods(XkbDescPtr /* xkb */ ,
-                                          XkbAction * /* act */ ,
-                                          unsigned int  /* mods */
+extern void XkbSetActionKeyMods(XkbDescPtr /* xkb */ ,
+                                XkbAction * /* act */ ,
+                                unsigned int  /* mods */
     );
 
-extern _X_EXPORT unsigned int XkbMaskForVMask(XkbDescPtr /* xkb */ ,
-                                              unsigned int      /* vmask */
+extern unsigned int XkbMaskForVMask(XkbDescPtr /* xkb */ ,
+                                    unsigned int      /* vmask */
     );
 
-extern _X_EXPORT Bool XkbVirtualModsToReal(XkbDescPtr /* xkb */ ,
-                                           unsigned int /* virtua_mask */ ,
-                                           unsigned int *       /* mask_rtrn */
+extern Bool XkbVirtualModsToReal(XkbDescPtr /* xkb */ ,
+                                 unsigned int /* virtua_mask */ ,
+                                 unsigned int *       /* mask_rtrn */
     );
 
-extern _X_EXPORT unsigned int XkbAdjustGroup(int /* group */ ,
-                                             XkbControlsPtr     /* ctrls */
+extern unsigned int XkbAdjustGroup(int /* group */ ,
+                                   XkbControlsPtr     /* ctrls */
     );
 
-extern _X_EXPORT KeySym *XkbResizeKeySyms(XkbDescPtr /* xkb */ ,
-                                          int /* key */ ,
-                                          int   /* needed */
+extern KeySym *XkbResizeKeySyms(XkbDescPtr /* xkb */ ,
+                                int /* key */ ,
+                                int   /* needed */
     );
 
-extern _X_EXPORT XkbAction *XkbResizeKeyActions(XkbDescPtr /* xkb */ ,
-                                                int /* key */ ,
-                                                int     /* needed */
+extern XkbAction *XkbResizeKeyActions(XkbDescPtr /* xkb */ ,
+                                      int /* key */ ,
+                                      int     /* needed */
     );
 
-extern _X_EXPORT void XkbUpdateDescActions(XkbDescPtr /* xkb */ ,
-                                           KeyCode /* first */ ,
-                                           CARD8 /* num */ ,
-                                           XkbChangesPtr        /* changes */
+extern void XkbUpdateDescActions(XkbDescPtr /* xkb */ ,
+                                 KeyCode /* first */ ,
+                                 CARD8 /* num */ ,
+                                 XkbChangesPtr        /* changes */
     );
 
-extern _X_EXPORT void XkbUpdateActions(DeviceIntPtr /* pXDev */ ,
-                                       KeyCode /* first */ ,
-                                       CARD8 /* num */ ,
-                                       XkbChangesPtr /* pChanges */ ,
-                                       unsigned int * /* needChecksRtrn */ ,
-                                       XkbEventCausePtr /* cause */
+extern void XkbUpdateActions(DeviceIntPtr /* pXDev */ ,
+                             KeyCode /* first */ ,
+                             CARD8 /* num */ ,
+                             XkbChangesPtr /* pChanges */ ,
+                             unsigned int * /* needChecksRtrn */ ,
+                             XkbEventCausePtr /* cause */
     );
 
-extern _X_EXPORT KeySymsPtr XkbGetCoreMap(DeviceIntPtr  /* keybd */
+extern KeySymsPtr XkbGetCoreMap(DeviceIntPtr  /* keybd */
     );
 
-extern _X_EXPORT void XkbApplyMappingChange(DeviceIntPtr /* pXDev */ ,
-                                            KeySymsPtr /* map */ ,
-                                            KeyCode /* firstKey */ ,
-                                            CARD8 /* num */ ,
-                                            CARD8 * /* modmap */ ,
-                                            ClientPtr   /* client */
+extern void XkbApplyMappingChange(DeviceIntPtr /* pXDev */ ,
+                                  KeySymsPtr /* map */ ,
+                                  KeyCode /* firstKey */ ,
+                                  CARD8 /* num */ ,
+                                  CARD8 * /* modmap */ ,
+                                  ClientPtr   /* client */
     );
 
-extern _X_EXPORT void XkbSetIndicators(DeviceIntPtr /* pXDev */ ,
-                                       CARD32 /* affect */ ,
-                                       CARD32 /* values */ ,
-                                       XkbEventCausePtr /* cause */
+extern void XkbSetIndicators(DeviceIntPtr /* pXDev */ ,
+                             CARD32 /* affect */ ,
+                             CARD32 /* values */ ,
+                             XkbEventCausePtr /* cause */
     );
 
-extern _X_EXPORT void XkbUpdateIndicators(DeviceIntPtr /* keybd */ ,
-                                          CARD32 /* changed */ ,
-                                          Bool /* check_edevs */ ,
-                                          XkbChangesPtr /* pChanges */ ,
-                                          XkbEventCausePtr      /* cause */
+extern void XkbUpdateIndicators(DeviceIntPtr /* keybd */ ,
+                                CARD32 /* changed */ ,
+                                Bool /* check_edevs */ ,
+                                XkbChangesPtr /* pChanges */ ,
+                                XkbEventCausePtr      /* cause */
     );
 
-extern _X_EXPORT XkbSrvLedInfoPtr XkbAllocSrvLedInfo(DeviceIntPtr /* dev */ ,
-                                                     KbdFeedbackPtr /* kf */ ,
-                                                     LedFeedbackPtr /* lf */ ,
-                                                     unsigned int       /* needed_parts */
+extern XkbSrvLedInfoPtr XkbAllocSrvLedInfo(DeviceIntPtr /* dev */ ,
+                                           KbdFeedbackPtr /* kf */ ,
+                                           LedFeedbackPtr /* lf */ ,
+                                           unsigned int       /* needed_parts */
     );
 
-extern _X_EXPORT XkbSrvLedInfoPtr XkbCopySrvLedInfo(DeviceIntPtr /* dev */ ,
-                                                    XkbSrvLedInfoPtr /* src */ ,
-                                                    KbdFeedbackPtr /* kf */ ,
-                                                    LedFeedbackPtr      /* lf */
+extern XkbSrvLedInfoPtr XkbCopySrvLedInfo(DeviceIntPtr /* dev */ ,
+                                          XkbSrvLedInfoPtr /* src */ ,
+                                          KbdFeedbackPtr /* kf */ ,
+                                          LedFeedbackPtr      /* lf */
     );
 
-extern _X_EXPORT XkbSrvLedInfoPtr XkbFindSrvLedInfo(DeviceIntPtr /* dev */ ,
-                                                    unsigned int /* class */ ,
-                                                    unsigned int /* id */ ,
-                                                    unsigned int        /* needed_parts */
+extern XkbSrvLedInfoPtr XkbFindSrvLedInfo(DeviceIntPtr /* dev */ ,
+                                          unsigned int /* class */ ,
+                                          unsigned int /* id */ ,
+                                          unsigned int        /* needed_parts */
     );
 
-extern _X_EXPORT void XkbApplyLedNameChanges(DeviceIntPtr /* dev */ ,
-                                             XkbSrvLedInfoPtr /* sli */ ,
-                                             unsigned int /* changed_names */ ,
-                                             xkbExtensionDeviceNotify * /* ed */
-                                             ,
-                                             XkbChangesPtr /* changes */ ,
-                                             XkbEventCausePtr   /* cause */
+extern void XkbApplyLedNameChanges(DeviceIntPtr /* dev */ ,
+                                   XkbSrvLedInfoPtr /* sli */ ,
+                                   unsigned int /* changed_names */ ,
+                                   xkbExtensionDeviceNotify * /* ed */
+                                   ,
+                                   XkbChangesPtr /* changes */ ,
+                                   XkbEventCausePtr   /* cause */
     );
 
-extern _X_EXPORT void XkbApplyLedMapChanges(DeviceIntPtr /* dev */ ,
-                                            XkbSrvLedInfoPtr /* sli */ ,
-                                            unsigned int /* changed_maps */ ,
-                                            xkbExtensionDeviceNotify * /* ed */
-                                            ,
-                                            XkbChangesPtr /* changes */ ,
-                                            XkbEventCausePtr    /* cause */
+extern void XkbApplyLedMapChanges(DeviceIntPtr /* dev */ ,
+                                  XkbSrvLedInfoPtr /* sli */ ,
+                                  unsigned int /* changed_maps */ ,
+                                  xkbExtensionDeviceNotify * /* ed */
+                                  ,
+                                  XkbChangesPtr /* changes */ ,
+                                  XkbEventCausePtr    /* cause */
     );
 
-extern _X_EXPORT void XkbApplyLedStateChanges(DeviceIntPtr /* dev */ ,
-                                              XkbSrvLedInfoPtr /* sli */ ,
-                                              unsigned int /* changed_leds */ ,
-                                              xkbExtensionDeviceNotify *
-                                              /* ed */ ,
-                                              XkbChangesPtr /* changes */ ,
-                                              XkbEventCausePtr  /* cause */
+extern void XkbApplyLedStateChanges(DeviceIntPtr /* dev */ ,
+                                    XkbSrvLedInfoPtr /* sli */ ,
+                                    unsigned int /* changed_leds */ ,
+                                    xkbExtensionDeviceNotify *
+                                    /* ed */ ,
+                                    XkbChangesPtr /* changes */ ,
+                                    XkbEventCausePtr  /* cause */
     );
 
-extern _X_EXPORT void XkbFlushLedEvents(DeviceIntPtr /* dev */ ,
-                                        DeviceIntPtr /* kbd */ ,
-                                        XkbSrvLedInfoPtr /* sli */ ,
-                                        xkbExtensionDeviceNotify * /* ed */ ,
-                                        XkbChangesPtr /* changes */ ,
-                                        XkbEventCausePtr        /* cause */
+extern void XkbFlushLedEvents(DeviceIntPtr /* dev */ ,
+                              DeviceIntPtr /* kbd */ ,
+                              XkbSrvLedInfoPtr /* sli */ ,
+                              xkbExtensionDeviceNotify * /* ed */ ,
+                              XkbChangesPtr /* changes */ ,
+                              XkbEventCausePtr        /* cause */
     );
 
-extern _X_EXPORT unsigned int XkbIndicatorsToUpdate(DeviceIntPtr /* dev */ ,
-                                                    unsigned long
-                                                    /* state_changes */ ,
-                                                    Bool        /* enabled_ctrl_changes */
+extern unsigned int XkbIndicatorsToUpdate(DeviceIntPtr /* dev */ ,
+                                          unsigned long
+                                          /* state_changes */ ,
+                                          Bool        /* enabled_ctrl_changes */
     );
 
-extern _X_EXPORT void XkbComputeDerivedState(XkbSrvInfoPtr      /* xkbi */
+extern void XkbComputeDerivedState(XkbSrvInfoPtr      /* xkbi */
     );
 
-extern _X_EXPORT void XkbCheckSecondaryEffects(XkbSrvInfoPtr /* xkbi */ ,
-                                               unsigned int /* which */ ,
-                                               XkbChangesPtr /* changes */ ,
-                                               XkbEventCausePtr /* cause */
+extern void XkbCheckSecondaryEffects(XkbSrvInfoPtr /* xkbi */ ,
+                                     unsigned int /* which */ ,
+                                     XkbChangesPtr /* changes */ ,
+                                     XkbEventCausePtr /* cause */
     );
 
-extern _X_EXPORT void XkbCheckIndicatorMaps(DeviceIntPtr /* dev */ ,
-                                            XkbSrvLedInfoPtr /* sli */ ,
-                                            unsigned int        /* which */
+extern void XkbCheckIndicatorMaps(DeviceIntPtr /* dev */ ,
+                                  XkbSrvLedInfoPtr /* sli */ ,
+                                  unsigned int        /* which */
     );
 
-extern _X_EXPORT unsigned int XkbStateChangedFlags(XkbStatePtr /* old */ ,
-                                                   XkbStatePtr  /* new */
+extern unsigned int XkbStateChangedFlags(XkbStatePtr /* old */ ,
+                                         XkbStatePtr  /* new */
     );
 
-extern _X_EXPORT void XkbSendStateNotify(DeviceIntPtr /* kbd */ ,
-                                         xkbStateNotify *       /* pSN */
+extern void XkbSendStateNotify(DeviceIntPtr /* kbd */ ,
+                               xkbStateNotify *       /* pSN */
     );
 
-extern _X_EXPORT void XkbSendMapNotify(DeviceIntPtr /* kbd */ ,
-                                       xkbMapNotify *   /* ev */
+extern void XkbSendMapNotify(DeviceIntPtr /* kbd */ ,
+                             xkbMapNotify *   /* ev */
     );
 
-extern _X_EXPORT int XkbComputeControlsNotify(DeviceIntPtr /* kbd */ ,
-                                              XkbControlsPtr /* old */ ,
-                                              XkbControlsPtr /* new */ ,
-                                              xkbControlsNotify * /* pCN */ ,
-                                              Bool      /* forceCtrlProc */
+extern int XkbComputeControlsNotify(DeviceIntPtr /* kbd */ ,
+                                    XkbControlsPtr /* old */ ,
+                                    XkbControlsPtr /* new */ ,
+                                    xkbControlsNotify * /* pCN */ ,
+                                    Bool      /* forceCtrlProc */
     );
 
-extern _X_EXPORT void XkbSendControlsNotify(DeviceIntPtr /* kbd */ ,
-                                            xkbControlsNotify * /* ev */
+extern void XkbSendControlsNotify(DeviceIntPtr /* kbd */ ,
+                                  xkbControlsNotify * /* ev */
     );
 
-extern _X_EXPORT void XkbSendCompatMapNotify(DeviceIntPtr /* kbd */ ,
-                                             xkbCompatMapNotify *       /* ev */
+extern void XkbSendCompatMapNotify(DeviceIntPtr /* kbd */ ,
+                                   xkbCompatMapNotify *       /* ev */
     );
 
-extern _X_EXPORT void XkbHandleBell(BOOL force,
-                                    BOOL eventOnly,
-                                    DeviceIntPtr kbd,
-                                    CARD8 percent,
-                                    void *ctrl,
-                                    CARD8 class,
-                                    Atom name,
-                                    WindowPtr pWin,
-                                    ClientPtr pClient
+extern void XkbHandleBell(BOOL force,
+                          BOOL eventOnly,
+                          DeviceIntPtr kbd,
+                          CARD8 percent,
+                          void *ctrl,
+                          CARD8 class,
+                          Atom name,
+                          WindowPtr pWin,
+                          ClientPtr pClient
     );
 
-extern _X_EXPORT void XkbSendAccessXNotify(DeviceIntPtr /* kbd */ ,
-                                           xkbAccessXNotify *   /* pEv */
+extern void XkbSendAccessXNotify(DeviceIntPtr /* kbd */ ,
+                                 xkbAccessXNotify *   /* pEv */
     );
 
-extern _X_EXPORT void XkbSendNamesNotify(DeviceIntPtr /* kbd */ ,
-                                         xkbNamesNotify *       /* ev */
+extern void XkbSendNamesNotify(DeviceIntPtr /* kbd */ ,
+                               xkbNamesNotify *       /* ev */
     );
 
-extern _X_EXPORT void XkbSendActionMessage(DeviceIntPtr /* kbd */ ,
-                                           xkbActionMessage *   /* ev */
+extern void XkbSendActionMessage(DeviceIntPtr /* kbd */ ,
+                                 xkbActionMessage *   /* ev */
     );
 
-extern _X_EXPORT void XkbSendExtensionDeviceNotify(DeviceIntPtr /* kbd */ ,
-                                                   ClientPtr /* client */ ,
-                                                   xkbExtensionDeviceNotify *   /* ev */
+extern void XkbSendExtensionDeviceNotify(DeviceIntPtr /* kbd */ ,
+                                         ClientPtr /* client */ ,
+                                         xkbExtensionDeviceNotify *   /* ev */
     );
 
-extern _X_EXPORT void XkbSendNotification(DeviceIntPtr /* kbd */ ,
-                                          XkbChangesPtr /* pChanges */ ,
-                                          XkbEventCausePtr      /* cause */
+extern void XkbSendNotification(DeviceIntPtr /* kbd */ ,
+                                XkbChangesPtr /* pChanges */ ,
+                                XkbEventCausePtr      /* cause */
     );
 
-extern _X_EXPORT void XkbProcessKeyboardEvent(DeviceEvent * /* event */ ,
-                                              DeviceIntPtr      /* keybd */
+extern void XkbProcessKeyboardEvent(DeviceEvent * /* event */ ,
+                                    DeviceIntPtr      /* keybd */
     );
 
-extern _X_EXPORT void XkbHandleActions(DeviceIntPtr /* dev */ ,
-                                       DeviceIntPtr /* kbd */ ,
-                                       DeviceEvent *    /* event */
+extern void XkbHandleActions(DeviceIntPtr /* dev */ ,
+                             DeviceIntPtr /* kbd */ ,
+                             DeviceEvent *    /* event */
     );
 
 extern void XkbPushLockedStateToSlaves(DeviceIntPtr /* master */,
                                        int /* evtype */,
                                        int /* key */);
 
-extern _X_EXPORT Bool XkbEnableDisableControls(XkbSrvInfoPtr /* xkbi */ ,
-                                               unsigned long /* change */ ,
-                                               unsigned long /* newValues */ ,
-                                               XkbChangesPtr /* changes */ ,
-                                               XkbEventCausePtr /* cause */
+extern Bool XkbEnableDisableControls(XkbSrvInfoPtr /* xkbi */ ,
+                                     unsigned long /* change */ ,
+                                     unsigned long /* newValues */ ,
+                                     XkbChangesPtr /* changes */ ,
+                                     XkbEventCausePtr /* cause */
     );
 
 extern void AccessXInit(DeviceIntPtr  /* dev */
@@ -661,164 +661,164 @@ extern void AccessXComputeCurveFactor(XkbSrvInfoPtr /* xkbi */ ,
                                       XkbControlsPtr  /* ctrls */
     );
 
-extern _X_EXPORT XkbInterestPtr XkbFindClientResource(DevicePtr /* inDev */ ,
-                                                      ClientPtr /* client */
+extern XkbInterestPtr XkbFindClientResource(DevicePtr /* inDev */ ,
+                                            ClientPtr /* client */
     );
 
-extern _X_EXPORT XkbInterestPtr XkbAddClientResource(DevicePtr /* inDev */ ,
-                                                     ClientPtr /* client */ ,
-                                                     XID        /* id */
+extern XkbInterestPtr XkbAddClientResource(DevicePtr /* inDev */ ,
+                                           ClientPtr /* client */ ,
+                                           XID        /* id */
     );
 
-extern _X_EXPORT int XkbRemoveResourceClient(DevicePtr /* inDev */ ,
-                                             XID        /* id */
+extern int XkbRemoveResourceClient(DevicePtr /* inDev */ ,
+                                   XID        /* id */
     );
 
-extern _X_EXPORT int XkbDDXAccessXBeep(DeviceIntPtr /* dev */ ,
-                                       unsigned int /* what */ ,
-                                       unsigned int     /* which */
+extern int XkbDDXAccessXBeep(DeviceIntPtr /* dev */ ,
+                             unsigned int /* what */ ,
+                             unsigned int     /* which */
     );
 
-extern _X_EXPORT int XkbDDXUsesSoftRepeat(DeviceIntPtr  /* dev */
+extern int XkbDDXUsesSoftRepeat(DeviceIntPtr  /* dev */
     );
 
-extern _X_EXPORT void XkbDDXKeybdCtrlProc(DeviceIntPtr /* dev */ ,
-                                          KeybdCtrl *   /* ctrl */
+extern void XkbDDXKeybdCtrlProc(DeviceIntPtr /* dev */ ,
+                                KeybdCtrl *   /* ctrl */
     );
 
-extern _X_EXPORT void XkbDDXChangeControls(DeviceIntPtr /* dev */ ,
-                                           XkbControlsPtr /* old */ ,
-                                           XkbControlsPtr       /* new */
+extern void XkbDDXChangeControls(DeviceIntPtr /* dev */ ,
+                                 XkbControlsPtr /* old */ ,
+                                 XkbControlsPtr       /* new */
     );
 
-extern _X_EXPORT void XkbDDXUpdateDeviceIndicators(DeviceIntPtr /* dev */ ,
-                                                   XkbSrvLedInfoPtr /* sli */ ,
-                                                   CARD32       /* newState */
+extern void XkbDDXUpdateDeviceIndicators(DeviceIntPtr /* dev */ ,
+                                         XkbSrvLedInfoPtr /* sli */ ,
+                                         CARD32       /* newState */
     );
 
-extern _X_EXPORT int XkbDDXTerminateServer(DeviceIntPtr /* dev */ ,
-                                           KeyCode /* key */ ,
-                                           XkbAction *  /* act */
+extern int XkbDDXTerminateServer(DeviceIntPtr /* dev */ ,
+                                 KeyCode /* key */ ,
+                                 XkbAction *  /* act */
     );
 
-extern _X_EXPORT int XkbDDXSwitchScreen(DeviceIntPtr /* dev */ ,
-                                        KeyCode /* key */ ,
-                                        XkbAction *     /* act */
+extern int XkbDDXSwitchScreen(DeviceIntPtr /* dev */ ,
+                              KeyCode /* key */ ,
+                              XkbAction *     /* act */
     );
 
-extern _X_EXPORT int XkbDDXPrivate(DeviceIntPtr /* dev */ ,
-                                   KeyCode /* key */ ,
-                                   XkbAction *  /* act */
+extern int XkbDDXPrivate(DeviceIntPtr /* dev */ ,
+                         KeyCode /* key */ ,
+                         XkbAction *  /* act */
     );
 
-extern _X_EXPORT void XkbDisableComputedAutoRepeats(DeviceIntPtr /* pXDev */ ,
-                                                    unsigned int        /* key */
+extern void XkbDisableComputedAutoRepeats(DeviceIntPtr /* pXDev */ ,
+                                          unsigned int        /* key */
     );
 
-extern _X_EXPORT void XkbSetRepeatKeys(DeviceIntPtr /* pXDev */ ,
-                                       int /* key */ ,
-                                       int      /* onoff */
+extern void XkbSetRepeatKeys(DeviceIntPtr /* pXDev */ ,
+                             int /* key */ ,
+                             int      /* onoff */
     );
 
-extern _X_EXPORT int XkbLatchModifiers(DeviceIntPtr /* pXDev */ ,
-                                       CARD8 /* mask */ ,
-                                       CARD8    /* latches */
+extern int XkbLatchModifiers(DeviceIntPtr /* pXDev */ ,
+                             CARD8 /* mask */ ,
+                             CARD8    /* latches */
     );
 
-extern _X_EXPORT int XkbLatchGroup(DeviceIntPtr /* pXDev */ ,
-                                   int  /* group */
+extern int XkbLatchGroup(DeviceIntPtr /* pXDev */ ,
+                         int  /* group */
     );
 
-extern _X_EXPORT void XkbClearAllLatchesAndLocks(DeviceIntPtr /* dev */ ,
-                                                 XkbSrvInfoPtr /* xkbi */ ,
-                                                 Bool /* genEv */ ,
-                                                 XkbEventCausePtr       /* cause */
+extern void XkbClearAllLatchesAndLocks(DeviceIntPtr /* dev */ ,
+                                       XkbSrvInfoPtr /* xkbi */ ,
+                                       Bool /* genEv */ ,
+                                       XkbEventCausePtr       /* cause */
     );
 
-extern _X_EXPORT void XkbInitRules(XkbRMLVOSet * /* rmlvo   */,
-                                   const char *  /* rules   */,
-                                   const char *  /* model   */,
-                                   const char *  /* layout  */,
-                                   const char *  /* variant */,
-                                   const char *  /* options */
+extern void XkbInitRules(XkbRMLVOSet * /* rmlvo   */,
+                         const char *  /* rules   */,
+                         const char *  /* model   */,
+                         const char *  /* layout  */,
+                         const char *  /* variant */,
+                         const char *  /* options */
     ) ;
 
-extern _X_EXPORT void XkbGetRulesDflts(XkbRMLVOSet *    /* rmlvo */
+extern void XkbGetRulesDflts(XkbRMLVOSet *    /* rmlvo */
     );
 
-extern _X_EXPORT void XkbFreeRMLVOSet(XkbRMLVOSet * /* rmlvo */ ,
-                                      Bool      /* freeRMLVO */
+extern void XkbFreeRMLVOSet(XkbRMLVOSet * /* rmlvo */ ,
+                            Bool      /* freeRMLVO */
     );
 
-extern _X_EXPORT void XkbSetRulesDflts(XkbRMLVOSet *    /* rmlvo */
+extern void XkbSetRulesDflts(XkbRMLVOSet *    /* rmlvo */
     );
 
-extern _X_EXPORT void XkbDeleteRulesDflts(void
+extern void XkbDeleteRulesDflts(void
     );
 
-extern _X_EXPORT void XkbDeleteRulesUsed(void
+extern void XkbDeleteRulesUsed(void
     );
 
 extern int SProcXkbDispatch(ClientPtr /* client */
     );
 
-extern _X_EXPORT XkbGeometryPtr XkbLookupNamedGeometry(DeviceIntPtr /* dev */ ,
-                                                       Atom /* name */ ,
-                                                       Bool *   /* shouldFree */
+extern XkbGeometryPtr XkbLookupNamedGeometry(DeviceIntPtr /* dev */ ,
+                                             Atom /* name */ ,
+                                             Bool *   /* shouldFree */
     );
 
-extern _X_EXPORT void XkbConvertCase(KeySym /* sym */ ,
-                                     KeySym * /* lower */ ,
-                                     KeySym *   /* upper */
+extern void XkbConvertCase(KeySym /* sym */ ,
+                           KeySym * /* lower */ ,
+                           KeySym *   /* upper */
     );
 
-extern _X_EXPORT Status XkbChangeKeycodeRange(XkbDescPtr /* xkb */ ,
-                                              int /* minKC */ ,
-                                              int /* maxKC */ ,
-                                              XkbChangesPtr     /* changes */
+extern Status XkbChangeKeycodeRange(XkbDescPtr /* xkb */ ,
+                                    int /* minKC */ ,
+                                    int /* maxKC */ ,
+                                    XkbChangesPtr     /* changes */
     );
 
-extern _X_EXPORT void XkbFreeSrvLedInfo(XkbSrvLedInfoPtr        /* sli */
+extern void XkbFreeSrvLedInfo(XkbSrvLedInfoPtr        /* sli */
     );
 
-extern _X_EXPORT void XkbFreeInfo(XkbSrvInfoPtr /* xkbi */
+extern void XkbFreeInfo(XkbSrvInfoPtr /* xkbi */
     );
 
-extern _X_EXPORT Status XkbChangeTypesOfKey(XkbDescPtr /* xkb */ ,
-                                            int /* key */ ,
-                                            int /* nGroups */ ,
-                                            unsigned int /* groups */ ,
-                                            int * /* newTypesIn */ ,
-                                            XkbMapChangesPtr    /* changes */
+extern Status XkbChangeTypesOfKey(XkbDescPtr /* xkb */ ,
+                                  int /* key */ ,
+                                  int /* nGroups */ ,
+                                  unsigned int /* groups */ ,
+                                  int * /* newTypesIn */ ,
+                                  XkbMapChangesPtr    /* changes */
     );
 
-extern _X_EXPORT int XkbKeyTypesForCoreSymbols(XkbDescPtr /* xkb */ ,
-                                               int /* map_width */ ,
-                                               KeySym * /* core_syms */ ,
-                                               unsigned int /* protected */ ,
-                                               int * /* types_inout */ ,
-                                               KeySym * /* xkb_syms_rtrn */
+extern int XkbKeyTypesForCoreSymbols(XkbDescPtr /* xkb */ ,
+                                     int /* map_width */ ,
+                                     KeySym * /* core_syms */ ,
+                                     unsigned int /* protected */ ,
+                                     int * /* types_inout */ ,
+                                     KeySym * /* xkb_syms_rtrn */
     );
 
-extern _X_EXPORT Bool XkbApplyCompatMapToKey(XkbDescPtr /* xkb */ ,
-                                             KeyCode /* key */ ,
-                                             XkbChangesPtr      /* changes */
+extern Bool XkbApplyCompatMapToKey(XkbDescPtr /* xkb */ ,
+                                   KeyCode /* key */ ,
+                                   XkbChangesPtr      /* changes */
     );
 
-extern _X_EXPORT Bool XkbApplyVirtualModChanges(XkbDescPtr /* xkb */ ,
-                                                unsigned int /* changed */ ,
-                                                XkbChangesPtr   /* changes */
+extern Bool XkbApplyVirtualModChanges(XkbDescPtr /* xkb */ ,
+                                      unsigned int /* changed */ ,
+                                      XkbChangesPtr   /* changes */
     );
 
-extern _X_EXPORT void XkbSendNewKeyboardNotify(DeviceIntPtr /* kbd */ ,
-                                               xkbNewKeyboardNotify *   /* pNKN */
+extern void XkbSendNewKeyboardNotify(DeviceIntPtr /* kbd */ ,
+                                     xkbNewKeyboardNotify *   /* pNKN */
     );
 
 extern Bool XkbCopyKeymap(XkbDescPtr /* dst */ ,
                           XkbDescPtr /* src */ );
 
-extern _X_EXPORT Bool XkbDeviceApplyKeymap(DeviceIntPtr /* dst */ ,
-                                           XkbDescPtr /* src */ );
+extern Bool XkbDeviceApplyKeymap(DeviceIntPtr /* dst */ ,
+                                 XkbDescPtr /* src */ );
 
 extern void XkbFilterEvents(ClientPtr /* pClient */ ,
                             int /* nEvents */ ,
@@ -834,8 +834,8 @@ extern void XkbFakeDeviceButton(DeviceIntPtr /* dev */ ,
                                 int /* press */ ,
                                 int /* button */ );
 
-extern _X_EXPORT void XkbCopyControls(XkbDescPtr /* dst */ ,
-                                      XkbDescPtr /* src */ );
+extern void XkbCopyControls(XkbDescPtr /* dst */ ,
+                            XkbDescPtr /* src */ );
 
 #include "xkbfile.h"
 #include "xkbrules.h"
@@ -847,24 +847,24 @@ extern _X_EXPORT void XkbCopyControls(XkbDescPtr /* dst */ ,
 #define	_XkbListGeometry	4
 #define	_XkbListNumComponents	5
 
-extern _X_EXPORT unsigned int XkbDDXLoadKeymapByNames(DeviceIntPtr /* keybd */ ,
-                                                      XkbComponentNamesPtr
-                                                      /* names */ ,
-                                                      unsigned int /* want */ ,
-                                                      unsigned int /* need */ ,
-                                                      XkbDescPtr *
-                                                      /* finfoRtrn */ ,
-                                                      char *
-                                                      /* keymapNameRtrn */ ,
-                                                      int       /* keymapNameRtrnLen */
+extern unsigned int XkbDDXLoadKeymapByNames(DeviceIntPtr /* keybd */ ,
+                                            XkbComponentNamesPtr
+                                            /* names */ ,
+                                            unsigned int /* want */ ,
+                                            unsigned int /* need */ ,
+                                            XkbDescPtr *
+                                            /* finfoRtrn */ ,
+                                            char *
+                                            /* keymapNameRtrn */ ,
+                                            int       /* keymapNameRtrnLen */
     );
 
-extern _X_EXPORT XkbDescPtr XkbCompileKeymap(DeviceIntPtr /* dev */ ,
-                                             XkbRMLVOSet *      /* rmlvo */
+extern XkbDescPtr XkbCompileKeymap(DeviceIntPtr /* dev */ ,
+                                   XkbRMLVOSet *      /* rmlvo */
     );
 
-extern _X_EXPORT XkbDescPtr XkbCompileKeymapFromString(DeviceIntPtr dev,
-						       const char *keymap,
-						       int keymap_length);
+extern XkbDescPtr XkbCompileKeymapFromString(DeviceIntPtr dev,
+				       const char *keymap,
+				       int keymap_length);
 
 #endif                          /* _XKBSRV_H_ */

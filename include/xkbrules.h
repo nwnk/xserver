@@ -89,26 +89,26 @@ _XFUNCPROTOBEGIN
 /* Seems preferable to dragging xkbstr.h in. */
     struct _XkbComponentNames;
 
-extern _X_EXPORT Bool XkbRF_GetComponents(XkbRF_RulesPtr /* rules */ ,
-                                          XkbRF_VarDefsPtr /* var_defs */ ,
-                                          struct _XkbComponentNames *   /* names */
+extern Bool XkbRF_GetComponents(XkbRF_RulesPtr /* rules */ ,
+                                XkbRF_VarDefsPtr /* var_defs */ ,
+                                struct _XkbComponentNames *   /* names */
     );
 
-extern _X_EXPORT Bool XkbRF_LoadRules(FILE * /* file */ ,
-                                      XkbRF_RulesPtr    /* rules */
+extern Bool XkbRF_LoadRules(FILE * /* file */ ,
+                            XkbRF_RulesPtr    /* rules */
     );
 
-extern _X_EXPORT Bool XkbRF_LoadRulesByName(char * /* base */ ,
-                                            char * /* locale */ ,
-                                            XkbRF_RulesPtr      /* rules */
+extern Bool XkbRF_LoadRulesByName(char * /* base */ ,
+                                  char * /* locale */ ,
+                                  XkbRF_RulesPtr      /* rules */
     );
 
 /***====================================================================***/
 
-extern _X_EXPORT XkbRF_RulesPtr XkbRF_Create(void);
+extern XkbRF_RulesPtr XkbRF_Create(void);
 
-extern _X_EXPORT void XkbRF_Free(XkbRF_RulesPtr /* rules */ ,
-                                 Bool   /* freeRules */
+extern void XkbRF_Free(XkbRF_RulesPtr /* rules */ ,
+                       Bool   /* freeRules */
     );
 
 /***====================================================================***/
