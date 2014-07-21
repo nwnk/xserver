@@ -31,7 +31,6 @@
 
 /***====================================================================***/
 
-#define	XkbCFile	1
 #define	XkbXKBFile	2
 #define	XkbMessage	3
 
