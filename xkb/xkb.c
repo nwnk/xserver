@@ -152,6 +152,48 @@ static RESTYPE RT_XKBCLIENT;
 #define	CHK_REQ_KEY_RANGE(err,first,num,r)  \
 	CHK_REQ_KEY_RANGE2(err,first,num,r,client->errorValue,BadValue)
 
+static XkbInterestPtr
+XkbFindClientResource(DevicePtr inDev, ClientPtr client)
+{
+    DeviceIntPtr dev = (DeviceIntPtr) inDev;
+    XkbInterestPtr interest;
+
+    if (dev->xkb_interest) {
+        interest = dev->xkb_interest;
+        while (interest) {
+            if (interest->client == client) {
+                return interest;
+            }
+            interest = interest->next;
+        }
+    }
+    return NULL;
+}
+
+static XkbInterestPtr
+XkbAddClientResource(DevicePtr inDev, ClientPtr client, XID id)
+{
+    DeviceIntPtr dev = (DeviceIntPtr) inDev;
+    XkbInterestPtr interest;
+
+    interest = dev->xkb_interest;
+    while (interest) {
+        if (interest->client == client)
+            return ((interest->resource == id) ? interest : NULL);
+        interest = interest->next;
+    }
+    interest = calloc(1, sizeof(XkbInterestRec));
+    if (interest) {
+        interest->dev = dev;
+        interest->client = client;
+        interest->resource = id;
+        interest->next = dev->xkb_interest;
+        dev->xkb_interest = interest;
+        return interest;
+    }
+    return NULL;
+}
+
 /***====================================================================***/
 
 int

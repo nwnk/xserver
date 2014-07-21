@@ -659,15 +659,6 @@ extern void AccessXComputeCurveFactor(XkbSrvInfoPtr /* xkbi */ ,
                                       XkbControlsPtr  /* ctrls */
     );
 
-extern XkbInterestPtr XkbFindClientResource(DevicePtr /* inDev */ ,
-                                            ClientPtr /* client */
-    );
-
-extern XkbInterestPtr XkbAddClientResource(DevicePtr /* inDev */ ,
-                                           ClientPtr /* client */ ,
-                                           XID        /* id */
-    );
-
 extern int XkbRemoveResourceClient(DevicePtr /* inDev */ ,
                                    XID        /* id */
     );
