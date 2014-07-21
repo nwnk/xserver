@@ -558,8 +558,6 @@ XkbStringText(char *str, unsigned format)
         buf[0] = '\0';
         return buf;
     }
-    else if (format == XkbXKMFile)
-        return str;
     for (ok = TRUE, len = 0, in = str; *in != '\0'; in++, len++) {
         if (!isprint(*in)) {
             ok = FALSE;
@@ -598,9 +596,6 @@ XkbStringText(char *str, unsigned format)
                 *out++ = 'r';
             else if (*in == '\f')
                 *out++ = 'f';
-            else if ((*in == '\033') && (format == XkbXKMFile)) {
-                *out++ = 'e';
-            }
             else {
                 *out++ = '0';
                 sprintf(out, "%o", *in);
