@@ -69,10 +69,10 @@ tbGetBuffer(unsigned size)
 /***====================================================================***/
 
 char *
-XkbAtomText(Atom atm, unsigned format)
+XkbAtomText(Atom atm)
 {
     const char *atmstr;
-    char *rtrn, *tmp;
+    char *rtrn;
 
     atmstr = NameForAtom(atm);
     if (atmstr != NULL) {
@@ -88,13 +88,13 @@ XkbAtomText(Atom atm, unsigned format)
         rtrn = tbGetBuffer(1);
         rtrn[0] = '\0';
     }
-    return XkbStringText(rtrn, format);
+    return XkbStringText(rtrn);
 }
 
 /***====================================================================***/
 
 char *
-XkbVModIndexText(XkbDescPtr xkb, unsigned ndx, unsigned format)
+XkbVModIndexText(XkbDescPtr xkb, unsigned ndx)
 {
     register int len;
     register Atom *vmodNames;
@@ -126,8 +126,7 @@ XkbVModIndexText(XkbDescPtr xkb, unsigned ndx, unsigned format)
 }
 
 char *
-XkbVModMaskText(XkbDescPtr xkb,
-                unsigned modMask, unsigned mask, unsigned format)
+XkbVModMaskText(XkbDescPtr xkb, unsigned modMask, unsigned mask)
 {
     register int i, bit;
     int len;
@@ -140,7 +139,7 @@ XkbVModMaskText(XkbDescPtr xkb,
         return rtrn;
     }
     if (modMask != 0)
-        mm = XkbModMaskText(modMask, format);
+        mm = XkbModMaskText(modMask);
     else
         mm = NULL;
 
@@ -151,7 +150,7 @@ XkbVModMaskText(XkbDescPtr xkb,
 
         for (i = 0, bit = 1; i < XkbNumVirtualMods; i++, bit <<= 1) {
             if (mask & bit) {
-                tmp = XkbVModIndexText(xkb, i, format);
+                tmp = XkbVModIndexText(xkb, i);
                 len = strlen(tmp) + 1 + (str == buf ? 0 : 1);
                 if ((str - (buf + len)) <= BUFFER_SIZE) {
                     if (str != buf) {
@@ -202,7 +201,7 @@ static const char *modNames[XkbNumModifiers] = {
 };
 
 char *
-XkbModIndexText(unsigned ndx, unsigned format)
+XkbModIndexText(unsigned ndx)
 {
     char *rtrn;
     char buf[100];
@@ -219,7 +218,7 @@ XkbModIndexText(unsigned ndx, unsigned format)
 }
 
 char *
-XkbModMaskText(unsigned mask, unsigned format)
+XkbModMaskText(unsigned mask)
 {
     register int i, bit;
     char buf[64], *rtrn;
@@ -252,7 +251,7 @@ XkbModMaskText(unsigned mask, unsigned format)
 /***====================================================================***/
 
  /*ARGSUSED*/ char *
-XkbConfigText(unsigned config, unsigned format)
+XkbConfigText(unsigned config)
 {
     static char *buf;
 
@@ -299,7 +298,7 @@ XkbConfigText(unsigned config, unsigned format)
 /***====================================================================***/
 
 char *
-XkbKeysymText(KeySym sym, unsigned format)
+XkbKeysymText(KeySym sym)
 {
     static char buf[32];
 
@@ -311,7 +310,7 @@ XkbKeysymText(KeySym sym, unsigned format)
 }
 
 char *
-XkbKeyNameText(char *name, unsigned format)
+XkbKeyNameText(char *name)
 {
     char *buf;
     int len;
@@ -334,7 +333,7 @@ static const char *siMatchText[5] = {
 };
 
 const char *
-XkbSIMatchText(unsigned type, unsigned format)
+XkbSIMatchText(unsigned type)
 {
     static char buf[40];
     const char *rtrn;
@@ -373,7 +372,7 @@ static const char *imWhichNames[] = {
 };
 
 char *
-XkbIMWhichStateMaskText(unsigned use_which, unsigned format)
+XkbIMWhichStateMaskText(unsigned use_which)
 {
     int len;
     unsigned i, bit, tmp;
@@ -422,7 +421,7 @@ static const char *ctrlNames[] = {
 };
 
 char *
-XkbControlsMaskText(unsigned ctrls, unsigned format)
+XkbControlsMaskText(unsigned ctrls)
 {
     int len;
     unsigned i, bit, tmp;
@@ -457,7 +456,7 @@ XkbControlsMaskText(unsigned ctrls, unsigned format)
 /***====================================================================***/
 
 char *
-XkbStringText(char *str, unsigned format)
+XkbStringText(char *str)
 {
     char *buf;
     register char *in, *out;
@@ -522,7 +521,7 @@ XkbStringText(char *str, unsigned format)
 /***====================================================================***/
 
 char *
-XkbGeomFPText(int val, unsigned format)
+XkbGeomFPText(int val)
 {
     int whole, frac;
     char *buf;
@@ -538,7 +537,7 @@ XkbGeomFPText(int val, unsigned format)
 }
 
 char *
-XkbDoodadTypeText(unsigned type, unsigned format)
+XkbDoodadTypeText(unsigned type)
 {
     char *buf = tbGetBuffer(12);
 
@@ -574,7 +573,7 @@ static const char *actionTypeNames[XkbSA_NumActions] = {
 };
 
 static const char *
-XkbActionTypeText(unsigned type, unsigned format)
+XkbActionTypeText(unsigned type)
 {
     static char buf[32];
     const char *rtrn;
@@ -624,8 +623,7 @@ CopyModActionArgs(XkbDescPtr xkb, XkbAction *action, char *buf, int *sz)
     if (act->flags & XkbSA_UseModMapMods)
         TryCopyStr(buf, "modMapMods", sz);
     else if (act->real_mods || tmp) {
-        TryCopyStr(buf,
-                   XkbVModMaskText(xkb, act->real_mods, tmp, XkbXKBFile), sz);
+        TryCopyStr(buf, XkbVModMaskText(xkb, act->real_mods, tmp), sz);
     }
     else
         TryCopyStr(buf, "none", sz);
@@ -770,12 +768,12 @@ CopyISOLockArgs(XkbDescPtr xkb, XkbAction *action, char *buf, int *sz)
             TryCopyStr(buf, "modMapMods", sz);
         else if (act->real_mods || tmp) {
             if (act->real_mods) {
-                TryCopyStr(buf, XkbModMaskText(act->real_mods, XkbXKBFile), sz);
+                TryCopyStr(buf, XkbModMaskText(act->real_mods), sz);
                 if (tmp)
                     TryCopyStr(buf, "+", sz);
             }
             if (tmp)
-                TryCopyStr(buf, XkbVModMaskText(xkb, 0, tmp, XkbXKBFile), sz);
+                TryCopyStr(buf, XkbVModMaskText(xkb, 0, tmp), sz);
         }
         else
             TryCopyStr(buf, "none", sz);
@@ -969,7 +967,7 @@ CopyRedirectKeyArgs(XkbDescPtr xkb, XkbAction *action, char *buf, int *sz)
         (xkb->names->keys[kc].name[0] != '\0')) {
         char *kn;
 
-        kn = XkbKeyNameText(xkb->names->keys[kc].name, XkbXKBFile);
+        kn = XkbKeyNameText(xkb->names->keys[kc].name);
         snprintf(tbuf, sizeof(tbuf), "key=%s", kn);
     }
     else
@@ -979,20 +977,20 @@ CopyRedirectKeyArgs(XkbDescPtr xkb, XkbAction *action, char *buf, int *sz)
         return TRUE;
     if ((act->mods_mask == XkbAllModifiersMask) &&
         (vmods_mask == XkbAllVirtualModsMask)) {
-        tmp = XkbVModMaskText(xkb, act->mods, vmods, XkbXKBFile);
+        tmp = XkbVModMaskText(xkb, act->mods, vmods);
         TryCopyStr(buf, ",mods=", sz);
         TryCopyStr(buf, tmp, sz);
     }
     else {
         if ((act->mods_mask & act->mods) || (vmods_mask & vmods)) {
             tmp = XkbVModMaskText(xkb, act->mods_mask & act->mods,
-                                  vmods_mask & vmods, XkbXKBFile);
+                                  vmods_mask & vmods);
             TryCopyStr(buf, ",mods= ", sz);
             TryCopyStr(buf, tmp, sz);
         }
         if ((act->mods_mask & (~act->mods)) || (vmods_mask & (~vmods))) {
             tmp = XkbVModMaskText(xkb, act->mods_mask & (~act->mods),
-                                  vmods_mask & (~vmods), XkbXKBFile);
+                                  vmods_mask & (~vmods));
             TryCopyStr(buf, ",clearMods= ", sz);
             TryCopyStr(buf, tmp, sz);
         }
@@ -1093,13 +1091,12 @@ static actionCopy copyActionArgs[XkbSA_NumActions] = {
 #define	ACTION_SZ	256
 
 char *
-XkbActionText(XkbDescPtr xkb, XkbAction *action, unsigned format)
+XkbActionText(XkbDescPtr xkb, XkbAction *action)
 {
     char buf[ACTION_SZ], *tmp;
     int sz;
 
-    snprintf(buf, sizeof(buf), "%s(",
-             XkbActionTypeText(action->type, XkbXKBFile));
+    snprintf(buf, sizeof(buf), "%s(", XkbActionTypeText(action->type));
     sz = ACTION_SZ - strlen(buf) + 2;       /* room for close paren and NULL */
     if (action->type < (unsigned) XkbSA_NumActions)
         (*copyActionArgs[action->type]) (xkb, action, buf, &sz);
@@ -1113,7 +1110,7 @@ XkbActionText(XkbDescPtr xkb, XkbAction *action, unsigned format)
 }
 
 char *
-XkbBehaviorText(XkbDescPtr xkb, XkbBehavior * behavior, unsigned format)
+XkbBehaviorText(XkbDescPtr xkb, XkbBehavior * behavior)
 {
     char buf[256], *tmp;
     unsigned type, permanent;
@@ -1147,7 +1144,7 @@ XkbBehaviorText(XkbDescPtr xkb, XkbBehavior * behavior, unsigned format)
         ndx = ((type == XkbKB_Overlay1) ? 1 : 2);
         kc = behavior->data;
         if ((xkb) && (xkb->names) && (xkb->names->keys))
-            kn = XkbKeyNameText(xkb->names->keys[kc].name, XkbXKBFile);
+            kn = XkbKeyNameText(xkb->names->keys[kc].name);
         else {
             static char tbuf[8];
 

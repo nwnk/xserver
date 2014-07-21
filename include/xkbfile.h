@@ -31,9 +31,6 @@
 
 /***====================================================================***/
 
-#define	XkbXKBFile	2
-#define	XkbMessage	3
-
 #define	XkbMapDefined		(1<<0)
 #define	XkbStateDefined		(1<<1)
 
@@ -82,73 +79,57 @@ _XFUNCPROTOBEGIN
 extern char *XkbIndentText(unsigned   /* size */
     );
 
-extern char *XkbAtomText(Atom /* atm */ ,
-                         unsigned     /* format */
+extern char *XkbAtomText(Atom /* atm */
     );
 
-extern char *XkbKeysymText(KeySym /* sym */ ,
-                           unsigned   /* format */
+extern char *XkbKeysymText(KeySym /* sym */
     );
 
-extern char *XkbStringText(char * /* str */ ,
-                           unsigned   /* format */
+extern char *XkbStringText(char * /* str */
     );
 
-extern char *XkbKeyNameText(char * /* name */ ,
-                            unsigned  /* format */
+extern char *XkbKeyNameText(char * /* name */
     );
 
-extern char *XkbModIndexText(unsigned /* ndx */ ,
-                             unsigned /* format */
+extern char *XkbModIndexText(unsigned /* ndx */
     );
 
-extern char *XkbModMaskText(unsigned /* mask */ ,
-                            unsigned  /* format */
+extern char *XkbModMaskText(unsigned /* mask */
     );
 
 extern char *XkbVModIndexText(XkbDescPtr /* xkb */ ,
-                              unsigned /* ndx */ ,
-                              unsigned        /* format */
+                              unsigned /* ndx */
     );
 
 extern char *XkbVModMaskText(XkbDescPtr /* xkb */ ,
                              unsigned /* modMask */ ,
-                             unsigned /* mask */ ,
-                             unsigned /* format */
+                             unsigned /* mask */
     );
 
-extern char *XkbConfigText(unsigned /* config */ ,
-                           unsigned   /* format */
+extern char *XkbConfigText(unsigned /* config */
     );
 
-extern const char *XkbSIMatchText(unsigned /* type */ ,
-                                  unsigned    /* format */
+extern const char *XkbSIMatchText(unsigned /* type */
     );
 
-extern char *XkbIMWhichStateMaskText(unsigned /* use_which */ ,
-                                     unsigned /* format */
+extern char *XkbIMWhichStateMaskText(unsigned /* use_which */
     );
 
-extern char *XkbControlsMaskText(unsigned /* ctrls */ ,
-                                 unsigned     /* format */
+extern char *XkbControlsMaskText(unsigned /* ctrls */
     );
 
-extern char *XkbGeomFPText(int /* val */ ,
-                           unsigned   /* format */
+extern char *XkbGeomFPText(int /* val */
     );
 
-extern char *XkbDoodadTypeText(unsigned /* type */ ,
-                               unsigned       /* format */
+extern char *XkbDoodadTypeText(unsigned /* type */
     );
 
 extern char *XkbActionText(XkbDescPtr /* xkb */ ,
-                           XkbAction * /* action */ ,
-                           unsigned   /* format */
+                           XkbAction * /* action */
     );
 
 extern char *XkbBehaviorText(XkbDescPtr /* xkb */ ,
-                             XkbBehavior * /* behavior */ ,
-                             unsigned /* format */
+                             XkbBehavior * /* behavior */
     );
 
 /***====================================================================***/

@@ -70,16 +70,16 @@ WriteXKBVModDecl(FILE * file, XkbDescPtr xkb, int showValue)
                 fprintf(file, "    virtual_modifiers ");
             else
                 fprintf(file, ",");
-            fprintf(file, "%s", XkbAtomText(vmodNames[i], XkbXKBFile));
+            fprintf(file, "%s", XkbAtomText(vmodNames[i]));
             if ((showValue != VMOD_HIDE_VALUE) &&
                 (xkb->server) && (xkb->server->vmods[i] != XkbNoModifierMask)) {
                 if (showValue == VMOD_COMMENT_VALUE) {
                     fprintf(file, "/* = %s */",
-                            XkbModMaskText(xkb->server->vmods[i], XkbXKBFile));
+                            XkbModMaskText(xkb->server->vmods[i]));
                 }
                 else {
                     fprintf(file, "= %s",
-                            XkbModMaskText(xkb->server->vmods[i], XkbXKBFile));
+                            XkbModMaskText(xkb->server->vmods[i]));
                 }
             }
             nMods++;
@@ -95,7 +95,7 @@ WriteXKBVModDecl(FILE * file, XkbDescPtr xkb, int showValue)
 static Bool
 WriteXKBAction(FILE * file, XkbDescPtr xkb, XkbAnyAction * action)
 {
-    fprintf(file, "%s", XkbActionText(xkb, (XkbAction *) action, XkbXKBFile));
+    fprintf(file, "%s", XkbActionText(xkb, (XkbAction *) action));
     return TRUE;
 }
 
@@ -116,8 +116,7 @@ XkbWriteXKBKeycodes(FILE * file,
     }
     kcName = xkb->names->keycodes;
     if (kcName != None)
-        fprintf(file, "xkb_keycodes \"%s\" {\n",
-                XkbAtomText(kcName, XkbXKBFile));
+        fprintf(file, "xkb_keycodes \"%s\" {\n", XkbAtomText(kcName));
     else
         fprintf(file, "xkb_keycodes {\n");
     fprintf(file, "    minimum = %d;\n", xkb->min_key_code);
@@ -129,7 +128,7 @@ XkbWriteXKBKeycodes(FILE * file,
             else
                 alternate = "";
             fprintf(file, "    %s%6s = %d;\n", alternate,
-                    XkbKeyNameText(xkb->names->keys[i].name, XkbXKBFile), i);
+                    XkbKeyNameText(xkb->names->keys[i].name), i);
         }
     }
     if (xkb->indicators != NULL) {
@@ -142,7 +141,7 @@ XkbWriteXKBKeycodes(FILE * file,
                 type = "    virtual ";
             if (xkb->names->indicators[i] != None) {
                 fprintf(file, "%sindicator %d = \"%s\";\n", type, i + 1,
-                        XkbAtomText(xkb->names->indicators[i], XkbXKBFile));
+                        XkbAtomText(xkb->names->indicators[i]));
             }
         }
     }
@@ -151,9 +150,8 @@ XkbWriteXKBKeycodes(FILE * file,
 
         pAl = xkb->names->key_aliases;
         for (i = 0; i < xkb->names->num_key_aliases; i++, pAl++) {
-            fprintf(file, "    alias %6s = %6s;\n",
-                    XkbKeyNameText(pAl->alias, XkbXKBFile),
-                    XkbKeyNameText(pAl->real, XkbXKBFile));
+            fprintf(file, "    alias %6s = %6s;\n", XkbKeyNameText(pAl->alias),
+                    XkbKeyNameText(pAl->real));
         }
     }
     if (addOn)
@@ -181,24 +179,22 @@ XkbWriteXKBKeyTypes(FILE * file,
     if ((xkb->names == NULL) || (xkb->names->types == None))
         fprintf(file, "xkb_types {\n\n");
     else
-        fprintf(file, "xkb_types \"%s\" {\n\n",
-                XkbAtomText(xkb->names->types, XkbXKBFile));
+        fprintf(file, "xkb_types \"%s\" {\n\n", XkbAtomText(xkb->names->types));
     WriteXKBVModDecl(file, xkb,
                      (showImplicit ? VMOD_COMMENT_VALUE : VMOD_HIDE_VALUE));
 
     type = xkb->map->types;
     for (i = 0; i < xkb->map->num_types; i++, type++) {
         fprintf(file, "    type \"%s\" {\n",
-                XkbAtomText(type->name, XkbXKBFile));
+                XkbAtomText(type->name));
         fprintf(file, "        modifiers= %s;\n",
-                XkbVModMaskText(xkb, type->mods.real_mods, type->mods.vmods,
-                                XkbXKBFile));
+                XkbVModMaskText(xkb, type->mods.real_mods, type->mods.vmods));
         entry = type->map;
         for (n = 0; n < type->map_count; n++, entry++) {
             char *str;
 
-            str = XkbVModMaskText(xkb, entry->mods.real_mods, entry->mods.vmods,
-                                  XkbXKBFile);
+            str = XkbVModMaskText(xkb, entry->mods.real_mods,
+                                  entry->mods.vmods);
             fprintf(file, "        map[%s]= Level%d;\n", str, entry->level + 1);
             if ((type->preserve) && ((type->preserve[n].real_mods) ||
                                      (type->preserve[n].vmods))) {
@@ -206,8 +202,8 @@ XkbWriteXKBKeyTypes(FILE * file,
                 fprintf(file, "%s;\n", XkbVModMaskText(xkb,
                                                        type->preserve[n].
                                                        real_mods,
-                                                       type->preserve[n].vmods,
-                                                       XkbXKBFile));
+                                                       type->preserve[n].vmods
+                                                       ));
             }
         }
         if (type->level_names != NULL) {
@@ -217,7 +213,7 @@ XkbWriteXKBKeyTypes(FILE * file,
                 if ((*name) == None)
                     continue;
                 fprintf(file, "        level_name[Level%d]= \"%s\";\n", n + 1,
-                        XkbAtomText(*name, XkbXKBFile));
+                        XkbAtomText(*name));
             }
         }
         fprintf(file, "    };\n");
@@ -243,23 +239,22 @@ WriteXKBIndicatorMap(FILE * file,
     if (led->which_groups != 0) {
         if (led->which_groups != XkbIM_UseEffective) {
             fprintf(file, "        whichGroupState= %s;\n",
-                    XkbIMWhichStateMaskText(led->which_groups, XkbXKBFile));
+                    XkbIMWhichStateMaskText(led->which_groups));
         }
         fprintf(file, "        groups= 0x%02x;\n", led->groups);
     }
     if (led->which_mods != 0) {
         if (led->which_mods != XkbIM_UseEffective) {
             fprintf(file, "        whichModState= %s;\n",
-                    XkbIMWhichStateMaskText(led->which_mods, XkbXKBFile));
+                    XkbIMWhichStateMaskText(led->which_mods));
         }
         fprintf(file, "        modifiers= %s;\n",
                 XkbVModMaskText(xkb,
-                                led->mods.real_mods, led->mods.vmods,
-                                XkbXKBFile));
+                                led->mods.real_mods, led->mods.vmods));
     }
     if (led->ctrls != 0) {
         fprintf(file, "        controls= %s;\n",
-                XkbControlsMaskText(led->ctrls, XkbXKBFile));
+                XkbControlsMaskText(led->ctrls));
     }
     if (addOn)
         (*addOn) (file, xkb, FALSE, TRUE, XkmIndicatorsIndex, priv);
@@ -283,7 +278,7 @@ XkbWriteXKBCompatMap(FILE * file,
         fprintf(file, "xkb_compatibility {\n\n");
     else
         fprintf(file, "xkb_compatibility \"%s\" {\n\n",
-                XkbAtomText(xkb->names->compat, XkbXKBFile));
+                XkbAtomText(xkb->names->compat));
     WriteXKBVModDecl(file, xkb,
                      (showImplicit ? VMOD_COMMENT_VALUE : VMOD_HIDE_VALUE));
 
@@ -294,12 +289,12 @@ XkbWriteXKBCompatMap(FILE * file,
     for (i = 0; i < xkb->compat->num_si; i++, interp++) {
         fprintf(file, "    interpret %s+%s(%s) {\n",
                 ((interp->sym == NoSymbol) ? "Any" :
-                 XkbKeysymText(interp->sym, XkbXKBFile)),
-                XkbSIMatchText(interp->match, XkbXKBFile),
-                XkbModMaskText(interp->mods, XkbXKBFile));
+                 XkbKeysymText(interp->sym)),
+                XkbSIMatchText(interp->match),
+                XkbModMaskText(interp->mods));
         if (interp->virtual_mod != XkbNoModifier) {
             fprintf(file, "        virtualModifier= %s;\n",
-                    XkbVModIndexText(xkb, interp->virtual_mod, XkbXKBFile));
+                    XkbVModIndexText(xkb, interp->virtual_mod));
         }
         if (interp->match & XkbSI_LevelOneOnly)
             fprintf(file, "        useModMapMods=level1;\n");
@@ -321,8 +316,8 @@ XkbWriteXKBCompatMap(FILE * file,
         fprintf(file, "    group %d = %s;\n", i + 1, XkbVModMaskText(xkb,
                                                                      gc->
                                                                      real_mods,
-                                                                     gc->vmods,
-                                                                     XkbXKBFile));
+                                                                     gc->vmods
+                                                                     ));
     }
     if (xkb->indicators) {
         for (i = 0; i < XkbNumIndicators; i++) {
@@ -369,11 +364,11 @@ XkbWriteXKBSymbols(FILE * file,
         fprintf(file, "xkb_symbols {\n\n");
     else
         fprintf(file, "xkb_symbols \"%s\" {\n\n",
-                XkbAtomText(xkb->names->symbols, XkbXKBFile));
+                XkbAtomText(xkb->names->symbols));
     for (tmp = i = 0; i < XkbNumKbdGroups; i++) {
         if (xkb->names->groups[i] != None) {
             fprintf(file, "    name[group%d]=\"%s\";\n", i + 1,
-                    XkbAtomText(xkb->names->groups[i], XkbXKBFile));
+                    XkbAtomText(xkb->names->groups[i]));
             tmp++;
         }
     }
@@ -389,7 +384,7 @@ XkbWriteXKBSymbols(FILE * file,
             continue;
         simple = TRUE;
         fprintf(file, "    key %6s {",
-                XkbKeyNameText(xkb->names->keys[i].name, XkbXKBFile));
+                XkbKeyNameText(xkb->names->keys[i].name));
         if (srv->explicit) {
             if (((srv->explicit[i] & XkbExplicitKeyTypesMask) != 0) ||
                 (showImplicit)) {
@@ -411,19 +406,18 @@ XkbWriteXKBSymbols(FILE * file,
                         if (srv->explicit[i] & (1 << g)) {
                             fprintf(file, "\n%s      type[group%d]= \"%s\",",
                                     comment, g + 1,
-                                    XkbAtomText(map->types[typeNdx].name,
-                                                XkbXKBFile));
+                                    XkbAtomText(map->types[typeNdx].name));
                         }
                         else if (showImplicit) {
                             fprintf(file, "\n//      type[group%d]= \"%s\",",
-                                    g + 1, XkbAtomText(map->types[typeNdx].name,
-                                                       XkbXKBFile));
+                                    g + 1, XkbAtomText(map->types[typeNdx].name
+                                                       ));
                         }
                     }
                 }
                 else {
                     fprintf(file, "\n%s      type= \"%s\",", comment,
-                            XkbAtomText(map->types[typeNdx].name, XkbXKBFile));
+                            XkbAtomText(map->types[typeNdx].name));
                 }
                 simple = FALSE;
             }
@@ -440,14 +434,11 @@ XkbWriteXKBSymbols(FILE * file,
                 if ((srv->explicit[i] & XkbExplicitVModMapMask) != 0) {
                     fprintf(file, "\n        virtualMods= %s,",
                             XkbVModMaskText(xkb, 0,
-                                            xkb->server->vmodmap[i],
-                                            XkbXKBFile));
+                                            xkb->server->vmodmap[i]));
                 }
                 else if (showImplicit) {
                     fprintf(file, "\n//      virtualMods= %s,",
-                            XkbVModMaskText(xkb, 0,
-                                            xkb->server->vmodmap[i],
-                                            XkbXKBFile));
+                            XkbVModMaskText(xkb, 0, xkb->server->vmodmap[i]));
                 }
             }
         }
@@ -468,7 +459,7 @@ XkbWriteXKBSymbols(FILE * file,
             if (type != XkbKB_Default) {
                 simple = FALSE;
                 fprintf(file, "\n        %s,",
-                        XkbBehaviorText(xkb, &srv->behaviors[i], XkbXKBFile));
+                        XkbBehaviorText(xkb, &srv->behaviors[i]));
             }
         }
         if ((srv->explicit == NULL) || showImplicit ||
@@ -488,7 +479,7 @@ XkbWriteXKBSymbols(FILE * file,
             for (s = 0; s < XkbKeyGroupWidth(xkb, i, XkbGroup1Index); s++) {
                 if (s != 0)
                     fprintf(file, ", ");
-                fprintf(file, "%15s", XkbKeysymText(*syms++, XkbXKBFile));
+                fprintf(file, "%15s", XkbKeysymText(*syms++));
             }
             fprintf(file, " ] };\n");
         }
@@ -506,7 +497,7 @@ XkbWriteXKBSymbols(FILE * file,
                 for (s = 0; s < XkbKeyGroupWidth(xkb, i, g); s++) {
                     if (s != 0)
                         fprintf(file, ", ");
-                    fprintf(file, "%15s", XkbKeysymText(syms[s], XkbXKBFile));
+                    fprintf(file, "%15s", XkbKeysymText(syms[s]));
                 }
                 fprintf(file, " ]");
                 syms += XkbKeyGroupsWidth(xkb, i);
@@ -536,7 +527,7 @@ XkbWriteXKBSymbols(FILE * file,
                         memcpy(buf, xkb->names->keys[i].name, 4);
                         buf[4] = '\0';
                         fprintf(file, "    modifier_map %s { <%s> };\n",
-                                XkbModIndexText(n, XkbXKBFile), buf);
+                                XkbModIndexText(n), buf);
                     }
                 }
             }
@@ -561,8 +552,7 @@ WriteXKBOutline(FILE * file,
     if (first != indent)
         iStr = XkbIndentText(indent);
     if (outline->corner_radius != lastRadius) {
-        fprintf(file, "corner= %s,",
-                XkbGeomFPText(outline->corner_radius, XkbMessage));
+        fprintf(file, "corner= %s,", XkbGeomFPText(outline->corner_radius));
         if (shape != NULL) {
             fprintf(file, "\n%s", iStr);
         }
@@ -581,8 +571,8 @@ WriteXKBOutline(FILE * file,
             fprintf(file, ",\n%s  ", iStr);
         else
             fprintf(file, ", ");
-        fprintf(file, "[ %3s, %3s ]", XkbGeomFPText(pt->x, XkbXKBFile),
-                XkbGeomFPText(pt->y, XkbXKBFile));
+        fprintf(file, "[ %3s, %3s ]", XkbGeomFPText(pt->x),
+                XkbGeomFPText(pt->y));
     }
     fprintf(file, " }");
     return TRUE;
@@ -597,20 +587,19 @@ WriteXKBDoodad(FILE * file,
     XkbColorPtr color;
 
     i_str = XkbIndentText(indent);
-    fprintf(file, "%s%s \"%s\" {\n", i_str,
-            XkbDoodadTypeText(doodad->any.type, XkbMessage),
-            XkbAtomText(doodad->any.name, XkbMessage));
+    fprintf(file, "%s%s \"%s\" {\n", i_str, XkbDoodadTypeText(doodad->any.type),
+            XkbAtomText(doodad->any.name));
     fprintf(file, "%s    top=      %s;\n", i_str,
-            XkbGeomFPText(doodad->any.top, XkbXKBFile));
+            XkbGeomFPText(doodad->any.top));
     fprintf(file, "%s    left=     %s;\n", i_str,
-            XkbGeomFPText(doodad->any.left, XkbXKBFile));
+            XkbGeomFPText(doodad->any.left));
     fprintf(file, "%s    priority= %d;\n", i_str, doodad->any.priority);
     switch (doodad->any.type) {
     case XkbOutlineDoodad:
     case XkbSolidDoodad:
         if (doodad->shape.angle != 0) {
             fprintf(file, "%s    angle=  %s;\n", i_str,
-                    XkbGeomFPText(doodad->shape.angle, XkbXKBFile));
+                    XkbGeomFPText(doodad->shape.angle));
         }
         if (doodad->shape.color_ndx != 0) {
             fprintf(file, "%s    color= \"%s\";\n", i_str,
@@ -618,50 +607,50 @@ WriteXKBDoodad(FILE * file,
         }
         shape = XkbShapeDoodadShape(geom, &doodad->shape);
         fprintf(file, "%s    shape= \"%s\";\n", i_str,
-                XkbAtomText(shape->name, XkbXKBFile));
+                XkbAtomText(shape->name));
         break;
     case XkbTextDoodad:
         if (doodad->text.angle != 0) {
             fprintf(file, "%s    angle=  %s;\n", i_str,
-                    XkbGeomFPText(doodad->text.angle, XkbXKBFile));
+                    XkbGeomFPText(doodad->text.angle));
         }
         if (doodad->text.width != 0) {
             fprintf(file, "%s    width=  %s;\n", i_str,
-                    XkbGeomFPText(doodad->text.width, XkbXKBFile));
+                    XkbGeomFPText(doodad->text.width));
 
         }
         if (doodad->text.height != 0) {
             fprintf(file, "%s    height=  %s;\n", i_str,
-                    XkbGeomFPText(doodad->text.height, XkbXKBFile));
+                    XkbGeomFPText(doodad->text.height));
 
         }
         if (doodad->text.color_ndx != 0) {
             color = XkbTextDoodadColor(geom, &doodad->text);
             fprintf(file, "%s    color= \"%s\";\n", i_str,
-                    XkbStringText(color->spec, XkbXKBFile));
+                    XkbStringText(color->spec));
         }
         fprintf(file, "%s    XFont= \"%s\";\n", i_str,
-                XkbStringText(doodad->text.font, XkbXKBFile));
+                XkbStringText(doodad->text.font));
         fprintf(file, "%s    text=  \"%s\";\n", i_str,
-                XkbStringText(doodad->text.text, XkbXKBFile));
+                XkbStringText(doodad->text.text));
         break;
     case XkbIndicatorDoodad:
         shape = XkbIndicatorDoodadShape(geom, &doodad->indicator);
         color = XkbIndicatorDoodadOnColor(geom, &doodad->indicator);
         fprintf(file, "%s    onColor= \"%s\";\n", i_str,
-                XkbStringText(color->spec, XkbXKBFile));
+                XkbStringText(color->spec));
         color = XkbIndicatorDoodadOffColor(geom, &doodad->indicator);
         fprintf(file, "%s    offColor= \"%s\";\n", i_str,
-                XkbStringText(color->spec, XkbXKBFile));
+                XkbStringText(color->spec));
         fprintf(file, "%s    shape= \"%s\";\n", i_str,
-                XkbAtomText(shape->name, XkbXKBFile));
+                XkbAtomText(shape->name));
         break;
     case XkbLogoDoodad:
         fprintf(file, "%s    logoName= \"%s\";\n", i_str,
-                XkbStringText(doodad->logo.logo_name, XkbXKBFile));
+                XkbStringText(doodad->logo.logo_name));
         if (doodad->shape.angle != 0) {
             fprintf(file, "%s    angle=  %s;\n", i_str,
-                    XkbGeomFPText(doodad->logo.angle, XkbXKBFile));
+                    XkbGeomFPText(doodad->logo.angle));
         }
         if (doodad->shape.color_ndx != 0) {
             fprintf(file, "%s    color= \"%s\";\n", i_str,
@@ -669,7 +658,7 @@ WriteXKBDoodad(FILE * file,
         }
         shape = XkbLogoDoodadShape(geom, &doodad->logo);
         fprintf(file, "%s    shape= \"%s\";\n", i_str,
-                XkbAtomText(shape->name, XkbXKBFile));
+                XkbAtomText(shape->name));
         break;
     }
     fprintf(file, "%s};\n", i_str);
@@ -687,8 +676,7 @@ WriteXKBOverlay(FILE * file,
 
     i_str = XkbIndentText(indent);
     if (ol->name != None) {
-        fprintf(file, "%soverlay \"%s\" {\n", i_str,
-                XkbAtomText(ol->name, XkbMessage));
+        fprintf(file, "%soverlay \"%s\" {\n", i_str, XkbAtomText(ol->name));
     }
     else
         fprintf(file, "%soverlay {\n", i_str);
@@ -696,8 +684,8 @@ WriteXKBOverlay(FILE * file,
         for (k = 0, key = row->keys; k < row->num_keys; k++, key++) {
             char *over, *under;
 
-            over = XkbKeyNameText(key->over.name, XkbXKBFile);
-            under = XkbKeyNameText(key->under.name, XkbXKBFile);
+            over = XkbKeyNameText(key->over.name);
+            under = XkbKeyNameText(key->under.name);
             if (nOut == 0)
                 fprintf(file, "%s    %6s=%6s", i_str, under, over);
             else if ((nOut % 4) == 0)
@@ -718,31 +706,24 @@ WriteXKBSection(FILE * file, XkbSectionPtr s, XkbGeometryPtr geom)
     XkbRowPtr row;
     int dfltKeyColor = 0;
 
-    fprintf(file, "    section \"%s\" {\n", XkbAtomText(s->name, XkbXKBFile));
+    fprintf(file, "    section \"%s\" {\n", XkbAtomText(s->name));
     if (s->rows && (s->rows->num_keys > 0)) {
         dfltKeyColor = s->rows->keys[0].color_ndx;
         fprintf(file, "        key.color= \"%s\";\n",
-                XkbStringText(geom->colors[dfltKeyColor].spec, XkbXKBFile));
+                XkbStringText(geom->colors[dfltKeyColor].spec));
     }
     fprintf(file, "        priority=  %d;\n", s->priority);
-    fprintf(file, "        top=       %s;\n",
-            XkbGeomFPText(s->top, XkbXKBFile));
-    fprintf(file, "        left=      %s;\n",
-            XkbGeomFPText(s->left, XkbXKBFile));
-    fprintf(file, "        width=     %s;\n",
-            XkbGeomFPText(s->width, XkbXKBFile));
-    fprintf(file, "        height=    %s;\n",
-            XkbGeomFPText(s->height, XkbXKBFile));
+    fprintf(file, "        top=       %s;\n", XkbGeomFPText(s->top));
+    fprintf(file, "        left=      %s;\n", XkbGeomFPText(s->left));
+    fprintf(file, "        width=     %s;\n", XkbGeomFPText(s->width));
+    fprintf(file, "        height=    %s;\n", XkbGeomFPText(s->height));
     if (s->angle != 0) {
-        fprintf(file, "        angle=  %s;\n",
-                XkbGeomFPText(s->angle, XkbXKBFile));
+        fprintf(file, "        angle=  %s;\n", XkbGeomFPText(s->angle));
     }
     for (i = 0, row = s->rows; i < s->num_rows; i++, row++) {
         fprintf(file, "        row {\n");
-        fprintf(file, "            top=  %s;\n",
-                XkbGeomFPText(row->top, XkbXKBFile));
-        fprintf(file, "            left= %s;\n",
-                XkbGeomFPText(row->left, XkbXKBFile));
+        fprintf(file, "            top=  %s;\n", XkbGeomFPText(row->top));
+        fprintf(file, "            left= %s;\n", XkbGeomFPText(row->left));
         if (row->vertical)
             fprintf(file, "            vertical;\n");
         if (row->num_keys > 0) {
@@ -771,9 +752,9 @@ WriteXKBSection(FILE * file, XkbSectionPtr s, XkbGeometryPtr geom)
                 }
                 shape = XkbKeyShape(geom, key);
                 fprintf(file, "{ %6s, \"%s\", %3s",
-                        XkbKeyNameText(key->name.name, XkbXKBFile),
-                        XkbAtomText(shape->name, XkbXKBFile),
-                        XkbGeomFPText(key->gap, XkbXKBFile));
+                        XkbKeyNameText(key->name.name),
+                        XkbAtomText(shape->name),
+                        XkbGeomFPText(key->gap));
                 if (key->color_ndx != dfltKeyColor) {
                     fprintf(file, ", color=\"%s\"",
                             XkbKeyColor(geom, key)->spec);
@@ -799,8 +780,7 @@ WriteXKBSection(FILE * file, XkbSectionPtr s, XkbGeometryPtr geom)
             WriteXKBOverlay(file, 8, geom, ol);
         }
     }
-    fprintf(file, "    }; // End of \"%s\" section\n\n",
-            XkbAtomText(s->name, XkbXKBFile));
+    fprintf(file, "    }; // End of \"%s\" section\n\n", XkbAtomText(s->name));
     return TRUE;
 }
 
@@ -820,12 +800,9 @@ XkbWriteXKBGeometry(FILE * file,
     if (geom->name == None)
         fprintf(file, "xkb_geometry {\n\n");
     else
-        fprintf(file, "xkb_geometry \"%s\" {\n\n",
-                XkbAtomText(geom->name, XkbXKBFile));
-    fprintf(file, "    width=       %s;\n",
-            XkbGeomFPText(geom->width_mm, XkbXKBFile));
-    fprintf(file, "    height=      %s;\n\n",
-            XkbGeomFPText(geom->height_mm, XkbXKBFile));
+        fprintf(file, "xkb_geometry \"%s\" {\n\n", XkbAtomText(geom->name));
+    fprintf(file, "    width=       %s;\n", XkbGeomFPText(geom->width_mm));
+    fprintf(file, "    height=      %s;\n\n", XkbGeomFPText(geom->height_mm));
 
     if (geom->key_aliases != NULL) {
         XkbKeyAliasPtr pAl;
@@ -833,27 +810,27 @@ XkbWriteXKBGeometry(FILE * file,
         pAl = geom->key_aliases;
         for (i = 0; i < geom->num_key_aliases; i++, pAl++) {
             fprintf(file, "    alias %6s = %6s;\n",
-                    XkbKeyNameText(pAl->alias, XkbXKBFile),
-                    XkbKeyNameText(pAl->real, XkbXKBFile));
+                    XkbKeyNameText(pAl->alias),
+                    XkbKeyNameText(pAl->real));
         }
         fprintf(file, "\n");
     }
 
     if (geom->base_color != NULL)
         fprintf(file, "    baseColor=   \"%s\";\n",
-                XkbStringText(geom->base_color->spec, XkbXKBFile));
+                XkbStringText(geom->base_color->spec));
     if (geom->label_color != NULL)
         fprintf(file, "    labelColor=  \"%s\";\n",
-                XkbStringText(geom->label_color->spec, XkbXKBFile));
+                XkbStringText(geom->label_color->spec));
     if (geom->label_font != NULL)
         fprintf(file, "    xfont=       \"%s\";\n",
-                XkbStringText(geom->label_font, XkbXKBFile));
+                XkbStringText(geom->label_font));
     if ((geom->num_colors > 0) && (showImplicit)) {
         XkbColorPtr color;
 
         for (color = geom->colors, i = 0; i < geom->num_colors; i++, color++) {
             fprintf(file, "//     color[%d]= \"%s\"\n", i,
-                    XkbStringText(color->spec, XkbXKBFile));
+                    XkbStringText(color->spec));
         }
         fprintf(file, "\n");
     }
@@ -863,7 +840,7 @@ XkbWriteXKBGeometry(FILE * file,
         for (prop = geom->properties, i = 0; i < geom->num_properties;
              i++, prop++) {
             fprintf(file, "    %s= \"%s\";\n", prop->name,
-                    XkbStringText(prop->value, XkbXKBFile));
+                    XkbStringText(prop->value));
         }
         fprintf(file, "\n");
     }
@@ -875,7 +852,7 @@ XkbWriteXKBGeometry(FILE * file,
         for (shape = geom->shapes, i = 0; i < geom->num_shapes; i++, shape++) {
             lastR = 0;
             fprintf(file, "    shape \"%s\" {",
-                    XkbAtomText(shape->name, XkbXKBFile));
+                    XkbAtomText(shape->name));
             outline = shape->outlines;
             if (shape->num_outlines > 1) {
                 for (n = 0; n < shape->num_outlines; n++, outline++) {
