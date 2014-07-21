@@ -301,8 +301,6 @@ extern const char *XkbBinDirectory;
 
 extern CARD32 xkbDebugFlags;
 
-#define	_XkbLibError(c,l,d)     /* Epoch fail */
-
 /* "a" is a "unique" numeric identifier that just defines which error
  * code statement it is. _XkbErrCode2(4, foo) means "this is the 4th error
  * statement in this function". lovely.

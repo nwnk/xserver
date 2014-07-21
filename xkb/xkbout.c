@@ -112,7 +112,6 @@ XkbWriteXKBKeycodes(FILE * file,
     const char *alternate;
 
     if ((!xkb) || (!xkb->names) || (!xkb->names->keys)) {
-        _XkbLibError(_XkbErrMissingNames, "XkbWriteXKBKeycodes", 0);
         return FALSE;
     }
     kcName = xkb->names->keycodes;
@@ -174,11 +173,9 @@ XkbWriteXKBKeyTypes(FILE * file,
     XkbKTMapEntryPtr entry;
 
     if ((!xkb) || (!xkb->map) || (!xkb->map->types)) {
-        _XkbLibError(_XkbErrMissingTypes, "XkbWriteXKBKeyTypes", 0);
         return FALSE;
     }
     if (xkb->map->num_types < XkbNumRequiredTypes) {
-        _XkbLibError(_XkbErrMissingReqTypes, "XkbWriteXKBKeyTypes", 0);
         return 0;
     }
     if ((xkb->names == NULL) || (xkb->names->types == None))
@@ -280,7 +277,6 @@ XkbWriteXKBCompatMap(FILE * file,
     XkbSymInterpretPtr interp;
 
     if ((!xkb) || (!xkb->compat) || (!xkb->compat->sym_interpret)) {
-        _XkbLibError(_XkbErrMissingCompatMap, "XkbWriteXKBCompatMap", 0);
         return FALSE;
     }
     if ((xkb->names == NULL) || (xkb->names->compat == None))
@@ -359,17 +355,14 @@ XkbWriteXKBSymbols(FILE * file,
     Bool showActions;
 
     if (!xkb) {
-        _XkbLibError(_XkbErrMissingSymbols, "XkbWriteXKBSymbols", 0);
         return FALSE;
     }
 
     map = xkb->map;
     if ((!map) || (!map->syms) || (!map->key_sym_map)) {
-        _XkbLibError(_XkbErrMissingSymbols, "XkbWriteXKBSymbols", 0);
         return FALSE;
     }
     if ((!xkb->names) || (!xkb->names->keys)) {
-        _XkbLibError(_XkbErrMissingNames, "XkbWriteXKBSymbols", 0);
         return FALSE;
     }
     if ((xkb->names == NULL) || (xkb->names->symbols == None))
@@ -821,7 +814,6 @@ XkbWriteXKBGeometry(FILE * file,
     XkbGeometryPtr geom;
 
     if ((!xkb) || (!xkb->geom)) {
-        _XkbLibError(_XkbErrMissingGeometry, "XkbWriteXKBGeometry", 0);
         return FALSE;
     }
     geom = xkb->geom;

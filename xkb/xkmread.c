@@ -166,7 +166,6 @@ ReadXkmVirtualMods(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     int nRead = 0;
 
     if (XkbAllocServerMap(xkb, XkbVirtualModsMask, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmVirtualMods", 0);
         return -1;
     }
     bound = XkmGetCARD16(file, &nRead);
@@ -182,7 +181,6 @@ ReadXkmVirtualMods(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     if ((i = XkbPaddedSize(tmp) - tmp) > 0)
         nRead += XkmSkipPadding(file, i);
     if (XkbAllocNames(xkb, XkbVirtualModNamesMask, 0, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmVirtualMods", 0);
         return -1;
     }
     for (i = 0, bit = 1; i < XkbNumVirtualMods; i++, bit <<= 1) {
@@ -222,7 +220,6 @@ ReadXkmKeycodes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
         if (minKC < xkb->min_key_code)
             xkb->min_key_code = minKC;
         if (maxKC > xkb->max_key_code) {
-            _XkbLibError(_XkbErrBadValue, "ReadXkmKeycodes", maxKC);
             return -1;
         }
     }
@@ -231,7 +228,6 @@ ReadXkmKeycodes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
 
 #define WANTED (XkbKeycodesNameMask|XkbKeyNamesMask|XkbKeyAliasesMask)
     if (XkbAllocNames(xkb, WANTED, 0, nAl) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmKeycodes", 0);
         return -1;
     }
     if (name[0] != '\0') {
@@ -240,7 +236,6 @@ ReadXkmKeycodes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
 
     for (pN = &xkb->names->keys[minKC], i = minKC; i <= (int) maxKC; i++, pN++) {
         if (fread(pN, 1, XkbKeyNameLength, file) != XkbKeyNameLength) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmKeycodes", 0);
             return -1;
         }
         nRead += XkbKeyNameLength;
@@ -253,7 +248,6 @@ ReadXkmKeycodes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
 
             tmp = fread(pAl, 1, 2 * XkbKeyNameLength, file);
             if (tmp != 2 * XkbKeyNameLength) {
-                _XkbLibError(_XkbErrBadLength, "ReadXkmKeycodes", 0);
                 return -1;
             }
             nRead += 2 * XkbKeyNameLength;
@@ -282,13 +276,11 @@ ReadXkmKeyTypes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     char buf[100];
 
     if ((tmp = XkmGetCountedString(file, buf, 100)) < 1) {
-        _XkbLibError(_XkbErrBadLength, "ReadXkmKeyTypes", 0);
         return -1;
     }
     nRead += tmp;
     if (buf[0] != '\0') {
         if (XkbAllocNames(xkb, XkbTypesNameMask, 0, 0) != Success) {
-            _XkbLibError(_XkbErrBadAlloc, "ReadXkmKeyTypes", 0);
             return -1;
         }
         xkb->names->types = XkbInternAtom(buf, FALSE);
@@ -298,37 +290,31 @@ ReadXkmKeyTypes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     if (num_types < 1)
         return nRead;
     if (XkbAllocClientMap(xkb, XkbKeyTypesMask, num_types) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmKeyTypes", 0);
         return nRead;
     }
     xkb->map->num_types = num_types;
     if (num_types < XkbNumRequiredTypes) {
-        _XkbLibError(_XkbErrMissingReqTypes, "ReadXkmKeyTypes", 0);
         return -1;
     }
     type = xkb->map->types;
     for (i = 0; i < num_types; i++, type++) {
         if ((int) fread(&wire, SIZEOF(xkmKeyTypeDesc), 1, file) < 1) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmKeyTypes", 0);
             return -1;
         }
         nRead += SIZEOF(xkmKeyTypeDesc);
         if (((i == XkbOneLevelIndex) && (wire.numLevels != 1)) ||
             (((i == XkbTwoLevelIndex) || (i == XkbAlphabeticIndex) ||
               ((i) == XkbKeypadIndex)) && (wire.numLevels != 2))) {
-            _XkbLibError(_XkbErrBadTypeWidth, "ReadXkmKeyTypes", i);
             return -1;
         }
         tmp = wire.nMapEntries;
         XkmInsureTypedSize(type->map, type->map_count, &tmp, XkbKTMapEntryRec);
         if ((wire.nMapEntries > 0) && (type->map == NULL)) {
-            _XkbLibError(_XkbErrBadValue, "ReadXkmKeyTypes", wire.nMapEntries);
             return -1;
         }
         for (n = 0, entry = type->map; n < wire.nMapEntries; n++, entry++) {
             if (fread(&wire_entry, SIZEOF(xkmKTMapEntryDesc), 1, file) <
                 (int) 1) {
-                _XkbLibError(_XkbErrBadLength, "ReadXkmKeyTypes", 0);
                 return -1;
             }
             nRead += SIZEOF(xkmKTMapEntryDesc);
@@ -343,7 +329,6 @@ ReadXkmKeyTypes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
             ((i == XkbTwoLevelIndex) && (strcmp(buf, "TWO_LEVEL") != 0)) ||
             ((i == XkbAlphabeticIndex) && (strcmp(buf, "ALPHABETIC") != 0)) ||
             ((i == XkbKeypadIndex) && (strcmp(buf, "KEYPAD") != 0))) {
-            _XkbLibError(_XkbErrBadTypeName, "ReadXkmKeyTypes", 0);
             return -1;
         }
         if (buf[0] != '\0') {
@@ -359,12 +344,10 @@ ReadXkmKeyTypes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
             XkmInsureTypedSize(type->preserve, type->map_count, &tmp,
                                XkbModsRec);
             if (type->preserve == NULL) {
-                _XkbLibError(_XkbErrBadMatch, "ReadXkmKeycodes", 0);
                 return -1;
             }
             for (n = 0, pre = type->preserve; n < wire.nMapEntries; n++, pre++) {
                 if (fread(&p_entry, SIZEOF(xkmModsDesc), 1, file) < 1) {
-                    _XkbLibError(_XkbErrBadLength, "ReadXkmKeycodes", 0);
                     return -1;
                 }
                 nRead += SIZEOF(xkmModsDesc);
@@ -377,7 +360,6 @@ ReadXkmKeyTypes(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
             int width = wire.numLevels;
 
             if (wire.nLevelNames > (unsigned) width) {
-                _XkbLibError(_XkbErrBadMatch, "ReadXkmKeycodes", 0);
                 return -1;
             }
             XkmInsureTypedSize(type->level_names, type->num_levels, &width,
@@ -424,13 +406,11 @@ ReadXkmCompatMap(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     XkbAction *act;
 
     if ((tmp = XkmGetCountedString(file, name, 100)) < 1) {
-        _XkbLibError(_XkbErrBadLength, "ReadXkmCompatMap", 0);
         return -1;
     }
     nRead += tmp;
     if (name[0] != '\0') {
         if (XkbAllocNames(xkb, XkbCompatNameMask, 0, 0) != Success) {
-            _XkbLibError(_XkbErrBadAlloc, "ReadXkmCompatMap", 0);
             return -1;
         }
         xkb->names->compat = XkbInternAtom(name, FALSE);
@@ -614,11 +594,9 @@ ReadXkmIndicators(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     int nRead = 0;
 
     if ((xkb->indicators == NULL) && (XkbAllocIndicatorMaps(xkb) != Success)) {
-        _XkbLibError(_XkbErrBadAlloc, "indicator rec", 0);
         return -1;
     }
     if (XkbAllocNames(xkb, XkbIndicatorNamesMask, 0, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "indicator names", 0);
         return -1;
     }
     nLEDs = XkmGetCARD8(file, &nRead);
@@ -629,7 +607,6 @@ ReadXkmIndicators(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
         XkbIndicatorMapPtr map;
 
         if ((tmp = XkmGetCountedString(file, buf, 100)) < 1) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmIndicators", 0);
             return -1;
         }
         nRead += tmp;
@@ -638,7 +615,6 @@ ReadXkmIndicators(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
         else
             name = None;
         if ((tmp = fread(&wire, SIZEOF(xkmIndicatorMapDesc), 1, file)) < 1) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmIndicators", 0);
             return -1;
         }
         nRead += tmp * SIZEOF(xkmIndicatorMapDesc);
@@ -707,7 +683,6 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
     if (XkbAllocNames(xkb,
                       XkbSymbolsNameMask | XkbPhysSymbolsNameMask |
                       XkbGroupNamesMask, 0, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "physical names", 0);
         return -1;
     }
     if ((buf[0] != '\0') && (xkb->names)) {
@@ -737,15 +712,12 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
         }
     }
     if (XkbAllocServerMap(xkb, XkbAllServerInfoMask, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "server map", 0);
         return -1;
     }
     if (XkbAllocClientMap(xkb, XkbAllClientInfoMask, 0) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "client map", 0);
         return -1;
     }
     if (XkbAllocControls(xkb, XkbAllControlsMask) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "controls", 0);
         return -1;
     }
     if ((xkb->map == NULL) || (xkb->server == NULL))
@@ -757,7 +729,6 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
     if ((minKC >= 8) && (minKC < xkb->min_key_code))
         xkb->min_key_code = minKC;
     if ((maxKC >= 8) && (maxKC > xkb->max_key_code)) {
-        _XkbLibError(_XkbErrBadValue, "keys in symbol map", maxKC);
         return -1;
     }
     for (i = minKC; i <= (int) maxKC; i++) {
@@ -765,7 +736,6 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
         XkbKeyTypePtr type[XkbNumKbdGroups];
 
         if ((tmp = fread(&wireMap, SIZEOF(xkmKeySymMapDesc), 1, file)) < 1) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmSymbols", 0);
             return -1;
         }
         nRead += tmp * SIZEOF(xkmKeySymMapDesc);
@@ -780,7 +750,6 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
                 }
                 type[g] = FindTypeForKey(xkb, typeName[g], wireMap.width, NULL);
                 if (type[g] == NULL) {
-                    _XkbLibError(_XkbErrMissingTypes, "ReadXkmSymbols", 0);
                     return -1;
                 }
                 if (typeName[g] == type[g]->name)
@@ -937,7 +906,6 @@ ReadXkmGeomOverlay(FILE * file, XkbGeometryPtr geom, XkbSectionPtr section)
         nRead += tmp * SIZEOF(xkmOverlayRowDesc);
         row = XkbAddGeomOverlayRow(ol, rowWire.row_under, rowWire.num_keys);
         if (!row) {
-            _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeomOverlay", 0);
             return nRead;
         }
         for (k = 0; k < rowWire.num_keys; k++) {
@@ -970,7 +938,6 @@ ReadXkmGeomSection(FILE * file, XkbGeometryPtr geom)
                                 sectionWire.num_doodads,
                                 sectionWire.num_overlays);
     if (!section) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeomSection", 0);
         return nRead;
     }
     section->top = sectionWire.top;
@@ -991,7 +958,6 @@ ReadXkmGeomSection(FILE * file, XkbGeometryPtr geom)
             nRead += SIZEOF(xkmRowDesc) * tmp;
             row = XkbAddGeomRow(section, rowWire.num_keys);
             if (!row) {
-                _XkbLibError(_XkbErrBadAlloc, "ReadXkmKeycodes", 0);
                 return nRead;
             }
             row->top = rowWire.top;
@@ -1002,7 +968,6 @@ ReadXkmGeomSection(FILE * file, XkbGeometryPtr geom)
                 nRead += SIZEOF(xkmKeyDesc) * tmp;
                 key = XkbAddGeomKey(row);
                 if (!key) {
-                    _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeomSection", 0);
                     return nRead;
                 }
                 memcpy(key->name.name, keyWire.name, XkbKeyNameLength);
@@ -1053,7 +1018,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
     sizes.num_doodads = wireGeom.num_doodads;
     sizes.num_key_aliases = wireGeom.num_key_aliases;
     if (XkbAllocGeometry(xkb, &sizes) != Success) {
-        _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeometry", 0);
         return nRead;
     }
     geom = xkb->geom;
@@ -1069,7 +1033,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
             nRead += XkmGetCountedString(file, buf, 100);
             nRead += XkmGetCountedString(file, val, 1024);
             if (XkbAddGeomProperty(geom, buf, val) == NULL) {
-                _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeometry", 0);
                 return nRead;
             }
         }
@@ -1078,7 +1041,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
         for (i = 0; i < wireGeom.num_colors; i++) {
             nRead += XkmGetCountedString(file, buf, 100);
             if (XkbAddGeomColor(geom, buf, i) == NULL) {
-                _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeometry", 0);
                 return nRead;
             }
         }
@@ -1101,7 +1063,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
             nRead += tmp * SIZEOF(xkmShapeDesc);
             shape = XkbAddGeomShape(geom, nameAtom, shapeWire.num_outlines);
             if (!shape) {
-                _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeometry", 0);
                 return nRead;
             }
             for (n = 0; n < shapeWire.num_outlines; n++) {
@@ -1112,7 +1073,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
                 nRead += tmp * SIZEOF(xkmOutlineDesc);
                 ol = XkbAddGeomOutline(shape, olWire.num_points);
                 if (!ol) {
-                    _XkbLibError(_XkbErrBadAlloc, "ReadXkmGeometry", 0);
                     return nRead;
                 }
                 ol->num_points = olWire.num_points;
@@ -1159,7 +1119,6 @@ ReadXkmGeometry(FILE * file, XkbDescPtr xkb)
         int num = wireGeom.num_key_aliases;
 
         if (fread(geom->key_aliases, sz, num, file) != num) {
-            _XkbLibError(_XkbErrBadLength, "ReadXkmGeometry", 0);
             return -1;
         }
         nRead += (num * sz);
@@ -1179,12 +1138,6 @@ XkmReadTOC(FILE * file, xkmFileInfo * file_info, int max_toc,
     hdr = (('x' << 24) | ('k' << 16) | ('m' << 8) | XkmFileVersion);
     tmp = XkmGetCARD32(file, &nRead);
     if (tmp != hdr) {
-        if ((tmp & (~0xff)) == (hdr & (~0xff))) {
-            _XkbLibError(_XkbErrBadFileVersion, "XkmReadTOC", tmp & 0xff);
-        }
-        else {
-            _XkbLibError(_XkbErrBadFileType, "XkmReadTOC", tmp);
-        }
         return 0;
     }
     if (fread(file_info, SIZEOF(xkmFileInfo), 1, file) != 1)
@@ -1217,8 +1170,6 @@ XkmReadFile(FILE * file, unsigned need, unsigned want, XkbDescPtr *xkb)
     if (!XkmReadTOC(file, &fileInfo, MAX_TOC, toc))
         return which;
     if ((fileInfo.present & need) != need) {
-        _XkbLibError(_XkbErrIllegalContents, "XkmReadFile",
-                     need & (~fileInfo.present));
         return which;
     }
     if (*xkb == NULL)
@@ -1257,8 +1208,6 @@ XkmReadFile(FILE * file, unsigned need, unsigned want, XkbDescPtr *xkb)
             tmp = ReadXkmGeometry(file, *xkb);
             break;
         default:
-            _XkbLibError(_XkbErrBadImplementation,
-                         XkbConfigText(tmpTOC.type, XkbMessage), 0);
             tmp = 0;
             break;
         }
@@ -1266,11 +1215,6 @@ XkmReadFile(FILE * file, unsigned need, unsigned want, XkbDescPtr *xkb)
             nRead += tmp;
             which &= ~(1 << toc[i].type);
             (*xkb)->defined |= (1 << toc[i].type);
-        }
-        if (nRead != tmpTOC.size) {
-            _XkbLibError(_XkbErrBadLength,
-                         XkbConfigText(tmpTOC.type, XkbMessage),
-                         nRead - tmpTOC.size);
         }
     }
     return which;
