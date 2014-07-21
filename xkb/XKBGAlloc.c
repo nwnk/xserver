@@ -138,7 +138,7 @@ _XkbClearProperty(char *prop_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomProperties(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomNonLeafElems(freeAll, first, count,
@@ -150,7 +150,7 @@ XkbFreeGeomProperties(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 
 /***====================================================================***/
 
-void
+static void
 XkbFreeGeomKeyAliases(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomLeafElems(freeAll, first, count,
@@ -170,7 +170,7 @@ _XkbClearColor(char *color_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomColors(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomNonLeafElems(freeAll, first, count,
@@ -182,7 +182,7 @@ XkbFreeGeomColors(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 
 /***====================================================================***/
 
-void
+static void
 XkbFreeGeomPoints(XkbOutlinePtr outline, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomLeafElems(freeAll, first, count,
@@ -203,7 +203,7 @@ _XkbClearOutline(char *outline_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomOutlines(XkbShapePtr shape, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomNonLeafElems(freeAll, first, count,
@@ -226,7 +226,7 @@ _XkbClearShape(char *shape_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomShapes(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomNonLeafElems(freeAll, first, count,
@@ -238,7 +238,8 @@ XkbFreeGeomShapes(XkbGeometryPtr geom, int first, int count, Bool freeAll)
 
 /***====================================================================***/
 
-void
+#if 0
+static void
 XkbFreeGeomOverlayKeys(XkbOverlayRowPtr row, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomLeafElems(freeAll, first, count,
@@ -246,10 +247,11 @@ XkbFreeGeomOverlayKeys(XkbOverlayRowPtr row, int first, int count, Bool freeAll)
                           (char **) &row->keys, sizeof(XkbOverlayKeyRec));
     return;
 }
+#endif
 
 /***====================================================================***/
 
-void
+static void
 XkbFreeGeomKeys(XkbRowPtr row, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomLeafElems(freeAll, first, count,
@@ -270,39 +272,13 @@ _XkbClearRow(char *row_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomRows(XkbSectionPtr section, int first, int count, Bool freeAll)
 {
     _XkbFreeGeomNonLeafElems(freeAll, first, count,
                              &section->num_rows, &section->sz_rows,
                              (char **) &section->rows,
                              sizeof(XkbRowRec), _XkbClearRow);
-}
-
-/***====================================================================***/
-
-static void
-_XkbClearSection(char *section_in)
-{
-    XkbSectionPtr section = (XkbSectionPtr) section_in;
-
-    if (section->rows != NULL)
-        XkbFreeGeomRows(section, 0, section->num_rows, TRUE);
-    if (section->doodads != NULL) {
-        XkbFreeGeomDoodads(section->doodads, section->num_doodads, TRUE);
-        section->doodads = NULL;
-    }
-    return;
-}
-
-void
-XkbFreeGeomSections(XkbGeometryPtr geom, int first, int count, Bool freeAll)
-{
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &geom->num_sections, &geom->sz_sections,
-                             (char **) &geom->sections,
-                             sizeof(XkbSectionRec), _XkbClearSection);
-    return;
 }
 
 /***====================================================================***/
@@ -331,7 +307,7 @@ _XkbClearDoodad(char *doodad_in)
     return;
 }
 
-void
+static void
 XkbFreeGeomDoodads(XkbDoodadPtr doodads, int nDoodads, Bool freeAll)
 {
     register int i;
@@ -344,6 +320,32 @@ XkbFreeGeomDoodads(XkbDoodadPtr doodads, int nDoodads, Bool freeAll)
         if (freeAll)
             free(doodads);
     }
+    return;
+}
+
+/***====================================================================***/
+
+static void
+_XkbClearSection(char *section_in)
+{
+    XkbSectionPtr section = (XkbSectionPtr) section_in;
+
+    if (section->rows != NULL)
+        XkbFreeGeomRows(section, 0, section->num_rows, TRUE);
+    if (section->doodads != NULL) {
+        XkbFreeGeomDoodads(section->doodads, section->num_doodads, TRUE);
+        section->doodads = NULL;
+    }
+    return;
+}
+
+static void
+XkbFreeGeomSections(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+{
+    _XkbFreeGeomNonLeafElems(freeAll, first, count,
+                             &geom->num_sections, &geom->sz_sections,
+                             (char **) &geom->sections,
+                             sizeof(XkbSectionRec), _XkbClearSection);
     return;
 }
 

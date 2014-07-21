@@ -42,16 +42,6 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define XkbAddGeomSection		SrvXkbAddGeomSection
 #define XkbAddGeomShape			SrvXkbAddGeomShape
 #define XkbAllocGeometry		SrvXkbAllocGeometry
-#define XkbFreeGeomKeyAliases		SrvXkbFreeGeomKeyAliases
-#define XkbFreeGeomColors		SrvXkbFreeGeomColors
-#define XkbFreeGeomDoodads		SrvXkbFreeGeomDoodads
-#define XkbFreeGeomProperties		SrvXkbFreeGeomProperties
-#define	XkbFreeGeomKeys			SrvXkbFreeGeomKeys
-#define	XkbFreeGeomRows			SrvXkbFreeGeomRows
-#define XkbFreeGeomSections		SrvXkbFreeGeomSections
-#define	XkbFreeGeomPoints		SrvXkbFreeGeomPoints
-#define	XkbFreeGeomOutlines		SrvXkbFreeGeomOutlines
-#define XkbFreeGeomShapes		SrvXkbFreeGeomShapes
 #define XkbFreeGeometry			SrvXkbFreeGeometry
 
 typedef struct _XkbProperty {
@@ -372,40 +362,6 @@ extern XkbDoodadPtr XkbAddGeomDoodad(XkbGeometryPtr /* geom */ ,
     );
 
 extern void
- XkbFreeGeomKeyAliases(XkbGeometryPtr /* geom */ ,
-                       int /* first */ ,
-                       int /* count */ ,
-                       Bool     /* freeAll */
-    );
-
-extern void
- XkbFreeGeomColors(XkbGeometryPtr /* geom */ ,
-                   int /* first */ ,
-                   int /* count */ ,
-                   Bool         /* freeAll */
-    );
-
-extern void
- XkbFreeGeomDoodads(XkbDoodadPtr /* doodads */ ,
-                    int /* nDoodads */ ,
-                    Bool        /* freeAll */
-    );
-
-extern void
- XkbFreeGeomProperties(XkbGeometryPtr /* geom */ ,
-                       int /* first */ ,
-                       int /* count */ ,
-                       Bool     /* freeAll */
-    );
-
-extern void
- XkbFreeGeomOverlayKeys(XkbOverlayRowPtr /* row */ ,
-                        int /* first */ ,
-                        int /* count */ ,
-                        Bool    /* freeAll */
-    );
-
-extern void
  XkbFreeGeomOverlayRows(XkbOverlayPtr /* overlay */ ,
                         int /* first */ ,
                         int /* count */ ,
@@ -417,48 +373,6 @@ extern void
                      int /* first */ ,
                      int /* count */ ,
                      Bool       /* freeAll */
-    );
-
-extern void
- XkbFreeGeomKeys(XkbRowPtr /* row */ ,
-                 int /* first */ ,
-                 int /* count */ ,
-                 Bool           /* freeAll */
-    );
-
-extern void
- XkbFreeGeomRows(XkbSectionPtr /* section */ ,
-                 int /* first */ ,
-                 int /* count */ ,
-                 Bool           /* freeAll */
-    );
-
-extern void
- XkbFreeGeomSections(XkbGeometryPtr /* geom */ ,
-                     int /* first */ ,
-                     int /* count */ ,
-                     Bool       /* freeAll */
-    );
-
-extern void
- XkbFreeGeomPoints(XkbOutlinePtr /* outline */ ,
-                   int /* first */ ,
-                   int /* count */ ,
-                   Bool         /* freeAll */
-    );
-
-extern void
- XkbFreeGeomOutlines(XkbShapePtr /* shape */ ,
-                     int /* first */ ,
-                     int /* count */ ,
-                     Bool       /* freeAll */
-    );
-
-extern void
- XkbFreeGeomShapes(XkbGeometryPtr /* geom */ ,
-                   int /* first */ ,
-                   int /* count */ ,
-                   Bool         /* freeAll */
     );
 
 extern void
