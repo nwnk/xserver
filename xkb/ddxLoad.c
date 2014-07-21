@@ -477,13 +477,13 @@ XkbCompileKeymapForDevice(DeviceIntPtr dev, XkbRMLVOSet * rmlvo, int need)
                                     name, PATH_MAX);
         if ((need & provided) != need) {
             if (xkb) {
-                XkbFreeKeyboard(xkb, 0, TRUE);
+                XkbFreeKeyboard(xkb);
                 xkb = NULL;
             }
         }
     }
 
-    XkbFreeComponentNames(&kccgst, FALSE);
+    XkbFreeComponentNames(&kccgst);
     return xkb;
 }
 
@@ -504,7 +504,7 @@ KeymapOrDefaults(DeviceIntPtr dev, XkbDescPtr xkb)
 
     xkb = XkbCompileKeymapForDevice(dev, &dflts, 0);
 
-    XkbFreeRMLVOSet(&dflts, FALSE);
+    XkbFreeRMLVOSet(&dflts);
 
     return xkb;
 }
@@ -551,7 +551,7 @@ XkbCompileKeymapFromString(DeviceIntPtr dev,
                                    XkmAllIndicesMask, need, &xkb);
     if ((need & provided) != need) {
         if (xkb) {
-            XkbFreeKeyboard(xkb, 0, TRUE);
+            XkbFreeKeyboard(xkb);
             xkb = NULL;
         }
     }

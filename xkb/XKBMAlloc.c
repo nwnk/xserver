@@ -843,91 +843,46 @@ XkbResizeKeyActions(XkbDescPtr xkb, int key, int needed)
 }
 
 void
-XkbFreeClientMap(XkbDescPtr xkb, unsigned what, Bool freeMap)
+XkbFreeClientMap(XkbDescPtr xkb)
 {
     XkbClientMapPtr map;
 
     if ((xkb == NULL) || (xkb->map == NULL))
         return;
-    if (freeMap)
-        what = XkbAllClientInfoMask;
     map = xkb->map;
-    if (what & XkbKeyTypesMask) {
-        if (map->types != NULL) {
-            if (map->num_types > 0) {
-                register int i;
-                XkbKeyTypePtr type;
+    if (map->types != NULL) {
+        if (map->num_types > 0) {
+            int i;
+            XkbKeyTypePtr type;
 
-                for (i = 0, type = map->types; i < map->num_types; i++, type++) {
-                    free(type->map);
-                    type->map = NULL;
-                    free(type->preserve);
-                    type->preserve = NULL;
-                    type->map_count = 0;
-                    free(type->level_names);
-                    type->level_names = NULL;
-                }
+            for (i = 0, type = map->types; i < map->num_types; i++, type++) {
+                free(type->map);
+                free(type->preserve);
+                free(type->level_names);
             }
-            free(map->types);
-            map->num_types = map->size_types = 0;
-            map->types = NULL;
         }
+        free(map->types);
     }
-    if (what & XkbKeySymsMask) {
-        free(map->key_sym_map);
-        map->key_sym_map = NULL;
-        if (map->syms != NULL) {
-            free(map->syms);
-            map->size_syms = map->num_syms = 0;
-            map->syms = NULL;
-        }
-    }
-    if ((what & XkbModifierMapMask) && (map->modmap != NULL)) {
-        free(map->modmap);
-        map->modmap = NULL;
-    }
-    if (freeMap) {
-        free(xkb->map);
-        xkb->map = NULL;
-    }
-    return;
+    free(map->key_sym_map);
+    free(map->syms);
+    free(map->modmap);
+    free(xkb->map);
+    xkb->map = NULL;
 }
 
 void
-XkbFreeServerMap(XkbDescPtr xkb, unsigned what, Bool freeMap)
+XkbFreeServerMap(XkbDescPtr xkb)
 {
     XkbServerMapPtr map;
 
     if ((xkb == NULL) || (xkb->server == NULL))
         return;
-    if (freeMap)
-        what = XkbAllServerInfoMask;
     map = xkb->server;
-    if ((what & XkbExplicitComponentsMask) && (map->explicit != NULL)) {
-        free(map->explicit);
-        map->explicit = NULL;
-    }
-    if (what & XkbKeyActionsMask) {
-        free(map->key_acts);
-        map->key_acts = NULL;
-        if (map->acts != NULL) {
-            free(map->acts);
-            map->num_acts = map->size_acts = 0;
-            map->acts = NULL;
-        }
-    }
-    if ((what & XkbKeyBehaviorsMask) && (map->behaviors != NULL)) {
-        free(map->behaviors);
-        map->behaviors = NULL;
-    }
-    if ((what & XkbVirtualModMapMask) && (map->vmodmap != NULL)) {
-        free(map->vmodmap);
-        map->vmodmap = NULL;
-    }
-
-    if (freeMap) {
-        free(xkb->server);
-        xkb->server = NULL;
-    }
-    return;
+    free(map->explicit);
+    free(map->key_acts);
+    free(map->acts);
+    free(map->behaviors);
+    free(map->vmodmap);
+    free(xkb->server);
+    xkb->server = NULL;
 }

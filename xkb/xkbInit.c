@@ -123,7 +123,7 @@ XkbGetRulesDflts(XkbRMLVOSet * rmlvo)
 }
 
 void
-XkbFreeRMLVOSet(XkbRMLVOSet * rmlvo, Bool freeRMLVO)
+XkbFreeRMLVOSet(XkbRMLVOSet * rmlvo)
 {
     if (!rmlvo)
         return;
@@ -134,10 +134,7 @@ XkbFreeRMLVOSet(XkbRMLVOSet * rmlvo, Bool freeRMLVO)
     free(rmlvo->variant);
     free(rmlvo->options);
 
-    if (freeRMLVO)
-        free(rmlvo);
-    else
-        memset(rmlvo, 0, sizeof(XkbRMLVOSet));
+    memset(rmlvo, 0, sizeof(XkbRMLVOSet));
 }
 
 static Bool
@@ -293,7 +290,7 @@ XkbDeleteRulesDflts(void)
     free(XkbOptionsDflt);
     XkbOptionsDflt = NULL;
 
-    XkbFreeKeyboard(xkb_cached_map, XkbAllComponentsMask, TRUE);
+    XkbFreeKeyboard(xkb_cached_map);
     xkb_cached_map = NULL;
 }
 
@@ -350,7 +347,7 @@ XkbInitCompatStructs(XkbDescPtr xkb)
     if (xkb->defined & XkmCompatMapMask)
         return TRUE;
 
-    if (XkbAllocCompatMap(xkb, XkbAllCompatMask, num_dfltSI) != Success)
+    if (XkbAllocCompatMap(xkb, num_dfltSI) != Success)
         return BadAlloc;
     compat = xkb->compat;
     if (compat->sym_interpret) {
@@ -484,7 +481,7 @@ XkbInitControls(DeviceIntPtr pXDev, XkbSrvInfoPtr xkbi)
 
     xkb = xkbi->desc;
     /* 12/31/94 (ef) -- XXX! Should check if controls loaded from file */
-    if (XkbAllocControls(xkb, XkbAllControlsMask) != Success)
+    if (XkbAllocControls(xkb) != Success)
         FatalError("Couldn't allocate keyboard controls\n");
     ctrls = xkb->ctrls;
     if (!(xkb->defined & XkmSymbolsMask))
@@ -552,7 +549,7 @@ InitKeyboardDeviceStructInternal(DeviceIntPtr dev, XkbRMLVOSet * rmlvo,
     dev->key->xkbInfo = xkbi;
 
     if (xkb_cached_map && (keymap || (rmlvo && !XkbCompareUsedRMLVO(rmlvo)))) {
-        XkbFreeKeyboard(xkb_cached_map, XkbAllComponentsMask, TRUE);
+        XkbFreeKeyboard(xkb_cached_map);
         xkb_cached_map = NULL;
     }
 
@@ -636,12 +633,12 @@ InitKeyboardDeviceStructInternal(DeviceIntPtr dev, XkbRMLVOSet * rmlvo,
         XkbSetRulesDflts(rmlvo);
         XkbSetRulesUsed(rmlvo);
     }
-    XkbFreeRMLVOSet(&rmlvo_dflts, FALSE);
+    XkbFreeRMLVOSet(&rmlvo_dflts);
 
     return TRUE;
 
  unwind_desc:
-    XkbFreeKeyboard(xkb, 0, TRUE);
+    XkbFreeKeyboard(xkb);
  unwind_info:
     free(xkbi);
     dev->key->xkbInfo = NULL;
@@ -712,7 +709,7 @@ XkbFreeInfo(XkbSrvInfoPtr xkbi)
         xkbi->beepTimer = NULL;
     }
     if (xkbi->desc) {
-        XkbFreeKeyboard(xkbi->desc, XkbAllComponentsMask, TRUE);
+        XkbFreeKeyboard(xkbi->desc);
         xkbi->desc = NULL;
     }
     free(xkbi);

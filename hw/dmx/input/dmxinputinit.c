@@ -544,7 +544,7 @@ dmxDeviceOnOff(DeviceIntPtr pDevice, int what)
         info.keySyms.map = NULL;
     }
     if (info.xkb)
-        XkbFreeKeyboard(info.xkb, 0, True);
+        XkbFreeKeyboard(info.xkb);
     return Success;
 }
 

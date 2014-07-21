@@ -1155,7 +1155,7 @@ _XkbCopyClientMap(XkbDescPtr src, XkbDescPtr dst)
     }
     else {
         if (dst->map)
-            XkbFreeClientMap(dst, XkbAllClientInfoMask, TRUE);
+            XkbFreeClientMap(dst);
     }
 
     return TRUE;
@@ -1260,7 +1260,7 @@ _XkbCopyServerMap(XkbDescPtr src, XkbDescPtr dst)
     }
     else {
         if (dst->server)
-            XkbFreeServerMap(dst, XkbAllServerInfoMask, TRUE);
+            XkbFreeServerMap(dst);
     }
 
     return TRUE;
@@ -1345,7 +1345,7 @@ _XkbCopyNames(XkbDescPtr src, XkbDescPtr dst)
     }
     else {
         if (dst->names)
-            XkbFreeNames(dst, XkbAllNamesMask, TRUE);
+            XkbFreeNames(dst);
     }
 
     return TRUE;
@@ -1393,7 +1393,7 @@ _XkbCopyCompat(XkbDescPtr src, XkbDescPtr dst)
     }
     else {
         if (dst->compat)
-            XkbFreeCompatMap(dst, XkbAllCompatMask, TRUE);
+            XkbFreeCompatMap(dst);
     }
 
     return TRUE;
@@ -1891,7 +1891,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
     else {
         if (dst->geom) {
             /* I LOVE THE DIFFERENT CALL SIGNATURE.  REALLY, I DO. */
-            XkbFreeGeometry(dst->geom, XkbGeomAllMask, TRUE);
+            XkbFreeGeometry(dst->geom);
             dst->geom = NULL;
         }
     }

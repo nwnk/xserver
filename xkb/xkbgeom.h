@@ -376,9 +376,7 @@ extern void
     );
 
 extern void
- XkbFreeGeometry(XkbGeometryPtr /* geom */ ,
-                 unsigned int /* which */ ,
-                 Bool           /* freeMap */
+ XkbFreeGeometry(XkbGeometryPtr /* geom */
     );
 
 extern Bool

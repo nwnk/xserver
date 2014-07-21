@@ -4960,7 +4960,7 @@ XkbSendGeometry(ClientPtr client,
     if (start != NULL)
         free((char *) start);
     if (freeGeom)
-        XkbFreeGeometry(geom, XkbGeomAllMask, TRUE);
+        XkbFreeGeometry(geom);
     return Success;
 }
 
@@ -5471,14 +5471,14 @@ _XkbSetGeometry(ClientPtr client, DeviceIntPtr dev, xkbSetGeometryReq * stuff)
     geom->width_mm = stuff->widthMM;
     geom->height_mm = stuff->heightMM;
     if ((status = _CheckSetGeom(geom, stuff, client)) != Success) {
-        XkbFreeGeometry(geom, XkbGeomAllMask, TRUE);
+        XkbFreeGeometry(geom);
         xkb->geom = old;
         return status;
     }
     new_name = (xkb->names->geometry != geom->name);
     xkb->names->geometry = geom->name;
     if (old)
-        XkbFreeGeometry(old, XkbGeomAllMask, TRUE);
+        XkbFreeGeometry(old);
     if (new_name) {
         xkbNamesNotify nn;
 
@@ -6054,10 +6054,10 @@ ProcXkbGetKbdByName(ClientPtr client)
         }
     }
     if ((new != NULL) && (new != xkb)) {
-        XkbFreeKeyboard(new, XkbAllComponentsMask, TRUE);
+        XkbFreeKeyboard(new);
         new = NULL;
     }
-    XkbFreeComponentNames(&names, FALSE);
+    XkbFreeComponentNames(&names);
     return Success;
 }
 

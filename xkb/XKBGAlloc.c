@@ -36,67 +36,28 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <xkbsrv.h>
 #include "xkbgeom.h"
 
-/***====================================================================***/
-
 static void
-_XkbFreeGeomLeafElems(Bool freeAll,
-                      int first,
-                      int count,
-                      unsigned short *num_inout,
-                      unsigned short *sz_inout,
-                      char **elems, unsigned int elem_sz)
+_XkbFreeGeomLeafElems(unsigned short *num_inout, unsigned short *sz_inout,
+                      char **elems)
 {
-    if ((freeAll) || (*elems == NULL)) {
-        *num_inout = *sz_inout = 0;
-        free(*elems);
-        *elems = NULL;
-        return;
-    }
-
-    if ((first >= (*num_inout)) || (first < 0) || (count < 1))
-        return;
-
-    if (first + count >= (*num_inout)) {
-        /* truncating the array is easy */
-        (*num_inout) = first;
-    }
-    else {
-        char *ptr;
-        int extra;
-
-        ptr = *elems;
-        extra = ((*num_inout) - (first + count)) * elem_sz;
-        if (extra > 0)
-            memmove(&ptr[first * elem_sz], &ptr[(first + count) * elem_sz],
-                    extra);
-        (*num_inout) -= count;
-    }
-    return;
+    *num_inout = *sz_inout = 0;
+    free(*elems);
+    *elems = NULL;
 }
 
 typedef void (*ContentsClearFunc) (char *       /* priv */
     );
 
 static void
-_XkbFreeGeomNonLeafElems(Bool freeAll,
-                         int first,
-                         int count,
-                         unsigned short *num_inout,
+_XkbFreeGeomNonLeafElems(unsigned short *num_inout,
                          unsigned short *sz_inout,
                          char **elems,
                          unsigned int elem_sz, ContentsClearFunc freeFunc)
 {
-    register int i;
-    register char *ptr;
-
-    if (freeAll) {
-        first = 0;
-        count = (*num_inout);
-    }
-    else if ((first >= (*num_inout)) || (first < 0) || (count < 1))
-        return;
-    else if (first + count > (*num_inout))
-        count = (*num_inout) - first;
+    int i;
+    char *ptr;
+    int first = 0;
+    int count = (*num_inout);
     if (*elems == NULL)
         return;
 
@@ -108,23 +69,10 @@ _XkbFreeGeomNonLeafElems(Bool freeAll,
             ptr += elem_sz;
         }
     }
-    if (freeAll) {
-        (*num_inout) = (*sz_inout) = 0;
-        free(*elems);
-        *elems = NULL;
-    }
-    else if (first + count >= (*num_inout))
-        *num_inout = first;
-    else {
-        i = ((*num_inout) - (first + count)) * elem_sz;
-        ptr = *elems;
-        memmove(&ptr[first * elem_sz], &ptr[(first + count) * elem_sz], i);
-        (*num_inout) -= count;
-    }
-    return;
+    (*num_inout) = (*sz_inout) = 0;
+    free(*elems);
+    *elems = NULL;
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearProperty(char *prop_in)
@@ -132,34 +80,23 @@ _XkbClearProperty(char *prop_in)
     XkbPropertyPtr prop = (XkbPropertyPtr) prop_in;
 
     free(prop->name);
-    prop->name = NULL;
     free(prop->value);
-    prop->value = NULL;
-    return;
 }
 
 static void
-XkbFreeGeomProperties(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+XkbFreeGeomProperties(XkbGeometryPtr geom)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &geom->num_properties, &geom->sz_properties,
+    _XkbFreeGeomNonLeafElems(&geom->num_properties, &geom->sz_properties,
                              (char **) &geom->properties,
                              sizeof(XkbPropertyRec), _XkbClearProperty);
-    return;
 }
-
-/***====================================================================***/
 
 static void
-XkbFreeGeomKeyAliases(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+XkbFreeGeomKeyAliases(XkbGeometryPtr geom)
 {
-    _XkbFreeGeomLeafElems(freeAll, first, count,
-                          &geom->num_key_aliases, &geom->sz_key_aliases,
-                          (char **) &geom->key_aliases, sizeof(XkbKeyAliasRec));
-    return;
+    _XkbFreeGeomLeafElems(&geom->num_key_aliases, &geom->sz_key_aliases,
+                          (char **) &geom->key_aliases);
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearColor(char *color_in)
@@ -167,31 +104,22 @@ _XkbClearColor(char *color_in)
     XkbColorPtr color = (XkbColorPtr) color_in;
 
     free(color->spec);
-    return;
 }
 
 static void
-XkbFreeGeomColors(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+XkbFreeGeomColors(XkbGeometryPtr geom)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &geom->num_colors, &geom->sz_colors,
+    _XkbFreeGeomNonLeafElems(&geom->num_colors, &geom->sz_colors,
                              (char **) &geom->colors,
                              sizeof(XkbColorRec), _XkbClearColor);
-    return;
 }
-
-/***====================================================================***/
 
 static void
-XkbFreeGeomPoints(XkbOutlinePtr outline, int first, int count, Bool freeAll)
+XkbFreeGeomPoints(XkbOutlinePtr outline)
 {
-    _XkbFreeGeomLeafElems(freeAll, first, count,
-                          &outline->num_points, &outline->sz_points,
-                          (char **) &outline->points, sizeof(XkbPointRec));
-    return;
+    _XkbFreeGeomLeafElems(&outline->num_points, &outline->sz_points,
+                          (char **) &outline->points);
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearOutline(char *outline_in)
@@ -199,22 +127,16 @@ _XkbClearOutline(char *outline_in)
     XkbOutlinePtr outline = (XkbOutlinePtr) outline_in;
 
     if (outline->points != NULL)
-        XkbFreeGeomPoints(outline, 0, outline->num_points, TRUE);
-    return;
+        XkbFreeGeomPoints(outline);
 }
 
 static void
-XkbFreeGeomOutlines(XkbShapePtr shape, int first, int count, Bool freeAll)
+XkbFreeGeomOutlines(XkbShapePtr shape)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &shape->num_outlines, &shape->sz_outlines,
+    _XkbFreeGeomNonLeafElems(&shape->num_outlines, &shape->sz_outlines,
                              (char **) &shape->outlines,
                              sizeof(XkbOutlineRec), _XkbClearOutline);
-
-    return;
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearShape(char *shape_in)
@@ -222,45 +144,32 @@ _XkbClearShape(char *shape_in)
     XkbShapePtr shape = (XkbShapePtr) shape_in;
 
     if (shape->outlines)
-        XkbFreeGeomOutlines(shape, 0, shape->num_outlines, TRUE);
-    return;
+        XkbFreeGeomOutlines(shape);
 }
 
 static void
-XkbFreeGeomShapes(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+XkbFreeGeomShapes(XkbGeometryPtr geom)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &geom->num_shapes, &geom->sz_shapes,
+    _XkbFreeGeomNonLeafElems(&geom->num_shapes, &geom->sz_shapes,
                              (char **) &geom->shapes,
                              sizeof(XkbShapeRec), _XkbClearShape);
-    return;
 }
-
-/***====================================================================***/
 
 #if 0
 static void
-XkbFreeGeomOverlayKeys(XkbOverlayRowPtr row, int first, int count, Bool freeAll)
+XkbFreeGeomOverlayKeys(XkbOverlayRowPtr row)
 {
-    _XkbFreeGeomLeafElems(freeAll, first, count,
-                          &row->num_keys, &row->sz_keys,
-                          (char **) &row->keys, sizeof(XkbOverlayKeyRec));
-    return;
+    _XkbFreeGeomLeafElems(&row->num_keys, &row->sz_keys,
+                          (char **) &row->keys);
 }
 #endif
 
-/***====================================================================***/
-
 static void
-XkbFreeGeomKeys(XkbRowPtr row, int first, int count, Bool freeAll)
+XkbFreeGeomKeys(XkbRowPtr row)
 {
-    _XkbFreeGeomLeafElems(freeAll, first, count,
-                          &row->num_keys, &row->sz_keys,
-                          (char **) &row->keys, sizeof(XkbKeyRec));
-    return;
+    _XkbFreeGeomLeafElems(&row->num_keys, &row->sz_keys,
+                          (char **) &row->keys);
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearRow(char *row_in)
@@ -268,20 +177,16 @@ _XkbClearRow(char *row_in)
     XkbRowPtr row = (XkbRowPtr) row_in;
 
     if (row->keys != NULL)
-        XkbFreeGeomKeys(row, 0, row->num_keys, TRUE);
-    return;
+        XkbFreeGeomKeys(row);
 }
 
 static void
-XkbFreeGeomRows(XkbSectionPtr section, int first, int count, Bool freeAll)
+XkbFreeGeomRows(XkbSectionPtr section)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &section->num_rows, &section->sz_rows,
+    _XkbFreeGeomNonLeafElems(&section->num_rows, &section->sz_rows,
                              (char **) &section->rows,
                              sizeof(XkbRowRec), _XkbClearRow);
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearDoodad(char *doodad_in)
@@ -290,40 +195,29 @@ _XkbClearDoodad(char *doodad_in)
 
     switch (doodad->any.type) {
     case XkbTextDoodad:
-    {
         free(doodad->text.text);
-        doodad->text.text = NULL;
         free(doodad->text.font);
-        doodad->text.font = NULL;
-    }
         break;
     case XkbLogoDoodad:
-    {
         free(doodad->logo.logo_name);
-        doodad->logo.logo_name = NULL;
-    }
         break;
     }
     return;
 }
 
 static void
-XkbFreeGeomDoodads(XkbDoodadPtr doodads, int nDoodads, Bool freeAll)
+XkbFreeGeomDoodads(XkbDoodadPtr doodads, int nDoodads)
 {
-    register int i;
-    register XkbDoodadPtr doodad;
+    int i;
+    XkbDoodadPtr doodad;
 
     if (doodads) {
         for (i = 0, doodad = doodads; i < nDoodads; i++, doodad++) {
             _XkbClearDoodad((char *) doodad);
         }
-        if (freeAll)
-            free(doodads);
+        free(doodads);
     }
-    return;
 }
-
-/***====================================================================***/
 
 static void
 _XkbClearSection(char *section_in)
@@ -331,52 +225,39 @@ _XkbClearSection(char *section_in)
     XkbSectionPtr section = (XkbSectionPtr) section_in;
 
     if (section->rows != NULL)
-        XkbFreeGeomRows(section, 0, section->num_rows, TRUE);
+        XkbFreeGeomRows(section);
     if (section->doodads != NULL) {
-        XkbFreeGeomDoodads(section->doodads, section->num_doodads, TRUE);
-        section->doodads = NULL;
+        XkbFreeGeomDoodads(section->doodads, section->num_doodads);
     }
-    return;
 }
 
 static void
-XkbFreeGeomSections(XkbGeometryPtr geom, int first, int count, Bool freeAll)
+XkbFreeGeomSections(XkbGeometryPtr geom)
 {
-    _XkbFreeGeomNonLeafElems(freeAll, first, count,
-                             &geom->num_sections, &geom->sz_sections,
+    _XkbFreeGeomNonLeafElems(&geom->num_sections, &geom->sz_sections,
                              (char **) &geom->sections,
                              sizeof(XkbSectionRec), _XkbClearSection);
-    return;
 }
 
 void
-XkbFreeGeometry(XkbGeometryPtr geom, unsigned which, Bool freeMap)
+XkbFreeGeometry(XkbGeometryPtr geom)
 {
     if (geom == NULL)
         return;
-    if (freeMap)
-        which = XkbGeomAllMask;
-    if ((which & XkbGeomPropertiesMask) && (geom->properties != NULL))
-        XkbFreeGeomProperties(geom, 0, geom->num_properties, TRUE);
-    if ((which & XkbGeomColorsMask) && (geom->colors != NULL))
-        XkbFreeGeomColors(geom, 0, geom->num_colors, TRUE);
-    if ((which & XkbGeomShapesMask) && (geom->shapes != NULL))
-        XkbFreeGeomShapes(geom, 0, geom->num_shapes, TRUE);
-    if ((which & XkbGeomSectionsMask) && (geom->sections != NULL))
-        XkbFreeGeomSections(geom, 0, geom->num_sections, TRUE);
-    if ((which & XkbGeomDoodadsMask) && (geom->doodads != NULL)) {
-        XkbFreeGeomDoodads(geom->doodads, geom->num_doodads, TRUE);
-        geom->doodads = NULL;
-        geom->num_doodads = geom->sz_doodads = 0;
-    }
-    if ((which & XkbGeomKeyAliasesMask) && (geom->key_aliases != NULL))
-        XkbFreeGeomKeyAliases(geom, 0, geom->num_key_aliases, TRUE);
-    if (freeMap) {
-        free(geom->label_font);
-        geom->label_font = NULL;
-        free(geom);
-    }
-    return;
+    if (geom->properties != NULL)
+        XkbFreeGeomProperties(geom);
+    if (geom->colors != NULL)
+        XkbFreeGeomColors(geom);
+    if (geom->shapes != NULL)
+        XkbFreeGeomShapes(geom);
+    if (geom->sections != NULL)
+        XkbFreeGeomSections(geom);
+    if (geom->doodads != NULL)
+        XkbFreeGeomDoodads(geom->doodads, geom->num_doodads);
+    if (geom->key_aliases != NULL)
+        XkbFreeGeomKeyAliases(geom);
+    free(geom->label_font);
+    free(geom);
 }
 
 /***====================================================================***/
@@ -538,7 +419,7 @@ XkbAllocGeometry(XkbDescPtr xkb, XkbGeometrySizesPtr sizes)
     }
     return Success;
  BAIL:
-    XkbFreeGeometry(geom, XkbGeomAllMask, TRUE);
+    XkbFreeGeometry(geom);
     xkb->geom = NULL;
     return rtrn;
 }

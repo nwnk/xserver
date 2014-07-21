@@ -958,7 +958,7 @@ configServerFlags(XF86ConfFlagsPtr flagsconf, XF86OptionPtr layoutopts)
     /* Xkb default options. */
     XkbInitRules(&set, rules, "pc105", "us", NULL, NULL);
     XkbSetRulesDflts(&set);
-    XkbFreeRMLVOSet(&set, FALSE);
+    XkbFreeRMLVOSet(&set);
 
     xf86Info.useDefaultFontPath = TRUE;
     if (xf86GetOptValBool(FlagOptions, FLAG_USE_DEFAULT_FONT_PATH, &value)) {

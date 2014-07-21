@@ -324,14 +324,10 @@ extern Bool XkbInitPrivates(void);
 extern void XkbSetExtension(DeviceIntPtr device,
                             ProcessInputProc proc);
 
-extern void XkbFreeCompatMap(XkbDescPtr /* xkb */ ,
-                             unsigned int /* which */ ,
-                             Bool     /* freeMap */
+extern void XkbFreeCompatMap(XkbDescPtr /* xkb */
     );
 
-extern void XkbFreeNames(XkbDescPtr /* xkb */ ,
-                         unsigned int /* which */ ,
-                         Bool /* freeMap */
+extern void XkbFreeNames(XkbDescPtr /* xkb */
     );
 
 extern int _XkbLookupAnyDevice(DeviceIntPtr *pDev,
@@ -372,21 +368,16 @@ extern Status XkbAllocServerMap(XkbDescPtr /* xkb */ ,
                                 unsigned int  /* nNewActions */
     );
 
-extern void XkbFreeClientMap(XkbDescPtr /* xkb */ ,
-                             unsigned int /* what */ ,
-                             Bool     /* freeMap */
+extern void XkbFreeClientMap(XkbDescPtr /* xkb */
     );
 
-extern void XkbFreeServerMap(XkbDescPtr /* xkb */ ,
-                             unsigned int /* what */ ,
-                             Bool     /* freeMap */
+extern void XkbFreeServerMap(XkbDescPtr /* xkb */
     );
 
 extern Status XkbAllocIndicatorMaps(XkbDescPtr        /* xkb */
     );
 
 extern Status XkbAllocCompatMap(XkbDescPtr /* xkb */ ,
-                                unsigned int /* which */ ,
                                 unsigned int  /* nInterpret */
     );
 
@@ -396,8 +387,7 @@ extern Status XkbAllocNames(XkbDescPtr /* xkb */ ,
                             int       /* nTotalAliases */
     );
 
-extern Status XkbAllocControls(XkbDescPtr /* xkb */ ,
-                               unsigned int   /* which */
+extern Status XkbAllocControls(XkbDescPtr /* xkb */
     );
 
 extern Status XkbCopyKeyTypes(XkbKeyTypePtr /* from */ ,
@@ -412,13 +402,10 @@ extern Status XkbResizeKeyType(XkbDescPtr /* xkb */ ,
                                int    /* new_num_lvls */
     );
 
-extern void XkbFreeKeyboard(XkbDescPtr /* xkb */ ,
-                            unsigned int /* which */ ,
-                            Bool      /* freeDesc */
+extern void XkbFreeKeyboard(XkbDescPtr /* xkb */
     );
 
-extern void XkbFreeComponentNames(XkbComponentNamesPtr /* names */ ,
-                                  Bool        /* freeNames */
+extern void XkbFreeComponentNames(XkbComponentNamesPtr /* names */
     );
 
 extern void XkbSetActionKeyMods(XkbDescPtr /* xkb */ ,
@@ -735,8 +722,7 @@ extern void XkbInitRules(XkbRMLVOSet * /* rmlvo   */,
 extern void XkbGetRulesDflts(XkbRMLVOSet *    /* rmlvo */
     );
 
-extern void XkbFreeRMLVOSet(XkbRMLVOSet * /* rmlvo */ ,
-                            Bool      /* freeRMLVO */
+extern void XkbFreeRMLVOSet(XkbRMLVOSet * /* rmlvo */
     );
 
 extern void XkbSetRulesDflts(XkbRMLVOSet *    /* rmlvo */

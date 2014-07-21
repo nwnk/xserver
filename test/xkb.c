@@ -108,7 +108,7 @@ xkb_set_rules_test(void)
     assert(strcmp(rmlvo.variant, rmlvo_new.variant) == 0);
     assert(strcmp(rmlvo.options, rmlvo_new.options) == 0);
 
-    XkbFreeRMLVOSet(&rmlvo, FALSE);
+    XkbFreeRMLVOSet(&rmlvo);
 }
 
 /**

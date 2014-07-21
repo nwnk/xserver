@@ -358,7 +358,7 @@ keyboard_handle_keymap(void *data, struct wl_keyboard *keyboard,
     if (master && master->lastSlave == xwl_seat->keyboard)
         XkbDeviceApplyKeymap(master, xkb);
 
-    XkbFreeKeyboard(xkb, XkbAllComponentsMask, TRUE);
+    XkbFreeKeyboard(xkb);
 
  out:
     close(fd);

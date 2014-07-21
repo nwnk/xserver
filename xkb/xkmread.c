@@ -418,7 +418,7 @@ ReadXkmCompatMap(FILE * file, XkbDescPtr xkb, XkbChangesPtr changes)
     num_si = XkmGetCARD16(file, &nRead);
     groups = XkmGetCARD8(file, &nRead);
     nRead += XkmSkipPadding(file, 1);
-    if (XkbAllocCompatMap(xkb, XkbAllCompatMask, num_si) != Success)
+    if (XkbAllocCompatMap(xkb, num_si) != Success)
         return -1;
     compat = xkb->compat;
     compat->num_si = 0;
@@ -717,7 +717,7 @@ ReadXkmSymbols(FILE * file, XkbDescPtr xkb)
     if (XkbAllocClientMap(xkb, XkbAllClientInfoMask, 0) != Success) {
         return -1;
     }
-    if (XkbAllocControls(xkb, XkbAllControlsMask) != Success) {
+    if (XkbAllocControls(xkb) != Success) {
         return -1;
     }
     if ((xkb->map == NULL) || (xkb->server == NULL))
