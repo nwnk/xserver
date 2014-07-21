@@ -76,64 +76,6 @@ typedef void (*XkbFileAddOnFunc) (FILE * /* file */ ,
 
 _XFUNCPROTOBEGIN
 
-extern char *XkbIndentText(unsigned   /* size */
-    );
-
-extern char *XkbAtomText(Atom /* atm */
-    );
-
-extern char *XkbKeysymText(KeySym /* sym */
-    );
-
-extern char *XkbStringText(char * /* str */
-    );
-
-extern char *XkbKeyNameText(char * /* name */
-    );
-
-extern char *XkbModIndexText(unsigned /* ndx */
-    );
-
-extern char *XkbModMaskText(unsigned /* mask */
-    );
-
-extern char *XkbVModIndexText(XkbDescPtr /* xkb */ ,
-                              unsigned /* ndx */
-    );
-
-extern char *XkbVModMaskText(XkbDescPtr /* xkb */ ,
-                             unsigned /* modMask */ ,
-                             unsigned /* mask */
-    );
-
-extern char *XkbConfigText(unsigned /* config */
-    );
-
-extern const char *XkbSIMatchText(unsigned /* type */
-    );
-
-extern char *XkbIMWhichStateMaskText(unsigned /* use_which */
-    );
-
-extern char *XkbControlsMaskText(unsigned /* ctrls */
-    );
-
-extern char *XkbGeomFPText(int /* val */
-    );
-
-extern char *XkbDoodadTypeText(unsigned /* type */
-    );
-
-extern char *XkbActionText(XkbDescPtr /* xkb */ ,
-                           XkbAction * /* action */
-    );
-
-extern char *XkbBehaviorText(XkbDescPtr /* xkb */ ,
-                             XkbBehavior * /* behavior */
-    );
-
-/***====================================================================***/
-
 #define	_XkbKSLower	(1<<0)
 #define	_XkbKSUpper	(1<<1)
 
