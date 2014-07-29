@@ -461,6 +461,22 @@ xf86InitAtoms(void)
     }
 }
 
+static void
+doPreInits(int n, ScrnInfoPtr *scrns)
+{
+    int i;
+    for (i = 0; i < n; i++) {
+        xf86VGAarbiterScrnInit(scrns[i]);
+        xf86VGAarbiterLock(scrns[i]);
+        if (scrns[i]->PreInit && scrns[i]->PreInit(scrns[i], 0))
+            scrns[i]->configured = TRUE;
+        xf86VGAarbiterUnlock(scrns[i]);
+    }
+    for (i = 0; i < n; i++)
+        if (!scrns[i]->configured)
+            xf86DeleteScreen(scrns[i--]);
+}
+
 /*
  * InitOutput --
  *	Initialize screenInfo for all actually accessible framebuffers.
@@ -660,33 +676,12 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
         }
 
         /*
-         * Call the driver's PreInit()'s to complete initialisation for the first
-         * generation.
+         * Call the driver's PreInit()'s to complete initialisation for the
+         * first generation.
          */
 
-        for (i = 0; i < xf86NumScreens; i++) {
-            xf86VGAarbiterScrnInit(xf86Screens[i]);
-            xf86VGAarbiterLock(xf86Screens[i]);
-            if (xf86Screens[i]->PreInit &&
-                xf86Screens[i]->PreInit(xf86Screens[i], 0))
-                xf86Screens[i]->configured = TRUE;
-            xf86VGAarbiterUnlock(xf86Screens[i]);
-        }
-        for (i = 0; i < xf86NumScreens; i++)
-            if (!xf86Screens[i]->configured)
-                xf86DeleteScreen(xf86Screens[i--]);
-
-        for (i = 0; i < xf86NumGPUScreens; i++) {
-            xf86VGAarbiterScrnInit(xf86GPUScreens[i]);
-            xf86VGAarbiterLock(xf86GPUScreens[i]);
-            if (xf86GPUScreens[i]->PreInit &&
-                xf86GPUScreens[i]->PreInit(xf86GPUScreens[i], 0))
-                xf86GPUScreens[i]->configured = TRUE;
-            xf86VGAarbiterUnlock(xf86GPUScreens[i]);
-        }
-        for (i = 0; i < xf86NumGPUScreens; i++)
-            if (!xf86GPUScreens[i]->configured)
-                xf86DeleteScreen(xf86GPUScreens[i--]);
+        doPreInits(xf86NumScreens, xf86Screens);
+        doPreInits(xf86NumGPUScreens, xf86GPUScreens);
 
         /*
          * If no screens left, return now.
