@@ -835,13 +835,8 @@ Here is what <function>InitOutput()</function> does:
       the driver will fail immediately.  This is usually best done with
       the <function>xf86ConfigPciEntity()</function> helper function
       for PCI and <function>xf86ConfigIsaEntity()</function> for ISA
-      (see the <link linkend="rac">RAC</link> section).  It is possible to
-      register some entity specific functions with those helpers.  When
-      not using the helpers, the <function>xf86AddEntityToScreen()</function>
-      <function>xf86ClaimFixedResources()</function> and
-      <function>xf86SetEntityFuncs()</function> should be used instead (see
-      the <link linkend="rac">RAC</link> section).
-	</para>
+      (see the <link linkend="rac">RAC</link> section).
+        </para>
 
 	<para>
       If a chipset is specified in an active device section which the
@@ -2753,19 +2748,6 @@ available at the driver level:
 		</para>
 
 	      </blockquote></para></blockquote>
-
-	  <blockquote><para>
-	      <programlisting>
-    Bool xf86SetEntityFuncs(int entityIndex, EntityProc init,
-                            EntityProc enter, EntityProc leave, pointer);
-	      </programlisting>
-	      <blockquote><para>
-      This function registers with an entity the <parameter>init</parameter>,
-      <parameter>enter</parameter>, <parameter>leave</parameter> functions along
-      with the pointer to their private area.
-		</para>
-
-	    </blockquote></para></blockquote>
 
 	  <blockquote><para>
 	      <programlisting>
