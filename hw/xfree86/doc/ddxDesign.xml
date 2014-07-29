@@ -2900,47 +2900,6 @@ Two functions are provided to obtain a resource range of a given type:
 	</para>
 
 	<para>
-The driver may replace the generic access control functions for an entity.
-This is done with the <function>xf86SetAccessFuncs()</function>:
-	  <blockquote><para>
-	      <programlisting>
-    void xf86SetAccessFuncs(EntityInfoPtr pEnt,
-                            xf86SetAccessFuncPtr funcs,
-                            xf86SetAccessFuncPtr oldFuncs);
-	      </programlisting>
-     with:
-	      <programlisting>
-      typedef struct {
-          xf86AccessPtr mem;
-          xf86AccessPtr io;
-          xf86AccessPtr io_mem;
-      } xf86SetAccessFuncRec, *xf86SetAccessFuncPtr;
-	      </programlisting>
-	      <blockquote><para>
-      The driver can pass three functions: one for I/O access, one for
-      memory access and one for combined memory and I/O access.  If the
-      memory access and combined access functions are identical the
-      common level assumes that the memory access cannot be controlled
-      independently of I/O access, if the I/O access function and the
-      combined access functions are the same it is assumed that I/O can
-      not be controlled independently.  If memory and I/O have to be
-      controlled together all three values should be the same.  If a
-      non <constant>NULL</constant> value is passed as third argument it is
-      interpreted as an address where to store the old access record.
-      If the third argument is <constant>NULL</constant> it will be assumed
-      that the generic access should be enabled before replacing the
-      access functions.  Otherwise it will be disabled.  The driver may
-      enable them itself using the returned values.  It should do this
-      from its replacement access functions as the generic access may
-      be disabled by the common level on certain occasions.  If replacement
-      functions are specified they must control all resources of the
-      specific type registered for the entity.
-		</para>
-
-	      </blockquote></para></blockquote>
-	</para>
-
-	<para>
 To find out if a specific resource range conflicts with another
 resource the <function>xf86ChkConflict()</function> function may be used:
 	  <blockquote><para>
