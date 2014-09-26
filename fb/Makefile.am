@@ -24,6 +24,7 @@ libfb_la_SOURCES = 	\
 	fbbltone.c	\
 	fbcmap_mi.c     \
 	fbcopy.c	\
+	fbdotbits.h	\
 	fbfill.c	\
 	fbfillrect.c	\
 	fbfillsp.c	\

@@ -622,16 +622,6 @@ fbPolyArc(DrawablePtr pDrawable, GCPtr pGC, int narcs, xArc * parcs);
 
 extern _X_EXPORT void
 
-fbDots8(FbBits * dst,
-        FbStride dstStride,
-        int dstBpp,
-        BoxPtr pBox,
-        xPoint * pts,
-        int npt,
-        int xorg, int yorg, int xoff, int yoff, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-
 fbArc8(FbBits * dst,
        FbStride dstStride,
        int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
@@ -652,16 +642,6 @@ extern _X_EXPORT void
 
 extern _X_EXPORT void
 
-fbDots16(FbBits * dst,
-         FbStride dstStride,
-         int dstBpp,
-         BoxPtr pBox,
-         xPoint * pts,
-         int npt,
-         int xorg, int yorg, int xoff, int yoff, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-
 fbArc16(FbBits * dst,
         FbStride dstStride,
         int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
@@ -679,16 +659,6 @@ fbPolyline16(DrawablePtr pDrawable,
 
 extern _X_EXPORT void
  fbPolySegment16(DrawablePtr pDrawable, GCPtr pGC, int nseg, xSegment * pseg);
-
-extern _X_EXPORT void
-
-fbDots32(FbBits * dst,
-         FbStride dstStride,
-         int dstBpp,
-         BoxPtr pBox,
-         xPoint * pts,
-         int npt,
-         int xorg, int yorg, int xoff, int yoff, FbBits and, FbBits xor);
 
 extern _X_EXPORT void
 

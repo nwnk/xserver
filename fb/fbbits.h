@@ -40,54 +40,9 @@
 /*
  * Define the following before including this file:
  *
- *  DOTS	name of function for drawing dots
  *  ARC		name of function for drawing a solid arc
  *  BITS	type of underlying unit
  */
-
-#ifdef DOTS
-void
-DOTS(FbBits * dst,
-     FbStride dstStride,
-     int dstBpp,
-     BoxPtr pBox,
-     xPoint * ptsOrig,
-     int npt, int xorg, int yorg, int xoff, int yoff, FbBits and, FbBits xor)
-{
-    INT32 *pts = (INT32 *) ptsOrig;
-    UNIT *bits = (UNIT *) dst;
-    UNIT *point;
-    BITS bxor = (BITS) xor;
-    BITS band = (BITS) and;
-    FbStride bitsStride = dstStride * (sizeof(FbBits) / sizeof(UNIT));
-    INT32 ul, lr;
-    INT32 pt;
-
-    ul = coordToInt(pBox->x1 - xorg, pBox->y1 - yorg);
-    lr = coordToInt(pBox->x2 - xorg - 1, pBox->y2 - yorg - 1);
-
-    bits += bitsStride * (yorg + yoff) + (xorg + xoff);
-
-    if (and == 0) {
-        while (npt--) {
-            pt = *pts++;
-            if (!isClipped(pt, ul, lr)) {
-                point = bits + intToY(pt) * bitsStride + intToX(pt);
-                STORE(point, bxor);
-            }
-        }
-    }
-    else {
-        while (npt--) {
-            pt = *pts++;
-            if (!isClipped(pt, ul, lr)) {
-                point = bits + intToY(pt) * bitsStride + intToX(pt);
-                RROP(point, band, bxor);
-            }
-        }
-    }
-}
-#endif
 
 #ifdef ARC
 

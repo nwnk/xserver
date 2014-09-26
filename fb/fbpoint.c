@@ -26,6 +26,30 @@
 
 #include "fb.h"
 
+#define DOTS	    fbDots8
+#define BITS	    BYTE
+#define BITS2	    CARD16
+#define BITS4	    CARD32
+#include "fbdotbits.h"
+#undef DOTS
+#undef BITS
+#undef BITS2
+#undef BITS4
+
+#define DOTS	    fbDots16
+#define BITS	    CARD16
+#define BITS2	    CARD32
+#include "fbdotbits.h"
+#undef DOTS
+#undef BITS
+#undef BITS2
+
+#define DOTS	    fbDots32
+#define BITS	    CARD32
+#include "fbdotbits.h"
+#undef DOTS
+#undef BITS
+
 typedef void (*FbDots) (FbBits * dst,
                         FbStride dstStride,
                         int dstBpp,
