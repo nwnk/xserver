@@ -42,6 +42,7 @@ libfb_la_SOURCES = 	\
 	fbrop.h		\
 	fbscreen.c	\
 	fbseg.c		\
+	fbsegbits.h	\
 	fbsetsp.c	\
 	fbsolid.c	\
 	fbtrap.c	\

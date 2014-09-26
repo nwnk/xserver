@@ -622,23 +622,6 @@ fbPolyArc(DrawablePtr pDrawable, GCPtr pGC, int narcs, xArc * parcs);
 
 extern _X_EXPORT void
 
-fbBresSolid8(DrawablePtr pDrawable,
-             GCPtr pGC,
-             int dashOffset,
-             int signdx,
-             int signdy,
-             int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
-fbBresDash8(DrawablePtr pDrawable,
-            GCPtr pGC,
-            int dashOffset,
-            int signdx,
-            int signdy, int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
 fbDots8(FbBits * dst,
         FbStride dstStride,
         int dstBpp,
@@ -669,24 +652,6 @@ extern _X_EXPORT void
 
 extern _X_EXPORT void
 
-fbBresSolid16(DrawablePtr pDrawable,
-              GCPtr pGC,
-              int dashOffset,
-              int signdx,
-              int signdy,
-              int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
-fbBresDash16(DrawablePtr pDrawable,
-             GCPtr pGC,
-             int dashOffset,
-             int signdx,
-             int signdy,
-             int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
 fbDots16(FbBits * dst,
          FbStride dstStride,
          int dstBpp,
@@ -714,24 +679,6 @@ fbPolyline16(DrawablePtr pDrawable,
 
 extern _X_EXPORT void
  fbPolySegment16(DrawablePtr pDrawable, GCPtr pGC, int nseg, xSegment * pseg);
-
-extern _X_EXPORT void
-
-fbBresSolid32(DrawablePtr pDrawable,
-              GCPtr pGC,
-              int dashOffset,
-              int signdx,
-              int signdy,
-              int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
-fbBresDash32(DrawablePtr pDrawable,
-             GCPtr pGC,
-             int dashOffset,
-             int signdx,
-             int signdy,
-             int axis, int x, int y, int e, int e1, int e3, int len);
 
 extern _X_EXPORT void
 

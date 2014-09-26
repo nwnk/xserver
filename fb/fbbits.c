@@ -28,8 +28,6 @@
 #include "miline.h"
 #include "mizerarc.h"
 
-#undef BRESSOLID
-#undef BRESDASH
 #undef DOTS
 #undef ARC
 #undef GLYPH
@@ -37,8 +35,6 @@
 #undef BITS2
 #undef BITS4
 
-#define BRESSOLID   fbBresSolid8
-#define BRESDASH    fbBresDash8
 #define DOTS	    fbDots8
 #define ARC	    fbArc8
 #define GLYPH	    fbGlyph8
@@ -50,8 +46,6 @@
 
 #include "fbbits.h"
 
-#undef BRESSOLID
-#undef BRESDASH
 #undef DOTS
 #undef ARC
 #undef GLYPH
@@ -61,8 +55,6 @@
 #undef BITS2
 #undef BITS4
 
-#define BRESSOLID   fbBresSolid16
-#define BRESDASH    fbBresDash16
 #define DOTS	    fbDots16
 #define ARC	    fbArc16
 #define GLYPH	    fbGlyph16
@@ -73,8 +65,6 @@
 
 #include "fbbits.h"
 
-#undef BRESSOLID
-#undef BRESDASH
 #undef DOTS
 #undef ARC
 #undef GLYPH
@@ -83,8 +73,6 @@
 #undef BITS
 #undef BITS2
 
-#define BRESSOLID   fbBresSolid32
-#define BRESDASH    fbBresDash32
 #define DOTS	    fbDots32
 #define ARC	    fbArc32
 #define GLYPH	    fbGlyph32
@@ -94,8 +82,6 @@
 
 #include "fbbits.h"
 
-#undef BRESSOLID
-#undef BRESDASH
 #undef DOTS
 #undef ARC
 #undef GLYPH

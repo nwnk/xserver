@@ -29,6 +29,36 @@
 #include "fb.h"
 #include "miline.h"
 
+#define BRESSOLID   fbBresSolid8
+#define BRESDASH    fbBresDash8
+#define BITS	    BYTE
+#define BITS2	    CARD16
+#define BITS4	    CARD32
+#include "fbsegbits.h"
+#undef BRESSOLID
+#undef BRESDASH
+#undef BITS
+#undef BITS2
+#undef BITS4
+
+#define BRESSOLID   fbBresSolid16
+#define BRESDASH    fbBresDash16
+#define BITS	    CARD16
+#define BITS2	    CARD32
+#include "fbsegbits.h"
+#undef BRESSOLID
+#undef BRESDASH
+#undef BITS
+#undef BITS2
+
+#define BRESSOLID   fbBresSolid32
+#define BRESDASH    fbBresDash32
+#define BITS	    CARD32
+#include "fbsegbits.h"
+#undef BRESSOLID
+#undef BRESDASH
+#undef BITS
+
 #define fbBresShiftMask(mask,dir,bpp) ((bpp == FB_STIP_UNIT) ? 0 : \
 					((dir < 0) ? FbStipLeft(mask,bpp) : \
 					 FbStipRight(mask,bpp)))
