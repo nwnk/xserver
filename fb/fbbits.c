@@ -28,13 +28,11 @@
 #include "miline.h"
 #include "mizerarc.h"
 
-#undef ARC
 #undef GLYPH
 #undef BITS
 #undef BITS2
 #undef BITS4
 
-#define ARC	    fbArc8
 #define GLYPH	    fbGlyph8
 #define POLYLINE    fbPolyline8
 #define POLYSEGMENT fbPolySegment8
@@ -44,7 +42,6 @@
 
 #include "fbbits.h"
 
-#undef ARC
 #undef GLYPH
 #undef POLYLINE
 #undef POLYSEGMENT
@@ -52,7 +49,6 @@
 #undef BITS2
 #undef BITS4
 
-#define ARC	    fbArc16
 #define GLYPH	    fbGlyph16
 #define POLYLINE    fbPolyline16
 #define POLYSEGMENT fbPolySegment16
@@ -61,14 +57,12 @@
 
 #include "fbbits.h"
 
-#undef ARC
 #undef GLYPH
 #undef POLYLINE
 #undef POLYSEGMENT
 #undef BITS
 #undef BITS2
 
-#define ARC	    fbArc32
 #define GLYPH	    fbGlyph32
 #define POLYLINE    fbPolyline32
 #define POLYSEGMENT fbPolySegment32
@@ -76,7 +70,6 @@
 
 #include "fbbits.h"
 
-#undef ARC
 #undef GLYPH
 #undef POLYLINE
 #undef POLYSEGMENT

@@ -28,6 +28,30 @@
 #include "mizerarc.h"
 #include <limits.h>
 
+#define ARC	    fbArc8
+#define BITS	    BYTE
+#define BITS2	    CARD16
+#define BITS4	    CARD32
+#include "fbarcbits.h"
+#undef ARC
+#undef BITS
+#undef BITS2
+#undef BITS4
+
+#define ARC	    fbArc16
+#define BITS	    CARD16
+#define BITS2	    CARD32
+#include "fbarcbits.h"
+#undef ARC
+#undef BITS
+#undef BITS2
+
+#define ARC	    fbArc32
+#define BITS	    CARD32
+#include "fbarcbits.h"
+#undef ARC
+#undef BITS
+
 typedef void (*FbArc) (FbBits * dst,
                        FbStride dstStride,
                        int dstBpp,

@@ -18,6 +18,7 @@ libfb_la_SOURCES = 	\
 	fb24_32.h	\
 	fballpriv.c	\
 	fbarc.c		\
+	fbarcbits.h	\
 	fbbits.c	\
 	fbbits.h	\
 	fbblt.c		\

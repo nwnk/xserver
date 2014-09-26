@@ -622,12 +622,6 @@ fbPolyArc(DrawablePtr pDrawable, GCPtr pGC, int narcs, xArc * parcs);
 
 extern _X_EXPORT void
 
-fbArc8(FbBits * dst,
-       FbStride dstStride,
-       int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-
 fbGlyph8(FbBits * dstLine,
          FbStride dstStride,
          int dstBpp, FbStip * stipple, FbBits fg, int height, int shift);
@@ -642,12 +636,6 @@ extern _X_EXPORT void
 
 extern _X_EXPORT void
 
-fbArc16(FbBits * dst,
-        FbStride dstStride,
-        int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-
 fbGlyph16(FbBits * dstLine,
           FbStride dstStride,
           int dstBpp, FbStip * stipple, FbBits fg, int height, int shift);
@@ -659,12 +647,6 @@ fbPolyline16(DrawablePtr pDrawable,
 
 extern _X_EXPORT void
  fbPolySegment16(DrawablePtr pDrawable, GCPtr pGC, int nseg, xSegment * pseg);
-
-extern _X_EXPORT void
-
-fbArc32(FbBits * dst,
-        FbStride dstStride,
-        int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
 
 extern _X_EXPORT void
 
