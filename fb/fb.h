@@ -717,47 +717,6 @@ extern _X_EXPORT void
 
 extern _X_EXPORT void
 
-fbBresSolid24(DrawablePtr pDrawable,
-              GCPtr pGC,
-              int dashOffset,
-              int signdx,
-              int signdy,
-              int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
-fbBresDash24(DrawablePtr pDrawable,
-             GCPtr pGC,
-             int dashOffset,
-             int signdx,
-             int signdy,
-             int axis, int x, int y, int e, int e1, int e3, int len);
-
-extern _X_EXPORT void
-
-fbDots24(FbBits * dst,
-         FbStride dstStride,
-         int dstBpp,
-         BoxPtr pBox,
-         xPoint * pts,
-         int npt,
-         int xorg, int yorg, int xoff, int yoff, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-
-fbArc24(FbBits * dst,
-        FbStride dstStride,
-        int dstBpp, xArc * arc, int dx, int dy, FbBits and, FbBits xor);
-
-extern _X_EXPORT void
-fbPolyline24(DrawablePtr pDrawable,
-             GCPtr pGC, int mode, int npt, DDXPointPtr ptsOrig);
-
-extern _X_EXPORT void
- fbPolySegment24(DrawablePtr pDrawable, GCPtr pGC, int nseg, xSegment * pseg);
-
-extern _X_EXPORT void
-
 fbBresSolid32(DrawablePtr pDrawable,
               GCPtr pGC,
               int dashOffset,

@@ -457,9 +457,6 @@ fbSelectBres(DrawablePtr pDrawable, GCPtr pGC)
                 case 16:
                     bres = fbBresSolid16;
                     break;
-                case 24:
-                    bres = fbBresSolid24;
-                    break;
                 case 32:
                     bres = fbBresSolid32;
                     break;
@@ -481,9 +478,6 @@ fbSelectBres(DrawablePtr pDrawable, GCPtr pGC)
                     break;
                 case 16:
                     bres = fbBresDash16;
-                    break;
-                case 24:
-                    bres = fbBresDash24;
                     break;
                 case 32:
                     bres = fbBresDash32;

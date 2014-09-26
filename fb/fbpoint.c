@@ -131,9 +131,6 @@ fbPolyPoint(DrawablePtr pDrawable,
     case 16:
         dots = fbDots16;
         break;
-    case 24:
-        dots = fbDots24;
-        break;
     case 32:
         dots = fbDots32;
         break;
