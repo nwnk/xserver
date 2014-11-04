@@ -620,9 +620,7 @@ ProcShapeQueryExtents(ClientPtr client)
         .clipShaped = (wClipShape(pWin) != 0)
     };
     if ((region = wBoundingShape(pWin))) {
-        /* this is done in two steps because of a compiler bug on SunOS 4.1.3 */
-        pExtents = RegionExtents(region);
-        extents = *pExtents;
+        extents = *RegionExtents(region);
     }
     else {
         extents.x1 = -wBorderWidth(pWin);
@@ -635,9 +633,7 @@ ProcShapeQueryExtents(ClientPtr client)
     rep.widthBoundingShape = extents.x2 - extents.x1;
     rep.heightBoundingShape = extents.y2 - extents.y1;
     if ((region = wClipShape(pWin))) {
-        /* this is done in two steps because of a compiler bug on SunOS 4.1.3 */
-        pExtents = RegionExtents(region);
-        extents = *pExtents;
+        extents = *RegionExtents(region);
     }
     else {
         extents.x1 = 0;
