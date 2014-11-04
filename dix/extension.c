@@ -90,15 +90,10 @@ AddExtension(const char *name, int NumEvents, int NumErrors,
     ext = calloc(sizeof(ExtensionEntry), 1);
     if (!ext)
         return NULL;
-    if (!dixAllocatePrivates(&ext->devPrivates, PRIVATE_EXTENSION)) {
-        free(ext);
-        return NULL;
-    }
     ext->name = strdup(name);
     ext->num_aliases = 0;
     ext->aliases = (const char **) NULL;
     if (!ext->name) {
-        dixFreePrivates(ext->devPrivates, PRIVATE_EXTENSION);
         free(ext);
         return ((ExtensionEntry *) NULL);
     }
@@ -106,7 +101,6 @@ AddExtension(const char *name, int NumEvents, int NumErrors,
     newexts = reallocarray(extensions, i + 1, sizeof(ExtensionEntry *));
     if (!newexts) {
         free((void *) ext->name);
-        dixFreePrivates(ext->devPrivates, PRIVATE_EXTENSION);
         free(ext);
         return ((ExtensionEntry *) NULL);
     }
@@ -233,7 +227,6 @@ CloseDownExtensions(void)
         for (j = extensions[i]->num_aliases; --j >= 0;)
             free((void *) extensions[i]->aliases[j]);
         free(extensions[i]->aliases);
-        dixFreePrivates(extensions[i]->devPrivates, PRIVATE_EXTENSION);
         free(extensions[i]);
     }
     free(extensions);

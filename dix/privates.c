@@ -75,7 +75,6 @@ static const Bool xselinux_private[PRIVATE_LAST] = {
     [PRIVATE_CURSOR] = TRUE,
     [PRIVATE_COLORMAP] = TRUE,
     [PRIVATE_DEVICE] = TRUE,
-    [PRIVATE_EXTENSION] = TRUE,
     [PRIVATE_SELECTION] = TRUE,
     [PRIVATE_PROPERTY] = TRUE,
     [PRIVATE_PICTURE] = TRUE,
@@ -90,7 +89,6 @@ static const char *key_names[PRIVATE_LAST] = {
      */
     /* These can have objects created before all of the keys are registered */
     [PRIVATE_SCREEN] = "SCREEN",
-    [PRIVATE_EXTENSION] = "EXTENSION",
     [PRIVATE_COLORMAP] = "COLORMAP",
     [PRIVATE_DEVICE] = "DEVICE",
 
@@ -121,7 +119,6 @@ static const Bool screen_specific_private[PRIVATE_LAST] = {
     [PRIVATE_CURSOR] = FALSE,
     [PRIVATE_COLORMAP] = FALSE,
     [PRIVATE_DEVICE] = FALSE,
-    [PRIVATE_EXTENSION] = FALSE,
     [PRIVATE_SELECTION] = FALSE,
     [PRIVATE_PROPERTY] = FALSE,
     [PRIVATE_PICTURE] = TRUE,
@@ -238,20 +235,6 @@ fixupServerClient(FixupFunc fixup, unsigned bytes)
 }
 
 static Bool
-fixupExtensions(FixupFunc fixup, unsigned bytes)
-{
-    unsigned char major;
-    ExtensionEntry *extension;
-
-    for (major = EXTENSION_BASE; (extension = GetExtensionEntry(major));
-         major++)
-        if (!fixup
-            (&extension->devPrivates, global_keys[PRIVATE_EXTENSION].offset, bytes))
-            return FALSE;
-    return TRUE;
-}
-
-static Bool
 fixupDefaultColormaps(FixupFunc fixup, unsigned bytes)
 {
     int s;
@@ -290,7 +273,6 @@ fixupDevices(FixupFunc fixup, unsigned bytes)
 static Bool (*const allocated_early[PRIVATE_LAST]) (FixupFunc, unsigned) = {
     [PRIVATE_SCREEN] = fixupScreens,
     [PRIVATE_CLIENT] = fixupServerClient,
-    [PRIVATE_EXTENSION] = fixupExtensions,
     [PRIVATE_COLORMAP] = fixupDefaultColormaps,
     [PRIVATE_DEVICE] = fixupDevices,
 };

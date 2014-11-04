@@ -69,7 +69,6 @@ typedef struct _ExtensionEntry {
     void *extPrivate;
     unsigned short (*MinorOpcode) (     /* called for errors */
                                       ClientPtr /* client */ );
-    PrivateRec *devPrivates;
 } ExtensionEntry;
 
 /*
