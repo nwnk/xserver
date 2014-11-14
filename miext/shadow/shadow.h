@@ -87,8 +87,6 @@ shadowAdd(ScreenPtr pScreen,
 extern _X_EXPORT void
  shadowRemove(ScreenPtr pScreen, PixmapPtr pPixmap);
 
-extern _X_EXPORT void *shadowAlloc(int width, int height, int bpp);
-
 extern _X_EXPORT void
  shadowUpdateAfb4(ScreenPtr pScreen, shadowBufPtr pBuf);
 
