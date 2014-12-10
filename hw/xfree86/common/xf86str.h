@@ -732,9 +732,6 @@ typedef struct _ScrnInfoRec {
     unsigned long fbOffset;     /* Offset of FB in the above */
     void *options;
 
-    int chipID;
-    int chipRev;
-
     /* Allow screens to be enabled/disabled individually */
     Bool vtSema;
 
