@@ -264,8 +264,6 @@ xf86TokenToString(SymTabPtr table, int token);
 extern _X_EXPORT int
 xf86StringToToken(SymTabPtr table, const char *string);
 extern _X_EXPORT void
-xf86ShowClocks(ScrnInfoPtr scrp, MessageType from);
-extern _X_EXPORT void
 xf86PrintChipsets(const char *drvname, const char *drvmsg, SymTabPtr chips);
 extern _X_EXPORT int
 xf86MatchDevice(const char *drivername, GDevPtr ** driversectlist);

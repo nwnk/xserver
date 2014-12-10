@@ -674,7 +674,6 @@ PreInit(ScrnInfoPtr pScrn, int flags)
     }
 
     pScrn->monitor = pScrn->confScreen->monitor;
-    pScrn->progClock = TRUE;
     pScrn->rgbBits = 8;
 
 #if XSERVER_PLATFORM_BUS

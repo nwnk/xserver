@@ -159,55 +159,26 @@ VidModeGetCurrentModeline(int scrnIndex, void **mode, int *dotClock)
 int
 VidModeGetDotClock(int scrnIndex, int Clock)
 {
-    ScrnInfoPtr pScrn;
-
     if (!VidModeAvailable(scrnIndex))
         return 0;
 
-    pScrn = xf86Screens[scrnIndex];
-    if ((pScrn->progClock) || (Clock >= MAXCLOCKS))
-        return Clock;
-    else
-        return pScrn->clock[Clock];
+    return Clock;
 }
 
 int
 VidModeGetNumOfClocks(int scrnIndex, Bool *progClock)
 {
-    ScrnInfoPtr pScrn;
-
     if (!VidModeAvailable(scrnIndex))
         return 0;
 
-    pScrn = xf86Screens[scrnIndex];
-    if (pScrn->progClock) {
-        *progClock = TRUE;
-        return 0;
-    }
-    else {
-        *progClock = FALSE;
-        return pScrn->numClocks;
-    }
+    *progClock = TRUE;
+    return 0;
 }
 
 Bool
 VidModeGetClocks(int scrnIndex, int *Clocks)
 {
-    ScrnInfoPtr pScrn;
-    int i;
-
-    if (!VidModeAvailable(scrnIndex))
-        return FALSE;
-
-    pScrn = xf86Screens[scrnIndex];
-
-    if (pScrn->progClock)
-        return FALSE;
-
-    for (i = 0; i < pScrn->numClocks; i++)
-        *Clocks++ = pScrn->clock[i];
-
-    return TRUE;
+    return FALSE;
 }
 
 Bool

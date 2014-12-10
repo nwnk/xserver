@@ -56,12 +56,6 @@
 #include "mivalidate.h"
 #include "xf86Crtc.h"
 
-/* For xf86GetClocks */
-#if defined(CSRG_BASED) || defined(__GNU__)
-#define HAS_SETPRIORITY
-#include <sys/resource.h>
-#endif
-
 static int xf86ScrnInfoPrivateCount = 0;
 
 /* Add a pointer to a new DriverRec to xf86DriverList */
@@ -1238,25 +1232,6 @@ xf86StringToToken(SymTabPtr table, const char *string)
     for (i = 0; table[i].token >= 0 && xf86NameCmp(string, table[i].name); i++);
 
     return table[i].token;
-}
-
-/*
- * helper to display the clocks found on a card
- */
-void
-xf86ShowClocks(ScrnInfoPtr scrp, MessageType from)
-{
-    int j;
-
-    xf86DrvMsg(scrp->scrnIndex, from, "Pixel clocks available:");
-    for (j = 0; j < scrp->numClocks; j++) {
-        if ((j % 4) == 0) {
-            xf86ErrorF("\n");
-            xf86DrvMsg(scrp->scrnIndex, from, "pixel clocks:");
-        }
-        xf86ErrorF(" %7.3f", (double) scrp->clock[j] / 1000.0);
-    }
-    xf86ErrorF("\n");
 }
 
 /*

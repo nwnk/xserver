@@ -147,7 +147,7 @@ xf86SetModeDefaultName(DisplayModePtr mode)
 void
 xf86SetModeCrtc(DisplayModePtr p, int adjustFlags)
 {
-    if ((p == NULL) || ((p->type & M_T_CRTC_C) == M_T_BUILTIN))
+    if ((p == NULL) || (p->type & M_T_BUILTIN))
         return;
 
     p->CrtcHDisplay = p->HDisplay;

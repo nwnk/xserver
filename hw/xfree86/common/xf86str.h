@@ -131,10 +131,6 @@ typedef enum {
  * Preferred will bubble a mode to the top within a set.
  */
 #define M_T_BUILTIN 0x01        /* built-in mode */
-#define M_T_CLOCK_C (0x02 | M_T_BUILTIN)        /* built-in mode - configure clock */
-#define M_T_CRTC_C  (0x04 | M_T_BUILTIN)        /* built-in mode - configure CRTC  */
-#define M_T_CLOCK_CRTC_C  (M_T_CLOCK_C | M_T_CRTC_C)
-                               /* built-in mode - configure CRTC and clock */
 #define M_T_PREFERRED 0x08      /* preferred mode within a set */
 #define M_T_DEFAULT 0x10        /* (VESA) default modes */
 #define M_T_USERDEF 0x20        /* One of the modes from the config file */
@@ -731,9 +727,6 @@ typedef struct _ScrnInfoRec {
     const char *chipset;        /* chipset name */
     const char *ramdac;         /* ramdac name */
     const char *clockchip;      /* clock name */
-    Bool progClock;             /* clock is programmable */
-    int numClocks;              /* number of clocks */
-    int clock[MAXCLOCKS];       /* list of clock frequencies */
     int videoRam;               /* amount of video ram (kb) */
     unsigned long memPhysBase;  /* Physical address of FB */
     unsigned long fbOffset;     /* Offset of FB in the above */
@@ -851,10 +844,6 @@ typedef void (*DPMSSetProcPtr) (ScrnInfoPtr, int, int);
 
 /* Input handler proc */
 typedef void (*InputHandlerProc) (int fd, void *data);
-
-/* These are used by xf86GetClocks */
-#define CLK_REG_SAVE		-1
-#define CLK_REG_RESTORE		-2
 
 /*
  * misc constants

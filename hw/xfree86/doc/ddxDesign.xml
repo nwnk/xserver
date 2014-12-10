@@ -1196,7 +1196,6 @@ Here is what <function>InitOutput()</function> does:
           modePool
           modes
           currentMode
-          progClock             (TRUE if clock is programmable)
           chipset
           ramdac
           clockchip
@@ -6518,21 +6517,6 @@ be catered for the by the helpers.
 
 	      <variablelist>
 		<varlistentry>
-		  <term><structfield>clock[]</structfield></term>
-		  <listitem><para>
-		      List of discrete clocks (when non-programmable)
-		    </para></listitem></varlistentry>
-		<varlistentry>
-		  <term><structfield>numClocks</structfield></term>
-		  <listitem><para>
-		      Number of discrete clocks (when non-programmable)
-		    </para></listitem></varlistentry>
-		<varlistentry>
-		  <term><structfield>progClock</structfield></term>
-		  <listitem><para>
-		      Whether the clock is programmable or not
-		    </para></listitem></varlistentry>
-		<varlistentry>
 		  <term><structfield>monitor</structfield></term>
 		  <listitem><para>
 		      Pointer to the applicable xorg.conf monitor section
@@ -6905,59 +6889,6 @@ typedef struct {
     <link linkend="avail">Available Functions</link> sections.
       </para>
 
-    </sect2>
-
-    <sect2>
-      <title>Probing discrete clocks on old hardware</title>
-
-      <para>
-    The <function>xf86GetClocks()</function> function may be used to assist
-    in finding the discrete pixel clock values on older hardware.
-      </para>
-
-      <blockquote><para>
-	  <programlisting>
-    void xf86GetClocks(ScrnInfoPtr pScrn, int num,
-                       Bool (*ClockFunc)(ScrnInfoPtr, int),
-                       void (*ProtectRegs)(ScrnInfoPtr, Bool),
-                       void (*BlankScreen)(ScrnInfoPtr, Bool),
-                       int vertsyncreg, int maskval, int knownclkindex,
-                       int knownclkvalue);
-	  </programlisting>
-	  <blockquote><para>
-      This function uses a comparative sampling method to measure the
-      discrete pixel clock values.  The number of discrete clocks to
-      measure is given by <parameter>num</parameter>.  <parameter>clockFunc</parameter>
-      is a function that selects the <parameter>n</parameter>'th clock.  It
-      should also save or restore any state affected by programming the
-      clocks when the index passed is <constant>CLK_REG_SAVE</constant> or
-      <constant>CLK_REG_RESTORE</constant>.  <parameter>ProtectRegs</parameter> is
-      a function that does whatever is required to protect the hardware
-      state while selecting a new clock.  <parameter>BlankScreen</parameter>
-      is a function that blanks the screen.  <parameter>vertsyncreg</parameter>
-      and <parameter>maskval</parameter> are the register and bitmask to
-      check for the presence of vertical sync pulses.
-      <parameter>knownclkindex</parameter> and <parameter>knownclkvalue</parameter>
-      are the index and value of a known clock.  These are the known
-      references on which the comparative measurements are based.  The
-      number of clocks probed is set in <structfield>pScrn-&gt;numClocks</structfield>,
-      and the probed clocks are set in the <structfield>pScrn-&gt;clock[]</structfield>
-      array.  All of the clock values are in units of kHz.
-	    </para>
-
-	  </blockquote></para></blockquote>
-
-      <blockquote><para>
-	  <programlisting>
-    void xf86ShowClocks(ScrnInfoPtr scrp, MessageType from);
-	  </programlisting>
-	  <blockquote><para>
-      Print out the pixel clocks <parameter>scrp-&gt;clock[]</parameter>.
-      <parameter>from</parameter> indicates whether the clocks were probed
-      or from the config file.
-	    </para>
-
-	  </blockquote></para></blockquote>
     </sect2>
 
     <sect2>
@@ -8441,9 +8372,6 @@ ZZZPreInit(ScrnInfoPtr pScrn, int flags)
     if (!xf86SetGamma(pScrn, default_gamma)) {
         return FALSE;
     }
-
-    /* This driver uses a programmable clock */
-    pScrn-&gt;progClock = TRUE;
 
     /* Allocate the ZZZRec driverPrivate */
     if (!ZZZGetRec(pScrn)) {
