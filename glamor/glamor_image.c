@@ -24,6 +24,31 @@
 #include "glamor_transfer.h"
 #include "glamor_transform.h"
 
+static PixmapPtr
+glamor_expand_bitmap(DrawablePtr drawable, GCPtr src, int w, int h, char *bits)
+{
+    PixmapPtr ret;
+    GCPtr gc;
+    ChangeGCVal v[2];
+
+    if (!(gc = GetScratchGC(drawable->depth, drawable->pScreen)))
+        return NULL;
+
+    if (!(ret = fbCreatePixmap(drawable->pScreen, w, h, drawable->depth, 0)))
+        goto out;
+
+    v[0].val = src->fgPixel;
+    v[1].val = src->bgPixel;
+    ChangeGC(serverClient, gc, GCForeground | GCBackground, v);
+    ValidateGC(&ret->drawable, gc);
+
+    fbPutImage(&ret->drawable, gc, gc->depth, 0, 0, w, h, 0, XYBitmap, bits);
+
+out:
+    FreeScratchGC(gc);
+    return ret;
+}
+
 /*
  * PutImage. Only does ZPixmap right now as other formats are quite a bit harder
  */
@@ -35,6 +60,7 @@ glamor_put_image_gl(DrawablePtr drawable, GCPtr gc, int depth, int x, int y,
     ScreenPtr screen = drawable->pScreen;
     glamor_screen_private *glamor_priv = glamor_get_screen_private(screen);
     PixmapPtr pixmap = glamor_get_drawable_pixmap(drawable);
+    PixmapPtr tmp = NULL;
     glamor_pixmap_private *pixmap_priv;
     uint32_t    byte_stride = PixmapBytePad(w, drawable->depth);
     RegionRec   region;
@@ -54,6 +80,14 @@ glamor_put_image_gl(DrawablePtr drawable, GCPtr gc, int depth, int x, int y,
 
     if (format == XYPixmap && drawable->depth == 1 && leftPad == 0)
         format = ZPixmap;
+
+    if (format == XYBitmap && leftPad == 0) {
+        if (!(tmp = glamor_expand_bitmap(drawable, gc, w, h, bits)))
+            goto bail;
+
+        bits = tmp->devPrivate.ptr;
+        format = ZPixmap;
+    }
 
     if (format != ZPixmap)
         goto bail;
@@ -79,6 +113,10 @@ glamor_put_image_gl(DrawablePtr drawable, GCPtr gc, int depth, int x, int y,
     glamor_upload_region(pixmap, &region, x, y, (uint8_t *) bits, byte_stride);
 
     RegionUninit(&region);
+
+    if (tmp)
+        fbDestroyPixmap(tmp);
+
     return TRUE;
 bail:
     return FALSE;
