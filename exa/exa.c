@@ -474,23 +474,11 @@ static void
 static void
  exaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
 
-static void
- exaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
-
-static void
- exaCopyClip(GCPtr pGCDst, GCPtr pGCSrc);
-
-static void
- exaDestroyClip(GCPtr pGC);
-
 const GCFuncs exaGCFuncs = {
     exaValidateGC,
     exaChangeGC,
     exaCopyGC,
     exaDestroyGC,
-    exaChangeClip,
-    exaDestroyClip,
-    exaCopyClip
 };
 
 static void
@@ -576,33 +564,6 @@ exaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
     swap(pExaGC, pGCDst, funcs);
     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
     swap(pExaGC, pGCDst, funcs);
-}
-
-static void
-exaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    swap(pExaGC, pGC, funcs);
-}
-
-static void
-exaCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
-{
-    ExaGCPriv(pGCDst);
-    swap(pExaGC, pGCDst, funcs);
-    (*pGCDst->funcs->CopyClip) (pGCDst, pGCSrc);
-    swap(pExaGC, pGCDst, funcs);
-}
-
-static void
-exaDestroyClip(GCPtr pGC)
-{
-    ExaGCPriv(pGC);
-    swap(pExaGC, pGC, funcs);
-    (*pGC->funcs->DestroyClip) (pGC);
-    swap(pExaGC, pGC, funcs);
 }
 
 /**

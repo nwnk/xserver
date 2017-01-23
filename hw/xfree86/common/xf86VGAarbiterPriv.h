@@ -190,10 +190,6 @@ static void VGAarbiterValidateGC(GCPtr pGC, unsigned long changes,
 static void VGAarbiterChangeGC(GCPtr pGC, unsigned long mask);
 static void VGAarbiterCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
 static void VGAarbiterDestroyGC(GCPtr pGC);
-static void VGAarbiterChangeClip(GCPtr pGC, int type, void *pvalue,
-                                 int nrects);
-static void VGAarbiterDestroyClip(GCPtr pGC);
-static void VGAarbiterCopyClip(GCPtr pgcDst, GCPtr pgcSrc);
 
 /* GC ops */
 static void VGAarbiterFillSpans(DrawablePtr pDraw, GC * pGC, int nInit,

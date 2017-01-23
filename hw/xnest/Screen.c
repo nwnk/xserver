@@ -292,6 +292,9 @@ xnestOpenScreen(ScreenPtr pScreen, int argc, char *argv[])
     /* GC procedures */
 
     pScreen->CreateGC = xnestCreateGC;
+    pScreen->ChangeClip = xnestChangeClip;
+    pScreen->DestroyClip = xnestDestroyClip;
+    pScreen->CopyClip = xnestCopyClip;
 
     /* Colormap procedures */
 

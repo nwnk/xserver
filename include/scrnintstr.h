@@ -246,6 +246,9 @@ typedef void (*CurserConfinedToProcPtr) (DeviceIntPtr /* pDev */ ,
                                          WindowPtr /*pWindow */ );
 
 typedef Bool (*CreateGCProcPtr) (GCPtr /*pGC */ );
+typedef void (*ChangeClipProcPtr)(GCPtr pGC, int type, void *value, int nrects);
+typedef void (*DestroyClipProcPtr)(GCPtr pGC);
+typedef void (*CopyClipProcPtr)(GCPtr pgcDst, GCPtr pgcSrc);
 
 typedef Bool (*CreateColormapProcPtr) (ColormapPtr /*pColormap */ );
 
@@ -570,6 +573,9 @@ typedef struct _Screen {
     /* GC procedures */
 
     CreateGCProcPtr CreateGC;
+    ChangeClipProcPtr ChangeClip;
+    DestroyClipProcPtr DestroyClip;
+    CopyClipProcPtr CopyClip;
 
     /* Colormap procedures */
 

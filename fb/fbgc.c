@@ -33,9 +33,6 @@ const GCFuncs fbGCFuncs = {
     miChangeGC,
     miCopyGC,
     miDestroyGC,
-    miChangeClip,
-    miDestroyClip,
-    miCopyClip,
 };
 
 const GCOps fbGCOps = {

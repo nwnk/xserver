@@ -307,9 +307,6 @@ static GCFuncs glamor_gc_funcs = {
     miChangeGC,
     miCopyGC,
     glamor_destroy_gc,
-    miChangeClip,
-    miDestroyClip,
-    miCopyClip
 };
 
 /**

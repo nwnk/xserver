@@ -340,8 +340,8 @@ ChangeGC(ClientPtr client, GC * pGC, BITS32 mask, ChangeGCValPtr pUnion)
                 }
                 pPixmap->refcnt++;
             }
-            (*pGC->funcs->ChangeClip) (pGC, pPixmap ? CT_PIXMAP : CT_NONE,
-                                       (void *) pPixmap, 0);
+            pGC->pScreen->ChangeClip(pGC, pPixmap ? CT_PIXMAP : CT_NONE,
+                                     pPixmap, 0);
             break;
         case GCDashOffset:
             NEXTVAL(INT16, pGC->dashOffset);
@@ -712,7 +712,7 @@ CopyGC(GC * pgcSrc, GC * pgcDst, BITS32 mask)
             pgcDst->clipOrg.y = pgcSrc->clipOrg.y;
             break;
         case GCClipMask:
-            (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
+            pgcDst->pScreen->CopyClip(pgcDst, pgcSrc);
             break;
         case GCDashOffset:
             pgcDst->dashOffset = pgcSrc->dashOffset;
@@ -770,7 +770,7 @@ FreeGC(void *value, XID gid)
     GCPtr pGC = (GCPtr) value;
 
     CloseFont(pGC->font, (Font) 0);
-    (*pGC->funcs->DestroyClip) (pGC);
+    pGC->pScreen->DestroyClip(pGC);
 
     if (!pGC->tileIsPixel)
         (*pGC->pScreen->DestroyPixmap) (pGC->tile.pixmap);
@@ -1022,7 +1022,7 @@ SetClipRects(GCPtr pGC, int xOrigin, int yOrigin, int nrects,
 
     if (size)
         memmove((char *) prectsNew, (char *) prects, size);
-    (*pGC->funcs->ChangeClip) (pGC, newct, (void *) prectsNew, nrects);
+    pGC->pScreen->ChangeClip(pGC, newct, prectsNew, nrects);
     if (pGC->funcs->ChangeGC)
         (*pGC->funcs->ChangeGC) (pGC,
                                  GCClipXOrigin | GCClipYOrigin | GCClipMask);
@@ -1065,7 +1065,7 @@ GetScratchGC(unsigned depth, ScreenPtr pScreen)
             pGC->clipOrg.x = 0;
             pGC->clipOrg.y = 0;
             if (pGC->clientClip)
-                (*pGC->funcs->ChangeClip) (pGC, CT_NONE, NULL, 0);
+                pGC->pScreen->ChangeClip(pGC, CT_NONE, NULL, 0);
             pGC->stateChanges = GCAllBits;
             return pGC;
         }

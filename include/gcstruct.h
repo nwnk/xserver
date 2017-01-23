@@ -75,16 +75,6 @@ typedef struct _GCFuncs {
                     GCPtr /*pGCDst */ );
 
     void (*DestroyGC) (GCPtr /*pGC */ );
-
-    void (*ChangeClip) (GCPtr pGC,
-                        int type,
-                        void *pvalue,
-                        int nrects);
-
-    void (*DestroyClip) (GCPtr /*pGC */ );
-
-    void (*CopyClip) (GCPtr /*pgcDst */ ,
-                      GCPtr /*pgcSrc */ );
 } GCFuncs;
 
 /*

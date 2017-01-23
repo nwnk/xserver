@@ -54,9 +54,6 @@ static const GCFuncs dmxGCFuncs = {
     dmxChangeGC,
     dmxCopyGC,
     dmxDestroyGC,
-    dmxChangeClip,
-    dmxDestroyClip,
-    dmxCopyClip,
 };
 
 static const GCOps dmxGCOps = {
@@ -387,8 +384,8 @@ dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
     BoxPtr pBox;
     int i, nRects;
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-    pGC->funcs->ChangeClip(pGC, type, pvalue, nrects);
+    DMX_UNWRAP(ChangeClip, dmxScreen, pScreen);
+    pGC->pScreen->ChangeClip(pGC, type, pvalue, nrects);
 
     /* Set the client clip on the back-end server */
     if (!pGC->clientClip) {
@@ -415,7 +412,7 @@ dmxChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
         }
     }
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
+    DMX_WRAP(ChangeClip, dmxChangeClip, dmxScreen, pScreen);
 }
 
 /** Destroy a GC's clip rects. */
@@ -426,21 +423,12 @@ dmxDestroyClip(GCPtr pGC)
     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
     dmxGCPrivPtr pGCPriv = DMX_GET_GC_PRIV(pGC);
 
-    DMX_GC_FUNC_PROLOGUE(pGC);
-    pGC->funcs->DestroyClip(pGC);
+    DMX_UNWRAP(DestroyClip, dmxScreen, pScreen);
+    pGC->pScreen->DestroyClip(pGC);
 
     /* Set the client clip on the back-end server to None */
     if (dmxScreen->beDisplay)
         XSetClipMask(dmxScreen->beDisplay, pGCPriv->gc, None);
 
-    DMX_GC_FUNC_EPILOGUE(pGC);
-}
-
-/** Copy a GC's clip rects. */
-void
-dmxCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
-{
-    DMX_GC_FUNC_PROLOGUE(pGCDst);
-    pGCDst->funcs->CopyClip(pGCDst, pGCSrc);
-    DMX_GC_FUNC_EPILOGUE(pGCDst);
+    DMX_WRAP(DestroyClip, dmxDestroyClip, dmxScreen, pScreen);
 }

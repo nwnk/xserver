@@ -327,13 +327,9 @@ static void damageValidateGC(GCPtr, unsigned long, DrawablePtr);
 static void damageChangeGC(GCPtr, unsigned long);
 static void damageCopyGC(GCPtr, unsigned long, GCPtr);
 static void damageDestroyGC(GCPtr);
-static void damageChangeClip(GCPtr, int, void *, int);
-static void damageDestroyClip(GCPtr);
-static void damageCopyClip(GCPtr, GCPtr);
 
 static GCFuncs damageGCFuncs = {
     damageValidateGC, damageChangeGC, damageCopyGC, damageDestroyGC,
-    damageChangeClip, damageDestroyClip, damageCopyClip
 };
 
 static GCOps damageGCOps;
@@ -408,30 +404,6 @@ damageCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
     DAMAGE_GC_FUNC_PROLOGUE(pGCDst);
     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
     DAMAGE_GC_FUNC_EPILOGUE(pGCDst);
-}
-
-static void
-damageChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-damageCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    DAMAGE_GC_FUNC_EPILOGUE(pgcDst);
-}
-
-static void
-damageDestroyClip(GCPtr pGC)
-{
-    DAMAGE_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    DAMAGE_GC_FUNC_EPILOGUE(pGC);
 }
 
 #define TRIM_BOX(box, pGC) if (pGC->pCompositeClip) { \

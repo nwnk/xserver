@@ -89,7 +89,7 @@ present_copy_region(DrawablePtr drawable,
         ChangeGC(serverClient, gc,
                  GCClipXOrigin|GCClipYOrigin,
                  changes);
-        (*gc->funcs->ChangeClip)(gc, CT_REGION, update, 0);
+        screen->ChangeClip(gc, CT_REGION, update, 0);
     }
     ValidateGC(drawable, gc);
     (*gc->ops->CopyArea)(&pixmap->drawable,
@@ -99,7 +99,7 @@ present_copy_region(DrawablePtr drawable,
                          pixmap->drawable.width, pixmap->drawable.height,
                          x_off, y_off);
     if (update)
-        (*gc->funcs->ChangeClip)(gc, CT_NONE, NULL, 0);
+        screen->ChangeClip(gc, CT_NONE, NULL, 0);
     FreeScratchGC(gc);
 }
 

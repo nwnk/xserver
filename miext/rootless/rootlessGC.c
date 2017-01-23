@@ -55,9 +55,6 @@ static void RootlessValidateGC(GCPtr pGC, unsigned long changes,
 static void RootlessChangeGC(GCPtr pGC, unsigned long mask);
 static void RootlessCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst);
 static void RootlessDestroyGC(GCPtr pGC);
-static void RootlessChangeClip(GCPtr pGC, int type, void *pvalue, int nrects);
-static void RootlessDestroyClip(GCPtr pGC);
-static void RootlessCopyClip(GCPtr pgcDst, GCPtr pgcSrc);
 
 Bool RootlessCreateGC(GCPtr pGC);
 
@@ -66,9 +63,6 @@ GCFuncs rootlessGCFuncs = {
     RootlessChangeGC,
     RootlessCopyGC,
     RootlessDestroyGC,
-    RootlessChangeClip,
-    RootlessDestroyClip,
-    RootlessCopyClip,
 };
 
 // GC operations
@@ -365,30 +359,6 @@ RootlessDestroyGC(GCPtr pGC)
     GCFUNC_UNWRAP(pGC);
     pGC->funcs->DestroyGC(pGC);
     GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->ChangeClip(pGC, type, pvalue, nrects);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessDestroyClip(GCPtr pGC)
-{
-    GCFUNC_UNWRAP(pGC);
-    pGC->funcs->DestroyClip(pGC);
-    GCFUNC_WRAP(pGC);
-}
-
-static void
-RootlessCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    GCFUNC_UNWRAP(pgcDst);
-    pgcDst->funcs->CopyClip(pgcDst, pgcSrc);
-    GCFUNC_WRAP(pgcDst);
 }
 
 /*

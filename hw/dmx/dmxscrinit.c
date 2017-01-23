@@ -269,6 +269,8 @@ dmxScreenInit(ScreenPtr pScreen, int argc, char *argv[])
 
     /* Wrap GC functions */
     DMX_WRAP(CreateGC, dmxCreateGC, dmxScreen, pScreen);
+    DMX_WRAP(ChangeClip, dmxChangeClip, dmxScreen, pScreen);
+    DMX_WRAP(DestroyClip, dmxDestroyClip, dmxScreen, pScreen);
 
     /* Wrap Window functions */
     DMX_WRAP(CreateWindow, dmxCreateWindow, dmxScreen, pScreen);
@@ -392,6 +394,8 @@ dmxCloseScreen(ScreenPtr pScreen)
 
     /* Unwrap the pScreen functions */
     DMX_UNWRAP(CreateGC, dmxScreen, pScreen);
+    DMX_UNWRAP(ChangeClip, dmxScreen, pScreen);
+    DMX_UNWRAP(DestroyClip, dmxScreen, pScreen);
 
     DMX_UNWRAP(CreateWindow, dmxScreen, pScreen);
     DMX_UNWRAP(DestroyWindow, dmxScreen, pScreen);

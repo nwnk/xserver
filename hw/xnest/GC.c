@@ -42,9 +42,6 @@ static GCFuncs xnestFuncs = {
     xnestChangeGC,
     xnestCopyGC,
     xnestDestroyGC,
-    xnestChangeClip,
-    xnestDestroyClip,
-    xnestCopyClip,
 };
 
 static GCOps xnestOps = {

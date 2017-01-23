@@ -38,8 +38,7 @@
 
 static GCFuncs VGAarbiterGCFuncs = {
     VGAarbiterValidateGC, VGAarbiterChangeGC, VGAarbiterCopyGC,
-    VGAarbiterDestroyGC, VGAarbiterChangeClip, VGAarbiterDestroyClip,
-    VGAarbiterCopyClip
+    VGAarbiterDestroyGC
 };
 
 static GCOps VGAarbiterGCOps = {
@@ -581,30 +580,6 @@ VGAarbiterCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
     GC_UNWRAP(pGCDst);
     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
     GC_WRAP(pGCDst);
-}
-
-static void
-VGAarbiterChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    GC_WRAP(pGC);
-}
-
-static void
-VGAarbiterCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    GC_UNWRAP(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    GC_WRAP(pgcDst);
-}
-
-static void
-VGAarbiterDestroyClip(GCPtr pGC)
-{
-    GC_UNWRAP(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    GC_WRAP(pGC);
 }
 
 /* GC Ops */

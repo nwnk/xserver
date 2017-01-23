@@ -130,13 +130,9 @@ static void XineramaValidateGC(GCPtr, unsigned long, DrawablePtr);
 static void XineramaChangeGC(GCPtr, unsigned long);
 static void XineramaCopyGC(GCPtr, unsigned long, GCPtr);
 static void XineramaDestroyGC(GCPtr);
-static void XineramaChangeClip(GCPtr, int, void *, int);
-static void XineramaDestroyClip(GCPtr);
-static void XineramaCopyClip(GCPtr, GCPtr);
 
 static const GCFuncs XineramaGCFuncs = {
     XineramaValidateGC, XineramaChangeGC, XineramaCopyGC, XineramaDestroyGC,
-    XineramaChangeClip, XineramaDestroyClip, XineramaCopyClip
 };
 
 #define Xinerama_GC_FUNC_PROLOGUE(pGC)\
@@ -291,30 +287,6 @@ XineramaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
 
     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
     Xinerama_GC_FUNC_EPILOGUE(pGCDst);
-}
-
-static void
-XineramaChangeClip(GCPtr pGC, int type, void *pvalue, int nrects)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
-}
-
-static void
-XineramaCopyClip(GCPtr pgcDst, GCPtr pgcSrc)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pgcDst);
-    (*pgcDst->funcs->CopyClip) (pgcDst, pgcSrc);
-    Xinerama_GC_FUNC_EPILOGUE(pgcDst);
-}
-
-static void
-XineramaDestroyClip(GCPtr pGC)
-{
-    Xinerama_GC_FUNC_PROLOGUE(pGC);
-    (*pGC->funcs->DestroyClip) (pGC);
-    Xinerama_GC_FUNC_EPILOGUE(pGC);
 }
 
 int

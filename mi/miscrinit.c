@@ -34,6 +34,7 @@ from The Open Group.
 #include "servermd.h"
 #include "misc.h"
 #include "mi.h"
+#include "migc.h"
 #include "scrnintstr.h"
 #include "pixmapstr.h"
 #include "dix.h"
@@ -273,6 +274,9 @@ miScreenInit(ScreenPtr pScreen, void *pbits,  /* pointer to screen bits */
     pScreen->SetShape = miSetShape;
     pScreen->MarkUnrealizedWindow = miMarkUnrealizedWindow;
     pScreen->XYToWindow = miXYToWindow;
+    pScreen->ChangeClip = miChangeClip;
+    pScreen->CopyClip = miCopyClip;
+    pScreen->DestroyClip = miDestroyClip;
 
     miSetZeroLineBias(pScreen, DEFAULTZEROLINEBIAS);
 

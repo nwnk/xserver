@@ -198,6 +198,8 @@ typedef struct _DMXScreenInfo {
     SaveScreenProcPtr SaveScreen;
 
     CreateGCProcPtr CreateGC;
+    ChangeClipProcPtr ChangeClip;
+    DestroyClipProcPtr DestroyClip;
 
     CreateWindowProcPtr CreateWindow;
     DestroyWindowProcPtr DestroyWindow;

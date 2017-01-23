@@ -303,7 +303,7 @@ ms_dri2_copy_region2(ScreenPtr screen, DrawablePtr drawable, RegionPtr pRegion,
     REGION_COPY(screen, pCopyClip, pRegion);
     if (translate)
         REGION_TRANSLATE(screen, pCopyClip, off_x, off_y);
-    (*gc->funcs->ChangeClip) (gc, CT_REGION, pCopyClip, 0);
+    screen->ChangeClip(gc, CT_REGION, pCopyClip, 0);
     ValidateGC(dst, gc);
 
     /* It's important that this copy gets submitted before the direct
