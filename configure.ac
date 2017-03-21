@@ -80,6 +80,7 @@ AC_PROG_LEX
 AC_PROG_YACC
 AC_SYS_LARGEFILE
 XORG_PROG_RAWCPP
+AC_CHECK_PROGS([PYTHON2], [python2.7 python2 python])
 
 # Quoted so that make will expand $(CWARNFLAGS) in makefiles to allow
 # easier overrides at build time.
