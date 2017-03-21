@@ -25,7 +25,6 @@
  * SOFTWARE.
  */
 
-
 #include <X11/Xfuncproto.h>
 #include <GL/gl.h>
 #include "indirect_size_get.h"
@@ -45,7 +44,6 @@
 #define FASTCALL
 #endif
 
-
 #if defined(__CYGWIN__) || defined(__MINGW32__) || defined(GLX_USE_APPLEGL)
 #undef HAVE_ALIAS
 #endif
@@ -59,7 +57,6 @@
     _X_INTERNAL PURE FASTCALL GLint __gl ## from ## _size( GLenum e ) \
     { return __gl ## to ## _size( e ); }
 #endif
-
 
 _X_INTERNAL PURE FASTCALL GLint
 __glCallLists_size(GLenum e)
@@ -603,7 +600,13 @@ __glGetBooleanv_size(GLenum e)
     case GL_OCCLUSION_TEST_RESULT_HP:
     case GL_LIGHT_MODEL_COLOR_CONTROL:
     case GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH_ARB:
+/*      case GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH:*/
     case GL_RESET_NOTIFICATION_STRATEGY_ARB:
+/*      case GL_RESET_NOTIFICATION_STRATEGY:*/
+    case GL_MAX_DEBUG_GROUP_STACK_DEPTH:
+    case GL_DEBUG_GROUP_STACK_DEPTH:
+    case GL_MAX_UNIFORM_LOCATIONS:
+    case GL_MAX_LABEL_LENGTH:
     case GL_CURRENT_FOG_COORD:
     case GL_FOG_COORDINATE_ARRAY_TYPE:
     case GL_FOG_COORDINATE_ARRAY_STRIDE:
@@ -749,8 +752,11 @@ __glGetBooleanv_size(GLenum e)
 /*      case GL_MAX_SAMPLES_EXT:*/
     case GL_MAX_SERVER_WAIT_TIMEOUT:
     case GL_MAX_DEBUG_MESSAGE_LENGTH_ARB:
+/*      case GL_MAX_DEBUG_MESSAGE_LENGTH:*/
     case GL_MAX_DEBUG_LOGGED_MESSAGES_ARB:
+/*      case GL_MAX_DEBUG_LOGGED_MESSAGES:*/
     case GL_DEBUG_LOGGED_MESSAGES_ARB:
+/*      case GL_DEBUG_LOGGED_MESSAGES:*/
     case GL_RASTER_POSITION_UNCLIPPED_IBM:
         return 1;
     case GL_SMOOTH_POINT_SIZE_RANGE:
@@ -826,6 +832,7 @@ __glGetBooleanv_size(GLenum e)
     case GL_FOG_COORDINATE_SOURCE:
     case GL_COMPRESSED_TEXTURE_FORMATS:
     case GL_RGBA_INTEGER_MODE_EXT:
+    case GL_POLYGON_OFFSET_CLAMP_EXT:
         return __glGetBooleanv_variable_size(e);
     default:
         return 0;
@@ -911,8 +918,7 @@ __glGetTexLevelParameterfv_size(GLenum e)
     case GL_TEXTURE_INDEX_SIZE_EXT:
     case GL_TEXTURE_COMPRESSED_IMAGE_SIZE:
 /*      case GL_TEXTURE_COMPRESSED_IMAGE_SIZE_ARB:*/
-    case GL_TEXTURE_COMPRESSED:
-/*      case GL_TEXTURE_COMPRESSED_ARB:*/
+    case GL_TEXTURE_COMPRESSED_ARB:
     case GL_TEXTURE_DEPTH_SIZE:
 /*      case GL_TEXTURE_DEPTH_SIZE_ARB:*/
     case GL_TEXTURE_STENCIL_SIZE:
@@ -928,7 +934,9 @@ __glGetPointerv_size(GLenum e)
 {
     switch (e) {
     case GL_DEBUG_CALLBACK_FUNCTION_ARB:
+/*      case GL_DEBUG_CALLBACK_FUNCTION:*/
     case GL_DEBUG_CALLBACK_USER_PARAM_ARB:
+/*      case GL_DEBUG_CALLBACK_USER_PARAM:*/
         return 1;
     default:
         return 0;
@@ -1105,6 +1113,23 @@ __glGetQueryiv_size(GLenum e)
 }
 
 _X_INTERNAL PURE FASTCALL GLint
+__glGetVertexAttribdv_size(GLenum e)
+{
+    switch (e) {
+    case GL_VERTEX_PROGRAM_ARB:
+    case GL_VERTEX_ATTRIB_ARRAY_ENABLED_ARB:
+    case GL_VERTEX_ATTRIB_ARRAY_SIZE_ARB:
+    case GL_VERTEX_ATTRIB_ARRAY_STRIDE_ARB:
+    case GL_VERTEX_ATTRIB_ARRAY_TYPE_ARB:
+    case GL_CURRENT_VERTEX_ATTRIB_ARB:
+    case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING_ARB:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
+_X_INTERNAL PURE FASTCALL GLint
 __glGetProgramivARB_size(GLenum e)
 {
     switch (e) {
@@ -1177,7 +1202,8 @@ __glGetFramebufferAttachmentParameteriv_size(GLenum e)
 /*      case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL_EXT:*/
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE:
 /*      case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE_EXT:*/
-    case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_3D_ZOFFSET_EXT:
+    case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER:
+/*      case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_3D_ZOFFSET_EXT:*/
         return 1;
     default:
         return 0;
@@ -1216,5 +1242,7 @@ ALIAS(Fogiv, Fogfv)
     ALIAS(GetMinmaxParameteriv, GetMinmaxParameterfv)
     ALIAS(PointParameteriv, PointParameterfv)
     ALIAS(GetQueryObjectuiv, GetQueryObjectiv)
+    ALIAS(GetVertexAttribfv, GetVertexAttribdv)
+    ALIAS(GetVertexAttribiv, GetVertexAttribdv)
 #undef PURE
 #undef FASTCALL

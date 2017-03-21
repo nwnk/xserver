@@ -159,33 +159,6 @@ extern PURE _X_HIDDEN int __glXDeleteFramebuffersReqSize(const GLbyte * pc,
 extern PURE _X_HIDDEN int __glXDeleteRenderbuffersReqSize(const GLbyte * pc,
                                                           Bool swap,
                                                           int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs1dvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs1fvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs1svNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs2dvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs2fvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs2svNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs3dvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs3fvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs3svNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs4dvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs4fvNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs4svNVReqSize(const GLbyte * pc,
-                                                         Bool swap, int reqlen);
-extern PURE _X_HIDDEN int __glXVertexAttribs4ubvNVReqSize(const GLbyte * pc,
-                                                          Bool swap,
-                                                          int reqlen);
 
 #undef PURE
 

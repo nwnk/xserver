@@ -696,78 +696,6 @@ __glXProgramStringARBReqSize(const GLbyte * pc, Bool swap, int reqlen)
     return safe_pad(len);
 }
 
-int
-__glXVertexAttribs1dvNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 8));
-}
-
-int
-__glXVertexAttribs2dvNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 16));
-}
-
-int
-__glXVertexAttribs3dvNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 24));
-}
-
-int
-__glXVertexAttribs3fvNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 12));
-}
-
-int
-__glXVertexAttribs3svNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 6));
-}
-
-int
-__glXVertexAttribs4dvNVReqSize(const GLbyte * pc, Bool swap, int reqlen)
-{
-    GLsizei n = *(GLsizei *) (pc + 4);
-
-    if (swap) {
-        n = bswap_32(n);
-    }
-
-    return safe_pad(safe_mul(n, 32));
-}
-
 ALIAS(Fogiv, Fogfv)
     ALIAS(Lightiv, Lightfv)
     ALIAS(LightModeliv, LightModelfv)
@@ -783,10 +711,3 @@ ALIAS(Fogiv, Fogfv)
     ALIAS(PointParameteriv, PointParameterfv)
     ALIAS(DeleteFramebuffers, DrawBuffers)
     ALIAS(DeleteRenderbuffers, DrawBuffers)
-    ALIAS(VertexAttribs1fvNV, PixelMapfv)
-    ALIAS(VertexAttribs1svNV, PixelMapusv)
-    ALIAS(VertexAttribs2fvNV, VertexAttribs1dvNV)
-    ALIAS(VertexAttribs2svNV, PixelMapfv)
-    ALIAS(VertexAttribs4fvNV, VertexAttribs2dvNV)
-    ALIAS(VertexAttribs4svNV, VertexAttribs1dvNV)
-    ALIAS(VertexAttribs4ubvNV, PixelMapfv)
