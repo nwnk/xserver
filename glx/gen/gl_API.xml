@@ -11553,7 +11553,7 @@
         <param name="ids" type="const GLuint *" count="n"/>
         <param name="residences" type="GLboolean *" output="true" count="n"/>
         <return type="GLboolean"/>
-        <glx vendorpriv="1293"/>
+        <glx ignore="true" vendorpriv="1293"/>
     </function>
 
     <function name="BindProgramNV" deprecated="3.1" alias="BindProgramARB">
@@ -11570,7 +11570,7 @@
         <param name="target" type="GLenum"/>
         <param name="id" type="GLuint"/>
         <param name="params" type="const GLfloat *" count="4"/>
-        <glx rop="4181"/>
+        <glx ignore="true" rop="4181"/>
     </function>
 
     <function name="GenProgramsNV" deprecated="3.1" alias="GenProgramsARB">
@@ -11589,7 +11589,7 @@
         <param name="index" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLdouble *" output="true" count="4"/>
-        <glx vendorpriv="1297"/>
+        <glx ignore="true" vendorpriv="1297"/>
     </function>
 
     <function name="GetProgramParameterfvNV" deprecated="3.1" exec="skip">
@@ -11597,21 +11597,21 @@
         <param name="index" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLfloat *" output="true" count="4"/>
-        <glx vendorpriv="1296"/>
+        <glx ignore="true" vendorpriv="1296"/>
     </function>
 
     <function name="GetProgramivNV" deprecated="3.1" exec="skip">
         <param name="id" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLint *" output="true" variable_param="pname"/>
-        <glx vendorpriv="1298"/>
+        <glx ignore="true" vendorpriv="1298"/>
     </function>
 
     <function name="GetProgramStringNV" deprecated="3.1" exec="skip">
         <param name="id" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="program" type="GLubyte *" output="true"/>
-        <glx vendorpriv="1299" handcode="server" always_array="true"/>
+        <glx ignore="true" vendorpriv="1299" handcode="server" always_array="true"/>
     </function>
 
     <function name="GetTrackMatrixivNV" deprecated="3.1" exec="skip">
@@ -11619,28 +11619,28 @@
         <param name="address" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLint *" output="true" count="1"/>
-        <glx vendorpriv="1300"/>
+        <glx ignore="true" vendorpriv="1300"/>
     </function>
 
     <function name="GetVertexAttribdvNV" deprecated="3.1" exec="skip">
         <param name="index" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLdouble *" output="true" variable_param="pname"/>
-        <glx vendorpriv="1301"/>
+        <glx ignore="true" vendorpriv="1301"/>
     </function>
 
     <function name="GetVertexAttribfvNV" deprecated="3.1" exec="skip">
         <param name="index" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLfloat *" output="true" variable_param="pname"/>
-        <glx vendorpriv="1302"/>
+        <glx ignore="true" vendorpriv="1302"/>
     </function>
 
     <function name="GetVertexAttribivNV" deprecated="3.1" exec="skip">
         <param name="index" type="GLuint"/>
         <param name="pname" type="GLenum"/>
         <param name="params" type="GLint *" output="true" variable_param="pname"/>
-        <glx vendorpriv="1303"/>
+        <glx ignore="true" vendorpriv="1303"/>
     </function>
 
     <function name="GetVertexAttribPointervNV" alias="GetVertexAttribPointerv">
@@ -11659,7 +11659,7 @@
         <param name="id" type="GLuint"/>
         <param name="len" type="GLsizei" counter="true"/>
         <param name="program" type="const GLubyte *" count="len"/>
-        <glx rop="4183"/>
+        <glx ignore="true" rop="4183"/>
     </function>
 
     <function name="ProgramParameter4dNV" alias="ProgramEnvParameter4dARB">
@@ -11697,7 +11697,7 @@
         <param name="index" type="GLuint"/>
         <param name="num" type="GLsizei" counter="true"/>
         <param name="params" type="const GLdouble *" count="num" count_scale="4"/>
-        <glx rop="4187"/>
+        <glx ignore="true" rop="4187"/>
     </function>
 
     <function name="ProgramParameters4fvNV" deprecated="3.1" exec="skip">
@@ -11705,13 +11705,13 @@
         <param name="index" type="GLuint"/>
         <param name="num" type="GLsizei" counter="true"/>
         <param name="params" type="const GLfloat *" count="num" count_scale="4"/>
-        <glx rop="4186"/>
+        <glx ignore="true" rop="4186"/>
     </function>
 
     <function name="RequestResidentProgramsNV" deprecated="3.1" exec="skip">
         <param name="n" type="GLsizei" counter="true"/>
         <param name="ids" type="const GLuint *" count="n"/>
-        <glx rop="4182"/>
+        <glx ignore="true" rop="4182"/>
     </function>
 
     <function name="TrackMatrixNV" deprecated="3.1" exec="skip">
@@ -11719,7 +11719,7 @@
         <param name="address" type="GLuint"/>
         <param name="matrix" type="GLenum"/>
         <param name="transform" type="GLenum"/>
-        <glx rop="4188"/>
+        <glx ignore="true" rop="4188"/>
     </function>
 
     <function name="VertexAttribPointerNV" deprecated="3.1" exec="skip">
@@ -11728,7 +11728,7 @@
         <param name="type" type="GLenum"/>
         <param name="stride" type="GLsizei"/>
         <param name="pointer" type="const GLvoid *"/>
-        <glx handcode="true"/>
+        <glx ignore="true" handcode="true"/>
     </function>
 
     <function name="VertexAttrib1sNV"
@@ -11740,7 +11740,7 @@
     <function name="VertexAttrib1svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLshort *" count="1"/>
-        <glx rop="4265"/>
+        <glx ignore="true" rop="4265"/>
     </function>
 
     <function name="VertexAttrib2sNV"
@@ -11753,7 +11753,7 @@
     <function name="VertexAttrib2svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLshort *" count="2"/>
-        <glx rop="4266"/>
+        <glx ignore="true" rop="4266"/>
     </function>
 
     <function name="VertexAttrib3sNV"
@@ -11767,7 +11767,7 @@
     <function name="VertexAttrib3svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLshort *" count="3"/>
-        <glx rop="4267"/>
+        <glx ignore="true" rop="4267"/>
     </function>
 
     <function name="VertexAttrib4sNV"
@@ -11782,7 +11782,7 @@
     <function name="VertexAttrib4svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLshort *" count="4"/>
-        <glx rop="4268"/>
+        <glx ignore="true" rop="4268"/>
     </function>
 
     <function name="VertexAttrib1fNV"
@@ -11794,7 +11794,7 @@
     <function name="VertexAttrib1fvNV" deprecated="3.1" exec="dynamic">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLfloat *" count="1"/>
-        <glx rop="4269"/>
+        <glx ignore="true" rop="4269"/>
     </function>
 
     <function name="VertexAttrib2fNV"
@@ -11807,7 +11807,7 @@
     <function name="VertexAttrib2fvNV" deprecated="3.1" exec="dynamic">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLfloat *" count="2"/>
-        <glx rop="4270"/>
+        <glx ignore="true" rop="4270"/>
     </function>
 
     <function name="VertexAttrib3fNV"
@@ -11821,7 +11821,7 @@
     <function name="VertexAttrib3fvNV" deprecated="3.1" exec="dynamic">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLfloat *" count="3"/>
-        <glx rop="4271"/>
+        <glx ignore="true" rop="4271"/>
     </function>
 
     <function name="VertexAttrib4fNV"
@@ -11836,7 +11836,7 @@
     <function name="VertexAttrib4fvNV" deprecated="3.1" exec="dynamic">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLfloat *" count="4"/>
-        <glx rop="4272"/>
+        <glx ignore="true" rop="4272"/>
     </function>
 
     <function name="VertexAttrib1dNV"
@@ -11848,7 +11848,7 @@
     <function name="VertexAttrib1dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLdouble *" count="1"/>
-        <glx rop="4273" doubles_in_order="true"/>
+        <glx ignore="true" rop="4273" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttrib2dNV"
@@ -11861,7 +11861,7 @@
     <function name="VertexAttrib2dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLdouble *" count="2"/>
-        <glx rop="4274" doubles_in_order="true"/>
+        <glx ignore="true" rop="4274" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttrib3dNV"
@@ -11875,7 +11875,7 @@
     <function name="VertexAttrib3dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLdouble *" count="3"/>
-        <glx rop="4275" doubles_in_order="true"/>
+        <glx ignore="true" rop="4275" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttrib4dNV"
@@ -11890,7 +11890,7 @@
     <function name="VertexAttrib4dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLdouble *" count="4"/>
-        <glx rop="4276" doubles_in_order="true"/>
+        <glx ignore="true" rop="4276" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttrib4ubNV"
@@ -11905,98 +11905,98 @@
     <function name="VertexAttrib4ubvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="v" type="const GLubyte *" count="4"/>
-        <glx rop="4277"/>
+        <glx ignore="true" rop="4277"/>
     </function>
 
     <function name="VertexAttribs1svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLshort *" count="n"/>
-        <glx rop="4202"/>
+        <glx ignore="true" rop="4202"/>
     </function>
 
     <function name="VertexAttribs2svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLshort *" count="n" count_scale="2"/>
-        <glx rop="4203"/>
+        <glx ignore="true" rop="4203"/>
     </function>
 
     <function name="VertexAttribs3svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLshort *" count="n" count_scale="3"/>
-        <glx rop="4204"/>
+        <glx ignore="true" rop="4204"/>
     </function>
 
     <function name="VertexAttribs4svNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLshort *" count="n" count_scale="4"/>
-        <glx rop="4205"/>
+        <glx ignore="true" rop="4205"/>
     </function>
 
     <function name="VertexAttribs1fvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLfloat *" count="n"/>
-        <glx rop="4206"/>
+        <glx ignore="true" rop="4206"/>
     </function>
 
     <function name="VertexAttribs2fvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLfloat *" count="n" count_scale="2"/>
-        <glx rop="4207"/>
+        <glx ignore="true" rop="4207"/>
     </function>
 
     <function name="VertexAttribs3fvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLfloat *" count="n" count_scale="3"/>
-        <glx rop="4208"/>
+        <glx ignore="true" rop="4208"/>
     </function>
 
     <function name="VertexAttribs4fvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLfloat *" count="n" count_scale="4"/>
-        <glx rop="4209"/>
+        <glx ignore="true" rop="4209"/>
     </function>
 
     <function name="VertexAttribs1dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLdouble *" count="n"/>
-        <glx rop="4210" doubles_in_order="true"/>
+        <glx ignore="true" rop="4210" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttribs2dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLdouble *" count="n" count_scale="2"/>
-        <glx rop="4211" doubles_in_order="true"/>
+        <glx ignore="true" rop="4211" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttribs3dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLdouble *" count="n" count_scale="3"/>
-        <glx rop="4212" doubles_in_order="true"/>
+        <glx ignore="true" rop="4212" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttribs4dvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLdouble *" count="n" count_scale="4"/>
-        <glx rop="4213" doubles_in_order="true"/>
+        <glx ignore="true" rop="4213" doubles_in_order="true"/>
     </function>
 
     <function name="VertexAttribs4ubvNV" deprecated="3.1">
         <param name="index" type="GLuint"/>
         <param name="n" type="GLsizei" counter="true"/>
         <param name="v" type="const GLubyte *" count="n" count_scale="4"/>
-        <glx rop="4214"/>
+        <glx ignore="true" rop="4214"/>
     </function>
 </category>
 
