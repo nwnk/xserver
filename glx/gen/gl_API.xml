@@ -12483,7 +12483,7 @@
         <param name="len" type="GLsizei" counter="true"/>
         <param name="name" type="const GLubyte *" count="len"/>
         <param name="v" type="const GLfloat *" count="4"/>
-        <glx rop="4218"/>
+        <glx ignore="true" rop="4218"/>
     </function>
 
     <function name="ProgramNamedParameter4dvNV" deprecated="3.1" exec="skip">
@@ -12491,7 +12491,7 @@
         <param name="len" type="GLsizei" counter="true"/>
         <param name="name" type="const GLubyte *" count="len"/>
         <param name="v" type="const GLdouble *" count="4"/>
-        <glx rop="4219"/>
+        <glx ignore="true" rop="4219"/>
     </function>
 
     <function name="GetProgramNamedParameterfvNV" deprecated="3.1" exec="skip">
@@ -12499,7 +12499,7 @@
         <param name="len" type="GLsizei" counter="true"/>
         <param name="name" type="const GLubyte *" count="len"/>
         <param name="params" type="GLfloat *" output="true" count="4"/>
-        <glx vendorpriv="1310" always_array="true"/>
+        <glx ignore="true" vendorpriv="1310" always_array="true"/>
     </function>
 
     <function name="GetProgramNamedParameterdvNV" deprecated="3.1" exec="skip">
@@ -12507,7 +12507,7 @@
         <param name="len" type="GLsizei" counter="true"/>
         <param name="name" type="const GLubyte *" count="len"/>
         <param name="params" type="GLdouble *" output="true" count="4"/>
-        <glx vendorpriv="1311" always_array="true"/>
+        <glx ignore="true" vendorpriv="1311" always_array="true"/>
     </function>
 </category>
 
