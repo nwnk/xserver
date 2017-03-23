@@ -48,5 +48,5 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}                /* signature, to be patched into the file by a tool */
 };
 
-_X_EXPORT XF86ModuleData FBPREFIX(ModuleData) = {
+XORG_EXPORT XF86ModuleData FBPREFIX(ModuleData) = {
 &VersRec, NULL, NULL};

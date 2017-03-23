@@ -34,7 +34,7 @@ static XF86ModuleVersionInfo fbdevHWVersRec = {
     {0, 0, 0, 0}
 };
 
-_X_EXPORT XF86ModuleData fbdevhwModuleData = {
+XORG_EXPORT XF86ModuleData fbdevhwModuleData = {
     &fbdevHWVersRec,
     NULL,
     NULL

@@ -75,7 +75,7 @@ glamor_init_pixmap_private_small(PixmapPtr pixmap, glamor_pixmap_private *pixmap
     pixmap_priv->fbo_array = &pixmap_priv->fbo;
 }
 
-_X_EXPORT void
+XORG_EXPORT void
 glamor_set_pixmap_type(PixmapPtr pixmap, glamor_pixmap_type_t type)
 {
     glamor_pixmap_private *pixmap_priv;
@@ -85,7 +85,7 @@ glamor_set_pixmap_type(PixmapPtr pixmap, glamor_pixmap_type_t type)
     glamor_init_pixmap_private_small(pixmap, pixmap_priv);
 }
 
-_X_EXPORT void
+XORG_EXPORT void
 glamor_set_pixmap_texture(PixmapPtr pixmap, unsigned int tex)
 {
     ScreenPtr screen = pixmap->drawable.pScreen;
@@ -817,7 +817,7 @@ glamor_supports_pixmap_import_export(ScreenPtr screen)
     return glamor_priv->dri3_enabled;
 }
 
-_X_EXPORT int
+XORG_EXPORT int
 glamor_fd_from_pixmap(ScreenPtr screen,
                       PixmapPtr pixmap, CARD16 *stride, CARD32 *size)
 {
@@ -842,7 +842,7 @@ glamor_fd_from_pixmap(ScreenPtr screen,
     return -1;
 }
 
-_X_EXPORT int
+XORG_EXPORT int
 glamor_shareable_fd_from_pixmap(ScreenPtr screen,
                                 PixmapPtr pixmap, CARD16 *stride, CARD32 *size)
 {

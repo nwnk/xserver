@@ -112,30 +112,30 @@
 _XFUNCPROTOBEGIN
 
 /* public functions */
-extern _X_EXPORT Bool xf86EnableIO(void);
-extern _X_EXPORT void xf86DisableIO(void);
+extern XORG_EXPORT Bool xf86EnableIO(void);
+extern XORG_EXPORT void xf86DisableIO(void);
 
 #ifdef __NetBSD__
-extern _X_EXPORT void xf86SetTVOut(int);
-extern _X_EXPORT void xf86SetRGBOut(void);
+extern XORG_EXPORT void xf86SetTVOut(int);
+extern XORG_EXPORT void xf86SetRGBOut(void);
 #endif
-extern _X_EXPORT void xf86OSRingBell(int, int, int);
-extern _X_EXPORT void xf86SetReallySlowBcopy(void);
-extern _X_EXPORT void xf86SlowBcopy(unsigned char *, unsigned char *, int);
-extern _X_EXPORT int xf86OpenSerial(XF86OptionPtr options);
-extern _X_EXPORT int xf86SetSerial(int fd, XF86OptionPtr options);
-extern _X_EXPORT int xf86SetSerialSpeed(int fd, int speed);
-extern _X_EXPORT int xf86ReadSerial(int fd, void *buf, int count);
-extern _X_EXPORT int xf86WriteSerial(int fd, const void *buf, int count);
-extern _X_EXPORT int xf86CloseSerial(int fd);
-extern _X_EXPORT int xf86FlushInput(int fd);
-extern _X_EXPORT int xf86WaitForInput(int fd, int timeout);
-extern _X_EXPORT int xf86SerialSendBreak(int fd, int duration);
-extern _X_EXPORT int xf86SetSerialModemState(int fd, int state);
-extern _X_EXPORT int xf86GetSerialModemState(int fd);
-extern _X_EXPORT int xf86SerialModemSetBits(int fd, int bits);
-extern _X_EXPORT int xf86SerialModemClearBits(int fd, int bits);
-extern _X_EXPORT int xf86LoadKernelModule(const char *pathname);
+extern XORG_EXPORT void xf86OSRingBell(int, int, int);
+extern XORG_EXPORT void xf86SetReallySlowBcopy(void);
+extern XORG_EXPORT void xf86SlowBcopy(unsigned char *, unsigned char *, int);
+extern XORG_EXPORT int xf86OpenSerial(XF86OptionPtr options);
+extern XORG_EXPORT int xf86SetSerial(int fd, XF86OptionPtr options);
+extern XORG_EXPORT int xf86SetSerialSpeed(int fd, int speed);
+extern XORG_EXPORT int xf86ReadSerial(int fd, void *buf, int count);
+extern XORG_EXPORT int xf86WriteSerial(int fd, const void *buf, int count);
+extern XORG_EXPORT int xf86CloseSerial(int fd);
+extern XORG_EXPORT int xf86FlushInput(int fd);
+extern XORG_EXPORT int xf86WaitForInput(int fd, int timeout);
+extern XORG_EXPORT int xf86SerialSendBreak(int fd, int duration);
+extern XORG_EXPORT int xf86SetSerialModemState(int fd, int state);
+extern XORG_EXPORT int xf86GetSerialModemState(int fd);
+extern XORG_EXPORT int xf86SerialModemSetBits(int fd, int bits);
+extern XORG_EXPORT int xf86SerialModemClearBits(int fd, int bits);
+extern XORG_EXPORT int xf86LoadKernelModule(const char *pathname);
 
 /* AGP GART interface */
 
@@ -149,41 +149,41 @@ typedef struct _AgpInfo {
     unsigned long usedPages;
 } AgpInfo, *AgpInfoPtr;
 
-extern _X_EXPORT Bool xf86AgpGARTSupported(void);
-extern _X_EXPORT AgpInfoPtr xf86GetAGPInfo(int screenNum);
-extern _X_EXPORT Bool xf86AcquireGART(int screenNum);
-extern _X_EXPORT Bool xf86ReleaseGART(int screenNum);
-extern _X_EXPORT int xf86AllocateGARTMemory(int screenNum, unsigned long size,
+extern XORG_EXPORT Bool xf86AgpGARTSupported(void);
+extern XORG_EXPORT AgpInfoPtr xf86GetAGPInfo(int screenNum);
+extern XORG_EXPORT Bool xf86AcquireGART(int screenNum);
+extern XORG_EXPORT Bool xf86ReleaseGART(int screenNum);
+extern XORG_EXPORT int xf86AllocateGARTMemory(int screenNum, unsigned long size,
                                             int type, unsigned long *physical);
-extern _X_EXPORT Bool xf86DeallocateGARTMemory(int screenNum, int key);
-extern _X_EXPORT Bool xf86BindGARTMemory(int screenNum, int key,
+extern XORG_EXPORT Bool xf86DeallocateGARTMemory(int screenNum, int key);
+extern XORG_EXPORT Bool xf86BindGARTMemory(int screenNum, int key,
                                          unsigned long offset);
-extern _X_EXPORT Bool xf86UnbindGARTMemory(int screenNum, int key);
-extern _X_EXPORT Bool xf86EnableAGP(int screenNum, CARD32 mode);
-extern _X_EXPORT Bool xf86GARTCloseScreen(int screenNum);
+extern XORG_EXPORT Bool xf86UnbindGARTMemory(int screenNum, int key);
+extern XORG_EXPORT Bool xf86EnableAGP(int screenNum, CARD32 mode);
+extern XORG_EXPORT Bool xf86GARTCloseScreen(int screenNum);
 
 /* These routines are in shared/sigio.c and are not loaded as part of the
    module.  These routines are small, and the code if very POSIX-signal (or
    OS-signal) specific, so it seemed better to provide more complex
    wrappers than to wrap each individual function called. */
-extern _X_EXPORT int xf86InstallSIGIOHandler(int fd, void (*f) (int, void *),
+extern XORG_EXPORT int xf86InstallSIGIOHandler(int fd, void (*f) (int, void *),
                                              void *);
-extern _X_EXPORT int xf86RemoveSIGIOHandler(int fd);
+extern XORG_EXPORT int xf86RemoveSIGIOHandler(int fd);
 
 #ifdef XF86_OS_PRIVS
 typedef void (*PMClose) (void);
-extern _X_EXPORT void xf86OpenConsole(void);
-extern _X_EXPORT void xf86CloseConsole(void);
+extern XORG_EXPORT void xf86OpenConsole(void);
+extern XORG_EXPORT void xf86CloseConsole(void);
 extern _X_HIDDEN Bool xf86VTActivate(int vtno);
-extern _X_EXPORT Bool xf86VTSwitchPending(void);
-extern _X_EXPORT Bool xf86VTSwitchAway(void);
-extern _X_EXPORT Bool xf86VTSwitchTo(void);
-extern _X_EXPORT void xf86VTRequest(int sig);
-extern _X_EXPORT int xf86ProcessArgument(int, char **, int);
-extern _X_EXPORT void xf86UseMsg(void);
-extern _X_EXPORT PMClose xf86OSPMOpen(void);
+extern XORG_EXPORT Bool xf86VTSwitchPending(void);
+extern XORG_EXPORT Bool xf86VTSwitchAway(void);
+extern XORG_EXPORT Bool xf86VTSwitchTo(void);
+extern XORG_EXPORT void xf86VTRequest(int sig);
+extern XORG_EXPORT int xf86ProcessArgument(int, char **, int);
+extern XORG_EXPORT void xf86UseMsg(void);
+extern XORG_EXPORT PMClose xf86OSPMOpen(void);
 
-extern _X_EXPORT void xf86InitVidMem(void);
+extern XORG_EXPORT void xf86InitVidMem(void);
 
 #endif                          /* XF86_OS_PRIVS */
 

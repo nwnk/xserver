@@ -254,40 +254,40 @@ typedef struct {
     DRI2CopyRegion2ProcPtr CopyRegion2;
 } DRI2InfoRec, *DRI2InfoPtr;
 
-extern _X_EXPORT Bool DRI2ScreenInit(ScreenPtr pScreen, DRI2InfoPtr info);
+extern XORG_EXPORT Bool DRI2ScreenInit(ScreenPtr pScreen, DRI2InfoPtr info);
 
-extern _X_EXPORT void DRI2CloseScreen(ScreenPtr pScreen);
+extern XORG_EXPORT void DRI2CloseScreen(ScreenPtr pScreen);
 
-extern _X_EXPORT Bool DRI2HasSwapControl(ScreenPtr pScreen);
+extern XORG_EXPORT Bool DRI2HasSwapControl(ScreenPtr pScreen);
 
-extern _X_EXPORT Bool DRI2Connect(ClientPtr client, ScreenPtr pScreen,
+extern XORG_EXPORT Bool DRI2Connect(ClientPtr client, ScreenPtr pScreen,
                                   unsigned int driverType,
                                   int *fd,
                                   const char **driverName,
                                   const char **deviceName);
 
-extern _X_EXPORT Bool DRI2Authenticate(ClientPtr client, ScreenPtr pScreen, uint32_t magic);
+extern XORG_EXPORT Bool DRI2Authenticate(ClientPtr client, ScreenPtr pScreen, uint32_t magic);
 
-extern _X_EXPORT int DRI2CreateDrawable(ClientPtr client,
+extern XORG_EXPORT int DRI2CreateDrawable(ClientPtr client,
                                         DrawablePtr pDraw,
                                         XID id,
                                         DRI2InvalidateProcPtr invalidate,
                                         void *priv);
 
-extern _X_EXPORT int DRI2CreateDrawable2(ClientPtr client,
+extern XORG_EXPORT int DRI2CreateDrawable2(ClientPtr client,
                                          DrawablePtr pDraw,
                                          XID id,
                                          DRI2InvalidateProcPtr invalidate,
                                          void *priv,
                                          XID *dri2_id_out);
 
-extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffers(DrawablePtr pDraw,
+extern XORG_EXPORT DRI2BufferPtr *DRI2GetBuffers(DrawablePtr pDraw,
                                                int *width,
                                                int *height,
                                                unsigned int *attachments,
                                                int count, int *out_count);
 
-extern _X_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
+extern XORG_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
                                     RegionPtr pRegion,
                                     unsigned int dest, unsigned int src);
 
@@ -307,9 +307,9 @@ extern _X_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
  * module.  Layered modules that wish to use this interface must first test
  * its existance by calling \c xf86LoaderCheckSymbol.
  */
-extern _X_EXPORT void DRI2Version(int *major, int *minor);
+extern XORG_EXPORT void DRI2Version(int *major, int *minor);
 
-extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffersWithFormat(DrawablePtr pDraw,
+extern XORG_EXPORT DRI2BufferPtr *DRI2GetBuffersWithFormat(DrawablePtr pDraw,
                                                          int *width,
                                                          int *height,
                                                          unsigned int
@@ -317,46 +317,46 @@ extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffersWithFormat(DrawablePtr pDraw,
                                                          int count,
                                                          int *out_count);
 
-extern _X_EXPORT void DRI2SwapInterval(DrawablePtr pDrawable, int interval);
-extern _X_EXPORT Bool DRI2SwapLimit(DrawablePtr pDraw, int swap_limit);
-extern _X_EXPORT int DRI2SwapBuffers(ClientPtr client, DrawablePtr pDrawable,
+extern XORG_EXPORT void DRI2SwapInterval(DrawablePtr pDrawable, int interval);
+extern XORG_EXPORT Bool DRI2SwapLimit(DrawablePtr pDraw, int swap_limit);
+extern XORG_EXPORT int DRI2SwapBuffers(ClientPtr client, DrawablePtr pDrawable,
                                      CARD64 target_msc, CARD64 divisor,
                                      CARD64 remainder, CARD64 * swap_target,
                                      DRI2SwapEventPtr func, void *data);
-extern _X_EXPORT Bool DRI2WaitSwap(ClientPtr client, DrawablePtr pDrawable);
+extern XORG_EXPORT Bool DRI2WaitSwap(ClientPtr client, DrawablePtr pDrawable);
 
-extern _X_EXPORT int DRI2GetMSC(DrawablePtr pDrawable, CARD64 * ust,
+extern XORG_EXPORT int DRI2GetMSC(DrawablePtr pDrawable, CARD64 * ust,
                                 CARD64 * msc, CARD64 * sbc);
-extern _X_EXPORT int DRI2WaitMSC(ClientPtr client, DrawablePtr pDrawable,
+extern XORG_EXPORT int DRI2WaitMSC(ClientPtr client, DrawablePtr pDrawable,
                                  CARD64 target_msc, CARD64 divisor,
                                  CARD64 remainder);
-extern _X_EXPORT int ProcDRI2WaitMSCReply(ClientPtr client, CARD64 ust,
+extern XORG_EXPORT int ProcDRI2WaitMSCReply(ClientPtr client, CARD64 ust,
                                           CARD64 msc, CARD64 sbc);
-extern _X_EXPORT int DRI2WaitSBC(ClientPtr client, DrawablePtr pDraw,
+extern XORG_EXPORT int DRI2WaitSBC(ClientPtr client, DrawablePtr pDraw,
                                  CARD64 target_sbc);
-extern _X_EXPORT Bool DRI2ThrottleClient(ClientPtr client, DrawablePtr pDraw);
+extern XORG_EXPORT Bool DRI2ThrottleClient(ClientPtr client, DrawablePtr pDraw);
 
-extern _X_EXPORT Bool DRI2CanFlip(DrawablePtr pDraw);
+extern XORG_EXPORT Bool DRI2CanFlip(DrawablePtr pDraw);
 
-extern _X_EXPORT Bool DRI2CanExchange(DrawablePtr pDraw);
+extern XORG_EXPORT Bool DRI2CanExchange(DrawablePtr pDraw);
 
 /* Note: use *only* for MSC related waits */
-extern _X_EXPORT void DRI2BlockClient(ClientPtr client, DrawablePtr pDraw);
+extern XORG_EXPORT void DRI2BlockClient(ClientPtr client, DrawablePtr pDraw);
 
-extern _X_EXPORT void DRI2SwapComplete(ClientPtr client, DrawablePtr pDraw,
+extern XORG_EXPORT void DRI2SwapComplete(ClientPtr client, DrawablePtr pDraw,
                                        int frame, unsigned int tv_sec,
                                        unsigned int tv_usec, int type,
                                        DRI2SwapEventPtr swap_complete,
                                        void *swap_data);
-extern _X_EXPORT void DRI2WaitMSCComplete(ClientPtr client, DrawablePtr pDraw,
+extern XORG_EXPORT void DRI2WaitMSCComplete(ClientPtr client, DrawablePtr pDraw,
                                           int frame, unsigned int tv_sec,
                                           unsigned int tv_usec);
 
-extern _X_EXPORT int DRI2GetParam(ClientPtr client,
+extern XORG_EXPORT int DRI2GetParam(ClientPtr client,
                                   DrawablePtr pDrawable,
                                   CARD64 param,
                                   BOOL *is_param_recognized,
                                   CARD64 *value);
 
-extern _X_EXPORT DrawablePtr DRI2UpdatePrime(DrawablePtr pDraw, DRI2BufferPtr pDest);
+extern XORG_EXPORT DrawablePtr DRI2UpdatePrime(DrawablePtr pDraw, DRI2BufferPtr pDest);
 #endif

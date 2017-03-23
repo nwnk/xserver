@@ -26,19 +26,19 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef XI_STUBS_H
 #define XI_STUBS_H 1
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  SetDeviceMode(ClientPtr /* client */ ,
                DeviceIntPtr /* dev */ ,
                int /* mode */ );
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  SetDeviceValuators(ClientPtr /* client */ ,
                     DeviceIntPtr /* dev */ ,
                     int * /* valuators */ ,
                     int /* first_valuator */ ,
                     int /* num_valuators */ );
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  ChangeDeviceControl(ClientPtr /* client */ ,
                      DeviceIntPtr /* dev */ ,
                      xDeviceCtl * /* control */ );

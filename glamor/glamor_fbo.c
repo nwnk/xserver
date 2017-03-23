@@ -331,7 +331,7 @@ glamor_pixmap_ensure_fbo(PixmapPtr pixmap, GLenum format, int flag)
     return TRUE;
 }
 
-_X_EXPORT void
+XORG_EXPORT void
 glamor_pixmap_exchange_fbos(PixmapPtr front, PixmapPtr back)
 {
     glamor_pixmap_private *front_priv, *back_priv;

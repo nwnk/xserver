@@ -33,50 +33,50 @@ from The Open Group.
 
 #include "globals.h"
 
-extern _X_EXPORT const char *defaultTextFont;
-extern _X_EXPORT const char *defaultCursorFont;
-extern _X_EXPORT int MaxClients;
-extern _X_EXPORT int LimitClients;
-extern _X_EXPORT volatile char isItTimeToYield;
-extern _X_EXPORT volatile char dispatchException;
+extern XORG_EXPORT const char *defaultTextFont;
+extern XORG_EXPORT const char *defaultCursorFont;
+extern XORG_EXPORT int MaxClients;
+extern XORG_EXPORT int LimitClients;
+extern XORG_EXPORT volatile char isItTimeToYield;
+extern XORG_EXPORT volatile char dispatchException;
 
 /* bit values for dispatchException */
 #define DE_RESET     1
 #define DE_TERMINATE 2
 #define DE_PRIORITYCHANGE 4     /* set when a client's priority changes */
 
-extern _X_EXPORT CARD32 TimeOutValue;
-extern _X_EXPORT int ScreenSaverBlanking;
-extern _X_EXPORT int ScreenSaverAllowExposures;
-extern _X_EXPORT int defaultScreenSaverBlanking;
-extern _X_EXPORT int defaultScreenSaverAllowExposures;
-extern _X_EXPORT const char *display;
-extern _X_EXPORT int displayfd;
-extern _X_EXPORT Bool explicit_display;
+extern XORG_EXPORT CARD32 TimeOutValue;
+extern XORG_EXPORT int ScreenSaverBlanking;
+extern XORG_EXPORT int ScreenSaverAllowExposures;
+extern XORG_EXPORT int defaultScreenSaverBlanking;
+extern XORG_EXPORT int defaultScreenSaverAllowExposures;
+extern XORG_EXPORT const char *display;
+extern XORG_EXPORT int displayfd;
+extern XORG_EXPORT Bool explicit_display;
 
-extern _X_EXPORT int defaultBackingStore;
-extern _X_EXPORT Bool disableBackingStore;
-extern _X_EXPORT Bool enableBackingStore;
-extern _X_EXPORT Bool enableIndirectGLX;
-extern _X_EXPORT Bool PartialNetwork;
-extern _X_EXPORT Bool RunFromSigStopParent;
+extern XORG_EXPORT int defaultBackingStore;
+extern XORG_EXPORT Bool disableBackingStore;
+extern XORG_EXPORT Bool enableBackingStore;
+extern XORG_EXPORT Bool enableIndirectGLX;
+extern XORG_EXPORT Bool PartialNetwork;
+extern XORG_EXPORT Bool RunFromSigStopParent;
 
 #ifdef RLIMIT_DATA
-extern _X_EXPORT int limitDataSpace;
+extern XORG_EXPORT int limitDataSpace;
 #endif
 #ifdef RLIMIT_STACK
-extern _X_EXPORT int limitStackSpace;
+extern XORG_EXPORT int limitStackSpace;
 #endif
 #ifdef RLIMIT_NOFILE
-extern _X_EXPORT int limitNoFile;
+extern XORG_EXPORT int limitNoFile;
 #endif
-extern _X_EXPORT Bool defeatAccessControl;
-extern _X_EXPORT long maxBigRequestSize;
-extern _X_EXPORT Bool party_like_its_1989;
-extern _X_EXPORT Bool whiteRoot;
-extern _X_EXPORT Bool bgNoneRoot;
+extern XORG_EXPORT Bool defeatAccessControl;
+extern XORG_EXPORT long maxBigRequestSize;
+extern XORG_EXPORT Bool party_like_its_1989;
+extern XORG_EXPORT Bool whiteRoot;
+extern XORG_EXPORT Bool bgNoneRoot;
 
-extern _X_EXPORT Bool CoreDump;
-extern _X_EXPORT Bool NoListenAll;
+extern XORG_EXPORT Bool CoreDump;
+extern XORG_EXPORT Bool NoListenAll;
 
 #endif                          /* OPAQUE_H */

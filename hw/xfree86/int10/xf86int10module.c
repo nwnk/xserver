@@ -28,5 +28,5 @@ static XF86ModuleVersionInfo NAME(VersRec) = {
     0, 0, 0, 0}
 };
 
-_X_EXPORT XF86ModuleData NAME(ModuleData) = {
+XORG_EXPORT XF86ModuleData NAME(ModuleData) = {
 &NAME(VersRec), NULL, NULL};

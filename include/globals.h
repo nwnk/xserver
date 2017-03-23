@@ -7,37 +7,37 @@
 
 /* Global X server variables that are visible to mi, dix, os, and ddx */
 
-extern _X_EXPORT CARD32 defaultScreenSaverTime;
-extern _X_EXPORT CARD32 defaultScreenSaverInterval;
-extern _X_EXPORT CARD32 ScreenSaverTime;
-extern _X_EXPORT CARD32 ScreenSaverInterval;
+extern XORG_EXPORT CARD32 defaultScreenSaverTime;
+extern XORG_EXPORT CARD32 defaultScreenSaverInterval;
+extern XORG_EXPORT CARD32 ScreenSaverTime;
+extern XORG_EXPORT CARD32 ScreenSaverInterval;
 
 #ifdef SCREENSAVER
-extern _X_EXPORT Bool screenSaverSuspended;
+extern XORG_EXPORT Bool screenSaverSuspended;
 #endif
 
-extern _X_EXPORT const char *defaultFontPath;
-extern _X_EXPORT int monitorResolution;
-extern _X_EXPORT int defaultColorVisualClass;
+extern XORG_EXPORT const char *defaultFontPath;
+extern XORG_EXPORT int monitorResolution;
+extern XORG_EXPORT int defaultColorVisualClass;
 
-extern _X_EXPORT int GrabInProgress;
-extern _X_EXPORT Bool noTestExtensions;
-extern _X_EXPORT char *SeatId;
-extern _X_EXPORT char *ConnectionInfo;
-extern _X_EXPORT sig_atomic_t inSignalContext;
+extern XORG_EXPORT int GrabInProgress;
+extern XORG_EXPORT Bool noTestExtensions;
+extern XORG_EXPORT char *SeatId;
+extern XORG_EXPORT char *ConnectionInfo;
+extern XORG_EXPORT sig_atomic_t inSignalContext;
 
 #ifdef DPMSExtension
-extern _X_EXPORT CARD32 DPMSStandbyTime;
-extern _X_EXPORT CARD32 DPMSSuspendTime;
-extern _X_EXPORT CARD32 DPMSOffTime;
-extern _X_EXPORT CARD16 DPMSPowerLevel;
-extern _X_EXPORT Bool DPMSEnabled;
-extern _X_EXPORT Bool DPMSDisabledSwitch;
-extern _X_EXPORT Bool DPMSCapableFlag;
+extern XORG_EXPORT CARD32 DPMSStandbyTime;
+extern XORG_EXPORT CARD32 DPMSSuspendTime;
+extern XORG_EXPORT CARD32 DPMSOffTime;
+extern XORG_EXPORT CARD16 DPMSPowerLevel;
+extern XORG_EXPORT Bool DPMSEnabled;
+extern XORG_EXPORT Bool DPMSDisabledSwitch;
+extern XORG_EXPORT Bool DPMSCapableFlag;
 #endif
 
 #ifdef PANORAMIX
-extern _X_EXPORT Bool PanoramiXExtensionDisabledHack;
+extern XORG_EXPORT Bool PanoramiXExtensionDisabledHack;
 #endif
 
 #ifdef XSELINUX
@@ -45,7 +45,7 @@ extern _X_EXPORT Bool PanoramiXExtensionDisabledHack;
 #define SELINUX_MODE_DISABLED   1
 #define SELINUX_MODE_PERMISSIVE 2
 #define SELINUX_MODE_ENFORCING  3
-extern _X_EXPORT int selinuxEnforcingState;
+extern XORG_EXPORT int selinuxEnforcingState;
 #endif
 
 #endif                          /* !_XSERV_GLOBAL_H_ */

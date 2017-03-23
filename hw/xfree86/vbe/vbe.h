@@ -36,11 +36,11 @@ typedef struct {
 #define VBE_VERSION_MAJOR(x) *((CARD8*)(&x) + 1)
 #define VBE_VERSION_MINOR(x) (CARD8)(x)
 
-extern _X_EXPORT vbeInfoPtr VBEInit(xf86Int10InfoPtr pInt, int entityIndex);
-extern _X_EXPORT vbeInfoPtr VBEExtendedInit(xf86Int10InfoPtr pInt,
+extern XORG_EXPORT vbeInfoPtr VBEInit(xf86Int10InfoPtr pInt, int entityIndex);
+extern XORG_EXPORT vbeInfoPtr VBEExtendedInit(xf86Int10InfoPtr pInt,
                                             int entityIndex, int Flags);
-extern _X_EXPORT void vbeFree(vbeInfoPtr pVbe);
-extern _X_EXPORT xf86MonPtr vbeDoEDID(vbeInfoPtr pVbe, void *pDDCModule);
+extern XORG_EXPORT void vbeFree(vbeInfoPtr pVbe);
+extern XORG_EXPORT xf86MonPtr vbeDoEDID(vbeInfoPtr pVbe, void *pDDCModule);
 
 #pragma pack(1)
 
@@ -104,8 +104,8 @@ struct _VbeInfoBlock {
 } __attribute__ ((packed));
 
 /* Return Super VGA Information */
-extern _X_EXPORT VbeInfoBlock *VBEGetVBEInfo(vbeInfoPtr pVbe);
-extern _X_EXPORT void VBEFreeVBEInfo(VbeInfoBlock * block);
+extern XORG_EXPORT VbeInfoBlock *VBEGetVBEInfo(vbeInfoPtr pVbe);
+extern XORG_EXPORT void VBEFreeVBEInfo(VbeInfoBlock * block);
 
 /*
  * INT 1
@@ -168,8 +168,8 @@ struct _VbeModeInfoBlock {
 } __attribute__ ((packed));
 
 /* Return VBE Mode Information */
-extern _X_EXPORT VbeModeInfoBlock *VBEGetModeInfo(vbeInfoPtr pVbe, int mode);
-extern _X_EXPORT void VBEFreeModeInfo(VbeModeInfoBlock * block);
+extern XORG_EXPORT VbeModeInfoBlock *VBEGetModeInfo(vbeInfoPtr pVbe, int mode);
+extern XORG_EXPORT void VBEFreeModeInfo(VbeModeInfoBlock * block);
 
 /*
  * INT2
@@ -195,14 +195,14 @@ struct _VbeCRTCInfoBlock {
 
 /* VbeCRTCInfoBlock is in the VESA 3.0 specs */
 
-extern _X_EXPORT Bool VBESetVBEMode(vbeInfoPtr pVbe, int mode,
+extern XORG_EXPORT Bool VBESetVBEMode(vbeInfoPtr pVbe, int mode,
                                     VbeCRTCInfoBlock * crtc);
 
 /*
  * INT 3
  */
 
-extern _X_EXPORT Bool VBEGetVBEMode(vbeInfoPtr pVbe, int *mode);
+extern XORG_EXPORT Bool VBEGetVBEMode(vbeInfoPtr pVbe, int *mode);
 
 /*
  * INT 4
@@ -224,7 +224,7 @@ typedef enum {
     MODE_RESTORE
 } vbeSaveRestoreFunction;
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction fuction,
                void **memory, int *size, int *real_mode_pages);
@@ -233,7 +233,7 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction fuction,
  * INT 5
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  VBEBankSwitch(vbeInfoPtr pVbe, unsigned int iBank, int window);
 
 /*
@@ -259,7 +259,7 @@ typedef enum {
 #define VBEGetMaxLogicalScanline(pVbe, pixels, bytes, max)	\
 	VBESetGetLogicalScanlineLength(pVbe, SCANWID_GET_MAX, 0, \
 					pixels, bytes, max)
-extern _X_EXPORT Bool VBESetGetLogicalScanlineLength(vbeInfoPtr pVbe,
+extern XORG_EXPORT Bool VBESetGetLogicalScanlineLength(vbeInfoPtr pVbe,
                                                      vbeScanwidthCommand
                                                      command, int width,
                                                      int *pixels, int *bytes,
@@ -270,16 +270,16 @@ extern _X_EXPORT Bool VBESetGetLogicalScanlineLength(vbeInfoPtr pVbe,
  */
 
 /* 16 bit code */
-extern _X_EXPORT Bool VBESetDisplayStart(vbeInfoPtr pVbe, int x, int y,
+extern XORG_EXPORT Bool VBESetDisplayStart(vbeInfoPtr pVbe, int x, int y,
                                          Bool wait_retrace);
-extern _X_EXPORT Bool VBEGetDisplayStart(vbeInfoPtr pVbe, int *x, int *y);
+extern XORG_EXPORT Bool VBEGetDisplayStart(vbeInfoPtr pVbe, int *x, int *y);
 
 /*
  * INT 8
  */
 
 /* if bits is 0, then it is a GET */
-extern _X_EXPORT int VBESetGetDACPaletteFormat(vbeInfoPtr pVbe, int bits);
+extern XORG_EXPORT int VBESetGetDACPaletteFormat(vbeInfoPtr pVbe, int bits);
 
 /*
  * INT 9
@@ -291,7 +291,7 @@ extern _X_EXPORT int VBESetGetDACPaletteFormat(vbeInfoPtr pVbe, int bits);
  *  If setting a palette, it will return the pointer received on success,
  * NULL on failure.
  */
-extern _X_EXPORT CARD32 *VBESetGetPaletteData(vbeInfoPtr pVbe, Bool set,
+extern XORG_EXPORT CARD32 *VBESetGetPaletteData(vbeInfoPtr pVbe, Bool set,
                                               int first, int num, CARD32 *data,
                                               Bool secondary,
                                               Bool wait_retrace);
@@ -307,7 +307,7 @@ typedef struct _VBEpmi {
     int tbl_len;
 } VBEpmi;
 
-extern _X_EXPORT VBEpmi *VBEGetVBEpmi(vbeInfoPtr pVbe);
+extern XORG_EXPORT VBEpmi *VBEGetVBEpmi(vbeInfoPtr pVbe);
 
 #define VESAFreeVBEpmi(pmi)	free(pmi)
 
@@ -329,13 +329,13 @@ typedef struct {
     int stateMode;
 } vbeSaveRestoreRec, *vbeSaveRestorePtr;
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 VBEVesaSaveRestore(vbeInfoPtr pVbe, vbeSaveRestorePtr vbe_sr,
                    vbeSaveRestoreFunction function);
 
-extern _X_EXPORT int VBEGetPixelClock(vbeInfoPtr pVbe, int mode, int Clock);
-extern _X_EXPORT Bool VBEDPMSSet(vbeInfoPtr pVbe, int mode);
+extern XORG_EXPORT int VBEGetPixelClock(vbeInfoPtr pVbe, int mode, int Clock);
+extern XORG_EXPORT Bool VBEDPMSSet(vbeInfoPtr pVbe, int mode);
 
 struct vbePanelID {
     short hsize;
@@ -350,8 +350,8 @@ struct vbePanelID {
     char reserved[14];
 };
 
-extern _X_EXPORT void VBEInterpretPanelID(ScrnInfoPtr pScrn,
+extern XORG_EXPORT void VBEInterpretPanelID(ScrnInfoPtr pScrn,
                                           struct vbePanelID *data);
-extern _X_EXPORT struct vbePanelID *VBEReadPanelID(vbeInfoPtr pVbe);
+extern XORG_EXPORT struct vbePanelID *VBEReadPanelID(vbeInfoPtr pVbe);
 
 #endif

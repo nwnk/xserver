@@ -59,13 +59,13 @@ typedef struct _PropertyStateRec {
 
 extern CallbackListPtr PropertyStateCallback;
 
-extern _X_EXPORT int dixLookupProperty(PropertyPtr * /*result */ ,
+extern XORG_EXPORT int dixLookupProperty(PropertyPtr * /*result */ ,
                                        WindowPtr /*pWin */ ,
                                        Atom /*proprty */ ,
                                        ClientPtr /*pClient */ ,
                                        Mask /*access_mode */ );
 
-extern _X_EXPORT int dixChangeWindowProperty(ClientPtr pClient,
+extern XORG_EXPORT int dixChangeWindowProperty(ClientPtr pClient,
                                              WindowPtr pWin,
                                              Atom property,
                                              Atom type,
@@ -75,10 +75,10 @@ extern _X_EXPORT int dixChangeWindowProperty(ClientPtr pClient,
                                              void *value,
                                              Bool sendevent);
 
-extern _X_EXPORT int DeleteProperty(ClientPtr /*client */ ,
+extern XORG_EXPORT int DeleteProperty(ClientPtr /*client */ ,
                                     WindowPtr /*pWin */ ,
                                     Atom /*propName */ );
 
-extern _X_EXPORT void DeleteAllWindowProperties(WindowPtr /*pWin */ );
+extern XORG_EXPORT void DeleteAllWindowProperties(WindowPtr /*pWin */ );
 
 #endif                          /* PROPERTY_H */

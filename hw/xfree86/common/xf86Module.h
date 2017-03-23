@@ -150,15 +150,15 @@ typedef struct {
 #define INITARGS void
 
 /* Prototypes for Loader functions that are exported to modules */
-extern _X_EXPORT void *LoadSubModule(void *, const char *, const char **,
+extern XORG_EXPORT void *LoadSubModule(void *, const char *, const char **,
                                        const char **, void *,
                                        const XF86ModReqInfo *, int *, int *);
-extern _X_EXPORT void UnloadSubModule(void *);
-extern _X_EXPORT void UnloadModule(void *);
-extern _X_EXPORT void *LoaderSymbol(const char *);
-extern _X_EXPORT void LoaderErrorMsg(const char *, const char *, int, int);
-extern _X_EXPORT Bool LoaderShouldIgnoreABI(void);
-extern _X_EXPORT int LoaderGetABIVersion(const char *abiclass);
+extern XORG_EXPORT void UnloadSubModule(void *);
+extern XORG_EXPORT void UnloadModule(void *);
+extern XORG_EXPORT void *LoaderSymbol(const char *);
+extern XORG_EXPORT void LoaderErrorMsg(const char *, const char *, int, int);
+extern XORG_EXPORT Bool LoaderShouldIgnoreABI(void);
+extern XORG_EXPORT int LoaderGetABIVersion(const char *abiclass);
 
 typedef void *(*ModuleSetupProc) (void *, void *, int *, int *);
 typedef void (*ModuleTearDownProc) (void *);

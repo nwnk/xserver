@@ -69,7 +69,7 @@
 #define __sparc64__
 #endif
 
-#ifndef _X_EXPORT
+#ifndef XORG_EXPORT
 #include <X11/Xfuncproto.h>
 #endif
 
@@ -102,32 +102,32 @@
       && !(defined(__ia64__) && defined(linux)) \
       && !(defined(__mips64) && defined(linux)) \
 
-extern _X_EXPORT void outb(unsigned short, unsigned char);
-extern _X_EXPORT void outw(unsigned short, unsigned short);
-extern _X_EXPORT void outl(unsigned short, unsigned int);
-extern _X_EXPORT unsigned int inb(unsigned short);
-extern _X_EXPORT unsigned int inw(unsigned short);
-extern _X_EXPORT unsigned int inl(unsigned short);
+extern XORG_EXPORT void outb(unsigned short, unsigned char);
+extern XORG_EXPORT void outw(unsigned short, unsigned short);
+extern XORG_EXPORT void outl(unsigned short, unsigned int);
+extern XORG_EXPORT unsigned int inb(unsigned short);
+extern XORG_EXPORT unsigned int inw(unsigned short);
+extern XORG_EXPORT unsigned int inl(unsigned short);
 
 #else                           /* __sparc__,  __arm32__, __alpha__, __nds32__ */
-extern _X_EXPORT void outb(unsigned long, unsigned char);
-extern _X_EXPORT void outw(unsigned long, unsigned short);
-extern _X_EXPORT void outl(unsigned long, unsigned int);
-extern _X_EXPORT unsigned int inb(unsigned long);
-extern _X_EXPORT unsigned int inw(unsigned long);
-extern _X_EXPORT unsigned int inl(unsigned long);
+extern XORG_EXPORT void outb(unsigned long, unsigned char);
+extern XORG_EXPORT void outw(unsigned long, unsigned short);
+extern XORG_EXPORT void outl(unsigned long, unsigned int);
+extern XORG_EXPORT unsigned int inb(unsigned long);
+extern XORG_EXPORT unsigned int inw(unsigned long);
+extern XORG_EXPORT unsigned int inl(unsigned long);
 
 #ifdef __SUNPRO_C
-extern _X_EXPORT unsigned char  xf86ReadMmio8    (void *, unsigned long);
-extern _X_EXPORT unsigned short xf86ReadMmio16Be (void *, unsigned long);
-extern _X_EXPORT unsigned short xf86ReadMmio16Le (void *, unsigned long);
-extern _X_EXPORT unsigned int   xf86ReadMmio32Be (void *, unsigned long);
-extern _X_EXPORT unsigned int   xf86ReadMmio32Le (void *, unsigned long);
-extern _X_EXPORT void xf86WriteMmio8    (void *, unsigned long, unsigned int);
-extern _X_EXPORT void xf86WriteMmio16Be (void *, unsigned long, unsigned int);
-extern _X_EXPORT void xf86WriteMmio16Le (void *, unsigned long, unsigned int);
-extern _X_EXPORT void xf86WriteMmio32Be (void *, unsigned long, unsigned int);
-extern _X_EXPORT void xf86WriteMmio32Le (void *, unsigned long, unsigned int);
+extern XORG_EXPORT unsigned char  xf86ReadMmio8    (void *, unsigned long);
+extern XORG_EXPORT unsigned short xf86ReadMmio16Be (void *, unsigned long);
+extern XORG_EXPORT unsigned short xf86ReadMmio16Le (void *, unsigned long);
+extern XORG_EXPORT unsigned int   xf86ReadMmio32Be (void *, unsigned long);
+extern XORG_EXPORT unsigned int   xf86ReadMmio32Le (void *, unsigned long);
+extern XORG_EXPORT void xf86WriteMmio8    (void *, unsigned long, unsigned int);
+extern XORG_EXPORT void xf86WriteMmio16Be (void *, unsigned long, unsigned int);
+extern XORG_EXPORT void xf86WriteMmio16Le (void *, unsigned long, unsigned int);
+extern XORG_EXPORT void xf86WriteMmio32Be (void *, unsigned long, unsigned int);
+extern XORG_EXPORT void xf86WriteMmio32Le (void *, unsigned long, unsigned int);
 #endif                          /* _SUNPRO_C */
 #endif                          /* __sparc__,  __arm32__, __alpha__, __nds32__ */
 #endif                          /* __arm__ */
@@ -220,12 +220,12 @@ extern _X_EXPORT void xf86WriteMmio32Le (void *, unsigned long, unsigned int);
 /* note that the appropriate setup via "ioperm" needs to be done */
 /*  *before* any inx/outx is done. */
 
-extern _X_EXPORT void _outb(unsigned char val, unsigned long port);
-extern _X_EXPORT void _outw(unsigned short val, unsigned long port);
-extern _X_EXPORT void _outl(unsigned int val, unsigned long port);
-extern _X_EXPORT unsigned int _inb(unsigned long port);
-extern _X_EXPORT unsigned int _inw(unsigned long port);
-extern _X_EXPORT unsigned int _inl(unsigned long port);
+extern XORG_EXPORT void _outb(unsigned char val, unsigned long port);
+extern XORG_EXPORT void _outw(unsigned short val, unsigned long port);
+extern XORG_EXPORT void _outl(unsigned int val, unsigned long port);
+extern XORG_EXPORT unsigned int _inb(unsigned long port);
+extern XORG_EXPORT unsigned int _inw(unsigned long port);
+extern XORG_EXPORT unsigned int _inl(unsigned long port);
 
 static __inline__ void
 outb(unsigned long port, unsigned char val)
@@ -273,12 +273,12 @@ inl(unsigned long port)
 /* note that the appropriate setup via "ioperm" needs to be done */
 /*  *before* any inx/outx is done. */
 
-extern _X_EXPORT void outb(unsigned int port, unsigned char val);
-extern _X_EXPORT void outw(unsigned int port, unsigned short val);
-extern _X_EXPORT void outl(unsigned int port, unsigned int val);
-extern _X_EXPORT unsigned char inb(unsigned int port);
-extern _X_EXPORT unsigned short inw(unsigned int port);
-extern _X_EXPORT unsigned int inl(unsigned int port);
+extern XORG_EXPORT void outb(unsigned int port, unsigned char val);
+extern XORG_EXPORT void outw(unsigned int port, unsigned short val);
+extern XORG_EXPORT void outl(unsigned int port, unsigned int val);
+extern XORG_EXPORT unsigned char inb(unsigned int port);
+extern XORG_EXPORT unsigned short inw(unsigned int port);
+extern XORG_EXPORT unsigned int inl(unsigned int port);
 
 #endif                          /* (__FreeBSD__ || __OpenBSD__ ) && !DO_PROTOTYPES */
 
@@ -525,7 +525,7 @@ xf86WriteMmio32Le(__volatile__ void *base, const unsigned long offset,
 #define PORT_SIZE short
 #endif
 
-_X_EXPORT unsigned int IOPortBase;      /* Memory mapped I/O port area */
+XORG_EXPORT unsigned int IOPortBase;      /* Memory mapped I/O port area */
 
 static __inline__ void
 outb(unsigned PORT_SIZE port, unsigned char val)
@@ -603,7 +603,7 @@ xf86WriteMmio32Be(__volatile__ void *base, const unsigned long offset,
 #define MAP_FAILED ((void *)-1)
 #endif
 
-extern _X_EXPORT volatile unsigned char *ioBase;
+extern XORG_EXPORT volatile unsigned char *ioBase;
 
 static __inline__ unsigned char
 xf86ReadMmio8(__volatile__ void *base, const unsigned long offset)
@@ -987,15 +987,15 @@ inl(unsigned PORT_SIZE port)
 
 #ifdef __alpha__
 /* entry points for Mmio memory access routines */
-extern _X_EXPORT int (*xf86ReadMmio8) (void *, unsigned long);
-extern _X_EXPORT int (*xf86ReadMmio16) (void *, unsigned long);
-extern _X_EXPORT int (*xf86ReadMmio32) (void *, unsigned long);
-extern _X_EXPORT void (*xf86WriteMmio8) (int, void *, unsigned long);
-extern _X_EXPORT void (*xf86WriteMmio16) (int, void *, unsigned long);
-extern _X_EXPORT void (*xf86WriteMmio32) (int, void *, unsigned long);
-extern _X_EXPORT void xf86SlowBCopyFromBus(unsigned char *, unsigned char *,
+extern XORG_EXPORT int (*xf86ReadMmio8) (void *, unsigned long);
+extern XORG_EXPORT int (*xf86ReadMmio16) (void *, unsigned long);
+extern XORG_EXPORT int (*xf86ReadMmio32) (void *, unsigned long);
+extern XORG_EXPORT void (*xf86WriteMmio8) (int, void *, unsigned long);
+extern XORG_EXPORT void (*xf86WriteMmio16) (int, void *, unsigned long);
+extern XORG_EXPORT void (*xf86WriteMmio32) (int, void *, unsigned long);
+extern XORG_EXPORT void xf86SlowBCopyFromBus(unsigned char *, unsigned char *,
                                            int);
-extern _X_EXPORT void xf86SlowBCopyToBus(unsigned char *, unsigned char *, int);
+extern XORG_EXPORT void xf86SlowBCopyToBus(unsigned char *, unsigned char *, int);
 
 /* Some macros to hide the system dependencies for MMIO accesses */
 /* Changed to kill noise generated by gcc's -Wcast-align */

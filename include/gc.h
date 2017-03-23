@@ -83,7 +83,7 @@ typedef struct _GCInterest *GCInterestPtr;
 typedef struct _GC *GCPtr;
 typedef struct _GCOps *GCOpsPtr;
 
-extern _X_EXPORT void ValidateGC(DrawablePtr /*pDraw */ ,
+extern XORG_EXPORT void ValidateGC(DrawablePtr /*pDraw */ ,
                                  GCPtr /*pGC */ );
 
 typedef union {
@@ -96,52 +96,52 @@ extern int ChangeGCXIDs(ClientPtr /*client */ ,
                         BITS32 /*mask */ ,
                         CARD32 * /*pval */ );
 
-extern _X_EXPORT int ChangeGC(ClientPtr /*client */ ,
+extern XORG_EXPORT int ChangeGC(ClientPtr /*client */ ,
                               GCPtr /*pGC */ ,
                               BITS32 /*mask */ ,
                               ChangeGCValPtr /*pCGCV */ );
 
-extern _X_EXPORT GCPtr CreateGC(DrawablePtr /*pDrawable */ ,
+extern XORG_EXPORT GCPtr CreateGC(DrawablePtr /*pDrawable */ ,
                                 BITS32 /*mask */ ,
                                 XID * /*pval */ ,
                                 int * /*pStatus */ ,
                                 XID /*gcid */ ,
                                 ClientPtr /*client */ );
 
-extern _X_EXPORT int CopyGC(GCPtr /*pgcSrc */ ,
+extern XORG_EXPORT int CopyGC(GCPtr /*pgcSrc */ ,
                             GCPtr /*pgcDst */ ,
                             BITS32 /*mask */ );
 
-extern _X_EXPORT int FreeGC(void *pGC,
+extern XORG_EXPORT int FreeGC(void *pGC,
                             XID gid);
 
-extern _X_EXPORT void FreeGCperDepth(int /*screenNum */ );
+extern XORG_EXPORT void FreeGCperDepth(int /*screenNum */ );
 
-extern _X_EXPORT Bool CreateGCperDepth(int /*screenNum */ );
+extern XORG_EXPORT Bool CreateGCperDepth(int /*screenNum */ );
 
-extern _X_EXPORT Bool CreateDefaultStipple(int /*screenNum */ );
+extern XORG_EXPORT Bool CreateDefaultStipple(int /*screenNum */ );
 
-extern _X_EXPORT void FreeDefaultStipple(int /*screenNum */ );
+extern XORG_EXPORT void FreeDefaultStipple(int /*screenNum */ );
 
-extern _X_EXPORT int SetDashes(GCPtr /*pGC */ ,
+extern XORG_EXPORT int SetDashes(GCPtr /*pGC */ ,
                                unsigned /*offset */ ,
                                unsigned /*ndash */ ,
                                unsigned char * /*pdash */ );
 
-extern _X_EXPORT int VerifyRectOrder(int /*nrects */ ,
+extern XORG_EXPORT int VerifyRectOrder(int /*nrects */ ,
                                      xRectangle * /*prects */ ,
                                      int /*ordering */ );
 
-extern _X_EXPORT int SetClipRects(GCPtr /*pGC */ ,
+extern XORG_EXPORT int SetClipRects(GCPtr /*pGC */ ,
                                   int /*xOrigin */ ,
                                   int /*yOrigin */ ,
                                   int /*nrects */ ,
                                   xRectangle * /*prects */ ,
                                   int /*ordering */ );
 
-extern _X_EXPORT GCPtr GetScratchGC(unsigned /*depth */ ,
+extern XORG_EXPORT GCPtr GetScratchGC(unsigned /*depth */ ,
                                     ScreenPtr /*pScreen */ );
 
-extern _X_EXPORT void FreeScratchGC(GCPtr /*pGC */ );
+extern XORG_EXPORT void FreeScratchGC(GCPtr /*pGC */ );
 
 #endif                          /* GC_H */

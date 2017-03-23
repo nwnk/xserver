@@ -86,12 +86,12 @@ typedef struct {
 
 extern int (*XvMCScreenInitProc)(ScreenPtr, int, XvMCAdaptorPtr);
 
-extern _X_EXPORT int XvMCScreenInit(ScreenPtr pScreen,
+extern XORG_EXPORT int XvMCScreenInit(ScreenPtr pScreen,
                                     int num, XvMCAdaptorPtr adapt);
 
-extern _X_EXPORT XvImagePtr XvMCFindXvImage(XvPortPtr pPort, CARD32 id);
+extern XORG_EXPORT XvImagePtr XvMCFindXvImage(XvPortPtr pPort, CARD32 id);
 
-extern _X_EXPORT int xf86XvMCRegisterDRInfo(ScreenPtr pScreen, const char *name,
+extern XORG_EXPORT int xf86XvMCRegisterDRInfo(ScreenPtr pScreen, const char *name,
                                             const char *busID, int major, int minor,
                                             int patchLevel);
 

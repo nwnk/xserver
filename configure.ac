@@ -1894,9 +1894,9 @@ if test "x$XORG" = xyes; then
 		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 		    [#include <X11/Xfuncproto.h>
 		     extern _X_HIDDEN int hidden_int;
-		     extern _X_EXPORT int public_int;
+		     extern XORG_EXPORT int public_int;
 		     extern _X_HIDDEN int hidden_int_func(void);
-		     extern _X_EXPORT int public_int_func(void);]],
+		     extern XORG_EXPORT int public_int_func(void);]],
 		    [])],
 		    have_visibility=yes,
 		    have_visibility=no)

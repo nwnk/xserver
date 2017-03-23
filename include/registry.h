@@ -32,27 +32,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #ifdef X_REGISTRY_RESOURCE
 /* Functions used by the X-Resource extension */
-extern _X_EXPORT void RegisterResourceName(RESTYPE type, const char *name);
-extern _X_EXPORT const char *LookupResourceName(RESTYPE rtype);
+extern XORG_EXPORT void RegisterResourceName(RESTYPE type, const char *name);
+extern XORG_EXPORT const char *LookupResourceName(RESTYPE rtype);
 #endif
 
 #ifdef X_REGISTRY_REQUEST
-extern _X_EXPORT void RegisterExtensionNames(ExtensionEntry * ext);
+extern XORG_EXPORT void RegisterExtensionNames(ExtensionEntry * ext);
 
 /*
  * Lookup functions.  The returned string must not be modified or freed.
  */
-extern _X_EXPORT const char *LookupMajorName(int major);
-extern _X_EXPORT const char *LookupRequestName(int major, int minor);
-extern _X_EXPORT const char *LookupEventName(int event);
-extern _X_EXPORT const char *LookupErrorName(int error);
+extern XORG_EXPORT const char *LookupMajorName(int major);
+extern XORG_EXPORT const char *LookupRequestName(int major, int minor);
+extern XORG_EXPORT const char *LookupEventName(int event);
+extern XORG_EXPORT const char *LookupErrorName(int error);
 #endif
 
 /*
  * Setup and teardown
  */
-extern _X_EXPORT void dixResetRegistry(void);
-extern _X_EXPORT void dixFreeRegistry(void);
-extern _X_EXPORT void dixCloseRegistry(void);
+extern XORG_EXPORT void dixResetRegistry(void);
+extern XORG_EXPORT void dixFreeRegistry(void);
+extern XORG_EXPORT void dixCloseRegistry(void);
 
 #endif                          /* DIX_REGISTRY_H */

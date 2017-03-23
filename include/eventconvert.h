@@ -29,9 +29,9 @@
 #include "events.h"
 #include "eventstr.h"
 
-_X_EXPORT int EventToCore(InternalEvent *event, xEvent **core, int *count);
-_X_EXPORT int EventToXI(InternalEvent *ev, xEvent **xi, int *count);
-_X_EXPORT int EventToXI2(InternalEvent *ev, xEvent **xi);
+XORG_EXPORT int EventToCore(InternalEvent *event, xEvent **core, int *count);
+XORG_EXPORT int EventToXI(InternalEvent *ev, xEvent **xi, int *count);
+XORG_EXPORT int EventToXI2(InternalEvent *ev, xEvent **xi);
 _X_INTERNAL int GetCoreType(enum EventType type);
 _X_INTERNAL int GetXIType(enum EventType type);
 _X_INTERNAL int GetXI2Type(enum EventType type);

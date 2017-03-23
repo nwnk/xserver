@@ -664,7 +664,7 @@ InitKeyboardDeviceStructInternal(DeviceIntPtr dev, XkbRMLVOSet * rmlvo,
     return FALSE;
 }
 
-_X_EXPORT Bool
+XORG_EXPORT Bool
 InitKeyboardDeviceStruct(DeviceIntPtr dev, XkbRMLVOSet * rmlvo,
                          BellProcPtr bell_func, KbdCtrlProcPtr ctrl_func)
 {
@@ -672,7 +672,7 @@ InitKeyboardDeviceStruct(DeviceIntPtr dev, XkbRMLVOSet * rmlvo,
                                             NULL, 0, bell_func, ctrl_func);
 }
 
-_X_EXPORT Bool
+XORG_EXPORT Bool
 InitKeyboardDeviceStructFromString(DeviceIntPtr dev,
                                    const char *keymap, int keymap_length,
                                    BellProcPtr bell_func, KbdCtrlProcPtr ctrl_func)

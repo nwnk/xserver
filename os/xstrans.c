@@ -6,7 +6,7 @@
 
 /* ErrorF is used by xtrans */
 #ifndef HAVE_DIX_CONFIG_H
-extern _X_EXPORT void
+extern XORG_EXPORT void
 ErrorF(const char *f, ...)
 _X_ATTRIBUTE_PRINTF(1, 2);
 #endif

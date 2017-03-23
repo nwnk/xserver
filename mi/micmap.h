@@ -9,7 +9,7 @@
 #define SetInstalledmiColormap(s,c) \
     (dixSetPrivate(&(s)->devPrivates, micmapScrPrivateKey, c))
 
-extern _X_EXPORT DevPrivateKeyRec micmapScrPrivateKeyRec;
+extern XORG_EXPORT DevPrivateKeyRec micmapScrPrivateKeyRec;
 
 #define micmapScrPrivateKey (&micmapScrPrivateKeyRec)
 
@@ -17,26 +17,26 @@ typedef Bool (*miInitVisualsProcPtr) (VisualPtr *, DepthPtr *, int *, int *,
                                       int *, VisualID *, unsigned long, int,
                                       int);
 
-extern _X_EXPORT int miListInstalledColormaps(ScreenPtr pScreen,
+extern XORG_EXPORT int miListInstalledColormaps(ScreenPtr pScreen,
                                               Colormap * pmaps);
-extern _X_EXPORT void miInstallColormap(ColormapPtr pmap);
-extern _X_EXPORT void miUninstallColormap(ColormapPtr pmap);
+extern XORG_EXPORT void miInstallColormap(ColormapPtr pmap);
+extern XORG_EXPORT void miUninstallColormap(ColormapPtr pmap);
 
-extern _X_EXPORT void miResolveColor(unsigned short *, unsigned short *,
+extern XORG_EXPORT void miResolveColor(unsigned short *, unsigned short *,
                                      unsigned short *, VisualPtr);
-extern _X_EXPORT Bool miInitializeColormap(ColormapPtr);
-extern _X_EXPORT int miExpandDirectColors(ColormapPtr, int, xColorItem *,
+extern XORG_EXPORT Bool miInitializeColormap(ColormapPtr);
+extern XORG_EXPORT int miExpandDirectColors(ColormapPtr, int, xColorItem *,
                                           xColorItem *);
-extern _X_EXPORT Bool miCreateDefColormap(ScreenPtr);
-extern _X_EXPORT void miClearVisualTypes(void);
-extern _X_EXPORT Bool miSetVisualTypes(int, int, int, int);
-extern _X_EXPORT Bool miSetPixmapDepths(void);
-extern _X_EXPORT Bool miSetVisualTypesAndMasks(int depth, int visuals,
+extern XORG_EXPORT Bool miCreateDefColormap(ScreenPtr);
+extern XORG_EXPORT void miClearVisualTypes(void);
+extern XORG_EXPORT Bool miSetVisualTypes(int, int, int, int);
+extern XORG_EXPORT Bool miSetPixmapDepths(void);
+extern XORG_EXPORT Bool miSetVisualTypesAndMasks(int depth, int visuals,
                                                int bitsPerRGB, int preferredCVC,
                                                Pixel redMask, Pixel greenMask,
                                                Pixel blueMask);
-extern _X_EXPORT int miGetDefaultVisualMask(int);
-extern _X_EXPORT Bool miInitVisuals(VisualPtr *, DepthPtr *, int *, int *,
+extern XORG_EXPORT int miGetDefaultVisualMask(int);
+extern XORG_EXPORT Bool miInitVisuals(VisualPtr *, DepthPtr *, int *, int *,
                                     int *, VisualID *, unsigned long, int, int);
 
 #define MAX_PSEUDO_DEPTH	10

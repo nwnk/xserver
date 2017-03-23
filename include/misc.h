@@ -395,13 +395,13 @@ swap_uint16(uint16_t * x)
 		(dst) = lswaps((src)); \
 	} while (0)
 
-extern _X_EXPORT void SwapLongs(CARD32 *list, unsigned long count);
+extern XORG_EXPORT void SwapLongs(CARD32 *list, unsigned long count);
 
-extern _X_EXPORT void SwapShorts(short *list, unsigned long count);
+extern XORG_EXPORT void SwapShorts(short *list, unsigned long count);
 
-extern _X_EXPORT void MakePredeclaredAtoms(void);
+extern XORG_EXPORT void MakePredeclaredAtoms(void);
 
-extern _X_EXPORT int Ones(unsigned long /*mask */ );
+extern XORG_EXPORT int Ones(unsigned long /*mask */ );
 
 typedef struct _xPoint *DDXPointPtr;
 typedef struct pixman_box16 *BoxPtr;
@@ -420,8 +420,8 @@ typedef struct _CharInfo *CharInfoPtr;  /* also in fonts/include/font.h */
 #define _XTYPEDEF_CHARINFOPTR
 #endif
 
-extern _X_EXPORT unsigned long globalSerialNumber;
-extern _X_EXPORT unsigned long serverGeneration;
+extern XORG_EXPORT unsigned long globalSerialNumber;
+extern XORG_EXPORT unsigned long serverGeneration;
 
 /* Don't use this directly, use BUG_WARN or BUG_WARN_MSG instead */
 #define __BUG_WARN_MSG(cond, with_msg, ...)                                \

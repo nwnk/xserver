@@ -755,58 +755,58 @@ typedef struct _ExaDriver {
 /** @} */
 
 /* in exa.c */
-extern _X_EXPORT ExaDriverPtr exaDriverAlloc(void);
+extern XORG_EXPORT ExaDriverPtr exaDriverAlloc(void);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  exaDriverInit(ScreenPtr pScreen, ExaDriverPtr pScreenInfo);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaDriverFini(ScreenPtr pScreen);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaMarkSync(ScreenPtr pScreen);
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaWaitSync(ScreenPtr pScreen);
 
-extern _X_EXPORT unsigned long
+extern XORG_EXPORT unsigned long
  exaGetPixmapOffset(PixmapPtr pPix);
 
-extern _X_EXPORT unsigned long
+extern XORG_EXPORT unsigned long
  exaGetPixmapPitch(PixmapPtr pPix);
 
-extern _X_EXPORT unsigned long
+extern XORG_EXPORT unsigned long
  exaGetPixmapSize(PixmapPtr pPix);
 
-extern _X_EXPORT void *exaGetPixmapDriverPrivate(PixmapPtr p);
+extern XORG_EXPORT void *exaGetPixmapDriverPrivate(PixmapPtr p);
 
 /* in exa_offscreen.c */
-extern _X_EXPORT ExaOffscreenArea *exaOffscreenAlloc(ScreenPtr pScreen,
+extern XORG_EXPORT ExaOffscreenArea *exaOffscreenAlloc(ScreenPtr pScreen,
                                                      int size, int align,
                                                      Bool locked,
                                                      ExaOffscreenSaveProc save,
                                                      void *privData);
 
-extern _X_EXPORT ExaOffscreenArea *exaOffscreenFree(ScreenPtr pScreen,
+extern XORG_EXPORT ExaOffscreenArea *exaOffscreenFree(ScreenPtr pScreen,
                                                     ExaOffscreenArea * area);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  ExaOffscreenMarkUsed(PixmapPtr pPixmap);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaEnableDisableFBAccess(ScreenPtr pScreen, Bool enable);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  exaDrawableIsOffscreen(DrawablePtr pDrawable);
 
 /* in exa.c */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaMoveInPixmap(PixmapPtr pPixmap);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  exaMoveOutPixmap(PixmapPtr pPixmap);
 
 /* in exa_unaccel.c */
-extern _X_EXPORT CARD32
+extern XORG_EXPORT CARD32
  exaGetPixmapFirstPixel(PixmapPtr pPixmap);
 
 /**

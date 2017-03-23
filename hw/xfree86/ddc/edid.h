@@ -14,7 +14,7 @@
 
 #include <X11/Xmd.h>
 
-#ifndef _X_EXPORT
+#ifndef XORG_EXPORT
 #include <X11/Xfuncproto.h>
 #endif
 
@@ -555,7 +555,7 @@ typedef struct {
     Uchar *rawData;
 } xf86Monitor, *xf86MonPtr;
 
-extern _X_EXPORT xf86MonPtr ConfiguredMonitor;
+extern XORG_EXPORT xf86MonPtr ConfiguredMonitor;
 
 #define EXT_TAG 0
 #define EXT_REV 1

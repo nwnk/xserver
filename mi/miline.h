@@ -77,7 +77,7 @@ in this Software without prior written authorization from The Open Group.
  * Jack E. Bresenham, IEEE CG&A, May 1987.
  */
 
-extern _X_EXPORT void miSetZeroLineBias(ScreenPtr /* pScreen */ ,
+extern XORG_EXPORT void miSetZeroLineBias(ScreenPtr /* pScreen */ ,
                                         unsigned int    /* bias */
     );
 
@@ -147,11 +147,11 @@ extern _X_EXPORT void miSetZeroLineBias(ScreenPtr /* pScreen */ ,
 #define IsXDecreasingOctant(_octant)	((_octant) & XDECREASING)
 #define IsYDecreasingOctant(_octant)	((_octant) & YDECREASING)
 
-extern _X_EXPORT DevPrivateKeyRec miZeroLineScreenKeyRec;
+extern XORG_EXPORT DevPrivateKeyRec miZeroLineScreenKeyRec;
 
 #define miZeroLineScreenKey (&miZeroLineScreenKeyRec)
 
-extern _X_EXPORT int miZeroClipLine(int /*xmin */ ,
+extern XORG_EXPORT int miZeroClipLine(int /*xmin */ ,
                                     int /*ymin */ ,
                                     int /*xmax */ ,
                                     int /*ymax */ ,

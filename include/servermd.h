@@ -103,7 +103,7 @@ typedef struct _PaddingInfo {
     int bytesPerPixel;          /* only set when notPower2 is TRUE */
     int bitsPerPixel;           /* bits per pixel */
 } PaddingInfo;
-extern _X_EXPORT PaddingInfo PixmapWidthPaddingInfo[];
+extern XORG_EXPORT PaddingInfo PixmapWidthPaddingInfo[];
 
 /* The only portable way to get the bpp from the depth is to look it up */
 #define BitsPerPixel(d) (PixmapWidthPaddingInfo[d].bitsPerPixel)

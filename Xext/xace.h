@@ -54,30 +54,30 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define XACE_KEY_AVAIL			14
 #define XACE_NUM_HOOKS			15
 
-extern _X_EXPORT CallbackListPtr XaceHooks[XACE_NUM_HOOKS];
+extern XORG_EXPORT CallbackListPtr XaceHooks[XACE_NUM_HOOKS];
 
 /* Entry point for hook functions.  Called by Xserver.
  * Required by libdbe and libextmod
  */
-extern _X_EXPORT int XaceHook(int /*hook */ ,
+extern XORG_EXPORT int XaceHook(int /*hook */ ,
                               ...       /*appropriate args for hook */
     );
 
 /* determine whether any callbacks are present for the XACE hook */
-extern _X_EXPORT int XaceHookIsSet(int hook);
+extern XORG_EXPORT int XaceHookIsSet(int hook);
 
 /* Special-cased hook functions
  */
-extern _X_EXPORT int XaceHookDispatch(ClientPtr ptr, int major);
+extern XORG_EXPORT int XaceHookDispatch(ClientPtr ptr, int major);
 #define XaceHookDispatch(c, m) \
     ((XaceHooks[XACE_EXT_DISPATCH] && (m) >= EXTENSION_BASE) ? \
     XaceHookDispatch((c), (m)) : \
     Success)
 
-extern _X_EXPORT int XaceHookPropertyAccess(ClientPtr ptr, WindowPtr pWin,
+extern XORG_EXPORT int XaceHookPropertyAccess(ClientPtr ptr, WindowPtr pWin,
                                             PropertyPtr *ppProp,
                                             Mask access_mode);
-extern _X_EXPORT int XaceHookSelectionAccess(ClientPtr ptr, Selection ** ppSel,
+extern XORG_EXPORT int XaceHookSelectionAccess(ClientPtr ptr, Selection ** ppSel,
                                              Mask access_mode);
 
 /* Register a callback for a given hook.
@@ -92,13 +92,13 @@ extern _X_EXPORT int XaceHookSelectionAccess(ClientPtr ptr, Selection ** ppSel,
 
 /* XTrans wrappers for use by security modules
  */
-extern _X_EXPORT int XaceGetConnectionNumber(ClientPtr ptr);
-extern _X_EXPORT int XaceIsLocal(ClientPtr ptr);
+extern XORG_EXPORT int XaceGetConnectionNumber(ClientPtr ptr);
+extern XORG_EXPORT int XaceIsLocal(ClientPtr ptr);
 
 /* From the original Security extension...
  */
 
-extern _X_EXPORT void XaceCensorImage(ClientPtr client,
+extern XORG_EXPORT void XaceCensorImage(ClientPtr client,
                                       RegionPtr pVisibleRegion,
                                       long widthBytesLine,
                                       DrawablePtr pDraw,

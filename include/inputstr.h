@@ -60,7 +60,7 @@ SOFTWARE.
 #define BitIsOn(ptr, bit) (!!(((const BYTE *) (ptr))[(bit)>>3] & (1 << ((bit) & 7))))
 #define SetBit(ptr, bit)  (((BYTE *) (ptr))[(bit)>>3] |= (1 << ((bit) & 7)))
 #define ClearBit(ptr, bit) (((BYTE *)(ptr))[(bit)>>3] &= ~(1 << ((bit) & 7)))
-extern _X_EXPORT int CountBits(const uint8_t * mask, int len);
+extern XORG_EXPORT int CountBits(const uint8_t * mask, int len);
 
 #define SameClient(obj,client) \
 	(CLIENT_BITS((obj)->resource) == (client)->clientAsMask)
@@ -611,7 +611,7 @@ typedef struct {
     DeviceIntPtr all_master_devices;
 } InputInfo;
 
-extern _X_EXPORT InputInfo inputInfo;
+extern XORG_EXPORT InputInfo inputInfo;
 
 /* for keeping the events for devices grabbed synchronously */
 typedef struct _QdEvent *QdEventPtr;

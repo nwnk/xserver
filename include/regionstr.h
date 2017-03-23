@@ -65,9 +65,9 @@ typedef struct pixman_region16 RegionRec, *RegionPtr;
 
 typedef struct pixman_region16_data RegDataRec, *RegDataPtr;
 
-extern _X_EXPORT BoxRec RegionEmptyBox;
-extern _X_EXPORT RegDataRec RegionEmptyData;
-extern _X_EXPORT RegDataRec RegionBrokenData;
+extern XORG_EXPORT BoxRec RegionEmptyBox;
+extern XORG_EXPORT RegDataRec RegionEmptyData;
+extern XORG_EXPORT RegDataRec RegionBrokenData;
 static inline Bool
 RegionNil(RegionPtr reg)
 {
@@ -210,14 +210,14 @@ RegionNull(RegionPtr _pReg)
     (_pReg)->data = &RegionEmptyData;
 }
 
-extern _X_EXPORT void InitRegions(void);
+extern XORG_EXPORT void InitRegions(void);
 
-extern _X_EXPORT RegionPtr RegionCreate(BoxPtr /*rect */ ,
+extern XORG_EXPORT RegionPtr RegionCreate(BoxPtr /*rect */ ,
                                         int /*size */ );
 
-extern _X_EXPORT void RegionDestroy(RegionPtr /*pReg */ );
+extern XORG_EXPORT void RegionDestroy(RegionPtr /*pReg */ );
 
-extern _X_EXPORT RegionPtr RegionDuplicate(RegionPtr /* pOld */);
+extern XORG_EXPORT RegionPtr RegionDuplicate(RegionPtr /* pOld */);
 
 static inline Bool
 RegionCopy(RegionPtr dst, RegionPtr src)
@@ -241,13 +241,13 @@ RegionUnion(RegionPtr newReg,   /* destination Region */
     return pixman_region_union(newReg, reg1, reg2);
 }
 
-extern _X_EXPORT Bool RegionAppend(RegionPtr /*dstrgn */ ,
+extern XORG_EXPORT Bool RegionAppend(RegionPtr /*dstrgn */ ,
                                    RegionPtr /*rgn */ );
 
-extern _X_EXPORT Bool RegionValidate(RegionPtr /*badreg */ ,
+extern XORG_EXPORT Bool RegionValidate(RegionPtr /*badreg */ ,
                                      Bool * /*pOverlap */ );
 
-extern _X_EXPORT RegionPtr RegionFromRects(int /*nrects */ ,
+extern XORG_EXPORT RegionPtr RegionFromRects(int /*nrects */ ,
                                            xRectanglePtr /*prect */ ,
                                            int /*ctype */ );
 
@@ -312,7 +312,7 @@ RegionTranslate(RegionPtr pReg, int x, int y)
     pixman_region_translate(pReg, x, y);
 }
 
-extern _X_EXPORT Bool RegionBreak(RegionPtr /*pReg */ );
+extern XORG_EXPORT Bool RegionBreak(RegionPtr /*pReg */ );
 
 static inline Bool
 RegionContainsPoint(RegionPtr pReg, int x, int y, BoxPtr box    /* "return" value */
@@ -327,16 +327,16 @@ RegionEqual(RegionPtr reg1, RegionPtr reg2)
     return pixman_region_equal(reg1, reg2);
 }
 
-extern _X_EXPORT Bool RegionRectAlloc(RegionPtr /*pRgn */ ,
+extern XORG_EXPORT Bool RegionRectAlloc(RegionPtr /*pRgn */ ,
                                       int       /*n */
     );
 
 #ifdef DEBUG
-extern _X_EXPORT Bool RegionIsValid(RegionPtr   /*prgn */
+extern XORG_EXPORT Bool RegionIsValid(RegionPtr   /*prgn */
     );
 #endif
 
-extern _X_EXPORT void RegionPrint(RegionPtr /*pReg */ );
+extern XORG_EXPORT void RegionPrint(RegionPtr /*pReg */ );
 
 #define INCLUDE_LEGACY_REGION_DEFINES
 #ifdef INCLUDE_LEGACY_REGION_DEFINES

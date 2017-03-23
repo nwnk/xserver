@@ -55,20 +55,20 @@ SOFTWARE.
 #include "scrnintstr.h"
 #include <X11/extensions/Xvproto.h>
 
-extern _X_EXPORT unsigned long XvExtensionGeneration;
-extern _X_EXPORT unsigned long XvScreenGeneration;
-extern _X_EXPORT unsigned long XvResourceGeneration;
+extern XORG_EXPORT unsigned long XvExtensionGeneration;
+extern XORG_EXPORT unsigned long XvScreenGeneration;
+extern XORG_EXPORT unsigned long XvResourceGeneration;
 
-extern _X_EXPORT int XvReqCode;
-extern _X_EXPORT int XvEventBase;
-extern _X_EXPORT int XvErrorBase;
+extern XORG_EXPORT int XvReqCode;
+extern XORG_EXPORT int XvEventBase;
+extern XORG_EXPORT int XvErrorBase;
 
-extern _X_EXPORT RESTYPE XvRTPort;
-extern _X_EXPORT RESTYPE XvRTEncoding;
-extern _X_EXPORT RESTYPE XvRTGrab;
-extern _X_EXPORT RESTYPE XvRTVideoNotify;
-extern _X_EXPORT RESTYPE XvRTVideoNotifyList;
-extern _X_EXPORT RESTYPE XvRTPortNotify;
+extern XORG_EXPORT RESTYPE XvRTPort;
+extern XORG_EXPORT RESTYPE XvRTEncoding;
+extern XORG_EXPORT RESTYPE XvRTGrab;
+extern XORG_EXPORT RESTYPE XvRTVideoNotify;
+extern XORG_EXPORT RESTYPE XvRTVideoNotifyList;
+extern XORG_EXPORT RESTYPE XvRTPortNotify;
 
 typedef struct {
     int numerator;
@@ -223,40 +223,40 @@ typedef struct {
 #define _XvBadPort (XvBadPort+XvErrorBase)
 #define _XvBadEncoding (XvBadEncoding+XvErrorBase)
 
-extern _X_EXPORT int ProcXvDispatch(ClientPtr);
-extern _X_EXPORT int SProcXvDispatch(ClientPtr);
+extern XORG_EXPORT int ProcXvDispatch(ClientPtr);
+extern XORG_EXPORT int SProcXvDispatch(ClientPtr);
 
-extern _X_EXPORT int XvScreenInit(ScreenPtr);
-extern _X_EXPORT DevPrivateKey XvGetScreenKey(void);
-extern _X_EXPORT unsigned long XvGetRTPort(void);
-extern _X_EXPORT void XvFreeAdaptor(XvAdaptorPtr pAdaptor);
-extern void _X_EXPORT XvFillColorKey(DrawablePtr pDraw, CARD32 key,
+extern XORG_EXPORT int XvScreenInit(ScreenPtr);
+extern XORG_EXPORT DevPrivateKey XvGetScreenKey(void);
+extern XORG_EXPORT unsigned long XvGetRTPort(void);
+extern XORG_EXPORT void XvFreeAdaptor(XvAdaptorPtr pAdaptor);
+extern void XORG_EXPORT XvFillColorKey(DrawablePtr pDraw, CARD32 key,
                                      RegionPtr region);
-extern _X_EXPORT int XvdiSendPortNotify(XvPortPtr, Atom, INT32);
+extern XORG_EXPORT int XvdiSendPortNotify(XvPortPtr, Atom, INT32);
 
-extern _X_EXPORT int XvdiPutVideo(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
+extern XORG_EXPORT int XvdiPutVideo(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
                                   INT16, INT16, CARD16, CARD16,
                                   INT16, INT16, CARD16, CARD16);
-extern _X_EXPORT int XvdiPutStill(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
+extern XORG_EXPORT int XvdiPutStill(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
                                   INT16, INT16, CARD16, CARD16,
                                   INT16, INT16, CARD16, CARD16);
-extern _X_EXPORT int XvdiGetVideo(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
+extern XORG_EXPORT int XvdiGetVideo(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
                                   INT16, INT16, CARD16, CARD16,
                                   INT16, INT16, CARD16, CARD16);
-extern _X_EXPORT int XvdiGetStill(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
+extern XORG_EXPORT int XvdiGetStill(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
                                   INT16, INT16, CARD16, CARD16,
                                   INT16, INT16, CARD16, CARD16);
-extern _X_EXPORT int XvdiPutImage(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
+extern XORG_EXPORT int XvdiPutImage(ClientPtr, DrawablePtr, XvPortPtr, GCPtr,
                                   INT16, INT16, CARD16, CARD16,
                                   INT16, INT16, CARD16, CARD16,
                                   XvImagePtr, unsigned char *, Bool,
                                   CARD16, CARD16);
-extern _X_EXPORT int XvdiSelectVideoNotify(ClientPtr, DrawablePtr, BOOL);
-extern _X_EXPORT int XvdiSelectPortNotify(ClientPtr, XvPortPtr, BOOL);
-extern _X_EXPORT int XvdiSetPortAttribute(ClientPtr, XvPortPtr, Atom, INT32);
-extern _X_EXPORT int XvdiGetPortAttribute(ClientPtr, XvPortPtr, Atom, INT32 *);
-extern _X_EXPORT int XvdiStopVideo(ClientPtr, XvPortPtr, DrawablePtr);
-extern _X_EXPORT int XvdiMatchPort(XvPortPtr, DrawablePtr);
-extern _X_EXPORT int XvdiGrabPort(ClientPtr, XvPortPtr, Time, int *);
-extern _X_EXPORT int XvdiUngrabPort(ClientPtr, XvPortPtr, Time);
+extern XORG_EXPORT int XvdiSelectVideoNotify(ClientPtr, DrawablePtr, BOOL);
+extern XORG_EXPORT int XvdiSelectPortNotify(ClientPtr, XvPortPtr, BOOL);
+extern XORG_EXPORT int XvdiSetPortAttribute(ClientPtr, XvPortPtr, Atom, INT32);
+extern XORG_EXPORT int XvdiGetPortAttribute(ClientPtr, XvPortPtr, Atom, INT32 *);
+extern XORG_EXPORT int XvdiStopVideo(ClientPtr, XvPortPtr, DrawablePtr);
+extern XORG_EXPORT int XvdiMatchPort(XvPortPtr, DrawablePtr);
+extern XORG_EXPORT int XvdiGrabPort(ClientPtr, XvPortPtr, Time, int *);
+extern XORG_EXPORT int XvdiUngrabPort(ClientPtr, XvPortPtr, Time);
 #endif                          /* XVDIX_H */

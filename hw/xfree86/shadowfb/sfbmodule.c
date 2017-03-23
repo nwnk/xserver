@@ -17,4 +17,4 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}                /* signature, to be patched into the file by a tool */
 };
 
-_X_EXPORT XF86ModuleData shadowfbModuleData = { &VersRec, NULL, NULL };
+XORG_EXPORT XF86ModuleData shadowfbModuleData = { &VersRec, NULL, NULL };

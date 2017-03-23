@@ -23,7 +23,7 @@
 #ifndef _PRESENTEXT_H_
 #define _PRESENTEXT_H_
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 present_extension_init(void);
 
 #endif /* _PRESENTEXT_H_ */

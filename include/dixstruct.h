@@ -38,7 +38,7 @@ SOFTWARE.
  *      translation from client ids to server addresses.
  */
 
-extern _X_EXPORT CallbackListPtr ClientStateCallback;
+extern XORG_EXPORT CallbackListPtr ClientStateCallback;
 
 typedef struct {
     ClientPtr client;
@@ -50,7 +50,7 @@ typedef void (*ReplySwapPtr) (ClientPtr /* pClient */ ,
                               int /* size */ ,
                               void * /* pbuf */ );
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 ReplyNotSwappd(ClientPtr /* pClient */ ,
                int /* size */ ,
                void * /* pbuf */ ) _X_NORETURN;
@@ -196,13 +196,13 @@ typedef struct _WorkQueue {
     void *closure;
 } WorkQueueRec;
 
-extern _X_EXPORT TimeStamp currentTime;
+extern XORG_EXPORT TimeStamp currentTime;
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
 CompareTimeStamps(TimeStamp /*a */ ,
                   TimeStamp /*b */ );
 
-extern _X_EXPORT TimeStamp
+extern XORG_EXPORT TimeStamp
 ClientTimeToServerTime(CARD32 /*c */ );
 
 typedef struct _CallbackRec {
@@ -223,13 +223,13 @@ typedef struct _CallbackList {
 
 extern int (*InitialVector[3]) (ClientPtr /*client */ );
 
-extern _X_EXPORT int (*ProcVector[256]) (ClientPtr /*client */ );
+extern XORG_EXPORT int (*ProcVector[256]) (ClientPtr /*client */ );
 
-extern _X_EXPORT int (*SwappedProcVector[256]) (ClientPtr /*client */ );
+extern XORG_EXPORT int (*SwappedProcVector[256]) (ClientPtr /*client */ );
 
 extern ReplySwapPtr ReplySwapVector[256];
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
 ProcBadRequest(ClientPtr /*client */ );
 
 #endif                          /* DIXSTRUCT_H */

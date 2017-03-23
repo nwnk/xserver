@@ -64,7 +64,7 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}
 };
 
-_X_EXPORT XF86ModuleData glxModuleData = { &VersRec, glxSetup, NULL };
+XORG_EXPORT XF86ModuleData glxModuleData = { &VersRec, glxSetup, NULL };
 
 static void *
 glxSetup(void *module, void *opts, int *errmaj, int *errmin)

@@ -54,23 +54,23 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "extnsionst.h"
 
 #ifdef COMPOSITE
-extern _X_EXPORT Bool noCompositeExtension;
+extern XORG_EXPORT Bool noCompositeExtension;
 extern void CompositeExtensionInit(void);
 #endif
 
 #ifdef DAMAGE
-extern _X_EXPORT Bool noDamageExtension;
+extern XORG_EXPORT Bool noDamageExtension;
 extern void DamageExtensionInit(void);
 #endif
 
 #if defined(DBE)
-extern _X_EXPORT Bool noDbeExtension;
+extern XORG_EXPORT Bool noDbeExtension;
 extern void DbeExtensionInit(void);
 #endif
 
 #if defined(DPMSExtension)
 #include <X11/extensions/dpmsconst.h>
-extern _X_EXPORT Bool noDPMSExtension;
+extern XORG_EXPORT Bool noDPMSExtension;
 extern void DPMSExtensionInit(void);
 #endif
 
@@ -78,17 +78,17 @@ extern Bool noGEExtension;
 extern void GEExtensionInit(void);
 
 #ifdef GLXEXT
-extern _X_EXPORT Bool noGlxExtension;
+extern XORG_EXPORT Bool noGlxExtension;
 #endif
 
 #ifdef PANORAMIX
 #include <X11/extensions/panoramiXproto.h>
-extern _X_EXPORT Bool noPanoramiXExtension;
+extern XORG_EXPORT Bool noPanoramiXExtension;
 extern void PanoramiXExtensionInit(void);
 #endif
 
 #ifdef RANDR
-extern _X_EXPORT Bool noRRExtension;
+extern XORG_EXPORT Bool noRRExtension;
 extern void RRExtensionInit(void);
 #endif
 
@@ -96,18 +96,18 @@ extern void RRExtensionInit(void);
 extern void RecordExtensionInit(void);
 #endif
 
-extern _X_EXPORT Bool noRenderExtension;
+extern XORG_EXPORT Bool noRenderExtension;
 extern void RenderExtensionInit(void);
 
 #if defined(RES)
 #include <X11/extensions/XResproto.h>
-extern _X_EXPORT Bool noResExtension;
+extern XORG_EXPORT Bool noResExtension;
 extern void ResExtensionInit(void);
 #endif
 
 #if defined(SCREENSAVER)
 #include <X11/extensions/saver.h>
-extern _X_EXPORT Bool noScreenSaverExtension;
+extern XORG_EXPORT Bool noScreenSaverExtension;
 extern void ScreenSaverExtensionInit(void);
 #endif
 
@@ -117,7 +117,7 @@ extern void ShapeExtensionInit(void);
 #ifdef MITSHM
 #include <X11/extensions/shm.h>
 #include <X11/extensions/shmproto.h>
-extern _X_EXPORT Bool noMITShmExtension;
+extern XORG_EXPORT Bool noMITShmExtension;
 extern void ShmExtensionInit(void);
 #endif
 
@@ -128,23 +128,23 @@ extern void XCMiscExtensionInit(void);
 #ifdef XCSECURITY
 #include <X11/extensions/secur.h>
 #include "securitysrv.h"
-extern _X_EXPORT Bool noSecurityExtension;
+extern XORG_EXPORT Bool noSecurityExtension;
 extern void SecurityExtensionInit(void);
 #endif
 
 #ifdef XF86BIGFONT
 #include <X11/extensions/xf86bigfproto.h>
-extern _X_EXPORT Bool noXFree86BigfontExtension;
+extern XORG_EXPORT Bool noXFree86BigfontExtension;
 extern void XFree86BigfontExtensionInit(void);
 #endif
 
 extern void BigReqExtensionInit(void);
 
-extern _X_EXPORT Bool noXFixesExtension;
+extern XORG_EXPORT Bool noXFixesExtension;
 extern void XFixesExtensionInit(void);
 
 extern void XInputExtensionInit(void);
-extern _X_EXPORT void AssignTypeAndName(DeviceIntPtr dev,
+extern XORG_EXPORT void AssignTypeAndName(DeviceIntPtr dev,
                                         Atom type,
                                         const char *name);
 
@@ -153,7 +153,7 @@ extern void XkbExtensionInit(void);
 
 #if defined(XSELINUX)
 #include "xselinux.h"
-extern _X_EXPORT Bool noSELinuxExtension;
+extern XORG_EXPORT Bool noSELinuxExtension;
 extern void SELinuxExtensionInit(void);
 #endif
 
@@ -166,7 +166,7 @@ extern void XTestExtensionInit(void);
 #if defined(XV)
 #include <X11/extensions/Xv.h>
 #include <X11/extensions/XvMC.h>
-extern _X_EXPORT Bool noXvExtension;
+extern XORG_EXPORT Bool noXvExtension;
 extern void XvExtensionInit(void);
 extern void XvMCExtensionInit(void);
 #endif

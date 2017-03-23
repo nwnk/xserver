@@ -233,6 +233,6 @@
  */
 
 /* Public PCI access functions */
-extern _X_EXPORT Bool xf86scanpci(void);
+extern XORG_EXPORT Bool xf86scanpci(void);
 
 #endif                          /* _XF86PCI_H */

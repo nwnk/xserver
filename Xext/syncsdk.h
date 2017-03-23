@@ -26,7 +26,7 @@
 
 #include "misync.h"
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  SyncVerifyFence(SyncFence ** ppFence, XID fid, ClientPtr client, Mask mode);
 
 #define VERIFY_SYNC_FENCE(pFence, fid, client, mode)			\

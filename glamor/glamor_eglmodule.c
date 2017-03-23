@@ -47,4 +47,4 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}                /* signature, to be patched into the file by a tool */
 };
 
-_X_EXPORT XF86ModuleData glamoreglModuleData = { &VersRec, NULL, NULL };
+XORG_EXPORT XF86ModuleData glamoreglModuleData = { &VersRec, NULL, NULL };

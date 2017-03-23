@@ -68,21 +68,21 @@ typedef struct _RamdacScreenRec {
 
 #define RAMDACSCRPTR(p) ((RamDacScreenRecPtr)((p)->privates[RamDacGetScreenIndex()].ptr))->RamDacRec
 
-extern _X_EXPORT int RamDacHWPrivateIndex;
-extern _X_EXPORT int RamDacScreenPrivateIndex;
+extern XORG_EXPORT int RamDacHWPrivateIndex;
+extern XORG_EXPORT int RamDacScreenPrivateIndex;
 
 typedef struct {
     int token;
 } RamDacSupportedInfoRec, *RamDacSupportedInfoRecPtr;
 
-extern _X_EXPORT RamDacRecPtr RamDacCreateInfoRec(void);
-extern _X_EXPORT RamDacHelperRecPtr RamDacHelperCreateInfoRec(void);
-extern _X_EXPORT void RamDacDestroyInfoRec(RamDacRecPtr RamDacRec);
-extern _X_EXPORT void RamDacHelperDestroyInfoRec(RamDacHelperRecPtr RamDacRec);
-extern _X_EXPORT Bool RamDacInit(ScrnInfoPtr pScrn, RamDacRecPtr RamDacRec);
-extern _X_EXPORT Bool RamDacHandleColormaps(ScreenPtr pScreen, int maxColors,
+extern XORG_EXPORT RamDacRecPtr RamDacCreateInfoRec(void);
+extern XORG_EXPORT RamDacHelperRecPtr RamDacHelperCreateInfoRec(void);
+extern XORG_EXPORT void RamDacDestroyInfoRec(RamDacRecPtr RamDacRec);
+extern XORG_EXPORT void RamDacHelperDestroyInfoRec(RamDacHelperRecPtr RamDacRec);
+extern XORG_EXPORT Bool RamDacInit(ScrnInfoPtr pScrn, RamDacRecPtr RamDacRec);
+extern XORG_EXPORT Bool RamDacHandleColormaps(ScreenPtr pScreen, int maxColors,
                                             int sigRGBbits, unsigned int flags);
-extern _X_EXPORT void RamDacFreeRec(ScrnInfoPtr pScrn);
-extern _X_EXPORT int RamDacGetHWIndex(void);
+extern XORG_EXPORT void RamDacFreeRec(ScrnInfoPtr pScrn);
+extern XORG_EXPORT int RamDacGetHWIndex(void);
 
 #endif                          /* _XF86RAMDAC_H */

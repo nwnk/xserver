@@ -755,7 +755,7 @@ typedef struct _xf86CrtcConfig {
 #endif
 } xf86CrtcConfigRec, *xf86CrtcConfigPtr;
 
-extern _X_EXPORT int xf86CrtcConfigPrivateIndex;
+extern XORG_EXPORT int xf86CrtcConfigPrivateIndex;
 
 #define XF86_CRTC_CONFIG_PTR(p)	((xf86CrtcConfigPtr) ((p)->privates[xf86CrtcConfigPrivateIndex].ptr))
 
@@ -793,10 +793,10 @@ xf86CompatRRCrtc(ScrnInfoPtr pScrn)
  * Initialize xf86CrtcConfig structure
  */
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86CrtcConfigInit(ScrnInfoPtr scrn, const xf86CrtcConfigFuncsRec * funcs);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86CrtcSetSizeRange(ScrnInfoPtr scrn,
                      int minWidth, int minHeight, int maxWidth, int maxHeight);
@@ -804,81 +804,81 @@ xf86CrtcSetSizeRange(ScrnInfoPtr scrn,
 /*
  * Crtc functions
  */
-extern _X_EXPORT xf86CrtcPtr
+extern XORG_EXPORT xf86CrtcPtr
 xf86CrtcCreate(ScrnInfoPtr scrn, const xf86CrtcFuncsRec * funcs);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86CrtcDestroy(xf86CrtcPtr crtc);
 
 /**
  * Sets the given video mode on the given crtc
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86CrtcSetModeTransform(xf86CrtcPtr crtc, DisplayModePtr mode,
                          Rotation rotation, RRTransformPtr transform, int x,
                          int y);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86CrtcSetMode(xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotation,
                 int x, int y);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86CrtcSetOrigin(xf86CrtcPtr crtc, int x, int y);
 
 /*
  * Assign crtc rotation during mode set
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86CrtcRotate(xf86CrtcPtr crtc);
 
 /*
  * Clean up any rotation data, used when a crtc is turned off
  * as well as when rotation is disabled.
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86RotateDestroy(xf86CrtcPtr crtc);
 
 /*
  * free shadow memory allocated for all crtcs
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86RotateFreeShadow(ScrnInfoPtr pScrn);
 
 /*
  * Clean up rotation during CloseScreen
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86RotateCloseScreen(ScreenPtr pScreen);
 
 /**
  * Return whether any output is assigned to the crtc
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86CrtcInUse(xf86CrtcPtr crtc);
 
 /*
  * Output functions
  */
-extern _X_EXPORT xf86OutputPtr
+extern XORG_EXPORT xf86OutputPtr
 xf86OutputCreate(ScrnInfoPtr scrn,
                  const xf86OutputFuncsRec * funcs, const char *name);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86OutputUseScreenMonitor(xf86OutputPtr output, Bool use_screen_monitor);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86OutputRename(xf86OutputPtr output, const char *name);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86OutputDestroy(xf86OutputPtr output);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86ProbeOutputModes(ScrnInfoPtr pScrn, int maxX, int maxY);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86SetScrnInfoModes(ScrnInfoPtr pScrn);
 
 #ifdef RANDR_13_INTERFACE
@@ -887,49 +887,49 @@ extern _X_EXPORT void
 #define ScreenInitRetType	Bool
 #endif
 
-extern _X_EXPORT ScreenInitRetType xf86CrtcScreenInit(ScreenPtr pScreen);
+extern XORG_EXPORT ScreenInitRetType xf86CrtcScreenInit(ScreenPtr pScreen);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86InitialConfiguration(ScrnInfoPtr pScrn, Bool canGrow);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86DPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode, int flags);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86SaveScreen(ScreenPtr pScreen, int mode);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86DisableUnusedFunctions(ScrnInfoPtr pScrn);
 
-extern _X_EXPORT DisplayModePtr
+extern XORG_EXPORT DisplayModePtr
 xf86OutputFindClosestMode(xf86OutputPtr output, DisplayModePtr desired);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86SetSingleMode(ScrnInfoPtr pScrn, DisplayModePtr desired, Rotation rotation);
 
 /**
  * Set the EDID information for the specified output
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86OutputSetEDID(xf86OutputPtr output, xf86MonPtr edid_mon);
 
 /**
  * Set the TILE information for the specified output
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86OutputSetTile(xf86OutputPtr output, struct xf86CrtcTileInfo *tile_info);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 xf86OutputParseKMSTile(const char *tile_data, int tile_length, struct xf86CrtcTileInfo *tile_info);
 
 /**
  * Return the list of modes supported by the EDID information
  * stored in 'output'
  */
-extern _X_EXPORT DisplayModePtr xf86OutputGetEDIDModes(xf86OutputPtr output);
+extern XORG_EXPORT DisplayModePtr xf86OutputGetEDIDModes(xf86OutputPtr output);
 
-extern _X_EXPORT xf86MonPtr
+extern XORG_EXPORT xf86MonPtr
 xf86OutputGetEDID(xf86OutputPtr output, I2CBusPtr pDDCBus);
 
 /**
@@ -937,7 +937,7 @@ xf86OutputGetEDID(xf86OutputPtr output, I2CBusPtr pDDCBus);
  */
 
 #ifdef XFreeXDGA
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86DiDGAInit(ScreenPtr pScreen, unsigned long dga_address);
 
 /* this is the real function, used only internally */
@@ -948,7 +948,7 @@ _X_INTERNAL Bool
  * Re-initialize dga for this screen (as when the set of modes changes)
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86DiDGAReInit(ScreenPtr pScreen);
 #endif
 
@@ -961,20 +961,20 @@ _X_INTERNAL Bool
  * the information from the outputs
  */
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86CrtcSetScreenSubpixelOrder(ScreenPtr pScreen);
 
 /*
  * Get a standard string name for a connector type
  */
-extern _X_EXPORT const char *xf86ConnectorGetName(xf86ConnectorType connector);
+extern XORG_EXPORT const char *xf86ConnectorGetName(xf86ConnectorType connector);
 
 /*
  * Using the desired mode information in each crtc, set
  * modes (used in EnterVT functions, or at server startup)
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86SetDesiredModes(ScrnInfoPtr pScrn);
 
 /**
@@ -983,7 +983,7 @@ extern _X_EXPORT Bool
  *
  * Driver should call this from ScreenInit function
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86_cursors_init(ScreenPtr screen, int max_width, int max_height, int flags);
 
 /**
@@ -995,19 +995,19 @@ static _X_INLINE _X_DEPRECATED void xf86_reload_cursors(ScreenPtr screen) {}
 /**
  * Called from EnterVT to turn the cursors back on
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86_show_cursors(ScrnInfoPtr scrn);
 
 /**
  * Called by the driver to turn cursors off
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86_hide_cursors(ScrnInfoPtr scrn);
 
 /**
  * Clean up CRTC-based cursor code. Driver must call this at CloseScreen time.
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86_cursors_fini(ScreenPtr screen);
 
 #ifdef XV
@@ -1017,7 +1017,7 @@ extern _X_EXPORT void
  * wraps xf86XVClipVideoHelper()
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86_crtc_clip_video_helper(ScrnInfoPtr pScrn,
                             xf86CrtcPtr * crtc_ret,
@@ -1030,27 +1030,27 @@ xf86_crtc_clip_video_helper(ScrnInfoPtr pScrn,
                             RegionPtr reg, INT32 width, INT32 height);
 #endif
 
-extern _X_EXPORT xf86_crtc_notify_proc_ptr
+extern XORG_EXPORT xf86_crtc_notify_proc_ptr
 xf86_wrap_crtc_notify(ScreenPtr pScreen, xf86_crtc_notify_proc_ptr new);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86_unwrap_crtc_notify(ScreenPtr pScreen, xf86_crtc_notify_proc_ptr old);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86_crtc_notify(ScreenPtr pScreen);
 
 /**
  * Gamma
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86_crtc_supports_gamma(ScrnInfoPtr pScrn);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86ProviderSetup(ScrnInfoPtr scrn,
                   const xf86ProviderFuncsRec * funcs, const char *name);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86DetachAllCrtc(ScrnInfoPtr scrn);
 
 #endif                          /* _XF86CRTC_H_ */

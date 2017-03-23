@@ -100,29 +100,29 @@ typedef struct _PredictableAccelSchemeRec {
     int num_prop_handlers;
 } PredictableAccelSchemeRec, *PredictableAccelSchemePtr;
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 InitVelocityData(DeviceVelocityPtr vel);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 InitTrackers(DeviceVelocityPtr vel, int ntracker);
 
-extern _X_EXPORT BOOL
+extern XORG_EXPORT BOOL
 ProcessVelocityData2D(DeviceVelocityPtr vel, double dx, double dy, int time);
 
-extern _X_EXPORT double
+extern XORG_EXPORT double
 BasicComputeAcceleration(DeviceIntPtr dev, DeviceVelocityPtr vel,
                          double velocity, double threshold, double acc);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 FreeVelocityData(DeviceVelocityPtr vel);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
 SetAccelerationProfile(DeviceVelocityPtr vel, int profile_num);
 
-extern _X_EXPORT DeviceVelocityPtr
+extern XORG_EXPORT DeviceVelocityPtr
 GetDevicePredictableAccelData(DeviceIntPtr dev);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 SetDeviceSpecificAccelerationProfile(DeviceVelocityPtr vel,
                                      PointerAccelerationProfileFunc profile);
 

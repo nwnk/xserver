@@ -24,34 +24,34 @@ typedef enum {
 
 typedef void (*DDC1SetSpeedProc) (ScrnInfoPtr, xf86ddcSpeed);
 
-extern _X_EXPORT xf86MonPtr xf86DoEDID_DDC1(ScrnInfoPtr pScrn,
+extern XORG_EXPORT xf86MonPtr xf86DoEDID_DDC1(ScrnInfoPtr pScrn,
                                             DDC1SetSpeedProc DDC1SetSpeed,
                                             unsigned
                                             int (*DDC1Read) (ScrnInfoPtr)
     );
 
-extern _X_EXPORT xf86MonPtr xf86DoEDID_DDC2(ScrnInfoPtr pScrn, I2CBusPtr pBus);
+extern XORG_EXPORT xf86MonPtr xf86DoEDID_DDC2(ScrnInfoPtr pScrn, I2CBusPtr pBus);
 
-extern _X_EXPORT xf86MonPtr xf86DoEEDID(ScrnInfoPtr pScrn, I2CBusPtr pBus, Bool);
+extern XORG_EXPORT xf86MonPtr xf86DoEEDID(ScrnInfoPtr pScrn, I2CBusPtr pBus, Bool);
 
-extern _X_EXPORT xf86MonPtr xf86PrintEDID(xf86MonPtr monPtr);
+extern XORG_EXPORT xf86MonPtr xf86PrintEDID(xf86MonPtr monPtr);
 
-extern _X_EXPORT xf86MonPtr xf86InterpretEDID(int screenIndex, Uchar * block);
+extern XORG_EXPORT xf86MonPtr xf86InterpretEDID(int screenIndex, Uchar * block);
 
-extern _X_EXPORT xf86MonPtr xf86InterpretEEDID(int screenIndex, Uchar * block);
+extern XORG_EXPORT xf86MonPtr xf86InterpretEEDID(int screenIndex, Uchar * block);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86EdidMonitorSet(int scrnIndex, MonPtr Monitor, xf86MonPtr DDC);
 
-extern _X_EXPORT Bool xf86SetDDCproperties(ScrnInfoPtr pScreen, xf86MonPtr DDC);
+extern XORG_EXPORT Bool xf86SetDDCproperties(ScrnInfoPtr pScreen, xf86MonPtr DDC);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86MonitorIsHDMI(xf86MonPtr mon);
 
-extern _X_EXPORT DisplayModePtr
+extern XORG_EXPORT DisplayModePtr
 FindDMTMode(int hsize, int vsize, int refresh, Bool rb);
 
-extern _X_EXPORT const DisplayModeRec DMTModes[];
+extern XORG_EXPORT const DisplayModeRec DMTModes[];
 
 /*
  * Quirks to work around broken EDID data from various monitors.

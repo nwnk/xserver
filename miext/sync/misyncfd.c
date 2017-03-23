@@ -66,7 +66,7 @@ miSyncFDFromFence(DrawablePtr pDraw, SyncFence *pFence)
     return (*priv->funcs.GetFenceFd)(pDraw->pScreen, pFence);
 }
 
-_X_EXPORT Bool miSyncFdScreenInit(ScreenPtr pScreen,
+XORG_EXPORT Bool miSyncFdScreenInit(ScreenPtr pScreen,
                                   const SyncFdScreenFuncsRec *funcs)
 {
     SyncFdScreenPrivatePtr     priv;

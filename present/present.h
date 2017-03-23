@@ -104,15 +104,15 @@ typedef struct present_screen_info {
  * Called when 'event_id' occurs. 'ust' and 'msc' indicate when the
  * event actually happened
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 present_event_notify(uint64_t event_id, uint64_t ust, uint64_t msc);
 
 /* 'crtc' has been turned off, so any pending events will never occur.
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 present_event_abandon(RRCrtcPtr crtc);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 present_screen_init(ScreenPtr screen, present_screen_info_ptr info);
 
 typedef void (*present_complete_notify_proc)(WindowPtr window,
@@ -122,7 +122,7 @@ typedef void (*present_complete_notify_proc)(WindowPtr window,
                                              uint64_t ust,
                                              uint64_t msc);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 present_register_complete_notify(present_complete_notify_proc proc);
 
 #endif /* _PRESENT_H_ */

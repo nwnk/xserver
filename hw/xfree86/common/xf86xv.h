@@ -167,44 +167,44 @@ typedef struct {
     XF86AttributePtr attributes;
 } XF86OffscreenImageRec, *XF86OffscreenImagePtr;
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86XVScreenInit(ScreenPtr pScreen, XF86VideoAdaptorPtr * Adaptors, int num);
 
 typedef int (*xf86XVInitGenericAdaptorPtr) (ScrnInfoPtr pScrn,
                                             XF86VideoAdaptorPtr ** Adaptors);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  xf86XVRegisterGenericAdaptorDriver(xf86XVInitGenericAdaptorPtr InitFunc);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  xf86XVListGenericAdaptors(ScrnInfoPtr pScrn, XF86VideoAdaptorPtr ** Adaptors);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86XVRegisterOffscreenImages(ScreenPtr pScreen,
                               XF86OffscreenImagePtr images, int num);
 
-extern _X_EXPORT XF86OffscreenImagePtr
+extern XORG_EXPORT XF86OffscreenImagePtr
 xf86XVQueryOffscreenImages(ScreenPtr pScreen, int *num);
 
-extern _X_EXPORT XF86VideoAdaptorPtr xf86XVAllocateVideoAdaptorRec(ScrnInfoPtr
+extern XORG_EXPORT XF86VideoAdaptorPtr xf86XVAllocateVideoAdaptorRec(ScrnInfoPtr
                                                                    pScrn);
 
-extern _X_EXPORT void xf86XVFreeVideoAdaptorRec(XF86VideoAdaptorPtr ptr);
+extern XORG_EXPORT void xf86XVFreeVideoAdaptorRec(XF86VideoAdaptorPtr ptr);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86XVFillKeyHelper(ScreenPtr pScreen, CARD32 key, RegionPtr clipboxes);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86XVFillKeyHelperDrawable(DrawablePtr pDraw, CARD32 key, RegionPtr clipboxes);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86XVFillKeyHelperPort(DrawablePtr pDraw, void *data, CARD32 key,
                         RegionPtr clipboxes, Bool fillEverything);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 xf86XVClipVideoHelper(BoxPtr dst,
                       INT32 *xa,
@@ -212,7 +212,7 @@ xf86XVClipVideoHelper(BoxPtr dst,
                       INT32 *ya,
                       INT32 *yb, RegionPtr reg, INT32 width, INT32 height);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86XVCopyYUV12ToPacked(const void *srcy,
                         const void *srcv,
@@ -221,7 +221,7 @@ xf86XVCopyYUV12ToPacked(const void *srcy,
                         int srcPitchy,
                         int srcPitchuv, int dstPitch, int h, int w);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86XVCopyPacked(const void *src,
                  void *dst, int srcPitch, int dstPitch, int h, int w);

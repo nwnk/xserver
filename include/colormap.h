@@ -75,49 +75,49 @@ typedef struct _CMEntry *EntryPtr;
 /* moved to screenint.h: typedef struct _ColormapRec *ColormapPtr */
 typedef struct _colorResource *colorResourcePtr;
 
-extern _X_EXPORT int CreateColormap(Colormap /*mid */ ,
+extern XORG_EXPORT int CreateColormap(Colormap /*mid */ ,
                                     ScreenPtr /*pScreen */ ,
                                     VisualPtr /*pVisual */ ,
                                     ColormapPtr * /*ppcmap */ ,
                                     int /*alloc */ ,
                                     int /*client */ );
 
-extern _X_EXPORT int FreeColormap(void *pmap,
+extern XORG_EXPORT int FreeColormap(void *pmap,
                                   XID mid);
 
-extern _X_EXPORT int TellLostMap(WindowPtr pwin,
+extern XORG_EXPORT int TellLostMap(WindowPtr pwin,
                                  void *value);
 
-extern _X_EXPORT int TellGainedMap(WindowPtr pwin,
+extern XORG_EXPORT int TellGainedMap(WindowPtr pwin,
                                    void *value);
 
-extern _X_EXPORT int CopyColormapAndFree(Colormap /*mid */ ,
+extern XORG_EXPORT int CopyColormapAndFree(Colormap /*mid */ ,
                                          ColormapPtr /*pSrc */ ,
                                          int /*client */ );
 
-extern _X_EXPORT int AllocColor(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT int AllocColor(ColormapPtr /*pmap */ ,
                                 unsigned short * /*pred */ ,
                                 unsigned short * /*pgreen */ ,
                                 unsigned short * /*pblue */ ,
                                 Pixel * /*pPix */ ,
                                 int /*client */ );
 
-extern _X_EXPORT void FakeAllocColor(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT void FakeAllocColor(ColormapPtr /*pmap */ ,
                                      xColorItem * /*item */ );
 
-extern _X_EXPORT void FakeFreeColor(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT void FakeFreeColor(ColormapPtr /*pmap */ ,
                                     Pixel /*pixel */ );
 
-extern _X_EXPORT int QueryColors(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT int QueryColors(ColormapPtr /*pmap */ ,
                                  int /*count */ ,
                                  Pixel * /*ppixIn */ ,
                                  xrgb * /*prgbList */ ,
                                  ClientPtr client);
 
-extern _X_EXPORT int FreeClientPixels(void *pcr,
+extern XORG_EXPORT int FreeClientPixels(void *pcr,
                                       XID fakeid);
 
-extern _X_EXPORT int AllocColorCells(int /*client */ ,
+extern XORG_EXPORT int AllocColorCells(int /*client */ ,
                                      ColormapPtr /*pmap */ ,
                                      int /*colors */ ,
                                      int /*planes */ ,
@@ -125,7 +125,7 @@ extern _X_EXPORT int AllocColorCells(int /*client */ ,
                                      Pixel * /*ppix */ ,
                                      Pixel * /*masks */ );
 
-extern _X_EXPORT int AllocColorPlanes(int /*client */ ,
+extern XORG_EXPORT int AllocColorPlanes(int /*client */ ,
                                       ColormapPtr /*pmap */ ,
                                       int /*colors */ ,
                                       int /*r */ ,
@@ -137,21 +137,21 @@ extern _X_EXPORT int AllocColorPlanes(int /*client */ ,
                                       Pixel * /*pgmask */ ,
                                       Pixel * /*pbmask */ );
 
-extern _X_EXPORT int FreeColors(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT int FreeColors(ColormapPtr /*pmap */ ,
                                 int /*client */ ,
                                 int /*count */ ,
                                 Pixel * /*pixels */ ,
                                 Pixel /*mask */ );
 
-extern _X_EXPORT int StoreColors(ColormapPtr /*pmap */ ,
+extern XORG_EXPORT int StoreColors(ColormapPtr /*pmap */ ,
                                  int /*count */ ,
                                  xColorItem * /*defs */ ,
                                  ClientPtr client);
 
-extern _X_EXPORT int IsMapInstalled(Colormap /*map */ ,
+extern XORG_EXPORT int IsMapInstalled(Colormap /*map */ ,
                                     WindowPtr /*pWin */ );
 
-extern _X_EXPORT Bool ResizeVisualArray(ScreenPtr /* pScreen */ ,
+extern XORG_EXPORT Bool ResizeVisualArray(ScreenPtr /* pScreen */ ,
                                         int /* new_vis_count */ ,
                                         DepthPtr /* depth */ );
 

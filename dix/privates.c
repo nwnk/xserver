@@ -551,7 +551,7 @@ dixFreePrivates(PrivatePtr privates, DevPrivateType type)
 /*
  * Return size of privates for the specified type
  */
-extern _X_EXPORT int
+extern XORG_EXPORT int
 dixPrivatesSize(DevPrivateType type)
 {
     assert(type >= PRIVATE_SCREEN && type < PRIVATE_LAST);
@@ -596,7 +596,7 @@ dixLookupPrivateOffset(RESTYPE type)
  * Screen-specific privates
  */
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 dixRegisterScreenSpecificPrivateKey(ScreenPtr pScreen, DevPrivateKey key,
                                     DevPrivateType type, unsigned size)
 {

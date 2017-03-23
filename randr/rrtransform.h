@@ -39,22 +39,22 @@ struct _rrTransform {
     int height;
 };
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  RRTransformInit(RRTransformPtr transform);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  RRTransformFini(RRTransformPtr transform);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  RRTransformEqual(RRTransformPtr a, RRTransformPtr b);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 RRTransformSetFilter(RRTransformPtr dst,
                      PictFilterPtr filter,
                      xFixed * params, int nparams, int width, int height);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  RRTransformCopy(RRTransformPtr dst, RRTransformPtr src);
 
 /*
@@ -64,7 +64,7 @@ extern _X_EXPORT Bool
  *
  * Return TRUE if the resulting transform is not a simple translation.
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 RRTransformCompute(int x,
                    int y,

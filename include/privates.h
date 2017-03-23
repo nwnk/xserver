@@ -97,7 +97,7 @@ typedef struct _DevScreenPrivateKeyRec {
  * dixRegisterPrivateKey returns FALSE if it fails to allocate memory
  * during its operation.
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  dixRegisterPrivateKey(DevPrivateKey key, DevPrivateType type, unsigned size);
 
 /*
@@ -179,12 +179,12 @@ dixLookupPrivateAddr(PrivatePtr *privates, const DevPrivateKey key)
     return (void **) dixGetPrivateAddr(privates, key);
 }
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 dixRegisterScreenPrivateKey(DevScreenPrivateKey key, ScreenPtr pScreen,
                             DevPrivateType type, unsigned size);
 
-extern _X_EXPORT DevPrivateKey
+extern XORG_EXPORT DevPrivateKey
  _dixGetScreenPrivateKey(const DevScreenPrivateKey key, ScreenPtr pScreen);
 
 static inline void *
@@ -239,7 +239,7 @@ dixLookupScreenPrivateAddr(PrivatePtr *privates, const DevScreenPrivateKey key,
 
 #define HAVE_SCREEN_SPECIFIC_PRIVATE_KEYS       1
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 dixRegisterScreenSpecificPrivateKey(ScreenPtr pScreen, DevPrivateKey key,
                                     DevPrivateType type, unsigned size);
 
@@ -254,7 +254,7 @@ dixInitScreenSpecificPrivates(ScreenPtr pScreen);
 /* is this private created - so hotplug can avoid crashing */
 Bool dixPrivatesCreated(DevPrivateType type);
 
-extern _X_EXPORT void *
+extern XORG_EXPORT void *
 _dixAllocateScreenObjectWithPrivates(ScreenPtr pScreen,
                                      unsigned size,
                                      unsigned clear,
@@ -263,10 +263,10 @@ _dixAllocateScreenObjectWithPrivates(ScreenPtr pScreen,
 
 #define dixAllocateScreenObjectWithPrivates(s, t, type) _dixAllocateScreenObjectWithPrivates(s, sizeof(t), sizeof(t), offsetof(t, devPrivates), type)
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
 dixScreenSpecificPrivatesSize(ScreenPtr pScreen, DevPrivateType type);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 _dixInitScreenPrivates(ScreenPtr pScreen, PrivatePtr *privates, void *addr, DevPrivateType type);
 
 #define dixInitScreenPrivates(s, o, v, type) _dixInitScreenPrivates(s, &(o)->devPrivates, (v), type);
@@ -280,19 +280,19 @@ _dixInitScreenPrivates(ScreenPtr pScreen, PrivatePtr *privates, void *addr, DevP
  * This includes screens, the serverClient, default colormaps and
  * extensions entries.
  */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  dixAllocatePrivates(PrivatePtr *privates, DevPrivateType type);
 
 /*
  * Frees separately allocated private data
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  dixFreePrivates(PrivatePtr privates, DevPrivateType type);
 
 /*
  * Initialize privates by zeroing them
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 _dixInitPrivates(PrivatePtr *privates, void *addr, DevPrivateType type);
 
 #define dixInitPrivates(o, v, type) _dixInitPrivates(&(o)->devPrivates, (v), type);
@@ -300,7 +300,7 @@ _dixInitPrivates(PrivatePtr *privates, void *addr, DevPrivateType type);
 /*
  * Clean up privates
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  _dixFiniPrivates(PrivatePtr privates, DevPrivateType type);
 
 #define dixFiniPrivates(o,t)	_dixFiniPrivates((o)->devPrivates,t)
@@ -310,14 +310,14 @@ extern _X_EXPORT void
  * for almost all objects, except for the list described
  * above for dixAllocatePrivates.
  */
-extern _X_EXPORT void *_dixAllocateObjectWithPrivates(unsigned size,
+extern XORG_EXPORT void *_dixAllocateObjectWithPrivates(unsigned size,
                                                       unsigned clear,
                                                       unsigned offset,
                                                       DevPrivateType type);
 
 #define dixAllocateObjectWithPrivates(t, type) (t *) _dixAllocateObjectWithPrivates(sizeof(t), sizeof(t), offsetof(t, devPrivates), type)
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 _dixFreeObjectWithPrivates(void *object, PrivatePtr privates,
                            DevPrivateType type);
@@ -327,7 +327,7 @@ _dixFreeObjectWithPrivates(void *object, PrivatePtr privates,
 /*
  * Return size of privates for the specified type
  */
-extern _X_EXPORT int
+extern XORG_EXPORT int
  dixPrivatesSize(DevPrivateType type);
 
 /*
@@ -340,7 +340,7 @@ extern void
  * Resets the privates subsystem.  dixResetPrivates is called from the main loop
  * before each server generation.  This function must only be called by main().
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
  dixResetPrivates(void);
 
 /*
@@ -351,7 +351,7 @@ extern _X_EXPORT void
  * and calling code might only know the resource type, not the
  * structure definition.
  */
-extern _X_EXPORT int
+extern XORG_EXPORT int
  dixLookupPrivateOffset(RESTYPE type);
 
 /*

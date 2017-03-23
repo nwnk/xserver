@@ -418,7 +418,7 @@ XIResetProperties(void)
  * @param buf_return Pointer to an array of at least @nelem_return values.
  * @return Success or the error code if an error occured.
  */
-_X_EXPORT int
+XORG_EXPORT int
 XIPropToInt(XIPropertyValuePtr val, int *nelem_return, int **buf_return)
 {
     int i;
@@ -488,7 +488,7 @@ XIPropToInt(XIPropertyValuePtr val, int *nelem_return, int **buf_return)
  * @param buf_return Pointer to an array of at least @nelem_return values.
  * @return Success or the error code if an error occured.
  */
-_X_EXPORT int
+XORG_EXPORT int
 XIPropToFloat(XIPropertyValuePtr val, int *nelem_return, float **buf_return)
 {
     int i;

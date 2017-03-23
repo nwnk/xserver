@@ -68,12 +68,12 @@ typedef struct _Selection {
  *  Selection API
  */
 
-extern _X_EXPORT int dixLookupSelection(Selection ** result, Atom name,
+extern XORG_EXPORT int dixLookupSelection(Selection ** result, Atom name,
                                         ClientPtr client, Mask access_mode);
 
-extern _X_EXPORT Selection *CurrentSelections;
+extern XORG_EXPORT Selection *CurrentSelections;
 
-extern _X_EXPORT CallbackListPtr SelectionCallback;
+extern XORG_EXPORT CallbackListPtr SelectionCallback;
 
 typedef enum {
     SelectionSetOwner,
@@ -91,10 +91,10 @@ typedef struct {
  *  Selection server internals
  */
 
-extern _X_EXPORT void InitSelections(void);
+extern XORG_EXPORT void InitSelections(void);
 
-extern _X_EXPORT void DeleteWindowFromAnySelections(WindowPtr pWin);
+extern XORG_EXPORT void DeleteWindowFromAnySelections(WindowPtr pWin);
 
-extern _X_EXPORT void DeleteClientFromAnySelections(ClientPtr client);
+extern XORG_EXPORT void DeleteClientFromAnySelections(ClientPtr client);
 
 #endif                          /* SELECTION_H */

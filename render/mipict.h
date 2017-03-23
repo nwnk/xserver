@@ -47,16 +47,16 @@ typedef struct _miIndexed {
 
 #define miIndexToEntY24(mif,rgb24) ((mif)->ent[CvtR8G8B8toY15(rgb24)])
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  miCreatePicture(PicturePtr pPicture);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miDestroyPicture(PicturePtr pPicture);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miCompositeSourceValidate(PicturePtr pPicture);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 miComputeCompositeRegion(RegionPtr pRegion,
                          PicturePtr pSrc,
@@ -68,16 +68,16 @@ miComputeCompositeRegion(RegionPtr pRegion,
                          INT16 yMask,
                          INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  miPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  miRealizeGlyph(ScreenPtr pScreen, GlyphPtr glyph);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miUnrealizeGlyph(ScreenPtr pScreen, GlyphPtr glyph);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 miGlyphs(CARD8 op,
          PicturePtr pSrc,
@@ -86,37 +86,37 @@ miGlyphs(CARD8 op,
          INT16 xSrc,
          INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miRenderColorToPixel(PictFormatPtr pPict, xRenderColor * color, CARD32 *pixel);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miRenderPixelToColor(PictFormatPtr pPict, CARD32 pixel, xRenderColor * color);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  miIsSolidAlpha(PicturePtr pSrc);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 miCompositeRects(CARD8 op,
                  PicturePtr pDst,
                  xRenderColor * color, int nRect, xRectangle *rects);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miTrapezoidBounds(int ntrap, xTrapezoid * traps, BoxPtr box);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miPointFixedBounds(int npoint, xPointFixed * points, BoxPtr bounds);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miTriangleBounds(int ntri, xTriangle * tris, BoxPtr bounds);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  miInitIndexed(ScreenPtr pScreen, PictFormatPtr pFormat);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  miCloseIndexed(ScreenPtr pScreen, PictFormatPtr pFormat);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 miUpdateIndexed(ScreenPtr pScreen,
                 PictFormatPtr pFormat, int ndef, xColorItem * pdef);

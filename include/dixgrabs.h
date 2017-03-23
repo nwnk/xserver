@@ -47,17 +47,17 @@ extern GrabPtr CreateGrab(int /* client */ ,
                           WindowPtr /* confineTo */ ,
                           CursorPtr /* cursor */ );
 
-extern _X_EXPORT int DeletePassiveGrab(void *value,
+extern XORG_EXPORT int DeletePassiveGrab(void *value,
                                        XID id);
 
-extern _X_EXPORT Bool GrabMatchesSecond(GrabPtr /* pFirstGrab */ ,
+extern XORG_EXPORT Bool GrabMatchesSecond(GrabPtr /* pFirstGrab */ ,
                                         GrabPtr /* pSecondGrab */ ,
                                         Bool /*ignoreDevice */ );
 
-extern _X_EXPORT int AddPassiveGrabToList(ClientPtr /* client */ ,
+extern XORG_EXPORT int AddPassiveGrabToList(ClientPtr /* client */ ,
                                           GrabPtr /* pGrab */ );
 
-extern _X_EXPORT Bool DeletePassiveGrabFromList(GrabPtr /* pMinuendGrab */ );
+extern XORG_EXPORT Bool DeletePassiveGrabFromList(GrabPtr /* pMinuendGrab */ );
 
 extern Bool GrabIsPointerGrab(GrabPtr grab);
 extern Bool GrabIsKeyboardGrab(GrabPtr grab);

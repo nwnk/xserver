@@ -16,7 +16,7 @@ extensions, although the results may not be optimal.
     * _X_ATTRIBUTE_PRINTF(x, y): This function has printf-like semantics;
                                  check the format string when built with
                                  -Wformat (gcc) or similar.
-    * _X_EXPORT: this function should appear in symbol tables.
+    * XORG_EXPORT: this function should appear in symbol tables.
     * _X_HIDDEN: this function should not appear in the _dynamic_ symbol
                  table.
     * _X_INTERNAL: like _X_HIDDEN, but attempt to ensure that this function

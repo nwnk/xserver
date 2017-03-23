@@ -51,7 +51,7 @@ typedef struct {
     @param[in] cdata     Opaque data that will be passed to hash and
                          comparison functions
 */
-extern _X_EXPORT HashTable ht_create(int             keySize,
+extern XORG_EXPORT HashTable ht_create(int             keySize,
                                      int             dataSize,
                                      HashFunc        hash,
                                      HashCompareFunc compare,
@@ -59,7 +59,7 @@ extern _X_EXPORT HashTable ht_create(int             keySize,
 /** @brief  HtDestruct deinitializes the structure. It does not free the
             memory allocated to HashTableRec
 */
-extern _X_EXPORT void ht_destroy(HashTable ht);
+extern XORG_EXPORT void ht_destroy(HashTable ht);
 
 /** @brief  Adds a new key to the hash table. The key will be copied
             and a pointer to the value will be returned. The data will
@@ -75,12 +75,12 @@ extern _X_EXPORT void ht_destroy(HashTable ht);
          to avoid returning NULL. Obviously the data pointed cannot be
          modified, as implied by dataSize being 0.
 */
-extern _X_EXPORT void *ht_add(HashTable ht, const void *key);
+extern XORG_EXPORT void *ht_add(HashTable ht, const void *key);
 
 /** @brief  Removes a key from the hash table along with its
             associated data, which will be free'd.
 */
-extern _X_EXPORT void ht_remove(HashTable ht, const void *key);
+extern XORG_EXPORT void ht_remove(HashTable ht, const void *key);
 
 /** @brief  Finds the associated data of a key from the hash table.
 
@@ -93,27 +93,27 @@ extern _X_EXPORT void ht_remove(HashTable ht, const void *key);
           use HtMember instead to determine if a key has been
           inserted.
 */
-extern _X_EXPORT void *ht_find(HashTable ht, const void *key);
+extern XORG_EXPORT void *ht_find(HashTable ht, const void *key);
 
 /** @brief  A generic hash function */
-extern _X_EXPORT unsigned ht_generic_hash(void *cdata,
+extern XORG_EXPORT unsigned ht_generic_hash(void *cdata,
                                           const void *ptr,
                                           int numBits);
 
 /** @brief  A generic comparison function. It compares data byte-wise. */
-extern _X_EXPORT int ht_generic_compare(void *cdata,
+extern XORG_EXPORT int ht_generic_compare(void *cdata,
                                         const void *l,
                                         const void *r);
 
 /** @brief  A debugging function that dumps the distribution of the
             hash table: for each bucket, list the number of elements
             contained within. */
-extern _X_EXPORT void ht_dump_distribution(HashTable ht);
+extern XORG_EXPORT void ht_dump_distribution(HashTable ht);
 
 /** @brief  A debugging function that dumps the contents of the hash
             table: for each bucket, list the elements contained
             within. */
-extern _X_EXPORT void ht_dump_contents(HashTable ht,
+extern XORG_EXPORT void ht_dump_contents(HashTable ht,
                                        void (*print_key)(void *opaque, void *key),
                                        void (*print_value)(void *opaque, void *value),
                                        void* opaque);
@@ -123,14 +123,14 @@ extern _X_EXPORT void ht_dump_contents(HashTable ht,
             be NULL. It uses HashXID underneath, and should HashXID be
             unable to hash the value, it switches into using the generic
             hash function. */
-extern _X_EXPORT unsigned ht_resourceid_hash(void *cdata,
+extern XORG_EXPORT unsigned ht_resourceid_hash(void *cdata,
                                              const void * data,
                                              int numBits);
 
 /** @brief  A comparison function to be used for comparing resource
             IDs when used with HashTables. It makes no use of cdata,
             so that can be NULL. */
-extern _X_EXPORT int ht_resourceid_compare(void *cdata,
+extern XORG_EXPORT int ht_resourceid_compare(void *cdata,
                                            const void *a,
                                            const void *b);
 

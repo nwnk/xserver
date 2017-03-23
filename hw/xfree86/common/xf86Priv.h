@@ -43,53 +43,53 @@
  * Parameters set ONLY from the command line options
  * The global state of these things is held in xf86InfoRec (when appropriate).
  */
-extern _X_EXPORT const char *xf86ConfigFile;
-extern _X_EXPORT const char *xf86ConfigDir;
-extern _X_EXPORT Bool xf86AllowMouseOpenFail;
+extern XORG_EXPORT const char *xf86ConfigFile;
+extern XORG_EXPORT const char *xf86ConfigDir;
+extern XORG_EXPORT Bool xf86AllowMouseOpenFail;
 
 #ifdef XF86VIDMODE
-extern _X_EXPORT Bool xf86VidModeDisabled;
-extern _X_EXPORT Bool xf86VidModeAllowNonLocal;
+extern XORG_EXPORT Bool xf86VidModeDisabled;
+extern XORG_EXPORT Bool xf86VidModeAllowNonLocal;
 #endif
-extern _X_EXPORT Bool xf86fpFlag;
-extern _X_EXPORT Bool xf86sFlag;
-extern _X_EXPORT Bool xf86bsEnableFlag;
-extern _X_EXPORT Bool xf86bsDisableFlag;
-extern _X_EXPORT Bool xf86silkenMouseDisableFlag;
-extern _X_EXPORT Bool xf86xkbdirFlag;
+extern XORG_EXPORT Bool xf86fpFlag;
+extern XORG_EXPORT Bool xf86sFlag;
+extern XORG_EXPORT Bool xf86bsEnableFlag;
+extern XORG_EXPORT Bool xf86bsDisableFlag;
+extern XORG_EXPORT Bool xf86silkenMouseDisableFlag;
+extern XORG_EXPORT Bool xf86xkbdirFlag;
 
 #ifdef HAVE_ACPI
-extern _X_EXPORT Bool xf86acpiDisableFlag;
+extern XORG_EXPORT Bool xf86acpiDisableFlag;
 #endif
-extern _X_EXPORT char *xf86LayoutName;
-extern _X_EXPORT char *xf86ScreenName;
-extern _X_EXPORT char *xf86PointerName;
-extern _X_EXPORT char *xf86KeyboardName;
-extern _X_EXPORT int xf86FbBpp;
-extern _X_EXPORT int xf86Depth;
-extern _X_EXPORT rgb xf86Weight;
-extern _X_EXPORT Bool xf86FlipPixels;
-extern _X_EXPORT Gamma xf86Gamma;
-extern _X_EXPORT const char *xf86ServerName;
+extern XORG_EXPORT char *xf86LayoutName;
+extern XORG_EXPORT char *xf86ScreenName;
+extern XORG_EXPORT char *xf86PointerName;
+extern XORG_EXPORT char *xf86KeyboardName;
+extern XORG_EXPORT int xf86FbBpp;
+extern XORG_EXPORT int xf86Depth;
+extern XORG_EXPORT rgb xf86Weight;
+extern XORG_EXPORT Bool xf86FlipPixels;
+extern XORG_EXPORT Gamma xf86Gamma;
+extern XORG_EXPORT const char *xf86ServerName;
 
 /* Other parameters */
 
-extern _X_EXPORT xf86InfoRec xf86Info;
-extern _X_EXPORT const char *xf86ModulePath;
-extern _X_EXPORT MessageType xf86ModPathFrom;
-extern _X_EXPORT const char *xf86LogFile;
-extern _X_EXPORT MessageType xf86LogFileFrom;
-extern _X_EXPORT Bool xf86LogFileWasOpened;
-extern _X_EXPORT serverLayoutRec xf86ConfigLayout;
+extern XORG_EXPORT xf86InfoRec xf86Info;
+extern XORG_EXPORT const char *xf86ModulePath;
+extern XORG_EXPORT MessageType xf86ModPathFrom;
+extern XORG_EXPORT const char *xf86LogFile;
+extern XORG_EXPORT MessageType xf86LogFileFrom;
+extern XORG_EXPORT Bool xf86LogFileWasOpened;
+extern XORG_EXPORT serverLayoutRec xf86ConfigLayout;
 
-extern _X_EXPORT DriverPtr *xf86DriverList;
-extern _X_EXPORT int xf86NumDrivers;
-extern _X_EXPORT Bool xf86Resetting;
+extern XORG_EXPORT DriverPtr *xf86DriverList;
+extern XORG_EXPORT int xf86NumDrivers;
+extern XORG_EXPORT Bool xf86Resetting;
 extern Bool xf86Initialising;
-extern _X_EXPORT int xf86NumScreens;
-extern _X_EXPORT const char *xf86VisualNames[];
-extern _X_EXPORT int xf86Verbose;       /* verbosity level */
-extern _X_EXPORT int xf86LogVerbose;    /* log file verbosity level */
+extern XORG_EXPORT int xf86NumScreens;
+extern XORG_EXPORT const char *xf86VisualNames[];
+extern XORG_EXPORT int xf86Verbose;       /* verbosity level */
+extern XORG_EXPORT int xf86LogVerbose;    /* log file verbosity level */
 
 extern ScrnInfoPtr *xf86GPUScreens;      /* List of pointers to ScrnInfoRecs */
 extern int xf86NumGPUScreens;
@@ -107,60 +107,60 @@ extern int xf86NumGPUScreens;
 #ifndef _NO_XF86_PROTOTYPES
 
 /* xf86Bus.c */
-extern _X_EXPORT Bool xf86BusConfig(void);
-extern _X_EXPORT void xf86BusProbe(void);
-extern _X_EXPORT void xf86AccessEnter(void);
-extern _X_EXPORT void xf86AccessLeave(void);
-extern _X_EXPORT void xf86PostProbe(void);
-extern _X_EXPORT void xf86ClearEntityListForScreen(ScrnInfoPtr pScrn);
-extern _X_EXPORT void xf86AddDevToEntity(int entityIndex, GDevPtr dev);
-extern _X_EXPORT void xf86RemoveDevFromEntity(int entityIndex, GDevPtr dev);
+extern XORG_EXPORT Bool xf86BusConfig(void);
+extern XORG_EXPORT void xf86BusProbe(void);
+extern XORG_EXPORT void xf86AccessEnter(void);
+extern XORG_EXPORT void xf86AccessLeave(void);
+extern XORG_EXPORT void xf86PostProbe(void);
+extern XORG_EXPORT void xf86ClearEntityListForScreen(ScrnInfoPtr pScrn);
+extern XORG_EXPORT void xf86AddDevToEntity(int entityIndex, GDevPtr dev);
+extern XORG_EXPORT void xf86RemoveDevFromEntity(int entityIndex, GDevPtr dev);
 
 /* xf86Config.c */
 
-extern _X_EXPORT Bool xf86PathIsSafe(const char *path);
+extern XORG_EXPORT Bool xf86PathIsSafe(const char *path);
 
 /* xf86DefaultModes */
 
-extern _X_EXPORT const DisplayModeRec xf86DefaultModes[];
-extern _X_EXPORT const int xf86NumDefaultModes;
+extern XORG_EXPORT const DisplayModeRec xf86DefaultModes[];
+extern XORG_EXPORT const int xf86NumDefaultModes;
 
 /* xf86Configure.c */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 DoConfigure(void)
     _X_NORETURN;
-extern _X_EXPORT void
+extern XORG_EXPORT void
 DoShowOptions(void)
     _X_NORETURN;
 
 /* xf86Events.c */
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86Wakeup(void *blockData, int err);
 extern _X_HIDDEN int
 xf86SigWrapper(int signo);
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86HandlePMEvents(int fd, void *data);
-extern _X_EXPORT int (*xf86PMGetEventFromOs) (int fd, pmEvent * events,
+extern XORG_EXPORT int (*xf86PMGetEventFromOs) (int fd, pmEvent * events,
                                               int num);
-extern _X_EXPORT pmWait (*xf86PMConfirmEventToOs) (int fd, pmEvent event);
+extern XORG_EXPORT pmWait (*xf86PMConfirmEventToOs) (int fd, pmEvent event);
 
 /* xf86Helper.c */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86LogInit(void);
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86CloseLog(enum ExitCode error);
 
 /* xf86Init.c */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 xf86LoadModules(const char **list, void **optlist);
-extern _X_EXPORT int
+extern XORG_EXPORT int
 xf86SetVerbosity(int verb);
-extern _X_EXPORT int
+extern XORG_EXPORT int
 xf86SetLogVerbosity(int verb);
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 xf86CallDriverProbe(struct _DriverRec *drv, Bool detect_only);
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 xf86PrivsElevated(void);
 
 #endif                          /* _NO_XF86_PROTOTYPES */

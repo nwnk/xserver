@@ -68,86 +68,86 @@ typedef struct _shadowBuf {
 #define SHADOW_REFLECT_Y    32
 #define SHADOW_REFLECT_ALL  (SHADOW_REFLECT_X|SHADOW_REFLECT_Y)
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  shadowSetup(ScreenPtr pScreen);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 
 shadowAdd(ScreenPtr pScreen,
           PixmapPtr pPixmap,
           ShadowUpdateProc update,
           ShadowWindowProc window, int randr, void *closure);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowRemove(ScreenPtr pScreen, PixmapPtr pPixmap);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateAfb4(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateAfb8(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateIplan2p4(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateIplan2p8(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdatePacked(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdatePlanar4(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdatePlanar4x8(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotatePacked(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate8_90(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16_90(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16_90YX(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate32_90(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate8_180(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16_180(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate32_180(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate8_270(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16_270(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16_270YX(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate32_270(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate8(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate16(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdateRotate32(ScreenPtr pScreen, shadowBufPtr pBuf);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  shadowUpdate32to24(ScreenPtr pScreen, shadowBufPtr pBuf);
 
 typedef void (*shadowUpdateProc) (ScreenPtr, shadowBufPtr);

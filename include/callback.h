@@ -64,15 +64,15 @@ typedef struct _CallbackList *CallbackListPtr;  /* also in misc.h */
 
 typedef void (*CallbackProcPtr) (CallbackListPtr *, void *, void *);
 
-extern _X_EXPORT Bool AddCallback(CallbackListPtr *pcbl,
+extern XORG_EXPORT Bool AddCallback(CallbackListPtr *pcbl,
                                   CallbackProcPtr callback,
                                   void *data);
 
-extern _X_EXPORT Bool DeleteCallback(CallbackListPtr *pcbl,
+extern XORG_EXPORT Bool DeleteCallback(CallbackListPtr *pcbl,
                                      CallbackProcPtr callback,
                                      void *data);
 
-extern _X_EXPORT void _CallCallbacks(CallbackListPtr *pcbl,
+extern XORG_EXPORT void _CallCallbacks(CallbackListPtr *pcbl,
                                      void *call_data);
 
 static inline void
@@ -83,9 +83,9 @@ CallCallbacks(CallbackListPtr *pcbl, void *call_data)
     _CallCallbacks(pcbl, call_data);
 }
 
-extern _X_EXPORT void DeleteCallbackList(CallbackListPtr *pcbl);
+extern XORG_EXPORT void DeleteCallbackList(CallbackListPtr *pcbl);
 
-extern _X_EXPORT void InitCallbackManager(void);
-extern _X_EXPORT void DeleteCallbackManager(void);
+extern XORG_EXPORT void InitCallbackManager(void);
+extern XORG_EXPORT void DeleteCallbackManager(void);
 
 #endif                          /* CALLBACK_H */

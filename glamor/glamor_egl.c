@@ -460,7 +460,7 @@ glamor_egl_dri3_fd_name_from_tex(ScreenPtr screen,
 #endif
 }
 
-_X_EXPORT Bool
+XORG_EXPORT Bool
 glamor_back_pixmap_from_fd(PixmapPtr pixmap,
                            int fd,
                            CARD16 width,
@@ -502,7 +502,7 @@ glamor_back_pixmap_from_fd(PixmapPtr pixmap,
 #endif
 }
 
-_X_EXPORT PixmapPtr
+XORG_EXPORT PixmapPtr
 glamor_pixmap_from_fd(ScreenPtr screen,
                       int fd,
                       CARD16 width,
@@ -551,7 +551,7 @@ glamor_egl_destroy_pixmap(PixmapPtr pixmap)
     return ret;
 }
 
-_X_EXPORT void
+XORG_EXPORT void
 glamor_egl_exchange_buffers(PixmapPtr front, PixmapPtr back)
 {
     EGLImageKHR temp;

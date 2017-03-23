@@ -118,9 +118,9 @@ extern int
  FreeGlyphSet(void *value, XID gid);
 
 #define GLYPH_HAS_GLYPH_PICTURE_ACCESSOR 1 /* used for api compat */
-extern _X_EXPORT PicturePtr
+extern XORG_EXPORT PicturePtr
  GetGlyphPicture(GlyphPtr glyph, ScreenPtr pScreen);
-extern _X_EXPORT void
+extern XORG_EXPORT void
  SetGlyphPicture(GlyphPtr glyph, ScreenPtr pScreen, PicturePtr picture);
 
 #endif                          /* _GLYPHSTR_H_ */

@@ -118,7 +118,7 @@ typedef struct {
 
 /* mizerarc.c */
 
-extern _X_EXPORT Bool miZeroArcSetup(xArc * /*arc */ ,
+extern XORG_EXPORT Bool miZeroArcSetup(xArc * /*arc */ ,
                                      miZeroArcRec * /*info */ ,
                                      Bool       /*ok360 */
     );

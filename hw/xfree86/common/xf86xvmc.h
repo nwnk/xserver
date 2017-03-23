@@ -131,11 +131,11 @@ typedef struct {
    an array of structures.
 */
 
-extern _X_EXPORT Bool xf86XvMCScreenInit(ScreenPtr pScreen,
+extern XORG_EXPORT Bool xf86XvMCScreenInit(ScreenPtr pScreen,
                                          int num_adaptors,
                                          XF86MCAdaptorPtr * adaptors);
 
-extern _X_EXPORT XF86MCAdaptorPtr xf86XvMCCreateAdaptorRec(void);
-extern _X_EXPORT void xf86XvMCDestroyAdaptorRec(XF86MCAdaptorPtr adaptor);
+extern XORG_EXPORT XF86MCAdaptorPtr xf86XvMCCreateAdaptorRec(void);
+extern XORG_EXPORT void xf86XvMCDestroyAdaptorRec(XF86MCAdaptorPtr adaptor);
 
 #endif                          /* _XF86XVMC_H */

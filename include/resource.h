@@ -85,7 +85,7 @@ typedef uint32_t RESTYPE;
 #define RT_LASTPREDEF	((RESTYPE)9)
 #define RT_NONE		((RESTYPE)0)
 
-extern _X_EXPORT unsigned int ResourceClientBits(void);
+extern XORG_EXPORT unsigned int ResourceClientBits(void);
 /* bits and fields within a resource id */
 #define RESOURCE_AND_CLIENT_COUNT   29  /* 29 bits for XIDs */
 #define RESOURCE_CLIENT_BITS        ResourceClientBits() /* client field offset */
@@ -112,7 +112,7 @@ extern _X_EXPORT unsigned int ResourceClientBits(void);
 #define rClient(obj) (clients[CLIENT_ID((obj)->resource)])
 
 /* Resource state callback */
-extern _X_EXPORT CallbackListPtr ResourceStateCallback;
+extern XORG_EXPORT CallbackListPtr ResourceStateCallback;
 
 typedef enum { ResourceStateAdding,
     ResourceStateFreeing
@@ -159,57 +159,57 @@ typedef void (*SizeType)(void *value,
                          XID id,
                          ResourceSizePtr size);
 
-extern _X_EXPORT RESTYPE CreateNewResourceType(DeleteType deleteFunc,
+extern XORG_EXPORT RESTYPE CreateNewResourceType(DeleteType deleteFunc,
                                                const char *name);
 
 typedef void (*FindTypeSubResources)(void *value,
                                      FindAllRes func,
                                      void *cdata);
 
-extern _X_EXPORT SizeType GetResourceTypeSizeFunc(
+extern XORG_EXPORT SizeType GetResourceTypeSizeFunc(
     RESTYPE /*type*/);
 
-extern _X_EXPORT void SetResourceTypeFindSubResFunc(
+extern XORG_EXPORT void SetResourceTypeFindSubResFunc(
     RESTYPE /*type*/, FindTypeSubResources /*findFunc*/);
 
-extern _X_EXPORT void SetResourceTypeSizeFunc(
+extern XORG_EXPORT void SetResourceTypeSizeFunc(
     RESTYPE /*type*/, SizeType /*sizeFunc*/);
 
-extern _X_EXPORT void SetResourceTypeErrorValue(
+extern XORG_EXPORT void SetResourceTypeErrorValue(
     RESTYPE /*type*/, int /*errorValue*/);
 
-extern _X_EXPORT RESTYPE CreateNewResourceClass(void);
+extern XORG_EXPORT RESTYPE CreateNewResourceClass(void);
 
-extern _X_EXPORT Bool InitClientResources(ClientPtr /*client */ );
+extern XORG_EXPORT Bool InitClientResources(ClientPtr /*client */ );
 
-extern _X_EXPORT XID FakeClientID(int /*client */ );
+extern XORG_EXPORT XID FakeClientID(int /*client */ );
 
 /* Quartz support on Mac OS X uses the CarbonCore
    framework whose AddResource function conflicts here. */
 #ifdef __APPLE__
 #define AddResource Darwin_X_AddResource
 #endif
-extern _X_EXPORT Bool AddResource(XID id,
+extern XORG_EXPORT Bool AddResource(XID id,
                                   RESTYPE type,
                                   void *value);
 
-extern _X_EXPORT void FreeResource(XID /*id */ ,
+extern XORG_EXPORT void FreeResource(XID /*id */ ,
                                    RESTYPE /*skipDeleteFuncType */ );
 
-extern _X_EXPORT void FreeResourceByType(XID /*id */ ,
+extern XORG_EXPORT void FreeResourceByType(XID /*id */ ,
                                          RESTYPE /*type */ ,
                                          Bool /*skipFree */ );
 
-extern _X_EXPORT Bool ChangeResourceValue(XID id,
+extern XORG_EXPORT Bool ChangeResourceValue(XID id,
                                           RESTYPE rtype,
                                           void *value);
 
-extern _X_EXPORT void FindClientResourcesByType(ClientPtr client,
+extern XORG_EXPORT void FindClientResourcesByType(ClientPtr client,
                                                 RESTYPE type,
                                                 FindResType func,
                                                 void *cdata);
 
-extern _X_EXPORT void FindAllClientResources(ClientPtr client,
+extern XORG_EXPORT void FindAllClientResources(ClientPtr client,
                                              FindAllRes func,
                                              void *cdata);
 
@@ -217,48 +217,48 @@ extern _X_EXPORT void FindAllClientResources(ClientPtr client,
 
     @note The XID argument provided to the FindAllRes function
           may be 0 for subresources that don't have an XID */
-extern _X_EXPORT void FindSubResources(void *resource,
+extern XORG_EXPORT void FindSubResources(void *resource,
                                        RESTYPE type,
                                        FindAllRes func,
                                        void *cdata);
 
-extern _X_EXPORT void FreeClientNeverRetainResources(ClientPtr /*client */ );
+extern XORG_EXPORT void FreeClientNeverRetainResources(ClientPtr /*client */ );
 
-extern _X_EXPORT void FreeClientResources(ClientPtr /*client */ );
+extern XORG_EXPORT void FreeClientResources(ClientPtr /*client */ );
 
-extern _X_EXPORT void FreeAllResources(void);
+extern XORG_EXPORT void FreeAllResources(void);
 
-extern _X_EXPORT Bool LegalNewID(XID /*id */ ,
+extern XORG_EXPORT Bool LegalNewID(XID /*id */ ,
                                  ClientPtr /*client */ );
 
-extern _X_EXPORT void *LookupClientResourceComplex(ClientPtr client,
+extern XORG_EXPORT void *LookupClientResourceComplex(ClientPtr client,
                                                      RESTYPE type,
                                                      FindComplexResType func,
                                                      void *cdata);
 
-extern _X_EXPORT int dixLookupResourceByType(void **result,
+extern XORG_EXPORT int dixLookupResourceByType(void **result,
                                              XID id,
                                              RESTYPE rtype,
                                              ClientPtr client,
                                              Mask access_mode);
 
-extern _X_EXPORT int dixLookupResourceByClass(void **result,
+extern XORG_EXPORT int dixLookupResourceByClass(void **result,
                                               XID id,
                                               RESTYPE rclass,
                                               ClientPtr client,
                                               Mask access_mode);
 
-extern _X_EXPORT void GetXIDRange(int /*client */ ,
+extern XORG_EXPORT void GetXIDRange(int /*client */ ,
                                   Bool /*server */ ,
                                   XID * /*minp */ ,
                                   XID * /*maxp */ );
 
-extern _X_EXPORT unsigned int GetXIDList(ClientPtr /*client */ ,
+extern XORG_EXPORT unsigned int GetXIDList(ClientPtr /*client */ ,
                                          unsigned int /*count */ ,
                                          XID * /*pids */ );
 
-extern _X_EXPORT RESTYPE lastResourceType;
-extern _X_EXPORT RESTYPE TypeMask;
+extern XORG_EXPORT RESTYPE lastResourceType;
+extern XORG_EXPORT RESTYPE TypeMask;
 
 /** @brief A hashing function to be used for hashing resource IDs
 
@@ -270,7 +270,7 @@ extern _X_EXPORT RESTYPE TypeMask;
     of bits by either masking numBits lower bits of the ID or by
     providing at most MAXHASHSIZE hashes.
 */
-extern _X_EXPORT int HashResourceID(XID id,
+extern XORG_EXPORT int HashResourceID(XID id,
                                     int numBits);
 
 #endif /* RESOURCE_H */

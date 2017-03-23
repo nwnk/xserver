@@ -68,7 +68,7 @@ int xf86validateLayout(XF86ConfigPtr p);
 /* Module.c */
 XF86ConfModulePtr xf86parseModuleSection(void);
 void xf86printModuleSection(FILE * cf, XF86ConfModulePtr ptr);
-extern _X_EXPORT XF86LoadPtr xf86addNewLoadDirective(XF86LoadPtr head,
+extern XORG_EXPORT XF86LoadPtr xf86addNewLoadDirective(XF86LoadPtr head,
                                                      const char *name, int type,
                                                      XF86OptionPtr opts);
 void xf86freeModules(XF86ConfModulePtr ptr);
@@ -78,7 +78,7 @@ XF86ConfMonitorPtr xf86parseMonitorSection(void);
 XF86ConfModesPtr xf86parseModesSection(void);
 void xf86printMonitorSection(FILE * cf, XF86ConfMonitorPtr ptr);
 void xf86printModesSection(FILE * cf, XF86ConfModesPtr ptr);
-extern _X_EXPORT void xf86freeMonitorList(XF86ConfMonitorPtr ptr);
+extern XORG_EXPORT void xf86freeMonitorList(XF86ConfMonitorPtr ptr);
 void xf86freeModesList(XF86ConfModesPtr ptr);
 int xf86validateMonitor(XF86ConfigPtr p, XF86ConfScreenPtr screen);
 
@@ -88,7 +88,7 @@ XF86ConfInputPtr xf86parsePointerSection(void);
 /* Screen.c */
 XF86ConfScreenPtr xf86parseScreenSection(void);
 void xf86printScreenSection(FILE * cf, XF86ConfScreenPtr ptr);
-extern _X_EXPORT void xf86freeScreenList(XF86ConfScreenPtr ptr);
+extern XORG_EXPORT void xf86freeScreenList(XF86ConfScreenPtr ptr);
 int xf86validateScreen(XF86ConfigPtr p);
 
 /* Vendor.c */

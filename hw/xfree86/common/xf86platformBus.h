@@ -150,10 +150,10 @@ _xf86_get_platform_device_int_attrib(struct xf86_platform_device *device, int at
 
 #endif
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 xf86PlatformDeviceCheckBusID(struct xf86_platform_device *device, const char *busid);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
 xf86PlatformMatchDriver(char *matches[], int nmatches);
 
 extern void xf86platformVTProbe(void);

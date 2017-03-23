@@ -53,9 +53,9 @@ enum ScrollFlags {
     SCROLL_FLAG_PREFERRED = (1 << 2)
 };
 
-extern _X_EXPORT int InitProximityClassDeviceStruct(DeviceIntPtr /* dev */ );
+extern XORG_EXPORT int InitProximityClassDeviceStruct(DeviceIntPtr /* dev */ );
 
-extern _X_EXPORT Bool InitValuatorAxisStruct(DeviceIntPtr /* dev */ ,
+extern XORG_EXPORT Bool InitValuatorAxisStruct(DeviceIntPtr /* dev */ ,
                                              int /* axnum */ ,
                                              Atom /* label */ ,
                                              int /* minval */ ,
@@ -65,22 +65,22 @@ extern _X_EXPORT Bool InitValuatorAxisStruct(DeviceIntPtr /* dev */ ,
                                              int /* max_res */ ,
                                              int /* mode */ );
 
-extern _X_EXPORT Bool SetScrollValuator(DeviceIntPtr /* dev */ ,
+extern XORG_EXPORT Bool SetScrollValuator(DeviceIntPtr /* dev */ ,
                                         int /* axnum */ ,
                                         enum ScrollType /* type */ ,
                                         double /* increment */ ,
                                         int /* flags */ );
 
 /* Input device properties */
-extern _X_EXPORT void XIDeleteAllDeviceProperties(DeviceIntPtr  /* device */
+extern XORG_EXPORT void XIDeleteAllDeviceProperties(DeviceIntPtr  /* device */
     );
 
-extern _X_EXPORT int XIDeleteDeviceProperty(DeviceIntPtr /* device */ ,
+extern XORG_EXPORT int XIDeleteDeviceProperty(DeviceIntPtr /* device */ ,
                                             Atom /* property */ ,
                                             Bool        /* fromClient */
     );
 
-extern _X_EXPORT int XIChangeDeviceProperty(DeviceIntPtr /* dev */ ,
+extern XORG_EXPORT int XIChangeDeviceProperty(DeviceIntPtr /* dev */ ,
                                             Atom /* property */ ,
                                             Atom /* type */ ,
                                             int /* format */ ,
@@ -90,17 +90,17 @@ extern _X_EXPORT int XIChangeDeviceProperty(DeviceIntPtr /* dev */ ,
                                             Bool        /* sendevent */
     );
 
-extern _X_EXPORT int XIGetDeviceProperty(DeviceIntPtr /* dev */ ,
+extern XORG_EXPORT int XIGetDeviceProperty(DeviceIntPtr /* dev */ ,
                                          Atom /* property */ ,
                                          XIPropertyValuePtr *   /* value */
     );
 
-extern _X_EXPORT int XISetDevicePropertyDeletable(DeviceIntPtr /* dev */ ,
+extern XORG_EXPORT int XISetDevicePropertyDeletable(DeviceIntPtr /* dev */ ,
                                                   Atom /* property */ ,
                                                   Bool  /* deletable */
     );
 
-extern _X_EXPORT long XIRegisterPropertyHandler(DeviceIntPtr dev,
+extern XORG_EXPORT long XIRegisterPropertyHandler(DeviceIntPtr dev,
                                                 int (*SetProperty) (DeviceIntPtr
                                                                     dev,
                                                                     Atom
@@ -118,16 +118,16 @@ extern _X_EXPORT long XIRegisterPropertyHandler(DeviceIntPtr dev,
                                                  Atom property)
     );
 
-extern _X_EXPORT void XIUnregisterPropertyHandler(DeviceIntPtr dev, long id);
+extern XORG_EXPORT void XIUnregisterPropertyHandler(DeviceIntPtr dev, long id);
 
-extern _X_EXPORT Atom XIGetKnownProperty(const char *name);
+extern XORG_EXPORT Atom XIGetKnownProperty(const char *name);
 
-extern _X_EXPORT DeviceIntPtr XIGetDevice(xEvent *ev);
+extern XORG_EXPORT DeviceIntPtr XIGetDevice(xEvent *ev);
 
-extern _X_EXPORT int XIPropToInt(XIPropertyValuePtr val,
+extern XORG_EXPORT int XIPropToInt(XIPropertyValuePtr val,
                                  int *nelem_return, int **buf_return);
 
-extern _X_EXPORT int XIPropToFloat(XIPropertyValuePtr val,
+extern XORG_EXPORT int XIPropToFloat(XIPropertyValuePtr val,
                                    int *nelem_return, float **buf_return);
 
 /****************************************************************************

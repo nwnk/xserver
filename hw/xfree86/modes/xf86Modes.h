@@ -37,81 +37,81 @@
 #include "edid.h"
 #include "xf86Parser.h"
 
-extern _X_EXPORT double xf86ModeHSync(const DisplayModeRec * mode);
-extern _X_EXPORT double xf86ModeVRefresh(const DisplayModeRec * mode);
-extern _X_EXPORT unsigned int xf86ModeBandwidth(DisplayModePtr mode, int depth);
+extern XORG_EXPORT double xf86ModeHSync(const DisplayModeRec * mode);
+extern XORG_EXPORT double xf86ModeVRefresh(const DisplayModeRec * mode);
+extern XORG_EXPORT unsigned int xf86ModeBandwidth(DisplayModePtr mode, int depth);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  xf86ModeWidth(const DisplayModeRec * mode, Rotation rotation);
 
-extern _X_EXPORT int
+extern XORG_EXPORT int
  xf86ModeHeight(const DisplayModeRec * mode, Rotation rotation);
 
-extern _X_EXPORT DisplayModePtr xf86DuplicateMode(const DisplayModeRec * pMode);
-extern _X_EXPORT DisplayModePtr xf86DuplicateModes(ScrnInfoPtr pScrn,
+extern XORG_EXPORT DisplayModePtr xf86DuplicateMode(const DisplayModeRec * pMode);
+extern XORG_EXPORT DisplayModePtr xf86DuplicateModes(ScrnInfoPtr pScrn,
                                                    DisplayModePtr modeList);
-extern _X_EXPORT void xf86SetModeDefaultName(DisplayModePtr mode);
-extern _X_EXPORT void xf86SetModeCrtc(DisplayModePtr p, int adjustFlags);
-extern _X_EXPORT Bool xf86ModesEqual(const DisplayModeRec * pMode1,
+extern XORG_EXPORT void xf86SetModeDefaultName(DisplayModePtr mode);
+extern XORG_EXPORT void xf86SetModeCrtc(DisplayModePtr p, int adjustFlags);
+extern XORG_EXPORT Bool xf86ModesEqual(const DisplayModeRec * pMode1,
                                      const DisplayModeRec * pMode2);
-extern _X_EXPORT void xf86PrintModeline(int scrnIndex, DisplayModePtr mode);
-extern _X_EXPORT DisplayModePtr xf86ModesAdd(DisplayModePtr modes,
+extern XORG_EXPORT void xf86PrintModeline(int scrnIndex, DisplayModePtr mode);
+extern XORG_EXPORT DisplayModePtr xf86ModesAdd(DisplayModePtr modes,
                                              DisplayModePtr new);
 
-extern _X_EXPORT DisplayModePtr xf86DDCGetModes(int scrnIndex, xf86MonPtr DDC);
-extern _X_EXPORT DisplayModePtr xf86CVTMode(int HDisplay, int VDisplay,
+extern XORG_EXPORT DisplayModePtr xf86DDCGetModes(int scrnIndex, xf86MonPtr DDC);
+extern XORG_EXPORT DisplayModePtr xf86CVTMode(int HDisplay, int VDisplay,
                                             float VRefresh, Bool Reduced,
                                             Bool Interlaced);
-extern _X_EXPORT DisplayModePtr xf86GTFMode(int h_pixels, int v_lines,
+extern XORG_EXPORT DisplayModePtr xf86GTFMode(int h_pixels, int v_lines,
                                             float freq, int interlaced,
                                             int margins);
 
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
  xf86ModeIsReduced(const DisplayModeRec * mode);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86ValidateModesFlags(ScrnInfoPtr pScrn, DisplayModePtr modeList, int flags);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86ValidateModesClocks(ScrnInfoPtr pScrn, DisplayModePtr modeList,
                         int *min, int *max, int n_ranges);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86ValidateModesSize(ScrnInfoPtr pScrn, DisplayModePtr modeList,
                       int maxX, int maxY, int maxPitch);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86ValidateModesSync(ScrnInfoPtr pScrn, DisplayModePtr modeList, MonPtr mon);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86ValidateModesBandwidth(ScrnInfoPtr pScrn, DisplayModePtr modeList,
                            unsigned int bandwidth, int depth);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86ValidateModesReducedBlanking(ScrnInfoPtr pScrn, DisplayModePtr modeList);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 
 xf86PruneInvalidModes(ScrnInfoPtr pScrn, DisplayModePtr * modeList,
                       Bool verbose);
 
-extern _X_EXPORT DisplayModePtr xf86PruneDuplicateModes(DisplayModePtr modes);
+extern XORG_EXPORT DisplayModePtr xf86PruneDuplicateModes(DisplayModePtr modes);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86ValidateModesUserConfig(ScrnInfoPtr pScrn, DisplayModePtr modeList);
 
-extern _X_EXPORT DisplayModePtr
+extern XORG_EXPORT DisplayModePtr
 xf86GetMonitorModes(ScrnInfoPtr pScrn, XF86ConfMonitorPtr conf_monitor);
 
-extern _X_EXPORT DisplayModePtr xf86GetDefaultModes(void);
+extern XORG_EXPORT DisplayModePtr xf86GetDefaultModes(void);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 xf86SaveModeContents(DisplayModePtr intern, const DisplayModeRec *mode);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
  xf86DDCApplyQuirks(int scrnIndex, xf86MonPtr DDC);
 
 #endif                          /* _XF86MODES_H_ */

@@ -39,7 +39,7 @@ typedef struct _syncFdScreenFuncs {
     SyncScreenGetFenceFdFunc            GetFenceFd;
 } SyncFdScreenFuncsRec, *SyncFdScreenFuncsPtr;
 
-extern _X_EXPORT Bool miSyncFdScreenInit(ScreenPtr pScreen,
+extern XORG_EXPORT Bool miSyncFdScreenInit(ScreenPtr pScreen,
                                          const SyncFdScreenFuncsRec *funcs);
 
 #endif /* _MISYNCFD_H_ */

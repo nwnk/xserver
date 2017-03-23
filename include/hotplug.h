@@ -28,9 +28,9 @@
 
 #include "list.h"
 
-extern _X_EXPORT void config_pre_init(void);
-extern _X_EXPORT void config_init(void);
-extern _X_EXPORT void config_fini(void);
+extern XORG_EXPORT void config_pre_init(void);
+extern XORG_EXPORT void config_init(void);
+extern XORG_EXPORT void config_fini(void);
 
 /* Bump this each time you add something to the struct
  * so that drivers can easily tell what is available

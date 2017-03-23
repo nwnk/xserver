@@ -61,18 +61,18 @@ typedef struct {
 } legacyVGARec, *legacyVGAPtr;
 
 /* OS dependent functions */
-extern _X_EXPORT xf86Int10InfoPtr xf86InitInt10(int entityIndex);
-extern _X_EXPORT xf86Int10InfoPtr xf86ExtendedInitInt10(int entityIndex,
+extern XORG_EXPORT xf86Int10InfoPtr xf86InitInt10(int entityIndex);
+extern XORG_EXPORT xf86Int10InfoPtr xf86ExtendedInitInt10(int entityIndex,
                                                         int Flags);
-extern _X_EXPORT void xf86FreeInt10(xf86Int10InfoPtr pInt);
-extern _X_EXPORT void *xf86Int10AllocPages(xf86Int10InfoPtr pInt, int num,
+extern XORG_EXPORT void xf86FreeInt10(xf86Int10InfoPtr pInt);
+extern XORG_EXPORT void *xf86Int10AllocPages(xf86Int10InfoPtr pInt, int num,
                                            int *off);
-extern _X_EXPORT void xf86Int10FreePages(xf86Int10InfoPtr pInt, void *pbase,
+extern XORG_EXPORT void xf86Int10FreePages(xf86Int10InfoPtr pInt, void *pbase,
                                          int num);
-extern _X_EXPORT void *xf86int10Addr(xf86Int10InfoPtr pInt, uint32_t addr);
+extern XORG_EXPORT void *xf86int10Addr(xf86Int10InfoPtr pInt, uint32_t addr);
 
 /* x86 executor related functions */
-extern _X_EXPORT void xf86ExecX86int10(xf86Int10InfoPtr pInt);
+extern XORG_EXPORT void xf86ExecX86int10(xf86Int10InfoPtr pInt);
 
 #ifdef _INT10_PRIVATE
 
@@ -115,13 +115,13 @@ extern _X_EXPORT void xf86ExecX86int10(xf86Int10InfoPtr pInt);
 #define MEM_WL(name, addr, val) (*name->mem->wl)(name, addr, val)
 
 /* OS dependent functions */
-extern _X_EXPORT Bool MapCurrentInt10(xf86Int10InfoPtr pInt);
+extern XORG_EXPORT Bool MapCurrentInt10(xf86Int10InfoPtr pInt);
 
 /* x86 executor related functions */
-extern _X_EXPORT Bool xf86Int10ExecSetup(xf86Int10InfoPtr pInt);
+extern XORG_EXPORT Bool xf86Int10ExecSetup(xf86Int10InfoPtr pInt);
 
 /* int.c */
-extern _X_EXPORT xf86Int10InfoPtr Int10Current;
+extern XORG_EXPORT xf86Int10InfoPtr Int10Current;
 int int_handler(xf86Int10InfoPtr pInt);
 
 /* helper_exec.c */
@@ -138,7 +138,7 @@ void LockLegacyVGA(xf86Int10InfoPtr pInt, legacyVGAPtr vga);
 void UnlockLegacyVGA(xf86Int10InfoPtr pInt, legacyVGAPtr vga);
 
 #if defined (_PC)
-extern _X_EXPORT void xf86Int10SaveRestoreBIOSVars(xf86Int10InfoPtr pInt,
+extern XORG_EXPORT void xf86Int10SaveRestoreBIOSVars(xf86Int10InfoPtr pInt,
                                                    Bool save);
 #endif
 int port_rep_inb(xf86Int10InfoPtr pInt,
@@ -173,15 +173,15 @@ void setup_int_vect(xf86Int10InfoPtr pInt);
 int setup_system_bios(void *base_addr);
 void reset_int_vect(xf86Int10InfoPtr pInt);
 void set_return_trap(xf86Int10InfoPtr pInt);
-extern _X_EXPORT void *xf86HandleInt10Options(ScrnInfoPtr pScrn,
+extern XORG_EXPORT void *xf86HandleInt10Options(ScrnInfoPtr pScrn,
                                               int entityIndex);
 Bool int10skip(const void *options);
 Bool int10_check_bios(int scrnIndex, int codeSeg,
                       const unsigned char *vbiosMem);
 Bool initPrimary(const void *options);
-extern _X_EXPORT BusType xf86int10GetBiosLocationType(const xf86Int10InfoPtr
+extern XORG_EXPORT BusType xf86int10GetBiosLocationType(const xf86Int10InfoPtr
                                                       pInt);
-extern _X_EXPORT Bool xf86int10GetBiosSegment(xf86Int10InfoPtr pInt,
+extern XORG_EXPORT Bool xf86int10GetBiosSegment(xf86Int10InfoPtr pInt,
                                               void *base);
 #ifdef DEBUG
 void dprint(unsigned long start, unsigned long size);

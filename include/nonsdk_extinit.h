@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /* this is separate from extinit.h to avoid references to these symbols being
    pulled in by sdksyms */
 
-extern _X_EXPORT Bool noPseudoramiXExtension;
+extern XORG_EXPORT Bool noPseudoramiXExtension;
 extern void PseudoramiXExtensionInit(void);
 
 #endif

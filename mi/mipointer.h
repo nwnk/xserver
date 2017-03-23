@@ -73,11 +73,11 @@ typedef struct _miPointerScreenFuncRec {
         );
 } miPointerScreenFuncRec, *miPointerScreenFuncPtr;
 
-extern _X_EXPORT Bool miDCInitialize(ScreenPtr /*pScreen */ ,
+extern XORG_EXPORT Bool miDCInitialize(ScreenPtr /*pScreen */ ,
                                      miPointerScreenFuncPtr     /*screenFuncs */
     );
 
-extern _X_EXPORT Bool miPointerInitialize(ScreenPtr /*pScreen */ ,
+extern XORG_EXPORT Bool miPointerInitialize(ScreenPtr /*pScreen */ ,
                                           miPointerSpriteFuncPtr
                                           /*spriteFuncs */ ,
                                           miPointerScreenFuncPtr
@@ -85,45 +85,45 @@ extern _X_EXPORT Bool miPointerInitialize(ScreenPtr /*pScreen */ ,
                                           Bool  /*waitForUpdate */
     );
 
-extern _X_EXPORT void miPointerWarpCursor(DeviceIntPtr /*pDev */ ,
+extern XORG_EXPORT void miPointerWarpCursor(DeviceIntPtr /*pDev */ ,
                                           ScreenPtr /*pScreen */ ,
                                           int /*x */ ,
                                           int   /*y */
     );
 
-extern _X_EXPORT ScreenPtr
+extern XORG_EXPORT ScreenPtr
 miPointerGetScreen(DeviceIntPtr pDev);
-extern _X_EXPORT void
+extern XORG_EXPORT void
 miPointerSetScreen(DeviceIntPtr pDev, int screen_num, int x, int y);
 
 /* Returns the current cursor position. */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 miPointerGetPosition(DeviceIntPtr pDev, int *x, int *y);
 
 /* Moves the cursor to the specified position.  May clip the co-ordinates:
  * x and y are modified in-place. */
-extern _X_EXPORT ScreenPtr
+extern XORG_EXPORT ScreenPtr
 miPointerSetPosition(DeviceIntPtr pDev, int mode, double *x, double *y,
                      int *nevents, InternalEvent *events);
 
-extern _X_EXPORT void
+extern XORG_EXPORT void
 miPointerUpdateSprite(DeviceIntPtr pDev);
 
 /* Invalidate current sprite, forcing reload on next
  * sprite setting (window crossing, grab action, etc)
  */
-extern _X_EXPORT void
+extern XORG_EXPORT void
 miPointerInvalidateSprite(DeviceIntPtr pDev);
 
 /* Sets whether the sprite should be updated immediately on pointer moves */
-extern _X_EXPORT Bool
+extern XORG_EXPORT Bool
 miPointerSetWaitForUpdate(ScreenPtr pScreen, Bool wait);
 
-extern _X_EXPORT DevPrivateKeyRec miPointerPrivKeyRec;
+extern XORG_EXPORT DevPrivateKeyRec miPointerPrivKeyRec;
 
 #define miPointerPrivKey (&miPointerPrivKeyRec)
 
-extern _X_EXPORT DevPrivateKeyRec miPointerScreenKeyRec;
+extern XORG_EXPORT DevPrivateKeyRec miPointerScreenKeyRec;
 
 #define miPointerScreenKey (&miPointerScreenKeyRec)
 

@@ -27,7 +27,7 @@ typedef struct _mergeRopBits {
     FbBits ca1, cx1, ca2, cx2;
 } FbMergeRopRec, *FbMergeRopPtr;
 
-extern _X_EXPORT const FbMergeRopRec FbMergeRopBits[16];
+extern XORG_EXPORT const FbMergeRopRec FbMergeRopBits[16];
 
 #define FbDeclareMergeRop() FbBits   _ca1, _cx1, _ca2, _cx2;
 #define FbDeclarePrebuiltMergeRop()	FbBits	_cca, _ccx;
