@@ -3,6 +3,8 @@
 #ifndef _DIX_CONFIG_H_
 #define _DIX_CONFIG_H_
 
+#define XORG_EXPORT
+
 /* Support BigRequests extension */
 #undef BIGREQS
 
