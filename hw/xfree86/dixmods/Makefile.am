@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libdixmods.la libxorgxkb.la
+noinst_LTLIBRARIES = libxorgxkb.la
 
 if GLX
 GLXMODS = libglx.la
@@ -43,8 +43,5 @@ if NO_UNDEFINED
 libshadow_la_LIBADD += libfb.la
 endif
 libshadow_la_SOURCES = shmodule.c
-
-libdixmods_la_SOURCES = $(top_srcdir)/mi/miinitext.c
-libdixmods_la_CFLAGS = $(AM_CFLAGS)
 
 libxorgxkb_la_SOURCES = xkbVT.c xkbPrivate.c xkbKillSrv.c

@@ -46,7 +46,7 @@ DIST_SUBDIRS = common ddc i2c x86emu int10 fbdevhw os-support \
 	       utils doc man glamor_egl drivers
 
 bin_PROGRAMS = Xorg
-nodist_Xorg_SOURCES = sdksyms.c
+nodist_Xorg_SOURCES = $(top_srcdir)/mi/miinitext.c
 
 AM_CFLAGS = $(DIX_CFLAGS) @XORG_CFLAGS@
 AM_CPPFLAGS = $(XORG_INCS) -I$(srcdir)/parser \
@@ -56,11 +56,10 @@ AM_CPPFLAGS = $(XORG_INCS) -I$(srcdir)/parser \
 LOCAL_LIBS = \
             $(MAIN_LIB) \
             $(XSERVER_LIBS) \
-            loader/libloader.la \
             common/libcommon.la \
+            loader/libloader.la \
             os-support/libxorgos.la \
             parser/libxf86config.la \
-            dixmods/libdixmods.la \
             modes/libxf86modes.la \
             ramdac/libramdac.la \
             ddc/libddc.la \
@@ -133,14 +132,7 @@ xorg.conf.example: xorgconf.cpp
 relink:
 	$(AM_V_at)rm -f Xorg$(EXEEXT) && $(MAKE) Xorg$(EXEEXT)
 
-CLEANFILES = sdksyms.c sdksyms.dep Xorg.sh
-EXTRA_DIST += sdksyms.sh
-
-sdksyms.dep sdksyms.c: sdksyms.sh
-	$(AM_V_GEN)CPP='$(CPP)' AWK='$(AWK)' $(SHELL) $(srcdir)/sdksyms.sh $(top_srcdir) $(CFLAGS) $(AM_CFLAGS) $(AM_CPPFLAGS)
-
-SDKSYMS_DEP = sdksyms.dep
--include $(SDKSYMS_DEP)
+CLEANFILES = Xorg.sh
 
 i2c/libi2c.la:
 	$(AM_V_at)cd i2c && $(MAKE) libi2c.la
