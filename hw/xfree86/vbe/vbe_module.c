@@ -19,4 +19,4 @@ static XF86ModuleVersionInfo vbeVersRec = {
     {0, 0, 0, 0}
 };
 
-XORG_EXPORT XF86ModuleData vbeModuleData = { &vbeVersRec, NULL, NULL };
+_X_EXPORT XF86ModuleData vbeModuleData = { &vbeVersRec, NULL, NULL };

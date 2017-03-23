@@ -21,4 +21,4 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}
 };
 
-XORG_EXPORT XF86ModuleData vgahwModuleData = { &VersRec, NULL, NULL };
+_X_EXPORT XF86ModuleData vgahwModuleData = { &VersRec, NULL, NULL };

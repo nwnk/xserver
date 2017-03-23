@@ -50,4 +50,4 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}                /* signature, to be patched into the file by a tool */
 };
 
-XORG_EXPORT XF86ModuleData shadowModuleData = { &VersRec, NULL, NULL };
+_X_EXPORT XF86ModuleData shadowModuleData = { &VersRec, NULL, NULL };

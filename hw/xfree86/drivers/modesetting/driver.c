@@ -101,7 +101,7 @@ static Bool ms_platform_probe(DriverPtr driver,
                               intptr_t match_data);
 #endif
 
-XORG_EXPORT DriverRec modesetting = {
+_X_EXPORT DriverRec modesetting = {
     1,
     "modesetting",
     Identify,
@@ -152,7 +152,7 @@ static XF86ModuleVersionInfo VersRec = {
     {0, 0, 0, 0}
 };
 
-XORG_EXPORT XF86ModuleData modesettingModuleData = { &VersRec, Setup, NULL };
+_X_EXPORT XF86ModuleData modesettingModuleData = { &VersRec, Setup, NULL };
 
 static void *
 Setup(void *module, void *opts, int *errmaj, int *errmin)

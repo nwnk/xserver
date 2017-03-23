@@ -194,4 +194,4 @@ static XF86ModuleVersionInfo exaVersRec = {
     {0, 0, 0, 0}
 };
 
-XORG_EXPORT XF86ModuleData exaModuleData = { &exaVersRec, NULL, NULL };
+_X_EXPORT XF86ModuleData exaModuleData = { &exaVersRec, NULL, NULL };
