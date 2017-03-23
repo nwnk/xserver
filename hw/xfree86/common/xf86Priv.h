@@ -43,53 +43,53 @@
  * Parameters set ONLY from the command line options
  * The global state of these things is held in xf86InfoRec (when appropriate).
  */
-extern XORG_EXPORT const char *xf86ConfigFile;
-extern XORG_EXPORT const char *xf86ConfigDir;
-extern XORG_EXPORT Bool xf86AllowMouseOpenFail;
+extern XORG_EXPORT_VAR const char *xf86ConfigFile;
+extern XORG_EXPORT_VAR const char *xf86ConfigDir;
+extern XORG_EXPORT_VAR Bool xf86AllowMouseOpenFail;
 
 #ifdef XF86VIDMODE
-extern XORG_EXPORT Bool xf86VidModeDisabled;
-extern XORG_EXPORT Bool xf86VidModeAllowNonLocal;
+extern XORG_EXPORT_VAR Bool xf86VidModeDisabled;
+extern XORG_EXPORT_VAR Bool xf86VidModeAllowNonLocal;
 #endif
-extern XORG_EXPORT Bool xf86fpFlag;
-extern XORG_EXPORT Bool xf86sFlag;
-extern XORG_EXPORT Bool xf86bsEnableFlag;
-extern XORG_EXPORT Bool xf86bsDisableFlag;
-extern XORG_EXPORT Bool xf86silkenMouseDisableFlag;
-extern XORG_EXPORT Bool xf86xkbdirFlag;
+extern XORG_EXPORT_VAR Bool xf86fpFlag;
+extern XORG_EXPORT_VAR Bool xf86sFlag;
+extern XORG_EXPORT_VAR Bool xf86bsEnableFlag;
+extern XORG_EXPORT_VAR Bool xf86bsDisableFlag;
+extern XORG_EXPORT_VAR Bool xf86silkenMouseDisableFlag;
+extern XORG_EXPORT_VAR Bool xf86xkbdirFlag;
 
 #ifdef HAVE_ACPI
-extern XORG_EXPORT Bool xf86acpiDisableFlag;
+extern XORG_EXPORT_VAR Bool xf86acpiDisableFlag;
 #endif
-extern XORG_EXPORT char *xf86LayoutName;
-extern XORG_EXPORT char *xf86ScreenName;
-extern XORG_EXPORT char *xf86PointerName;
-extern XORG_EXPORT char *xf86KeyboardName;
-extern XORG_EXPORT int xf86FbBpp;
-extern XORG_EXPORT int xf86Depth;
-extern XORG_EXPORT rgb xf86Weight;
-extern XORG_EXPORT Bool xf86FlipPixels;
-extern XORG_EXPORT Gamma xf86Gamma;
-extern XORG_EXPORT const char *xf86ServerName;
+extern XORG_EXPORT_VAR char *xf86LayoutName;
+extern XORG_EXPORT_VAR char *xf86ScreenName;
+extern XORG_EXPORT_VAR char *xf86PointerName;
+extern XORG_EXPORT_VAR char *xf86KeyboardName;
+extern XORG_EXPORT_VAR int xf86FbBpp;
+extern XORG_EXPORT_VAR int xf86Depth;
+extern XORG_EXPORT_VAR rgb xf86Weight;
+extern XORG_EXPORT_VAR Bool xf86FlipPixels;
+extern XORG_EXPORT_VAR Gamma xf86Gamma;
+extern XORG_EXPORT_VAR const char *xf86ServerName;
 
 /* Other parameters */
 
-extern XORG_EXPORT xf86InfoRec xf86Info;
-extern XORG_EXPORT const char *xf86ModulePath;
-extern XORG_EXPORT MessageType xf86ModPathFrom;
-extern XORG_EXPORT const char *xf86LogFile;
-extern XORG_EXPORT MessageType xf86LogFileFrom;
-extern XORG_EXPORT Bool xf86LogFileWasOpened;
-extern XORG_EXPORT serverLayoutRec xf86ConfigLayout;
+extern XORG_EXPORT_VAR xf86InfoRec xf86Info;
+extern XORG_EXPORT_VAR const char *xf86ModulePath;
+extern XORG_EXPORT_VAR MessageType xf86ModPathFrom;
+extern XORG_EXPORT_VAR const char *xf86LogFile;
+extern XORG_EXPORT_VAR MessageType xf86LogFileFrom;
+extern XORG_EXPORT_VAR Bool xf86LogFileWasOpened;
+extern XORG_EXPORT_VAR serverLayoutRec xf86ConfigLayout;
 
-extern XORG_EXPORT DriverPtr *xf86DriverList;
-extern XORG_EXPORT int xf86NumDrivers;
-extern XORG_EXPORT Bool xf86Resetting;
+extern XORG_EXPORT_VAR DriverPtr *xf86DriverList;
+extern XORG_EXPORT_VAR int xf86NumDrivers;
+extern XORG_EXPORT_VAR Bool xf86Resetting;
 extern Bool xf86Initialising;
-extern XORG_EXPORT int xf86NumScreens;
-extern XORG_EXPORT const char *xf86VisualNames[];
-extern XORG_EXPORT int xf86Verbose;       /* verbosity level */
-extern XORG_EXPORT int xf86LogVerbose;    /* log file verbosity level */
+extern XORG_EXPORT_VAR int xf86NumScreens;
+extern XORG_EXPORT_VAR const char *xf86VisualNames[];
+extern XORG_EXPORT_VAR int xf86Verbose;       /* verbosity level */
+extern XORG_EXPORT_VAR int xf86LogVerbose;    /* log file verbosity level */
 
 extern ScrnInfoPtr *xf86GPUScreens;      /* List of pointers to ScrnInfoRecs */
 extern int xf86NumGPUScreens;
@@ -122,8 +122,8 @@ extern XORG_EXPORT Bool xf86PathIsSafe(const char *path);
 
 /* xf86DefaultModes */
 
-extern XORG_EXPORT const DisplayModeRec xf86DefaultModes[];
-extern XORG_EXPORT const int xf86NumDefaultModes;
+extern XORG_EXPORT_VAR const DisplayModeRec xf86DefaultModes[];
+extern XORG_EXPORT_VAR const int xf86NumDefaultModes;
 
 /* xf86Configure.c */
 extern XORG_EXPORT void
@@ -141,9 +141,9 @@ extern _X_HIDDEN int
 xf86SigWrapper(int signo);
 extern XORG_EXPORT void
 xf86HandlePMEvents(int fd, void *data);
-extern XORG_EXPORT int (*xf86PMGetEventFromOs) (int fd, pmEvent * events,
-                                              int num);
-extern XORG_EXPORT pmWait (*xf86PMConfirmEventToOs) (int fd, pmEvent event);
+extern XORG_EXPORT_VAR int (*xf86PMGetEventFromOs) (int fd, pmEvent * events,
+                                                    int num);
+extern XORG_EXPORT_VAR pmWait (*xf86PMConfirmEventToOs) (int fd, pmEvent event);
 
 /* xf86Helper.c */
 extern XORG_EXPORT void

@@ -65,9 +65,9 @@ typedef struct pixman_region16 RegionRec, *RegionPtr;
 
 typedef struct pixman_region16_data RegDataRec, *RegDataPtr;
 
-extern XORG_EXPORT BoxRec RegionEmptyBox;
-extern XORG_EXPORT RegDataRec RegionEmptyData;
-extern XORG_EXPORT RegDataRec RegionBrokenData;
+extern XORG_EXPORT_VAR BoxRec RegionEmptyBox;
+extern XORG_EXPORT_VAR RegDataRec RegionEmptyData;
+extern XORG_EXPORT_VAR RegDataRec RegionBrokenData;
 static inline Bool
 RegionNil(RegionPtr reg)
 {

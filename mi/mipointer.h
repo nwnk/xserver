@@ -119,11 +119,11 @@ miPointerInvalidateSprite(DeviceIntPtr pDev);
 extern XORG_EXPORT Bool
 miPointerSetWaitForUpdate(ScreenPtr pScreen, Bool wait);
 
-extern XORG_EXPORT DevPrivateKeyRec miPointerPrivKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec miPointerPrivKeyRec;
 
 #define miPointerPrivKey (&miPointerPrivKeyRec)
 
-extern XORG_EXPORT DevPrivateKeyRec miPointerScreenKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec miPointerScreenKeyRec;
 
 #define miPointerScreenKey (&miPointerScreenKeyRec)
 

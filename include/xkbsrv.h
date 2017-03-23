@@ -283,7 +283,7 @@ typedef struct {
 	device->public.realInputProc = oldprocs->realInputProc; \
 	device->unwrapProc = oldprocs->unwrapProc;
 
-extern XORG_EXPORT DevPrivateKeyRec xkbDevicePrivateKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec xkbDevicePrivateKeyRec;
 
 #define xkbDevicePrivateKey (&xkbDevicePrivateKeyRec)
 
@@ -301,13 +301,13 @@ extern void xkbUnwrapProc(DeviceIntPtr, DeviceHandleProc, void *);
 
 /***====================================================================***/
 
-extern XORG_EXPORT int XkbReqCode;
-extern XORG_EXPORT int XkbEventBase;
-extern XORG_EXPORT int XkbKeyboardErrorCode;
-extern XORG_EXPORT const char *XkbBaseDirectory;
-extern XORG_EXPORT const char *XkbBinDirectory;
+extern XORG_EXPORT_VAR int XkbReqCode;
+extern XORG_EXPORT_VAR int XkbEventBase;
+extern XORG_EXPORT_VAR int XkbKeyboardErrorCode;
+extern XORG_EXPORT_VAR const char *XkbBaseDirectory;
+extern XORG_EXPORT_VAR const char *XkbBinDirectory;
 
-extern XORG_EXPORT CARD32 xkbDebugFlags;
+extern XORG_EXPORT_VAR CARD32 xkbDebugFlags;
 
 #define	_XkbLibError(c,l,d)     /* Epoch fail */
 

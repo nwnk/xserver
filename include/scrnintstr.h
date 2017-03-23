@@ -682,7 +682,7 @@ typedef struct _ScreenInfo {
     int height;                 /* total height of all screens together */
 } ScreenInfo;
 
-extern XORG_EXPORT ScreenInfo screenInfo;
+extern XORG_EXPORT_VAR ScreenInfo screenInfo;
 
 extern XORG_EXPORT void InitOutput(ScreenInfo * /*pScreenInfo */ ,
                                  int /*argc */ ,

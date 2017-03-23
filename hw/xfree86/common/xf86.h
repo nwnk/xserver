@@ -52,32 +52,32 @@
 #include "propertyst.h"
 
 /* General parameters */
-extern XORG_EXPORT int xf86DoConfigure;
-extern XORG_EXPORT int xf86DoShowOptions;
-extern XORG_EXPORT Bool xf86DoConfigurePass1;
-extern XORG_EXPORT Bool xf86ProbeIgnorePrimary;
-extern XORG_EXPORT Bool xorgHWAccess;
+extern XORG_EXPORT_VAR int xf86DoConfigure;
+extern XORG_EXPORT_VAR int xf86DoShowOptions;
+extern XORG_EXPORT_VAR Bool xf86DoConfigurePass1;
+extern XORG_EXPORT_VAR Bool xf86ProbeIgnorePrimary;
+extern XORG_EXPORT_VAR Bool xorgHWAccess;
 
-extern XORG_EXPORT DevPrivateKeyRec xf86ScreenKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec xf86ScreenKeyRec;
 
 #define xf86ScreenKey (&xf86ScreenKeyRec)
 
-extern XORG_EXPORT ScrnInfoPtr *xf86Screens;      /* List of pointers to ScrnInfoRecs */
+extern XORG_EXPORT_VAR ScrnInfoPtr *xf86Screens;      /* List of pointers to ScrnInfoRecs */
 extern XORG_EXPORT const unsigned char byte_reversed[256];
-extern XORG_EXPORT Bool fbSlotClaimed;
+extern XORG_EXPORT_VAR Bool fbSlotClaimed;
 
 #if (defined(__sparc__) || defined(__sparc)) && !defined(__OpenBSD__)
-extern XORG_EXPORT Bool sbusSlotClaimed;
+extern XORG_EXPORT_VAR Bool sbusSlotClaimed;
 #endif
 
 #if defined(XSERVER_PLATFORM_BUS)
-extern XORG_EXPORT int platformSlotClaimed;
+extern XORG_EXPORT_VAR int platformSlotClaimed;
 #endif
 
-extern XORG_EXPORT confDRIRec xf86ConfigDRI;
-extern XORG_EXPORT Bool xf86DRI2Enabled(void);
+extern XORG_EXPORT_VAR confDRIRec xf86ConfigDRI;
+extern XORG_EXPORT_VAR Bool xf86DRI2Enabled(void);
 
-extern XORG_EXPORT Bool VTSwitchEnabled;  /* kbd driver */
+extern XORG_EXPORT_VAR Bool VTSwitchEnabled;  /* kbd driver */
 
 #define XF86SCRNINFO(p) xf86ScreenToScrn(p)
 
@@ -101,7 +101,7 @@ static inline _X_DEPRECATED void xf86UnblockSIGIO(int wasset) { input_unlock(); 
 /* PCI related */
 #ifdef XSERVER_LIBPCIACCESS
 #include <pciaccess.h>
-extern XORG_EXPORT int pciSlotClaimed;
+extern XORG_EXPORT_VAR int pciSlotClaimed;
 
 extern XORG_EXPORT Bool xf86CheckPciSlot(const struct pci_device *);
 extern XORG_EXPORT int xf86ClaimPciSlot(struct pci_device *, DriverPtr drvp,
@@ -200,7 +200,7 @@ extern XORG_EXPORT Bool DGAInit(ScreenPtr pScreen, DGAFunctionPtr funcs,
                               DGAModePtr modes, int num);
 extern XORG_EXPORT Bool DGAReInitModes(ScreenPtr pScreen, DGAModePtr modes,
                                      int num);
-extern XORG_EXPORT xf86SetDGAModeProc xf86SetDGAMode;
+extern XORG_EXPORT_VAR xf86SetDGAModeProc xf86SetDGAMode;
 #endif
 
 /* xf86Events.c */

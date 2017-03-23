@@ -86,8 +86,8 @@ extern XORG_EXPORT void
 extern XORG_EXPORT void
  ShmRegisterFbFuncs(ScreenPtr pScreen);
 
-extern XORG_EXPORT RESTYPE ShmSegType;
-extern XORG_EXPORT int ShmCompletionCode;
-extern XORG_EXPORT int BadShmSegCode;
+extern XORG_EXPORT_VAR RESTYPE ShmSegType;
+extern XORG_EXPORT_VAR int ShmCompletionCode;
+extern XORG_EXPORT_VAR int BadShmSegCode;
 
 #endif                          /* _SHMINT_H_ */

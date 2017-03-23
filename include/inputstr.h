@@ -611,7 +611,7 @@ typedef struct {
     DeviceIntPtr all_master_devices;
 } InputInfo;
 
-extern XORG_EXPORT InputInfo inputInfo;
+extern XORG_EXPORT_VAR InputInfo inputInfo;
 
 /* for keeping the events for devices grabbed synchronously */
 typedef struct _QdEvent *QdEventPtr;

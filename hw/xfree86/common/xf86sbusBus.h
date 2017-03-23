@@ -65,8 +65,8 @@ struct sbus_devtable {
 };
 
 extern XORG_EXPORT void xf86SbusProbe(void);
-extern XORG_EXPORT sbusDevicePtr *xf86SbusInfo;
-extern XORG_EXPORT struct sbus_devtable sbusDeviceTable[];
+extern XORG_EXPORT_VAR sbusDevicePtr *xf86SbusInfo;
+extern XORG_EXPORT_VAR struct sbus_devtable sbusDeviceTable[];
 
 extern XORG_EXPORT int xf86MatchSbusInstances(const char *driverName,
                                             int sbusDevId, GDevPtr * devList,
@@ -87,7 +87,7 @@ extern XORG_EXPORT void xf86SbusSetOsHwCursorCmap(sbusDevicePtr psdp, int bg,
 extern XORG_EXPORT Bool xf86SbusHandleColormaps(ScreenPtr pScreen,
                                               sbusDevicePtr psdp);
 
-extern XORG_EXPORT int promRootNode;
+extern XORG_EXPORT_VAR int promRootNode;
 
 extern XORG_EXPORT int promGetSibling(int node);
 extern XORG_EXPORT int promGetChild(int node);

@@ -378,7 +378,7 @@ typedef struct _rrScrPriv {
 
 } rrScrPrivRec, *rrScrPrivPtr;
 
-extern XORG_EXPORT DevPrivateKeyRec rrPrivKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec rrPrivKeyRec;
 
 #define rrPrivKey (&rrPrivKeyRec)
 
@@ -419,7 +419,7 @@ extern RESTYPE RRClientType, RREventType;     /* resource types for event masks 
 extern DevPrivateKeyRec RRClientPrivateKeyRec;
 
 #define RRClientPrivateKey (&RRClientPrivateKeyRec)
-extern XORG_EXPORT RESTYPE RRCrtcType, RRModeType, RROutputType, RRProviderType;
+extern XORG_EXPORT_VAR RESTYPE RRCrtcType, RRModeType, RROutputType, RRProviderType;
 
 #define VERIFY_RR_OUTPUT(id, ptr, a)\
     {\

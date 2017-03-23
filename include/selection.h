@@ -71,9 +71,9 @@ typedef struct _Selection {
 extern XORG_EXPORT int dixLookupSelection(Selection ** result, Atom name,
                                         ClientPtr client, Mask access_mode);
 
-extern XORG_EXPORT Selection *CurrentSelections;
+extern XORG_EXPORT_VAR Selection *CurrentSelections;
 
-extern XORG_EXPORT CallbackListPtr SelectionCallback;
+extern XORG_EXPORT_VAR CallbackListPtr SelectionCallback;
 
 typedef enum {
     SelectionSetOwner,

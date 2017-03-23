@@ -51,7 +51,7 @@ extern XORG_EXPORT Bool
 extern XORG_EXPORT DisplayModePtr
 FindDMTMode(int hsize, int vsize, int refresh, Bool rb);
 
-extern XORG_EXPORT const DisplayModeRec DMTModes[];
+extern XORG_EXPORT_VAR const DisplayModeRec DMTModes[];
 
 /*
  * Quirks to work around broken EDID data from various monitors.

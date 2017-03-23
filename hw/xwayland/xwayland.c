@@ -39,7 +39,7 @@
 
 #ifdef XF86VIDMODE
 #include <X11/extensions/xf86vmproto.h>
-XORG_EXPORT Bool noXFree86VidModeExtension;
+Bool noXFree86VidModeExtension;
 #endif
 
 void

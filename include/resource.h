@@ -112,7 +112,7 @@ extern XORG_EXPORT unsigned int ResourceClientBits(void);
 #define rClient(obj) (clients[CLIENT_ID((obj)->resource)])
 
 /* Resource state callback */
-extern XORG_EXPORT CallbackListPtr ResourceStateCallback;
+extern XORG_EXPORT_VAR CallbackListPtr ResourceStateCallback;
 
 typedef enum { ResourceStateAdding,
     ResourceStateFreeing
@@ -257,8 +257,8 @@ extern XORG_EXPORT unsigned int GetXIDList(ClientPtr /*client */ ,
                                          unsigned int /*count */ ,
                                          XID * /*pids */ );
 
-extern XORG_EXPORT RESTYPE lastResourceType;
-extern XORG_EXPORT RESTYPE TypeMask;
+extern XORG_EXPORT_VAR RESTYPE lastResourceType;
+extern XORG_EXPORT_VAR RESTYPE TypeMask;
 
 /** @brief A hashing function to be used for hashing resource IDs
 

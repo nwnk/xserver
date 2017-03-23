@@ -215,8 +215,8 @@ typedef struct {
     unsigned char id;
 } LedCtrl;
 
-extern XORG_EXPORT KeybdCtrl defaultKeyboardControl;
-extern XORG_EXPORT PtrCtrl defaultPointerControl;
+extern XORG_EXPORT_VAR KeybdCtrl defaultKeyboardControl;
+extern XORG_EXPORT_VAR PtrCtrl defaultPointerControl;
 
 typedef struct _InputOption InputOption;
 typedef struct _XI2Mask XI2Mask;
@@ -734,6 +734,6 @@ extern int InputThreadRegisterDev(int fd,
 
 extern int InputThreadUnregisterDev(int fd);
 
-extern XORG_EXPORT Bool InputThreadEnable;
+extern XORG_EXPORT_VAR Bool InputThreadEnable;
 
 #endif                          /* INPUT_H */

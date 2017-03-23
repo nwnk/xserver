@@ -62,11 +62,11 @@ struct _DeviceIntRec;
 typedef struct _Cursor *CursorPtr;
 typedef struct _CursorMetric *CursorMetricPtr;
 
-extern XORG_EXPORT DevScreenPrivateKeyRec cursorScreenDevPriv;
+extern XORG_EXPORT_VAR DevScreenPrivateKeyRec cursorScreenDevPriv;
 
 #define CursorScreenKey (&cursorScreenDevPriv)
 
-extern XORG_EXPORT CursorPtr rootCursor;
+extern XORG_EXPORT_VAR CursorPtr rootCursor;
 
 extern XORG_EXPORT int FreeCursor(void *pCurs,
                                 XID cid);

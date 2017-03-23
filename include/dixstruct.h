@@ -38,7 +38,7 @@ SOFTWARE.
  *      translation from client ids to server addresses.
  */
 
-extern XORG_EXPORT CallbackListPtr ClientStateCallback;
+extern XORG_EXPORT_VAR CallbackListPtr ClientStateCallback;
 
 typedef struct {
     ClientPtr client;
@@ -196,7 +196,7 @@ typedef struct _WorkQueue {
     void *closure;
 } WorkQueueRec;
 
-extern XORG_EXPORT TimeStamp currentTime;
+extern XORG_EXPORT_VAR TimeStamp currentTime;
 
 extern XORG_EXPORT int
 CompareTimeStamps(TimeStamp /*a */ ,
@@ -223,9 +223,9 @@ typedef struct _CallbackList {
 
 extern int (*InitialVector[3]) (ClientPtr /*client */ );
 
-extern XORG_EXPORT int (*ProcVector[256]) (ClientPtr /*client */ );
+extern XORG_EXPORT_VAR int (*ProcVector[256]) (ClientPtr /*client */ );
 
-extern XORG_EXPORT int (*SwappedProcVector[256]) (ClientPtr /*client */ );
+extern XORG_EXPORT_VAR int (*SwappedProcVector[256]) (ClientPtr /*client */ );
 
 extern ReplySwapPtr ReplySwapVector[256];
 

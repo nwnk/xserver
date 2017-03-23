@@ -41,7 +41,7 @@ typedef struct _GEExtension {
 } GEExtension, *GEExtensionPtr;
 
 /* All registered extensions and their handling functions. */
-extern XORG_EXPORT GEExtension GEExtensions[MAXEXTENSIONS];
+extern XORG_EXPORT_VAR GEExtension GEExtensions[MAXEXTENSIONS];
 
 /* Typecast to generic event */
 #define GEV(ev) ((xGenericEvent*)(ev))

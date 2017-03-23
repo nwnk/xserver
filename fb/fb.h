@@ -371,8 +371,8 @@ extern XORG_EXPORT void fbSetBits(FbStip * bits, int stride, FbStip data);
     }							    \
 }
 
-extern XORG_EXPORT const GCOps fbGCOps;
-extern XORG_EXPORT const GCFuncs fbGCFuncs;
+extern XORG_EXPORT_VAR const GCOps fbGCOps;
+extern XORG_EXPORT_VAR const GCFuncs fbGCFuncs;
 
 /* Framebuffer access wrapper */
 typedef FbBits(*ReadMemoryProcPtr) (const void *src, int size);
@@ -1103,8 +1103,8 @@ fbSolid(FbBits * dst,
 extern XORG_EXPORT FbBits fbReplicatePixel(Pixel p, int bpp);
 
 #ifdef FB_ACCESS_WRAPPER
-extern XORG_EXPORT ReadMemoryProcPtr wfbReadMemory;
-extern XORG_EXPORT WriteMemoryProcPtr wfbWriteMemory;
+extern XORG_EXPORT_VAR ReadMemoryProcPtr wfbReadMemory;
+extern XORG_EXPORT_VAR WriteMemoryProcPtr wfbWriteMemory;
 #endif
 
 /*

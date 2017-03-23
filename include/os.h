@@ -298,7 +298,7 @@ OsSignal(int /* sig */ , OsSigHandlerPtr /* handler */ );
 extern XORG_EXPORT OsSigWrapperPtr
 OsRegisterSigWrapper(OsSigWrapperPtr newWrap);
 
-extern XORG_EXPORT int auditTrailLevel;
+extern XORG_EXPORT_VAR int auditTrailLevel;
 
 extern XORG_EXPORT void
 LockServer(void);
@@ -525,7 +525,7 @@ extern XORG_EXPORT void
 ddxUseMsg(void);
 
 /* stuff for ReplyCallback */
-extern XORG_EXPORT CallbackListPtr ReplyCallback;
+extern XORG_EXPORT_VAR CallbackListPtr ReplyCallback;
 typedef struct {
     ClientPtr client;
     const void *replyData;
@@ -536,7 +536,7 @@ typedef struct {
 } ReplyInfoRec;
 
 /* stuff for FlushCallback */
-extern XORG_EXPORT CallbackListPtr FlushCallback;
+extern XORG_EXPORT_VAR CallbackListPtr FlushCallback;
 
 enum ExitCode {
     EXIT_NO_ERROR = 0,

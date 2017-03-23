@@ -343,10 +343,10 @@ typedef struct _PictureScreen {
     TriFanProcPtr TriFan;
 } PictureScreenRec, *PictureScreenPtr;
 
-extern XORG_EXPORT DevPrivateKeyRec PictureScreenPrivateKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec PictureScreenPrivateKeyRec;
 #define PictureScreenPrivateKey (&PictureScreenPrivateKeyRec)
 
-extern XORG_EXPORT DevPrivateKeyRec PictureWindowPrivateKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec PictureWindowPrivateKeyRec;
 #define	PictureWindowPrivateKey (&PictureWindowPrivateKeyRec)
 
 extern RESTYPE PictureType;

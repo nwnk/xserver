@@ -420,8 +420,8 @@ typedef struct _CharInfo *CharInfoPtr;  /* also in fonts/include/font.h */
 #define _XTYPEDEF_CHARINFOPTR
 #endif
 
-extern XORG_EXPORT unsigned long globalSerialNumber;
-extern XORG_EXPORT unsigned long serverGeneration;
+extern XORG_EXPORT_VAR unsigned long globalSerialNumber;
+extern XORG_EXPORT_VAR unsigned long serverGeneration;
 
 /* Don't use this directly, use BUG_WARN or BUG_WARN_MSG instead */
 #define __BUG_WARN_MSG(cond, with_msg, ...)                                \

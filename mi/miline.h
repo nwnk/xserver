@@ -147,7 +147,7 @@ extern XORG_EXPORT void miSetZeroLineBias(ScreenPtr /* pScreen */ ,
 #define IsXDecreasingOctant(_octant)	((_octant) & XDECREASING)
 #define IsYDecreasingOctant(_octant)	((_octant) & YDECREASING)
 
-extern XORG_EXPORT DevPrivateKeyRec miZeroLineScreenKeyRec;
+extern XORG_EXPORT_VAR DevPrivateKeyRec miZeroLineScreenKeyRec;
 
 #define miZeroLineScreenKey (&miZeroLineScreenKeyRec)
 

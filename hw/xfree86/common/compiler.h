@@ -525,7 +525,7 @@ xf86WriteMmio32Le(__volatile__ void *base, const unsigned long offset,
 #define PORT_SIZE short
 #endif
 
-XORG_EXPORT unsigned int IOPortBase;      /* Memory mapped I/O port area */
+XORG_EXPORT_VAR unsigned int IOPortBase;      /* Memory mapped I/O port area */
 
 static __inline__ void
 outb(unsigned PORT_SIZE port, unsigned char val)
@@ -603,7 +603,7 @@ xf86WriteMmio32Be(__volatile__ void *base, const unsigned long offset,
 #define MAP_FAILED ((void *)-1)
 #endif
 
-extern XORG_EXPORT volatile unsigned char *ioBase;
+extern XORG_EXPORT_VAR volatile unsigned char *ioBase;
 
 static __inline__ unsigned char
 xf86ReadMmio8(__volatile__ void *base, const unsigned long offset)

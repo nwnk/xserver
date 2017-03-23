@@ -8,10 +8,10 @@
 
 #include "panoramiX.h"
 
-extern XORG_EXPORT int PanoramiXNumScreens;
-extern XORG_EXPORT int PanoramiXPixWidth;
-extern XORG_EXPORT int PanoramiXPixHeight;
-extern XORG_EXPORT RegionRec PanoramiXScreenRegion;
+extern XORG_EXPORT_VAR int PanoramiXNumScreens;
+extern XORG_EXPORT_VAR int PanoramiXPixWidth;
+extern XORG_EXPORT_VAR int PanoramiXPixHeight;
+extern XORG_EXPORT_VAR RegionRec PanoramiXScreenRegion;
 
 extern XORG_EXPORT VisualID PanoramiXTranslateVisualID(int screen, VisualID orig);
 extern XORG_EXPORT void PanoramiXConsolidate(void);
@@ -23,12 +23,12 @@ extern XORG_EXPORT int XineramaDeleteResource(void *, XID);
 
 extern XORG_EXPORT void XineramaReinitData(void);
 
-extern XORG_EXPORT RESTYPE XRC_DRAWABLE;
-extern XORG_EXPORT RESTYPE XRT_WINDOW;
-extern XORG_EXPORT RESTYPE XRT_PIXMAP;
-extern XORG_EXPORT RESTYPE XRT_GC;
-extern XORG_EXPORT RESTYPE XRT_COLORMAP;
-extern XORG_EXPORT RESTYPE XRT_PICTURE;
+extern XORG_EXPORT_VAR RESTYPE XRC_DRAWABLE;
+extern XORG_EXPORT_VAR RESTYPE XRT_WINDOW;
+extern XORG_EXPORT_VAR RESTYPE XRT_PIXMAP;
+extern XORG_EXPORT_VAR RESTYPE XRT_GC;
+extern XORG_EXPORT_VAR RESTYPE XRT_COLORMAP;
+extern XORG_EXPORT_VAR RESTYPE XRT_PICTURE;
 
 /*
  * Drivers are allowed to wrap this function.  Each wrapper can decide that the
@@ -38,7 +38,7 @@ extern XORG_EXPORT RESTYPE XRT_PICTURE;
  * screen 0.
  */
 typedef Bool (*XineramaVisualsEqualProcPtr) (VisualPtr, ScreenPtr, VisualPtr);
-extern XORG_EXPORT XineramaVisualsEqualProcPtr XineramaVisualsEqualPtr;
+extern XORG_EXPORT_VAR XineramaVisualsEqualProcPtr XineramaVisualsEqualPtr;
 
 extern XORG_EXPORT void XineramaGetImageData(DrawablePtr *pDrawables,
                                            int left,

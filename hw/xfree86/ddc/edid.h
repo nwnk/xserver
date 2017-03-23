@@ -555,7 +555,7 @@ typedef struct {
     Uchar *rawData;
 } xf86Monitor, *xf86MonPtr;
 
-extern XORG_EXPORT xf86MonPtr ConfiguredMonitor;
+extern XORG_EXPORT_VAR xf86MonPtr ConfiguredMonitor;
 
 #define EXT_TAG 0
 #define EXT_REV 1

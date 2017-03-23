@@ -41,6 +41,6 @@ extern XORG_EXPORT Bool CompositeRegisterImplicitRedirectionException(ScreenPtr 
 
 
 extern XORG_EXPORT Bool compIsAlternateVisual(ScreenPtr pScreen, XID visual);
-extern XORG_EXPORT RESTYPE CompositeClientWindowType;
+extern XORG_EXPORT_VAR RESTYPE CompositeClientWindowType;
 
 #endif                          /* _COMPOSITEEXT_H_ */

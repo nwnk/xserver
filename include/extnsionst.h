@@ -79,7 +79,7 @@ typedef struct _ExtensionEntry {
  */
 typedef void (*EventSwapPtr) (xEvent *, xEvent *);
 
-extern XORG_EXPORT EventSwapPtr EventSwapVector[128];
+extern XORG_EXPORT_VAR EventSwapPtr EventSwapVector[128];
 
 extern XORG_EXPORT void
 NotImplemented(                 /* FIXME: this may move to another file... */

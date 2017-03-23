@@ -755,7 +755,7 @@ typedef struct _xf86CrtcConfig {
 #endif
 } xf86CrtcConfigRec, *xf86CrtcConfigPtr;
 
-extern XORG_EXPORT int xf86CrtcConfigPrivateIndex;
+extern XORG_EXPORT_VAR int xf86CrtcConfigPrivateIndex;
 
 #define XF86_CRTC_CONFIG_PTR(p)	((xf86CrtcConfigPtr) ((p)->privates[xf86CrtcConfigPrivateIndex].ptr))
 

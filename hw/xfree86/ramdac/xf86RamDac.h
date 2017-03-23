@@ -68,8 +68,8 @@ typedef struct _RamdacScreenRec {
 
 #define RAMDACSCRPTR(p) ((RamDacScreenRecPtr)((p)->privates[RamDacGetScreenIndex()].ptr))->RamDacRec
 
-extern XORG_EXPORT int RamDacHWPrivateIndex;
-extern XORG_EXPORT int RamDacScreenPrivateIndex;
+extern XORG_EXPORT_VAR int RamDacHWPrivateIndex;
+extern XORG_EXPORT_VAR int RamDacScreenPrivateIndex;
 
 typedef struct {
     int token;

@@ -126,15 +126,15 @@ typedef struct _Client *ClientPtr;      /* also in misc.h */
 
 typedef struct _WorkQueue *WorkQueuePtr;
 
-extern XORG_EXPORT ClientPtr clients[MAXCLIENTS];
-extern XORG_EXPORT ClientPtr serverClient;
-extern XORG_EXPORT int currentMaxClients;
-extern XORG_EXPORT char dispatchExceptionAtReset;
+extern XORG_EXPORT_VAR ClientPtr clients[MAXCLIENTS];
+extern XORG_EXPORT_VAR ClientPtr serverClient;
+extern XORG_EXPORT_VAR int currentMaxClients;
+extern XORG_EXPORT_VAR char dispatchExceptionAtReset;
 
 typedef int HWEventQueueType;
 typedef HWEventQueueType *HWEventQueuePtr;
 
-extern XORG_EXPORT HWEventQueuePtr checkForInput[2];
+extern XORG_EXPORT_VAR HWEventQueuePtr checkForInput[2];
 
 static inline _X_NOTSAN Bool
 InputCheckPending(void)
@@ -566,7 +566,7 @@ ffs(int i);
  *  ServerGrabCallback stuff
  */
 
-extern XORG_EXPORT CallbackListPtr ServerGrabCallback;
+extern XORG_EXPORT_VAR CallbackListPtr ServerGrabCallback;
 
 typedef enum { SERVER_GRABBED, SERVER_UNGRABBED,
     CLIENT_PERVIOUS, CLIENT_IMPERVIOUS
@@ -581,7 +581,7 @@ typedef struct {
  *  EventCallback stuff
  */
 
-extern XORG_EXPORT CallbackListPtr EventCallback;
+extern XORG_EXPORT_VAR CallbackListPtr EventCallback;
 
 typedef struct {
     ClientPtr client;
@@ -593,14 +593,14 @@ typedef struct {
  *  DeviceEventCallback stuff
  */
 
-extern XORG_EXPORT CallbackListPtr DeviceEventCallback;
+extern XORG_EXPORT_VAR CallbackListPtr DeviceEventCallback;
 
 typedef struct {
     InternalEvent *event;
     DeviceIntPtr device;
 } DeviceEventInfoRec;
 
-extern XORG_EXPORT CallbackListPtr RootWindowFinalizeCallback;
+extern XORG_EXPORT_VAR CallbackListPtr RootWindowFinalizeCallback;
 
 extern int
 XItoCoreType(int xi_type);
@@ -626,6 +626,6 @@ CorePointerProc(DeviceIntPtr dev, int what);
 extern _X_HIDDEN int
 CoreKeyboardProc(DeviceIntPtr dev, int what);
 
-extern XORG_EXPORT void *lastGLContext;
+extern XORG_EXPORT_VAR void *lastGLContext;
 
 #endif                          /* DIX_H */

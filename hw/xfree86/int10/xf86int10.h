@@ -121,7 +121,7 @@ extern XORG_EXPORT Bool MapCurrentInt10(xf86Int10InfoPtr pInt);
 extern XORG_EXPORT Bool xf86Int10ExecSetup(xf86Int10InfoPtr pInt);
 
 /* int.c */
-extern XORG_EXPORT xf86Int10InfoPtr Int10Current;
+extern XORG_EXPORT_VAR xf86Int10InfoPtr Int10Current;
 int int_handler(xf86Int10InfoPtr pInt);
 
 /* helper_exec.c */

@@ -174,7 +174,7 @@ typedef struct _Window {
  * fields (or filling the appropriate default value)
  */
 
-extern XORG_EXPORT Mask DontPropagateMasks[];
+extern XORG_EXPORT_VAR Mask DontPropagateMasks[];
 
 #define wTrackParent(w,field)	((w)->optional ? \
 				    (w)->optional->field \
@@ -213,6 +213,6 @@ typedef struct _ScreenSaverStuff *ScreenSaverStuffPtr;
 
 #define HasSaverWindow(pScreen)   (pScreen->screensaver.pWindow != NullWindow)
 
-extern XORG_EXPORT int screenIsSaved;
+extern XORG_EXPORT_VAR int screenIsSaved;
 
 #endif                          /* WINDOWSTRUCT_H */
