@@ -58,7 +58,6 @@ LOCAL_LIBS = \
             $(XSERVER_LIBS) \
             common/libcommon.la \
             loader/libloader.la \
-            os-support/libxorgos.la \
             parser/libxf86config.la \
             modes/libxf86modes.la \
             ramdac/libramdac.la \
@@ -69,6 +68,7 @@ LOCAL_LIBS = \
             $(DRI_LIB) \
             $(DRI2_LIB) \
 	    $(DRI3_LIB) \
+            os-support/libxorgos.la \
 	    $(top_builddir)/miext/sync/libsync.la \
             $(top_builddir)/mi/libmi.la \
             $(top_builddir)/os/libos.la \
