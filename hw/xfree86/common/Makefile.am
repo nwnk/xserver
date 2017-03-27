@@ -41,7 +41,7 @@ libcommon_la_SOURCES = xf86Configure.c xf86Bus.c xf86Config.c \
                       xf86Events.c xf86Globals.c xf86AutoConfig.c \
                       xf86Option.c xf86Init.c \
                       xf86VidMode.c xf86fbman.c xf86cmap.c \
-                      xf86Helper.c xf86PM.c xf86Xinput.c xisb.c \
+                      xf86Helper.c xf86Xinput.c xisb.c \
                       xf86Mode.c xorgHelper.c xf86Extensions.h \
 		      xf86Extensions.c $(XF86VMODESOURCES) \
                       $(XVSOURCES) $(BUSSOURCES) $(RANDRSOURCES)
