@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libcommon.la
+noinst_LTLIBRARIES = libcommon.la libxv.la
 
 if XORG_BUS_PCI
 PCI_SOURCES = xf86pciBus.c xf86VGAarbiter.c xf86VGAarbiter.h \
@@ -13,6 +13,7 @@ if XV
 XVSOURCES = xf86xv.c xf86xvmc.c
 XVSDKINCS = xf86xv.h xf86xvmc.h xf86xvpriv.h
 endif
+libxv_la_SOURCES = $(XVSOURCES)
 
 if DGA
 DGASOURCES = xf86DGA.c
@@ -44,7 +45,7 @@ libcommon_la_SOURCES = xf86Configure.c xf86Bus.c xf86Config.c \
                       xf86Helper.c xf86Xinput.c xisb.c \
                       xf86Mode.c xorgHelper.c xf86Extensions.h \
 		      xf86Extensions.c $(XF86VMODESOURCES) \
-                      $(XVSOURCES) $(BUSSOURCES) $(RANDRSOURCES)
+                      $(BUSSOURCES) $(RANDRSOURCES)
 nodist_libcommon_la_SOURCES = xf86DefModeSet.c xf86Build.h
 libcommon_la_LIBADD = $(top_builddir)/config/libconfig.la
 

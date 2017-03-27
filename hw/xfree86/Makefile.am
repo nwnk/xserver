@@ -60,6 +60,7 @@ LOCAL_LIBS = \
             loader/libloader.la \
             parser/libxf86config.la \
             modes/libxf86modes.la \
+	    common/libxv.la \
             ramdac/libramdac.la \
             ddc/libddc.la \
             i2c/libi2c.la \
