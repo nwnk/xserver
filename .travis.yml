@@ -1,7 +1,14 @@
 language: c
-cache: ccache
+cache:
+    ccache: true
+    directories:
+        $HOME/xorg
+        $HOME/source
+
 dist: trusty
 services: docker
+os:
+  - osx
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker pull anholt/xserver-travis ; fi
@@ -11,5 +18,9 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo ADD . /root >> Dockerfile ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t withgit . ; fi
 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install meson ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then .travis/build-osx.sh $PWD/.travis/osx-modules ; fi
+
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run --volume $HOME/.ccache:/root/.ccache withgit /bin/sh -c "cd /root && ./test/scripts/build-travis-deps.sh" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./test/scripts/build-travis-deps.sh ; fi
