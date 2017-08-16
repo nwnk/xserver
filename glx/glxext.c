@@ -46,10 +46,12 @@
 #include "glxext.h"
 #include "indirect_table.h"
 #include "indirect_util.h"
+#include "glxvndabi.h"
 
 /*
 ** X resources.
 */
+static int glxGeneration;
 RESTYPE __glXContextRes;
 RESTYPE __glXDrawableRes;
 
@@ -62,15 +64,6 @@ static DevPrivateKeyRec glxClientPrivateKeyRec;
 */
 static int __glXDispatch(ClientPtr);
 static GLboolean __glXFreeContext(__GLXcontext * cx);
-
-/*
-** Called when the extension is reset.
-*/
-static void
-ResetExtension(ExtensionEntry * extEntry)
-{
-    lastGLContext = NULL;
-}
 
 /*
 ** Reset state used to keep track of large (multi-request) commands.
@@ -303,15 +296,6 @@ glxClientCallback(CallbackListPtr *list, void *closure, void *data)
 
 /************************************************************************/
 
-static __GLXprovider *__glXProviderStack;
-
-void
-GlxPushProvider(__GLXprovider * provider)
-{
-    provider->next = __glXProviderStack;
-    __glXProviderStack = provider;
-}
-
 static Bool
 checkScreenVisuals(void)
 {
@@ -346,86 +330,252 @@ GetGLXDrawableBytes(void *value, XID id, ResourceSizePtr size)
     }
 }
 
-/*
-** Initialize the GLX extension.
-*/
-void
-GlxExtensionInit(void)
+typedef struct xorgVendorInitClosure {
+    ScreenPtr screen;
+    __GLXprovider *provider;
+    GlxServerVendor *vendor;
+} xorgVendorInitClosure;
+
+/**
+ * Handles a MakeCurrent request.
+ *
+ * To ensure that context tags are unique, libglvnd will select a context
+ * tag and pass it to the vendor library.
+ *
+ * The vendor may provide a pointer to private data, which can later be
+ * retrieved with \c GlxServerExports::getContextTag.
+ *
+ * Note that when a client disconnects, libglvnd will free any context
+ * tags from that client. The vendor library is responsible for freeing any
+ * of its resources, including any private data associated with the tag.
+ */
+
+static int
+xorgGlxMakeCurrent(ClientPtr client, GLXContextTag tag,
+              void *oldContextTagData, XID drawId, XID readId,
+              XID contextId, GLXContextTag newContextTag,
+              void **newContextTagData)
 {
-    ExtensionEntry *extEntry;
-    ScreenPtr pScreen;
-    int i;
-    __GLXprovider *p, **stack;
-    Bool glx_provided = FALSE;
+    return xorgGlxMakeCurrentEx(client, tag, oldContextTagData,
+                                drawId, readId, contextId, newContextTag,
+                                newContextTagData);
+}
 
-    if (serverGeneration == 1) {
-        for (stack = &__glXProviderStack; *stack; stack = &(*stack)->next)
-            ;
-        *stack = &__glXDRISWRastProvider;
-    }
+static void
+xorgGlxCloseExtension(const ExtensionEntry *extEntry)
+{
+    lastGLContext = NULL;
+}
 
-    /* Mesa requires at least one True/DirectColor visual */
-    if (!checkScreenVisuals())
-        return;
+static int
+xorgGlxHandleRequest(ClientPtr client)
+{
+    return __glXDispatch(client);
+}
 
-    __glXContextRes = CreateNewResourceType((DeleteType) ContextGone,
-                                            "GLXContext");
-    __glXDrawableRes = CreateNewResourceType((DeleteType) DrawableGone,
-                                             "GLXDrawable");
-    if (!__glXContextRes || !__glXDrawableRes)
-        return;
+static ScreenPtr
+screenNumToScreen(int screen)
+{
+    if (screen < 0 || screen >= screenInfo.numScreens)
+        return NULL;
 
-    SetResourceTypeSizeFunc(__glXDrawableRes, GetGLXDrawableBytes);
+    return screenInfo.screens[screen];
+}
 
-    if (!dixRegisterPrivateKey
-        (&glxClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(__GLXclientState)))
-        return;
-    if (!AddCallback(&ClientStateCallback, glxClientCallback, 0))
-        return;
+static GlxServerVendor *
+vendorForScreen(ClientPtr client, int screen)
+{
+    screen = GlxCheckSwap(client, screen);
 
-    for (i = 0; i < screenInfo.numScreens; i++) {
-        pScreen = screenInfo.screens[i];
+    return glxServer.getVendorForScreen(client, screenNumToScreen(screen));
+}
 
-        for (p = __glXProviderStack; p != NULL; p = p->next) {
-            __GLXscreen *glxScreen;
+/* could this be generated? */
+static int
+xorgGlxThunkRequest(ClientPtr client)
+{
+    REQUEST(xGLXVendorPrivateReq);
+    CARD32 vendorCode = GlxCheckSwap(client, stuff->vendorCode);
+    GlxServerVendor *vendor = NULL;
 
-            glxScreen = p->screenProbe(pScreen);
-            if (glxScreen != NULL) {
-                LogMessage(X_INFO,
-                           "GLX: Initialized %s GL provider for screen %d\n",
-                           p->name, i);
-                break;
-            }
-
+    switch (vendorCode) {
+    case X_GLXvop_QueryContextInfoEXT: {
+        xGLXQueryContextInfoEXTReq *req = (void *)stuff;
+        if (!(vendor = glxServer.getXIDMap(GlxCheckSwap(client, req->context))))
+            return __glXError(GLXBadContext);
+        break;
         }
 
-        if (!p)
-            LogMessage(X_INFO,
-                       "GLX: no usable GL providers found for screen %d\n", i);
-        else
-            glx_provided = TRUE;
+    case X_GLXvop_GetFBConfigsSGIX: {
+        xGLXGetFBConfigsSGIXReq *req = (void *)stuff;
+        if (!(vendor = vendorForScreen(client, req->screen)))
+            return BadValue;
+        break;
+        }
+
+    case X_GLXvop_CreateContextWithConfigSGIX: {
+        xGLXCreateContextWithConfigSGIXReq *req = (void *)stuff;
+        if (!(vendor = vendorForScreen(client, req->screen)))
+            return BadValue;
+        break;
+        }
+
+    case X_GLXvop_CreateGLXPixmapWithConfigSGIX: {
+        xGLXCreateGLXPixmapWithConfigSGIXReq *req = (void *)stuff;
+        if (!(vendor = vendorForScreen(client, req->screen)))
+            return BadValue;
+        break;
+        }
+
+    case X_GLXvop_CreateGLXPbufferSGIX: {
+        xGLXCreateGLXPbufferSGIXReq *req = (void *)stuff;
+        if (!(vendor = vendorForScreen(client, req->screen)))
+            return BadValue;
+        break;
+        }
+
+    /* same offset for the drawable for these three */
+    case X_GLXvop_DestroyGLXPbufferSGIX:
+    case X_GLXvop_ChangeDrawableAttributesSGIX:
+    case X_GLXvop_GetDrawableAttributesSGIX: {
+        xGLXGetDrawableAttributesSGIXReq *req = (void *)stuff;
+        if (!(vendor = glxServer.getXIDMap(GlxCheckSwap(client,
+                                                        req->drawable))))
+            return __glXError(GLXBadDrawable);
+        break;
+        }
+
+    /* most things just use the standard context tag */
+    default:
+        if (!glxServer.getContextTag(client,
+                                     GlxCheckSwap(client, stuff->contextTag),
+                                     &vendor, NULL))
+            return __glXError(GLXBadContextTag);
+        break;
     }
 
-    /* don't register extension if GL is not provided on any screen */
-    if (!glx_provided)
-        return;
+    if (!vendor)
+        return BadImplementation;
 
-    /*
-     ** Add extension to server extensions.
-     */
-    extEntry = AddExtension(GLX_EXTENSION_NAME, __GLX_NUMBER_EVENTS,
-                            __GLX_NUMBER_ERRORS, __glXDispatch,
-                            __glXDispatch, ResetExtension, StandardMinorOpcode);
-    if (!extEntry) {
-        FatalError("__glXExtensionInit: AddExtensions failed\n");
-        return;
-    }
+    return glxServer.forwardRequest(vendor, client);
+}
 
-    __glXErrorBase = extEntry->errorBase;
-    __glXEventBase = extEntry->eventBase;
+static GlxServerDispatchProc
+xorgGlxGetDispatchAddress(CARD8 minorOpcode, CARD32 vendorCode)
+{
+    /* we don't support any other GLX opcodes */
+    if (minorOpcode != X_GLXVendorPrivate &&
+        minorOpcode != X_GLXVendorPrivateWithReply)
+        return NULL;
+
+    /* we only support some vendor private requests */
+    if (!__glXGetProtocolDecodeFunction(&VendorPriv_dispatch_info, vendorCode,
+                                        FALSE))
+        return NULL;
+
+    return xorgGlxThunkRequest;
+}
+
+static Bool
+xorgGlxCreateScreenResources(ScreenPtr pScreen)
+{
+    __GLXscreen *s = glxGetScreen(pScreen);
+
+    if (!glxServer.setScreenVendor(pScreen, s->vendor))
+        return FALSE;
+
+    pScreen->CreateScreenResources = s->CreateScreenResources;
+    return pScreen->CreateScreenResources(pScreen);
+}
+
+static Bool
+xorgGlxServerPreInit(const ExtensionEntry *extEntry)
+{
+    if (glxGeneration != serverGeneration) {
+        /* Mesa requires at least one True/DirectColor visual */
+        if (!checkScreenVisuals())
+            return FALSE;
+
+        __glXContextRes = CreateNewResourceType((DeleteType) ContextGone,
+                                                "GLXContext");
+        __glXDrawableRes = CreateNewResourceType((DeleteType) DrawableGone,
+                                                 "GLXDrawable");
+        if (!__glXContextRes || !__glXDrawableRes)
+            return FALSE;
+
+        if (!dixRegisterPrivateKey
+            (&glxClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(__GLXclientState)))
+            return FALSE;
+        if (!AddCallback(&ClientStateCallback, glxClientCallback, 0))
+            return FALSE;
+
+        /* this is all idempotent, fine to run for every screen */
+        __glXErrorBase = extEntry->errorBase;
+        __glXEventBase = extEntry->eventBase;
+
+        SetResourceTypeSizeFunc(__glXDrawableRes, GetGLXDrawableBytes);
 #if PRESENT
-    __glXregisterPresentCompleteNotify();
+        __glXregisterPresentCompleteNotify();
 #endif
+
+        glxGeneration = serverGeneration;
+    }
+
+    return glxGeneration == serverGeneration;
+}
+
+static void
+xorgGlxServerInit(CallbackListPtr *pcbl, void *param, void *ext)
+{
+    const ExtensionEntry *extEntry = ext;
+    xorgVendorInitClosure *closure = param;
+    ScreenPtr screen = closure->screen;
+    __GLXprovider *p = closure->provider;
+    __GLXscreen *s = NULL;
+
+    if (!xorgGlxServerPreInit(extEntry))
+        goto out;
+
+    if (!(s = p->screenProbe(screen)))
+        goto out;
+
+    if (!glxServer.setScreenVendor(screen, closure->vendor))
+        goto out;
+
+out:
+    /* XXX chirp on error */
+    free(param);
+    return;
+}
+
+Bool
+xorgGlxCreateVendor(ScreenPtr pScreen, __GLXprovider *provider)
+{
+    GlxServerVendor *vendor = NULL;
+    GlxServerImports *imports = NULL;
+    xorgVendorInitClosure *closure = NULL;
+
+    imports = glxServer.allocateServerImports();
+    closure = calloc(1, sizeof(xorgVendorInitClosure));
+
+    if (imports && closure) {
+        imports->extensionCloseDown = xorgGlxCloseExtension;
+        imports->handleRequest = xorgGlxHandleRequest;
+        imports->getDispatchAddress = xorgGlxGetDispatchAddress;
+        imports->makeCurrent = xorgGlxMakeCurrent;
+        closure->screen = pScreen;
+        closure->provider = provider;
+        closure->vendor = glxServer.createVendor(imports);
+        if (closure->vendor) {
+            return AddCallback(glxServer.extensionInitCallback,
+                               xorgGlxServerInit, closure);
+        }
+    } else {
+        glxServer.freeServerImports(imports);
+        free(closure);
+    }
+
+    return !!vendor;
 }
 
 /************************************************************************/

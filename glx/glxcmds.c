@@ -46,6 +46,7 @@
 #include "indirect_table.h"
 #include "indirect_util.h"
 #include "protocol-versions.h"
+#include "glxvndabi.h"
 
 static char GLXServerVendorName[] = "SGI";
 
@@ -238,8 +239,6 @@ DoCreateContext(__GLXclientState * cl, GLXContextID gcId,
     __GLXcontext *glxc, *shareglxc;
     int err;
 
-    LEGAL_NEW_RESOURCE(gcId, client);
-
     /*
      ** Find the display list space that we want to share.
      **
@@ -402,14 +401,22 @@ __glXDisp_CreateContextWithConfigSGIX(__GLXclientState * cl, GLbyte * pc)
     int err;
 
     REQUEST_SIZE_MATCH(xGLXCreateContextWithConfigSGIXReq);
+    LEGAL_NEW_RESOURCE(req->context, client);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
     if (!validGlxFBConfig(cl->client, pGlxScreen, req->fbconfig, &config, &err))
         return err;
 
-    return DoCreateContext(cl, req->context, req->shareList,
-                           config, pGlxScreen, req->isDirect);
+    if (!glxServer.addXIDMap(req->context, pGlxScreen->vendor))
+        return BadAlloc;
+
+    err = DoCreateContext(cl, req->context, req->shareList,
+                          config, pGlxScreen, req->isDirect);
+    if (err != Success)
+        glxServer.removeXIDMap(req->context);
+
+    return err;
 }
 
 int
@@ -433,44 +440,12 @@ __glXDisp_DestroyContext(__GLXclientState * cl, GLbyte * pc)
     return Success;
 }
 
-/*
- * This will return "deleted" contexts, ie, where idExists is GL_FALSE.
- * Contrast validGlxContext, which will not.  We're cheating here and
- * using the XID as the context tag, which is fine as long as we defer
- * actually destroying the context until it's no longer referenced, and
- * block clients from trying to MakeCurrent on contexts that are on the
- * way to destruction.  Notice that DoMakeCurrent calls validGlxContext
- * for new contexts but __glXLookupContextByTag for previous contexts.
- */
 __GLXcontext *
 __glXLookupContextByTag(__GLXclientState * cl, GLXContextTag tag)
 {
-    __GLXcontext *ret;
-
-    if (dixLookupResourceByType((void **) &ret, tag, __glXContextRes,
-                                cl->client, DixUseAccess) == Success)
-        return ret;
-
-    return NULL;
-}
-
-/*****************************************************************************/
-
-static void
-StopUsingContext(__GLXcontext * glxc)
-{
-    if (glxc) {
-        glxc->currentClient = NULL;
-        if (!glxc->idExists) {
-            FreeResourceByType(glxc->id, __glXContextRes, FALSE);
-        }
-    }
-}
-
-static void
-StartUsingContext(__GLXclientState * cl, __GLXcontext * glxc)
-{
-    glxc->currentClient = cl->client;
+    __GLXcontext *ret = NULL;
+    glxServer.getContextTag(cl->client, tag, NULL, (void **)&ret);
+    return ret;
 }
 
 /**
@@ -549,14 +524,14 @@ __glXGetDrawable(__GLXcontext * glxc, GLXDrawable drawId, ClientPtr client,
 ** Make an OpenGL context and drawable current.
 */
 
-static int
-DoMakeCurrent(__GLXclientState * cl,
-              GLXDrawable drawId, GLXDrawable readId,
-              GLXContextID contextId, GLXContextTag tag)
+int
+xorgGlxMakeCurrentEx(ClientPtr client, GLXContextTag tag,
+              void *oldContextTagData, XID drawId, XID readId,
+              XID contextId, GLXContextTag newContextTag,
+              void **newContextTagData)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeCurrentReply reply;
-    __GLXcontext *glxc, *prevglxc;
+    __GLXclientState *cl = glxGetClient(client);
+    __GLXcontext *glxc = NULL, *prevglxc = oldContextTagData;
     __GLXdrawable *drawPriv = NULL;
     __GLXdrawable *readPriv = NULL;
     int error;
@@ -569,39 +544,27 @@ DoMakeCurrent(__GLXclientState * cl,
     if ((drawId == None) != (readId == None))
         return BadMatch;
 
-    /*
-     ** Lookup old context.  If we have one, it must be in a usable state.
-     */
+    /* Look up old context. If we have one, it must be in a usable state. */
     if (tag != 0) {
-        prevglxc = __glXLookupContextByTag(cl, tag);
-        if (!prevglxc) {
-            /*
-             ** Tag for previous context is invalid.
-             */
+        if (!prevglxc)
             return __glXError(GLXBadContextTag);
-        }
+
         if (prevglxc->renderMode != GL_RENDER) {
             /* Oops.  Not in render mode render. */
             client->errorValue = prevglxc->id;
             return __glXError(GLXBadContextState);
         }
     }
-    else {
-        prevglxc = 0;
-    }
 
-    /*
-     ** Lookup new context.  It must not be current for someone else.
-     */
+    /* Look up new context. It must not be current for someone else. */
     if (contextId != None) {
         int status;
 
         if (!validGlxContext(client, contextId, DixUseAccess, &glxc, &error))
             return error;
-        if ((glxc != prevglxc) && glxc->currentClient) {
-            /* Context is current to somebody else */
+
+        if ((glxc != prevglxc) && glxc->currentClient)
             return BadAccess;
-        }
 
         if (drawId) {
             drawPriv = __glXGetDrawable(glxc, drawId, client, &status);
@@ -614,38 +577,25 @@ DoMakeCurrent(__GLXclientState * cl,
             if (readPriv == NULL)
                 return status;
         }
-    } else {
-        /* Switching to no context.  Ignore new drawable. */
-
-        glxc = 0;
-        drawPriv = 0;
-        readPriv = 0;
     }
 
     if (prevglxc) {
-        /*
-         ** Flush the previous context if needed.
-         */
+        /* Flush the previous context if needed. */
         Bool need_flush = GL_TRUE;
 #ifdef GLX_CONTEXT_RELEASE_BEHAVIOR_ARB
         if (prevglxc->releaseBehavior == GLX_CONTEXT_RELEASE_BEHAVIOR_NONE_ARB)
             need_flush = GL_FALSE;
 #endif
         if (need_flush) {
-            if (__glXForceCurrent(cl, tag, (int *) &error)) {
-                glFlush();
-            }
-            else {
+            if (!__glXForceCurrent(cl, tag, (int *) &error))
                 return error;
-            }
+            glFlush();
         }
 
-        /*
-         ** Make the previous context not current.
-         */
-        if (!(*prevglxc->loseCurrent) (prevglxc)) {
+        /* Make the previous context not current. */
+        if (!(*prevglxc->loseCurrent) (prevglxc))
             return __glXError(GLXBadContext);
-        }
+
         lastGLContext = NULL;
         if (!prevglxc->isDirect) {
             prevglxc->drawPriv = NULL;
@@ -653,8 +603,7 @@ DoMakeCurrent(__GLXclientState * cl,
         }
     }
 
-    if ((glxc != 0) && !glxc->isDirect) {
-
+    if (glxc && !glxc->isDirect) {
         glxc->drawPriv = drawPriv;
         glxc->readPriv = readPriv;
 
@@ -668,66 +617,36 @@ DoMakeCurrent(__GLXclientState * cl,
         }
 
         glxc->currentClient = client;
+        if (newContextTagData)
+            *newContextTagData = glxc;
     }
 
-    StopUsingContext(prevglxc);
-
-    reply = (xGLXMakeCurrentReply) {
-        .type = X_Reply,
-        .sequenceNumber = client->sequence,
-        .length = 0,
-        .contextTag = 0
-    };
-
-    if (glxc) {
-        StartUsingContext(cl, glxc);
-        reply.contextTag = glxc->id;
+    if (prevglxc) {
+        prevglxc->currentClient = NULL;
+        if (!prevglxc->idExists) {
+            FreeResourceByType(prevglxc->id, __glXContextRes, FALSE);
+        }
     }
 
-    if (client->swapped) {
-        __GLX_DECLARE_SWAP_VARIABLES;
-        __GLX_SWAP_SHORT(&reply.sequenceNumber);
-        __GLX_SWAP_INT(&reply.length);
-        __GLX_SWAP_INT(&reply.contextTag);
-    }
-    WriteToClient(client, sz_xGLXMakeCurrentReply, &reply);
     return Success;
 }
 
 int
 __glXDisp_MakeCurrent(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeCurrentReq *req = (xGLXMakeCurrentReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXMakeCurrentReq);
-
-    return DoMakeCurrent(cl, req->drawable, req->drawable,
-                         req->context, req->oldContextTag);
+    return BadImplementation;
 }
 
 int
 __glXDisp_MakeContextCurrent(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeContextCurrentReq *req = (xGLXMakeContextCurrentReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXMakeContextCurrentReq);
-
-    return DoMakeCurrent(cl, req->drawable, req->readdrawable,
-                         req->context, req->oldContextTag);
+    return BadImplementation;
 }
 
 int
 __glXDisp_MakeCurrentReadSGI(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeCurrentReadSGIReq *req = (xGLXMakeCurrentReadSGIReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXMakeCurrentReadSGIReq);
-
-    return DoMakeCurrent(cl, req->drawable, req->readable,
-                         req->context, req->oldContextTag);
+    return BadImplementation;
 }
 
 int
@@ -1253,8 +1172,6 @@ DoCreateGLXPixmap(ClientPtr client, __GLXscreen * pGlxScreen,
     DrawablePtr pDraw;
     int err;
 
-    LEGAL_NEW_RESOURCE(glxDrawableId, client);
-
     err = dixLookupDrawable(&pDraw, drawableId, client, 0, DixAddAccess);
     if (err != Success) {
         client->errorValue = drawableId;
@@ -1380,14 +1297,22 @@ __glXDisp_CreateGLXPixmapWithConfigSGIX(__GLXclientState * cl, GLbyte * pc)
     int err;
 
     REQUEST_SIZE_MATCH(xGLXCreateGLXPixmapWithConfigSGIXReq);
+    LEGAL_NEW_RESOURCE(req->glxpixmap, client);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
     if (!validGlxFBConfig(cl->client, pGlxScreen, req->fbconfig, &config, &err))
         return err;
 
-    return DoCreateGLXPixmap(cl->client, pGlxScreen,
-                             config, req->pixmap, req->glxpixmap);
+    if (!glxServer.addXIDMap(req->glxpixmap, pGlxScreen->vendor))
+        return BadAlloc;
+
+    err = DoCreateGLXPixmap(cl->client, pGlxScreen,
+                            config, req->pixmap, req->glxpixmap);
+    if (err != Success)
+        glxServer.removeXIDMap(req->glxpixmap);
+
+    return err;
 }
 
 static int
@@ -1430,18 +1355,13 @@ __glXDisp_DestroyPixmap(__GLXclientState * cl, GLbyte * pc)
 }
 
 static int
-DoCreatePbuffer(ClientPtr client, int screenNum, XID fbconfigId,
+DoCreatePbuffer(ClientPtr client, __GLXscreen *pGlxScreen, XID fbconfigId,
                 int width, int height, XID glxDrawableId)
 {
     __GLXconfig *config;
-    __GLXscreen *pGlxScreen;
     PixmapPtr pPixmap;
     int err;
 
-    LEGAL_NEW_RESOURCE(glxDrawableId, client);
-
-    if (!validGlxScreen(client, screenNum, &pGlxScreen, &err))
-        return err;
     if (!validGlxFBConfig(client, pGlxScreen, fbconfigId, &config, &err))
         return err;
 
@@ -1470,6 +1390,7 @@ __glXDisp_CreatePbuffer(__GLXclientState * cl, GLbyte * pc)
     xGLXCreatePbufferReq *req = (xGLXCreatePbufferReq *) pc;
     CARD32 *attrs;
     int width, height, i;
+    __GLXscreen *pGlxScreen;
 
     REQUEST_AT_LEAST_SIZE(xGLXCreatePbufferReq);
     if (req->numAttribs > (UINT32_MAX >> 3)) {
@@ -1496,7 +1417,10 @@ __glXDisp_CreatePbuffer(__GLXclientState * cl, GLbyte * pc)
         }
     }
 
-    return DoCreatePbuffer(cl->client, req->screen, req->fbconfig,
+    if (!validGlxScreen(client, req->screen, &pGlxScreen, &i))
+        return i;
+
+    return DoCreatePbuffer(cl->client, pGlxScreen, req->fbconfig,
                            width, height, req->pbuffer);
 }
 
@@ -1505,15 +1429,30 @@ __glXDisp_CreateGLXPbufferSGIX(__GLXclientState * cl, GLbyte * pc)
 {
     ClientPtr client = cl->client;
     xGLXCreateGLXPbufferSGIXReq *req = (xGLXCreateGLXPbufferSGIXReq *) pc;
+    __GLXscreen *pGlxScreen;
+    int ret;
 
     REQUEST_AT_LEAST_SIZE(xGLXCreateGLXPbufferSGIXReq);
+    LEGAL_NEW_RESOURCE(req->pbuffer, client);
 
     /*
      * We should really handle attributes correctly, but this extension
      * is so rare I have difficulty caring.
      */
-    return DoCreatePbuffer(cl->client, req->screen, req->fbconfig,
+
+    if (!validGlxScreen(client, req->screen, &pGlxScreen, &ret))
+        return ret;
+
+    if (!glxServer.addXIDMap(req->pbuffer, pGlxScreen->vendor))
+        return BadAlloc;
+
+    ret = DoCreatePbuffer(cl->client, pGlxScreen, req->fbconfig,
                            req->width, req->height, req->pbuffer);
+
+    if (ret != Success)
+        glxServer.removeXIDMap(req->pbuffer);
+
+    return ret;
 }
 
 int
@@ -1623,8 +1562,6 @@ __glXDisp_CreateWindow(__GLXclientState * cl, GLbyte * pc)
         return BadValue;
     }
     REQUEST_FIXED_SIZE(xGLXCreateWindowReq, req->numAttribs << 3);
-
-    LEGAL_NEW_RESOURCE(req->glxwindow, client);
 
     if (!validGlxScreen(client, req->screen, &pGlxScreen, &err))
         return err;

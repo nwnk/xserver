@@ -36,6 +36,7 @@
  */
 
 #include "extension_string.h"
+#include "glxvndabi.h"
 
 typedef struct __GLXconfig __GLXconfig;
 struct __GLXconfig {
@@ -131,6 +132,7 @@ struct __GLXscreen {
     int (*swapInterval) (__GLXdrawable * drawable, int interval);
 
     ScreenPtr pScreen;
+    GlxServerVendor *vendor;
 
     /* Linked list of valid fbconfigs for this screen. */
     __GLXconfig *fbconfigs;
@@ -145,6 +147,7 @@ struct __GLXscreen {
     char *glvnd;
     unsigned char glx_enable_bits[__GLX_EXT_BYTES];
 
+    Bool (*CreateScreenResources) (ScreenPtr pScreen);
     Bool (*CloseScreen) (ScreenPtr pScreen);
 };
 

@@ -1018,7 +1018,7 @@ xwl_log_handler(const char *format, va_list args)
 
 static const ExtensionModule xwayland_extensions[] = {
 #ifdef GLXEXT
-    { GlxExtensionInit, "GLX", &noGlxExtension },
+    { GLXExtensionInit, "GLX", &noGlxExtension },
 #endif
 #ifdef XF86VIDMODE
     { xwlVidModeExtensionInit, XF86VIDMODENAME, &noXFree86VidModeExtension },

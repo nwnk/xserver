@@ -66,6 +66,7 @@ from The Open Group.
 #include "dix.h"
 #include "miline.h"
 #include "glx_extinit.h"
+#include "glxserver.h"
 #include "randrstr.h"
 
 #define VFB_DEFAULT_WIDTH      1280
@@ -934,6 +935,13 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     if (!vfbRandRInit(pScreen))
        return FALSE;
 
+#ifdef GLXEXT
+    extern Bool xorgGlxCreateVendor(ScreenPtr pScreen, __GLXprovider *provider);
+
+    if (!noGlxExtension)
+        xorgGlxCreateVendor(pScreen, &__glXDRISWRastProvider);
+#endif
+
     pScreen->InstallColormap = vfbInstallColormap;
 
     pScreen->SaveScreen = vfbSaveScreen;
@@ -957,9 +965,11 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
 
 }                               /* end vfbScreenInit */
 
+extern void GLXExtensionInit(void);
+
 static const ExtensionModule vfbExtensions[] = {
 #ifdef GLXEXT
-    { GlxExtensionInit, "GLX", &noGlxExtension },
+    { GLXExtensionInit, "GLX", &noGlxExtension },
 #endif
 };
 

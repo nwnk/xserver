@@ -7,7 +7,7 @@ srcs = [
 executable(
     'Xvfb',
     srcs,
-    include_directories: inc,
+    include_directories: [ inc, glx_inc ],
     dependencies: common_dep,
     link_with: [
         libxserver_main,
@@ -15,7 +15,8 @@ executable(
         libxserver,
         libxserver_xkb_stubs,
         libxserver_xi_stubs,
-        libxserver_glx
+        libxserver_glx,
+        libglxvnd,
     ],
     install: true,
 )

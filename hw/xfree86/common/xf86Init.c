@@ -77,7 +77,7 @@
 #include "xf86Xinput.h"
 #include "xf86InPriv.h"
 #include "picturestr.h"
-
+#include "glxvndabi.h"
 #include "xf86Bus.h"
 #ifdef XSERVER_LIBPCIACCESS
 #include "xf86VGAarbiter.h"

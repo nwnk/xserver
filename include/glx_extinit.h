@@ -28,7 +28,7 @@
 
 /* this is separate due to sdksyms pulling in extinit.h */
 #ifdef GLXEXT
-extern void GlxExtensionInit(void);
+extern void GLXExtensionInit(void);
 #endif
 
 #endif

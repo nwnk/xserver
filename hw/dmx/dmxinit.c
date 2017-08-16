@@ -532,6 +532,9 @@ dmxDisplayInit(DMXScreenInfo * dmxScreen)
     dmxGetPixmapFormats(dmxScreen);
 }
 
+/* XXX */
+extern void GlxExtensionInit(void);
+
 static void dmxAddExtensions(Bool glxSupported)
 {
     const ExtensionModule dmxExtensions[] = {
