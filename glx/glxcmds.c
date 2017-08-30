@@ -358,13 +358,10 @@ DoCreateContext(__GLXclientState * cl, GLXContextID gcId,
 int
 __glXDisp_CreateContext(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXCreateContextReq *req = (xGLXCreateContextReq *) pc;
     __GLXconfig *config;
     __GLXscreen *pGlxScreen;
     int err;
-
-    REQUEST_SIZE_MATCH(xGLXCreateContextReq);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
@@ -378,13 +375,10 @@ __glXDisp_CreateContext(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_CreateNewContext(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXCreateNewContextReq *req = (xGLXCreateNewContextReq *) pc;
     __GLXconfig *config;
     __GLXscreen *pGlxScreen;
     int err;
-
-    REQUEST_SIZE_MATCH(xGLXCreateNewContextReq);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
@@ -427,12 +421,9 @@ __glXDisp_CreateContextWithConfigSGIX(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_DestroyContext(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXDestroyContextReq *req = (xGLXDestroyContextReq *) pc;
     __GLXcontext *glxc;
     int err;
-
-    REQUEST_SIZE_MATCH(xGLXDestroyContextReq);
 
     if (!validGlxContext(cl->client, req->context, DixDestroyAccess,
                          &glxc, &err))
@@ -670,8 +661,6 @@ __glXDisp_IsDirect(__GLXclientState * cl, GLbyte * pc)
     __GLXcontext *glxc;
     int err;
 
-    REQUEST_SIZE_MATCH(xGLXIsDirectReq);
-
     if (!validGlxContext(cl->client, req->context, DixReadAccess, &glxc, &err))
         return err;
 
@@ -735,13 +724,10 @@ __glXDisp_QueryVersion(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_WaitGL(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXWaitGLReq *req = (xGLXWaitGLReq *) pc;
     GLXContextTag tag;
     __GLXcontext *glxc = NULL;
     int error;
-
-    REQUEST_SIZE_MATCH(xGLXWaitGLReq);
 
     tag = req->contextTag;
     if (tag) {
@@ -764,13 +750,10 @@ __glXDisp_WaitGL(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_WaitX(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXWaitXReq *req = (xGLXWaitXReq *) pc;
     GLXContextTag tag;
     __GLXcontext *glxc = NULL;
     int error;
-
-    REQUEST_SIZE_MATCH(xGLXWaitXReq);
 
     tag = req->contextTag;
     if (tag) {
@@ -799,8 +782,6 @@ __glXDisp_CopyContext(__GLXclientState * cl, GLbyte * pc)
     unsigned long mask;
     __GLXcontext *src, *dst;
     int error;
-
-    REQUEST_SIZE_MATCH(xGLXCopyContextReq);
 
     source = req->source;
     dest = req->dest;
@@ -888,8 +869,6 @@ __glXDisp_GetVisualConfigs(__GLXclientState * cl, GLbyte * pc)
 
     __GLX_DECLARE_SWAP_VARIABLES;
     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
-
-    REQUEST_SIZE_MATCH(xGLXGetVisualConfigsReq);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
@@ -1110,10 +1089,8 @@ DoGetFBConfigs(__GLXclientState * cl, unsigned screen)
 int
 __glXDisp_GetFBConfigs(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXGetFBConfigsReq *req = (xGLXGetFBConfigsReq *) pc;
 
-    REQUEST_SIZE_MATCH(xGLXGetFBConfigsReq);
     return DoGetFBConfigs(cl, req->screen);
 }
 
@@ -1249,13 +1226,10 @@ determineTextureTarget(ClientPtr client, XID glxDrawableID,
 int
 __glXDisp_CreateGLXPixmap(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXCreateGLXPixmapReq *req = (xGLXCreateGLXPixmapReq *) pc;
     __GLXconfig *config;
     __GLXscreen *pGlxScreen;
     int err;
-
-    REQUEST_SIZE_MATCH(xGLXCreateGLXPixmapReq);
 
     if (!validGlxScreen(cl->client, req->screen, &pGlxScreen, &err))
         return err;
@@ -1345,10 +1319,7 @@ DoDestroyDrawable(__GLXclientState * cl, XID glxdrawable, int type)
 int
 __glXDisp_DestroyGLXPixmap(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXDestroyGLXPixmapReq *req = (xGLXDestroyGLXPixmapReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXDestroyGLXPixmapReq);
 
     return DoDestroyDrawable(cl, req->glxpixmap, GLX_DRAWABLE_PIXMAP);
 }
@@ -1470,10 +1441,7 @@ __glXDisp_CreateGLXPbufferSGIX(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_DestroyPbuffer(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXDestroyPbufferReq *req = (xGLXDestroyPbufferReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXDestroyPbufferReq);
 
     return DoDestroyDrawable(cl, req->pbuffer, GLX_DRAWABLE_PBUFFER);
 }
@@ -1624,8 +1592,6 @@ __glXDisp_SwapBuffers(__GLXclientState * cl, GLbyte * pc)
     __GLXdrawable *pGlxDraw;
     int error;
 
-    REQUEST_SIZE_MATCH(xGLXSwapBuffersReq);
-
     tag = req->contextTag;
     drawId = req->drawable;
     if (tag) {
@@ -1724,10 +1690,7 @@ __glXDisp_QueryContextInfoEXT(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDisp_QueryContext(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
     xGLXQueryContextReq *req = (xGLXQueryContextReq *) pc;
-
-    REQUEST_SIZE_MATCH(xGLXQueryContextReq);
 
     return DoQueryContext(cl, req->context);
 }
@@ -2364,8 +2327,6 @@ __glXDisp_QueryExtensionsString(__GLXclientState * cl, GLbyte * pc)
     char *buf;
     int err;
 
-    REQUEST_SIZE_MATCH(xGLXQueryExtensionsStringReq);
-
     if (!validGlxScreen(client, req->screen, &pGlxScreen, &err))
         return err;
 
@@ -2418,8 +2379,6 @@ __glXDisp_QueryServerString(__GLXclientState * cl, GLbyte * pc)
     char *buf;
     __GLXscreen *pGlxScreen;
     int err;
-
-    REQUEST_SIZE_MATCH(xGLXQueryServerStringReq);
 
     if (!validGlxScreen(client, req->screen, &pGlxScreen, &err))
         return err;
