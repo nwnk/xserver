@@ -40,7 +40,7 @@ struct __GLXprovider {
 extern __GLXprovider __glXDRISWRastProvider;
 
 void GlxPushProvider(__GLXprovider * provider);
-
+Bool xorgGlxCreateVendor(ScreenPtr pScreen, __GLXprovider *provider);
 #endif
 
 #endif

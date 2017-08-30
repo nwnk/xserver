@@ -40,7 +40,7 @@
 #include "glamor.h"
 #endif
 #include "ephyr_glamor_glx.h"
-
+#include "glx_extinit.h"
 #include "xkbsrv.h"
 
 extern Bool ephyr_glamor;
@@ -695,6 +695,10 @@ ephyrFinishInitScreen(ScreenPtr pScreen)
 #ifdef RANDR
     if (!ephyrRandRInit(pScreen))
         return FALSE;
+#endif
+#ifdef GLXEXT
+    if (!noGlxExtension)
+        xorgGlxCreateVendor(pScreen, NULL);
 #endif
 
     scrpriv->BlockHandler = pScreen->BlockHandler;

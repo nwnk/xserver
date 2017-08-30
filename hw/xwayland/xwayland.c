@@ -987,6 +987,11 @@ xwl_screen_init(ScreenPtr pScreen, int argc, char **argv)
         pScreen->DestroyPixmap = xwl_shm_destroy_pixmap;
     }
 
+#ifdef GLXEXT
+    if (!noGlxExtension)
+        xorgGlxCreateVendor(pScreen, NULL);
+#endif
+
     xwl_screen->RealizeWindow = pScreen->RealizeWindow;
     pScreen->RealizeWindow = xwl_realize_window;
 

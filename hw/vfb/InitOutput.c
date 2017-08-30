@@ -934,6 +934,11 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     if (!vfbRandRInit(pScreen))
        return FALSE;
 
+#ifdef GLXEXT
+    if (!noGlxExtension)
+        xorgGlxCreateVendor(pScreen, NULL);
+#endif
+
     pScreen->InstallColormap = vfbInstallColormap;
 
     pScreen->SaveScreen = vfbSaveScreen;

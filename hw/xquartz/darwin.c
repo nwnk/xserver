@@ -271,6 +271,10 @@ DarwinScreenInit(ScreenPtr pScreen, int argc, char **argv)
 #ifdef MITSHM
     ShmRegisterFbFuncs(pScreen);
 #endif
+#ifdef GLXEXT
+    if (!noGlxExtension)
+        xorgGlxCreateVendor(pScreen, NULL);
+#endif
 
     // this must be initialized (why doesn't X have a default?)
     pScreen->SaveScreen = DarwinSaveScreen;

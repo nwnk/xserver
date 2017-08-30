@@ -366,6 +366,15 @@ winFinishScreenInitFB(int i, ScreenPtr pScreen, int argc, char **argv)
     }
 #endif
 
+#ifdef GLXEXT
+    if (!noGlxExtension) {
+        __GLXprovider *provider = NULL;
+        if (g_fNativeGl)
+            __GLXprovider = &__glXWGLProvider;
+        xorgGlxCreateVendor(pScreen, provider);
+    }
+#endif
+
     /* Setup the cursor routines */
 #if CYGDEBUG
     winDebug("winFinishScreenInitFB - Calling miDCInitialize ()\n");

@@ -62,4 +62,10 @@ extern void __glXResetLargeCommandStatus(__GLXclientState *);
 extern const char GLServerVersion[];
 extern int DoGetString(__GLXclientState * cl, GLbyte * pc, GLboolean need_swap);
 
+extern int
+xorgGlxMakeCurrent(ClientPtr client, GLXContextTag tag,
+              void *oldContextTagData, XID drawId, XID readId,
+              XID contextId, GLXContextTag newContextTag,
+              void **newContextTagData);
+
 #endif                          /* _glxext_h_ */

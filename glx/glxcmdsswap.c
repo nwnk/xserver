@@ -131,57 +131,19 @@ __glXDispSwap_DestroyContext(__GLXclientState * cl, GLbyte * pc)
 int
 __glXDispSwap_MakeCurrent(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeCurrentReq *req = (xGLXMakeCurrentReq *) pc;
-
-    __GLX_DECLARE_SWAP_VARIABLES;
-
-    REQUEST_SIZE_MATCH(xGLXMakeCurrentReq);
-
-    __GLX_SWAP_SHORT(&req->length);
-    __GLX_SWAP_INT(&req->drawable);
-    __GLX_SWAP_INT(&req->context);
-    __GLX_SWAP_INT(&req->oldContextTag);
-
-    return __glXDisp_MakeCurrent(cl, pc);
+    return BadImplementation;
 }
 
 int
 __glXDispSwap_MakeContextCurrent(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeContextCurrentReq *req = (xGLXMakeContextCurrentReq *) pc;
-
-    __GLX_DECLARE_SWAP_VARIABLES;
-
-    REQUEST_SIZE_MATCH(xGLXMakeContextCurrentReq);
-
-    __GLX_SWAP_SHORT(&req->length);
-    __GLX_SWAP_INT(&req->drawable);
-    __GLX_SWAP_INT(&req->readdrawable);
-    __GLX_SWAP_INT(&req->context);
-    __GLX_SWAP_INT(&req->oldContextTag);
-
-    return __glXDisp_MakeContextCurrent(cl, pc);
+    return BadImplementation;
 }
 
 int
 __glXDispSwap_MakeCurrentReadSGI(__GLXclientState * cl, GLbyte * pc)
 {
-    ClientPtr client = cl->client;
-    xGLXMakeCurrentReadSGIReq *req = (xGLXMakeCurrentReadSGIReq *) pc;
-
-    __GLX_DECLARE_SWAP_VARIABLES;
-
-    REQUEST_SIZE_MATCH(xGLXMakeCurrentReadSGIReq);
-
-    __GLX_SWAP_SHORT(&req->length);
-    __GLX_SWAP_INT(&req->drawable);
-    __GLX_SWAP_INT(&req->readable);
-    __GLX_SWAP_INT(&req->context);
-    __GLX_SWAP_INT(&req->oldContextTag);
-
-    return __glXDisp_MakeCurrentReadSGI(cl, pc);
+    return BadImplementation;
 }
 
 int
