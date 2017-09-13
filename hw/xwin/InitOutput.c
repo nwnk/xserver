@@ -115,7 +115,6 @@ const int NUMFORMATS = sizeof(g_PixmapFormats) / sizeof(g_PixmapFormats[0]);
 
 static const ExtensionModule xwinExtensions[] = {
 #ifdef GLXEXT
-  { GlxExtensionInit, "GLX", &noGlxExtension },
 #ifdef XWIN_WINDOWS_DRI
   { WindowsDRIExtensionInit, "Windows-DRI", &noDriExtension },
 #endif
