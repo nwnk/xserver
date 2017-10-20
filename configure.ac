@@ -594,7 +594,6 @@ AC_ARG_ENABLE(standalone-xpbproxy, AS_HELP_STRING([--enable-standalone-xpbproxy]
 AC_ARG_ENABLE(xwin,    	      AS_HELP_STRING([--enable-xwin], [Build XWin server (default: auto)]), [XWIN=$enableval], [XWIN=auto])
 AC_ARG_ENABLE(glamor,         AS_HELP_STRING([--enable-glamor], [Build glamor dix module (default: auto)]), [GLAMOR=$enableval], [GLAMOR=auto])
 dnl kdrive and its subsystems
-AC_ARG_ENABLE(kdrive,         AS_HELP_STRING([--enable-kdrive], [Build kdrive servers (default: no)]), [KDRIVE=$enableval], [KDRIVE=no])
 AC_ARG_ENABLE(xephyr,         AS_HELP_STRING([--enable-xephyr], [Build the kdrive Xephyr server (default: auto)]), [XEPHYR=$enableval], [XEPHYR=auto])
 dnl kdrive options
 AC_ARG_ENABLE(libunwind,      AS_HELP_STRING([--enable-libunwind], [Use libunwind for backtracing (default: auto)]), [LIBUNWIND="$enableval"], [LIBUNWIND="auto"])
@@ -2293,6 +2292,10 @@ fi
 AM_CONDITIONAL([DMX_BUILD_USB], [test "x$DMX_BUILD_USB" = xyes])
 
 dnl kdrive DDX
+dnl we now have only one kdrive DDX, which is Xephyr, so we enable kdrive
+dnl unconditionally, and Xephyr will be enabled or not depending on whether
+dnl the required libs are available or not
+KDRIVE=yes
 
 XEPHYR_LIBS=
 XEPHYR_INCS=
