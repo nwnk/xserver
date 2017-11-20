@@ -100,13 +100,6 @@ CloseInput(void)
     KdCloseInput();
 }
 
-#ifdef DDXBEFORERESET
-void
-ddxBeforeReset(void)
-{
-}
-#endif
-
 void
 ddxUseMsg(void)
 {

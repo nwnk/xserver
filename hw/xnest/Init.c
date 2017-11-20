@@ -161,11 +161,3 @@ OsVendorFatalError(const char *f, va_list args)
 {
     return;
 }
-
-#if defined(DDXBEFORERESET)
-void
-ddxBeforeReset(void)
-{
-    return;
-}
-#endif
