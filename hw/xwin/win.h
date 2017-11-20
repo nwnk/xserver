@@ -716,9 +716,6 @@ winBlockHandler(ScreenPtr pScreen, void *pTimeout);
 Bool
  winInitClipboard(void);
 
-void
- winClipboardShutdown(void);
-
 /*
  * wincmap.c
  */

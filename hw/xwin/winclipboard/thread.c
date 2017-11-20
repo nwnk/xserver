@@ -497,14 +497,6 @@ winClipboardIOErrorHandler(Display * pDisplay)
 }
 
 void
-winClipboardWindowDestroy(void)
-{
-  if (g_hwndClipboard) {
-    SendMessage(g_hwndClipboard, WM_WM_QUIT, 0, 0);
-  }
-}
-
-void
 winFixClipboardChain(void)
 {
   if (g_hwndClipboard) {
