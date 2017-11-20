@@ -57,6 +57,8 @@ winClipboardThreadProc(void *arg)
   char szDisplay[512];
   int clipboardRestarts = 0;
 
+  pthread_detach(pthread_self());
+
   while (1)
     {
       Bool fShutdown;
@@ -122,21 +124,4 @@ winInitClipboard(void)
     }
 
     return TRUE;
-}
-
-void
-winClipboardShutdown(void)
-{
-  /* Close down clipboard resources */
-  if (g_fClipboard && g_fClipboardStarted) {
-    /* Synchronously destroy the clipboard window */
-    winClipboardWindowDestroy();
-
-    /* Wait for the clipboard thread to exit */
-    pthread_join(g_ptClipboardProc, NULL);
-
-    g_fClipboardStarted = FALSE;
-
-    winDebug("winClipboardShutdown - Clipboard thread has exited.\n");
-  }
 }

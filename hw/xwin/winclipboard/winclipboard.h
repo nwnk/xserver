@@ -31,8 +31,6 @@ Bool winClipboardProc(Bool fUseUnicode, char *szDisplay);
 
 void winFixClipboardChain(void);
 
-void winClipboardWindowDestroy(void);
-
 extern Bool fPrimarySelection;
 
 #endif

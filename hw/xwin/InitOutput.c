@@ -145,9 +145,6 @@ void XwinExtensionInit(void)
 void
 ddxBeforeReset(void)
 {
-    winDebug("ddxBeforeReset - Hello\n");
-
-    winClipboardShutdown();
 }
 #endif
 
