@@ -66,14 +66,6 @@ OsVendorFatalError(const char *f, va_list args)
 {
 }
 
-#if defined(DDXBEFORERESET)
-void
-ddxBeforeReset(void)
-{
-    return;
-}
-#endif
-
  _X_NORETURN
 static void _X_ATTRIBUTE_PRINTF(1, 2)
 xwl_give_up(const char *f, ...)

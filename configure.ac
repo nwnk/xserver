@@ -2168,7 +2168,6 @@ if test "x$XWIN" = xyes; then
 	fi
 
 	AC_DEFINE(DDXOSVERRORF, 1, [Use OsVendorVErrorF])
-	AC_DEFINE(DDXBEFORERESET, 1, [Use ddxBeforeReset ])
 
 dnl XWin requires OpenGL spec files in order to generate wrapper code for native GL functions
 	if [test "x$XWIN" = xyes && test "x$GLX" = xyes] ; then

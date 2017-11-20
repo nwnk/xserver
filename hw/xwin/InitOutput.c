@@ -136,18 +136,6 @@ void XwinExtensionInit(void)
     LoadExtensionList(xwinExtensions, ARRAY_SIZE(xwinExtensions), TRUE);
 }
 
-#if defined(DDXBEFORERESET)
-/*
- * Called right before KillAllClients when the server is going to reset,
- * allows us to shutdown our seperate threads cleanly.
- */
-
-void
-ddxBeforeReset(void)
-{
-}
-#endif
-
 int
 main(int argc, char *argv[], char *envp[])
 {
