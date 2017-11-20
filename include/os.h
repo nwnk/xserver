@@ -540,8 +540,6 @@ enum ExitCode {
 };
 
 extern _X_EXPORT void
-AbortDDX(enum ExitCode error);
-extern _X_EXPORT void
 ddxGiveUp(enum ExitCode error);
 extern _X_EXPORT int
 TimeSinceLastInputEvent(void);
