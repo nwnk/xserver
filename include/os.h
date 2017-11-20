@@ -295,12 +295,9 @@ _X_ATTRIBUTE_PRINTF(1, 0)
     _X_DEPRECATED;
 
 typedef void (*OsSigHandlerPtr) (int /* sig */ );
-typedef int (*OsSigWrapperPtr) (int /* sig */ );
 
 extern _X_EXPORT OsSigHandlerPtr
 OsSignal(int /* sig */ , OsSigHandlerPtr /* handler */ );
-extern _X_EXPORT OsSigWrapperPtr
-OsRegisterSigWrapper(OsSigWrapperPtr newWrap);
 
 extern _X_EXPORT int auditTrailLevel;
 

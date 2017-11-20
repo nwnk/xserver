@@ -88,18 +88,6 @@ int limitNoFile = -1;
 /* The actual user defined max number of clients */
 int LimitClients = LIMITCLIENTS;
 
-static OsSigWrapperPtr OsSigWrapper = NULL;
-
-OsSigWrapperPtr
-OsRegisterSigWrapper(OsSigWrapperPtr newSigWrapper)
-{
-    OsSigWrapperPtr oldSigWrapper = OsSigWrapper;
-
-    OsSigWrapper = newSigWrapper;
-
-    return oldSigWrapper;
-}
-
 /*
  * OsSigHandler --
  *    Catch unexpected signals and exit or continue cleanly.
@@ -123,13 +111,6 @@ OsSigHandler(int signo)
         }
     }
 #endif                          /* RTLD_DI_SETSIGNAL */
-
-    if (OsSigWrapper != NULL) {
-        if (OsSigWrapper(signo) == 0) {
-            /* ddx handled signal and wants us to continue */
-            return;
-        }
-    }
 
     /* log, cleanup, and abort */
     xorg_backtrace();
