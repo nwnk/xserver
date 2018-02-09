@@ -41,6 +41,11 @@ Xwayland_SOURCES += 				\
 	xwayland-glamor-xv.c
 endif
 
+if XWAYLAND_EGLSTREAM
+Xwayland_SOURCES +=				\
+	xwayland-glamor-eglstream.c
+endif
+
 glamor_built_sources =				\
 	drm-client-protocol.h			\
 	drm-protocol.c
@@ -67,11 +72,18 @@ Xwayland_built_sources +=					\
 	linux-dmabuf-unstable-v1-client-protocol.h		\
 	linux-dmabuf-unstable-v1-protocol.c
 
+if XWAYLAND_EGLSTREAM
+Xwayland_built_sources +=					\
+	wayland-eglstream-client-protocol.h			\
+	wayland-eglstream-protocol.c				\
+	wayland-eglstream-controller-client-protocol.h		\
+	wayland-eglstream-controller-protocol.c
+endif
+
 nodist_Xwayland_SOURCES = $(Xwayland_built_sources)
 CLEANFILES = $(Xwayland_built_sources)
 
 EXTRA_DIST = drm.xml
-
 
 $(Xwayland_SOURCES): $(Xwayland_built_sources)
 
@@ -106,6 +118,16 @@ linux-dmabuf-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/linu
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
 linux-dmabuf-unstable-v1-client-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
+
+wayland-eglstream-client-protocol.h : $(WAYLAND_EGLSTREAM_DATADIR)/wayland-eglstream.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
+wayland-eglstream-controller-client-protocol.h : $(WAYLAND_EGLSTREAM_DATADIR)/wayland-eglstream-controller.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
+
+wayland-eglstream-protocol.c : $(WAYLAND_EGLSTREAM_DATADIR)/wayland-eglstream.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+wayland-eglstream-controller-protocol.c : $(WAYLAND_EGLSTREAM_DATADIR)/wayland-eglstream-controller.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
 
 %-protocol.c : %.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
