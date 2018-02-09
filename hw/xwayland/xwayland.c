@@ -726,6 +726,7 @@ registry_global(void *data, struct wl_registry *registry, uint32_t id,
         xwl_screen_init_xdg_output(xwl_screen);
     }
 #ifdef GLAMOR_HAS_GBM
+#if 0
     else if (xwl_screen->glamor &&
              strcmp(interface, "wl_drm") == 0 && version >= 2) {
         xwl_screen_set_drm_interface(xwl_screen, id, version);
@@ -733,6 +734,11 @@ registry_global(void *data, struct wl_registry *registry, uint32_t id,
     else if (xwl_screen->glamor &&
              strcmp(interface, "zwp_linux_dmabuf_v1") == 0 && version >= 3) {
         xwl_screen_set_dmabuf_interface(xwl_screen, id, version);
+    }
+#endif
+    else if (xwl_screen->glamor) {
+        xwl_glamor_init_wl_registry(xwl_screen, registry, id, interface,
+                                    version);
     }
 #endif
 }
@@ -937,6 +943,13 @@ xwl_screen_init(ScreenPtr pScreen, int argc, char **argv)
             i++;
         }
         else if (strcmp(argv[i], "-shm") == 0) {
+            xwl_screen->glamor = 0;
+        }
+    }
+
+    if (xwl_screen->glamor) {
+        if (!xwl_glamor_init_gbm(xwl_screen)) {
+            ErrorF("xwayland glamor: failed to setup GBM backend, falling back to sw accel\n");
             xwl_screen->glamor = 0;
         }
     }
