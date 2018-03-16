@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -e
 set -x
 
 #
@@ -30,14 +29,36 @@ export PATH="/usr/local/opt/ccache/libexec:$PATH"
 pushd $HOME
 git clone git://anongit.freedesktop.org/git/xorg/proto/xorgproto
 cd xorgproto
-autoreconf -fvi
-./configure --prefix=/opt/X11
-sudo make install
+meson setup --prefix=/opt/X11 build
+ninja -C build
+sudo ninja -C build install
 popd
 
+pkg-config --cflags-only-I xproto
+
 # build
-autoreconf -fvi
-./configure --prefix=/opt/X11 --disable-dependency-tracking --with-apple-application-name=XQuartz --with-bundle-id-prefix=org.macosforge.xquartz
-make
-make check
-make install DESTDIR=$(pwd)/staging
+meson setup \
+    --prefix=/opt/X11 \
+    -Ddmx=true \
+    -Dxephyr=true \
+    -Dxnest=true \
+    -Dxvfb=true \
+    -Dhal=false \
+    -Dudev=false \
+    -Dpciaccess=false \
+    -Dint10=false \
+    -Dsecure_rpc=false \
+    build
+
+cat build/include/dix-config.h
+
+meson configure build
+ninja -C build
+ninja -C build test
+sudo ninja -C build install
+
+# autoreconf -fvi
+# ./configure --prefix=/opt/X11 --disable-dependency-tracking --with-apple-application-name=XQuartz --with-bundle-id-prefix=org.macosforge.xquartz
+# make
+# make check
+# make install DESTDIR=$(pwd)/staging

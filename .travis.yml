@@ -15,7 +15,7 @@ matrix:
       env: DISTRO=xcode9.2
 
 install:
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ccache ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ccache meson ; fi
 
 before_script:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker pull nwnk/xserver-travis-$DISTRO ; fi
