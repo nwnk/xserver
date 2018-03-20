@@ -55,8 +55,8 @@ if get_option('xdmcp')
 endif
 
 rpc_dep = []
-if get_option('secure-rpc')
-    # prefer libtirpc (if available), otherwise ensure RPC functions are
+if get_option('secure_rpc')
+    # prefer libtirpc (if available), otherwise assume RPC functions are
     # provided by libc.
     rpc_dep = dependency('libtirpc', required: false)
     if not (rpc_dep.found() or cc.has_header('rpc/rpc.h'))
