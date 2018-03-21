@@ -219,7 +219,13 @@ conf_data.set('XV', build_xv)
 conf_data.set('XvExtension', build_xv)
 conf_data.set('XvMCExtension', build_xvmc)
 
-conf_data.set('HAVE_SHA1_IN_LIBNETTLE', '1') # XXX
+if host_machine.system() == 'darwin'
+    conf_data.set('HAVE_SHA1_IN_COMMONCRYPTO', '1')
+elif host_machine.system() == 'windows'
+    conf_data.set('HAVE_SHA1_IN_CRYPTOAPI', '1')
+else
+    conf_data.set('HAVE_SHA1_IN_LIBNETTLE', '1') # XXX
+endif
 
 conf_data.set('HAVE_APM', build_apm or build_acpi)
 conf_data.set('HAVE_ACPI', build_acpi)
