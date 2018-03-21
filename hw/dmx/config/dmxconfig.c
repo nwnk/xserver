@@ -49,6 +49,7 @@
 #include "parser.h"
 
 extern int yydebug;
+extern int yyparse(void);
 extern FILE *yyin;
 
 static char *dmxXkbRules;
