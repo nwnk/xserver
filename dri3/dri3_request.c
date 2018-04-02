@@ -32,6 +32,9 @@
 #include <protocol-versions.h>
 #include <drm_fourcc.h>
 
+/* Should be provided by the guts of X */
+typedef int (* DispatchProc) (ClientPtr client);
+
 static int
 proc_dri3_query_version(ClientPtr client)
 {
@@ -526,7 +529,8 @@ proc_dri3_buffers_from_pixmap(ClientPtr client)
     return Success;
 }
 
-int (*proc_dri3_vector[DRI3NumberRequests]) (ClientPtr) = {
+static const
+DispatchProc proc_dri3_vector[DRI3NumberRequests] = {
     proc_dri3_query_version,            /* 0 */
     proc_dri3_open,                     /* 1 */
     proc_dri3_pixmap_from_buffer,       /* 2 */
@@ -669,7 +673,8 @@ sproc_dri3_buffers_from_pixmap(ClientPtr client)
     return (*proc_dri3_vector[stuff->dri3ReqType]) (client);
 }
 
-int (*sproc_dri3_vector[DRI3NumberRequests]) (ClientPtr) = {
+static const
+DispatchProc sproc_dri3_vector[DRI3NumberRequests] = {
     sproc_dri3_query_version,           /* 0 */
     sproc_dri3_open,                    /* 1 */
     sproc_dri3_pixmap_from_buffer,      /* 2 */
