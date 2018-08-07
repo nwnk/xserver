@@ -769,12 +769,6 @@ void
  * winerror.c
  */
 
-#ifdef DDXOSVERRORF
-void
-OsVendorVErrorF(const char *pszFormat, va_list va_args)
-_X_ATTRIBUTE_PRINTF(1, 0);
-#endif
-
 void
 winMessageBoxF(const char *pszError, UINT uType, ...)
 _X_ATTRIBUTE_PRINTF(1, 3);

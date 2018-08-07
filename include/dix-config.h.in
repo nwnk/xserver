@@ -30,9 +30,6 @@
 /* Support Damage extension */
 #undef DAMAGE
 
-/* Use OsVendorVErrorF */
-#undef DDXOSVERRORF
-
 /* Build DPMS extension */
 #undef DPMSExtension
 

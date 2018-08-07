@@ -2167,8 +2167,6 @@ if test "x$XWIN" = xyes; then
 		AC_DEFINE(CYGMULTIWINDOW_DEBUG, 1, [Debug window manager])
 	fi
 
-	AC_DEFINE(DDXOSVERRORF, 1, [Use OsVendorVErrorF])
-
 dnl XWin requires OpenGL spec files in order to generate wrapper code for native GL functions
 	if [test "x$XWIN" = xyes && test "x$GLX" = xyes] ; then
            AC_CHECK_PROG(PYTHON3, python3, python3)

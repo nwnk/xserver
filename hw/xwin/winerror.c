@@ -35,25 +35,6 @@
 #include <../xfree86/common/xorgVersion.h>
 #include "win.h"
 
-#ifdef DDXOSVERRORF
-void
-OsVendorVErrorF(const char *pszFormat, va_list va_args)
-{
-    /* make sure the clipboard and multiwindow threads do not interfere the
-     * main thread */
-    static pthread_mutex_t s_pmPrinting = PTHREAD_MUTEX_INITIALIZER;
-
-    /* Lock the printing mutex */
-    pthread_mutex_lock(&s_pmPrinting);
-
-    /* Print the error message to a log file, could be stderr */
-    LogVWrite(0, pszFormat, va_args);
-
-    /* Unlock the printing mutex */
-    pthread_mutex_unlock(&s_pmPrinting);
-}
-#endif
-
 /*
  * os/log.c:FatalError () calls our vendor ErrorF, so the message
  * from a FatalError will be logged.
