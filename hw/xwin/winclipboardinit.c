@@ -78,9 +78,6 @@ winClipboardThreadProc(void *arg)
       */
       winGetDisplayName(szDisplay, 0);
 
-      /* Print the display connection string */
-      ErrorF("winClipboardThreadProc - DISPLAY=%s\n", szDisplay);
-
       /* Flag that clipboard client has been launched */
       g_fClipboardStarted = TRUE;
 
@@ -95,13 +92,11 @@ winClipboardThreadProc(void *arg)
       /* checking if we need to restart */
       if (clipboardRestarts >= WIN_CLIPBOARD_RETRIES) {
         /* terminates clipboard thread but the main server still lives */
-        ErrorF("winClipboardProc - the clipboard thread has restarted %d times and seems to be unstable, disabling clipboard integration\n", clipboardRestarts);
         g_fClipboard = FALSE;
         break;
       }
 
       sleep(WIN_CLIPBOARD_DELAY);
-      ErrorF("winClipboardProc - trying to restart clipboard thread \n");
     }
 
   return NULL;

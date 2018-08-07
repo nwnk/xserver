@@ -786,10 +786,6 @@ winMultiWindowWMProc(void *pArg)
     /* Initialize the Window Manager */
     winInitMultiWindowWM(pWMInfo, pProcArg);
 
-#if CYGMULTIWINDOW_DEBUG
-    ErrorF("winMultiWindowWMProc ()\n");
-#endif
-
     /* Loop until we explicitly break out */
     for (;;) {
         WMMsgNodePtr pNode;
@@ -799,14 +795,8 @@ winMultiWindowWMProc(void *pArg)
         if (pNode == NULL) {
             /* Bail if PopMessage returns without a message */
             /* NOTE: Remember that PopMessage is a blocking function. */
-            ErrorF("winMultiWindowWMProc - Queue is Empty?  Exiting.\n");
             pthread_exit(NULL);
         }
-
-#if CYGMULTIWINDOW_DEBUG
-        ErrorF("winMultiWindowWMProc - MSG: %s (%d) ID: %d\n",
-               MessageName(&(pNode->msg)), (int)pNode->msg.msg, (int)pNode->msg.dwID);
-#endif
 
         /* Branch on the message type */
         switch (pNode->msg.msg) {
@@ -953,7 +943,6 @@ winMultiWindowWMProc(void *pArg)
             break;
 
         default:
-            ErrorF("winMultiWindowWMProc - Unknown Message.  Exiting.\n");
             pthread_exit(NULL);
             break;
         }
@@ -964,25 +953,10 @@ winMultiWindowWMProc(void *pArg)
         /* Flush any pending events on our display */
         xcb_flush(pWMInfo->conn);
 
-        /* This is just laziness rather than making sure we used _checked everywhere */
-        {
-            xcb_generic_event_t *event = xcb_poll_for_event(pWMInfo->conn);
-            if (event) {
-                if ((event->response_type & ~0x80) == 0) {
-                    xcb_generic_error_t *err = (xcb_generic_error_t *)event;
-                    ErrorF("winMultiWindowWMProc - Error code: %i, ID: 0x%08x, "
-                           "Major opcode: %i, Minor opcode: %i\n",
-                           err->error_code, err->resource_id,
-                           err->major_code, err->minor_code);
-                }
-            }
-        }
-
         /* I/O errors etc. */
         {
             int e = xcb_connection_has_error(pWMInfo->conn);
             if (e) {
-                ErrorF("winMultiWindowWMProc - Fatal error %d on xcb connection\n", e);
                 break;
             }
         }
@@ -997,9 +971,6 @@ winMultiWindowWMProc(void *pArg)
     /* Free the passed-in argument */
     free(pProcArg);
 
-#if CYGMULTIWINDOW_DEBUG
-    ErrorF("-winMultiWindowWMProc ()\n");
-#endif
     return NULL;
 }
 
@@ -1039,36 +1010,22 @@ winMultiWindowXMsgProc(void *pArg)
     int iReturn;
     xcb_auth_info_t *auth_info;
 
-    winDebug("winMultiWindowXMsgProc - Hello\n");
-
     /* Check that argument pointer is not invalid */
     if (pProcArg == NULL) {
-        ErrorF("winMultiWindowXMsgProc - pProcArg is NULL.  Exiting.\n");
         pthread_exit(NULL);
     }
-
-    winDebug("winMultiWindowXMsgProc - Calling pthread_mutex_lock ()\n");
 
     /* Grab the server started mutex - pause until we get it */
     iReturn = pthread_mutex_lock(pProcArg->ppmServerStarted);
     if (iReturn != 0) {
-        ErrorF("winMultiWindowXMsgProc - pthread_mutex_lock () failed: %d.  "
-               "Exiting.\n", iReturn);
         pthread_exit(NULL);
     }
-
-    winDebug("winMultiWindowXMsgProc - pthread_mutex_lock () returned.\n");
 
     /* Release the server started mutex */
     pthread_mutex_unlock(pProcArg->ppmServerStarted);
 
-    winDebug("winMultiWindowXMsgProc - pthread_mutex_unlock () returned.\n");
-
     /* Setup the display connection string x */
     winGetDisplayName(pszDisplay, (int) pProcArg->dwScreen);
-
-    /* Print the display connection string */
-    ErrorF("winMultiWindowXMsgProc - DISPLAY=%s\n", pszDisplay);
 
     /* Use our generated cookie for authentication */
     auth_info = winGetXcbAuthInfo();
@@ -1082,8 +1039,6 @@ winMultiWindowXMsgProc(void *pArg)
         pProcArg->conn = xcb_connect_to_display_with_auth_info(pszDisplay,
                                                                auth_info, NULL);
         if (xcb_connection_has_error(pProcArg->conn)) {
-            ErrorF("winMultiWindowXMsgProc - Could not open display, try: %d, "
-                   "sleeping: %d\n", iRetries + 1, WIN_CONNECT_DELAY);
             ++iRetries;
             sleep(WIN_CONNECT_DELAY);
             continue;
@@ -1095,18 +1050,11 @@ winMultiWindowXMsgProc(void *pArg)
 
     /* Make sure that the display opened */
     if (xcb_connection_has_error(pProcArg->conn)) {
-        ErrorF("winMultiWindowXMsgProc - Failed opening the display.  "
-               "Exiting.\n");
         pthread_exit(NULL);
     }
 
-    ErrorF("winMultiWindowXMsgProc - xcb_connect() returned and "
-           "successfully opened the display.\n");
-
     /* Check if another window manager is already running */
     if (CheckAnotherWindowManager(pProcArg->conn, pProcArg->dwScreen)) {
-        ErrorF("winMultiWindowXMsgProc - "
-               "another window manager is running.  Exiting.\n");
         pthread_exit(NULL);
     }
 
@@ -1165,22 +1113,14 @@ winMultiWindowXMsgProc(void *pArg)
         event = xcb_wait_for_event(pProcArg->conn);
         if (!event) { // returns NULL on I/O error
             int e = xcb_connection_has_error(pProcArg->conn);
-            ErrorF("winMultiWindowXMsgProc - Fatal error %d on xcb connection\n", e);
             break;
         }
 
         type = event->response_type & ~0x80;
         send_event = event->response_type & 0x80;
 
-        winDebug("winMultiWindowXMsgProc - event %d\n", type);
-
         /* Branch on event type */
         if (type == 0) {
-            xcb_generic_error_t *err = (xcb_generic_error_t *)event;
-            ErrorF("winMultiWindowXMsgProc - Error code: %i, ID: 0x%08x, "
-                   "Major opcode: %i, Minor opcode: %i\n",
-                   err->error_code, err->resource_id,
-                   err->major_code, err->minor_code);
             }
         else if (type == XCB_CREATE_NOTIFY) {
             xcb_create_notify_event_t *notify = (xcb_create_notify_event_t *)event;
@@ -1320,8 +1260,6 @@ winMultiWindowXMsgProc(void *pArg)
 
             if (client_msg->type == atmWmChange
                  && client_msg->data.data32[0] == XCB_ICCCM_WM_STATE_ICONIC) {
-                ErrorF("winMultiWindowXMsgProc - WM_CHANGE_STATE - IconicState\n");
-
                 memset(&msg, 0, sizeof(msg));
 
                 msg.msg = WM_WM_CHANGE_STATE;
