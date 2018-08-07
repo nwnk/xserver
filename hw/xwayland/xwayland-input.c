@@ -2451,12 +2451,6 @@ static const struct wl_registry_listener input_listener = {
     global_remove,
 };
 
-Bool
-LegalModifier(unsigned int key, DeviceIntPtr pDev)
-{
-    return TRUE;
-}
-
 void
 ProcessInputEvents(void)
 {
