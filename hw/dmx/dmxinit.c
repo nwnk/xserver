@@ -838,10 +838,7 @@ OsVendorInit(void)
 }
 
 /** This function is called in Xserver/os/utils.c from \a FatalError()
- * and \a VFatalError().  (Note that setting the function pointer \a
- * OsVendorVErrorFProc will cause \a VErrorF() (which is called by the
- * two routines mentioned here, as well as by others) to use the
- * referenced routine instead of \a vfprintf().) */
+ * and \a VFatalError(). */
 void
 OsVendorFatalError(const char *f, va_list args)
 {
