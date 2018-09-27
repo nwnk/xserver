@@ -68,7 +68,8 @@ xtrans,\
 xkbcomp,\
 xkeyboard-config,\
 python2-mako,\
-python2-six"
+python2-six,\
+patch"
 - echo Install done
 cache:
 - C:\cache
