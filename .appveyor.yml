@@ -82,8 +82,8 @@ deploy: off
 test: off
 # publish log artifacts on success or failure
 on_finish:
-- tar -Jcf meson-log.tar.xz build/meson-logs
-- tar -Jcf xvfb-piglit.tar.xz build/test/piglit-results/xvfb
+- tar --ignore-failed-read -Jcf meson-log.tar.xz build/meson-logs
+- tar --ignore-failed-read -Jcf xvfb-piglit.tar.xz build/test/piglit-results/xvfb
 - SET PATH=%ORIG_PATH%
 - appveyor PushArtifact meson-log.tar.xz
 - appveyor PushArtifact xvfb-piglit.tar.xz
