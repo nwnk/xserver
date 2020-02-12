@@ -64,7 +64,7 @@ else
       enable_input_thread = false
   endif
 endif
-conf_data.set('HAVE_INPUTTHREAD', enable_input_thread)
+conf_data.set('INPUTTHREAD', enable_input_thread)
 
 if cc.compiles('''
     #define _GNU_SOURCE 1
